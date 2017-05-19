@@ -4,3 +4,12 @@ machine:
   dependencies:
    pre:
      - npm install -g npm
+deployment:
+  staging:
+    branch: master
+    heroku:
+      appname: octo-job-board-test
+  production:
+    branch: master
+    heroku:
+      appname: octo-job-board
