@@ -12,14 +12,12 @@
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit",
     "lint": "eslint --fix --ext .js,.vue src test/unit/specs test/e2e/specs",
-	"postinstall": "npm run build"
+	"postinstall": "npm install && npm run build"
   },
   "dependencies": {
     "dotenv-webpack": "^1.4.5",
     "vue": "^2.2.6",
-    "vue-router": "^2.3.1"
-  },
-  "devDependencies": {
+    "vue-router": "^2.3.1",
     "autoprefixer": "^6.7.2",
     "babel-core": "^6.22.1",
     "babel-eslint": "^7.1.1",
