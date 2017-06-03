@@ -5,6 +5,7 @@
   "author": "Swann KNANI",
   "private": true,
   "scripts": {
+    "configure": "./tools/setup/setup.sh",
     "dev": "node build/dev-server.js",
     "start": "node build/dev-server.js",
     "build": "node build/build.js",

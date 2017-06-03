@@ -4,9 +4,12 @@
 
 ## Build Setup
 
-``` bash
+```bash
 # install dependencies
 npm install
+
+# configure .env file
+npm run configure
 
 # serve with hot reload at localhost:8080
 npm run dev
