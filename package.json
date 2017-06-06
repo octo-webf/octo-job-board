@@ -4,6 +4,7 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
+		"heroku-postbuild": "(cd client && npm run build)",
 		"start": "node server/bin/www",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
