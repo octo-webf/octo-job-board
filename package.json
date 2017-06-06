@@ -4,9 +4,10 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"heroku-postbuild": "(cd client && npm run build)",
+		"install": "(cd client && npm install) && (cd server && npm install)",
 		"start": "node server/bin/www",
-		"test": "exit 0"
+		"test": "exit 0",
+		"heroku-postbuild": "(cd client && npm run build)"
 	},
 	"repository": {
 		"type": "git",
