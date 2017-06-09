@@ -1,22 +1,26 @@
 {
-	"name": "octo-job-board",
-	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
-	"scripts": {
-		"install": "(cd client && npm install) && (cd server && npm install)",
-		"start": "node server/bin/www",
-		"test": "exit 0",
-		"heroku-postbuild": "(cd client && npm run build)"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/octo-web-front-end-tribe/octo-job-board.git"
-	},
-	"author": "",
-	"license": "ISC",
-	"bugs": {
-		"url": "https://github.com/octo-web-front-end-tribe/octo-job-board/issues"
-	},
-	"homepage": "https://github.com/octo-web-front-end-tribe/octo-job-board#readme"
+  "name": "octo-job-board",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "install": "(cd client && npm install) && (cd server && npm install)",
+    "start": "node server/bin/www",
+    "startmon": "nodemon server/bin/www",
+    "test": "exit 0",
+    "heroku-postbuild": "(cd client && npm run build)"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/octo-web-front-end-tribe/octo-job-board.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/octo-web-front-end-tribe/octo-job-board/issues"
+  },
+  "homepage": "https://github.com/octo-web-front-end-tribe/octo-job-board#readme",
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  }
 }
