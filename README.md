@@ -35,3 +35,11 @@ npm start
 cd client
 npm run dev
 ```
+
+## Release to production
+
+The release to production process is as simple as running the command (from any branch):
+
+```bash
+npm run release
+```

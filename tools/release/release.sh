@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eux
+set -eu
 
 echo "Check for pending changes"
 if [[ $(git status --porcelain) ]]; then
