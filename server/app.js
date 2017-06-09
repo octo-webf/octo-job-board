@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var activities = require('./routes/activities');
+var cors = require('cors');
 
 var app = express();
 
@@ -16,6 +17,11 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+// enable cors
+
+
+app.use(cors());
 
 // static resources
 app.use(express.static(path.join(__dirname, '..', 'client', 'dist')));
