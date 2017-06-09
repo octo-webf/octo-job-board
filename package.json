@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "install": "(cd client && npm install) && (cd server && npm install)",
+    "install:client": "(cd client && npm install)",
+    "install:server": "(cd server && npm install)",
+    "install": "npm run install:client && npm run install:server",
     "start": "node server/bin/www",
     "startmon": "nodemon server/bin/www",
     "test": "exit 0",
