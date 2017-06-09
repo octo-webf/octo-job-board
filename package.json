@@ -9,7 +9,9 @@
     "install": "npm run install:client && npm run install:server",
     "start": "node server/bin/www",
     "startmon": "nodemon server/bin/www",
-    "test": "exit 0",
+		"test:client": "(cd client && npm test)",
+		"test:server": "(cd server && npm test)",
+		"test": "npm run test:client && npm run test:server",
     "heroku-postbuild": "(cd client && npm run build)"
   },
   "repository": {
