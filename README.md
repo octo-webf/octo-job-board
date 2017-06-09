@@ -24,7 +24,14 @@ You can run the API server independently from the client's development one.
 
 ## Server
 
-
+```bash
+cd server
+npm start
+```
 
 ## Client
 
+```bash
+cd client
+npm run dev
+```
