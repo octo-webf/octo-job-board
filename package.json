@@ -7,12 +7,14 @@
     "install:client": "(cd client && npm install)",
     "install:server": "(cd server && npm install)",
     "install": "npm run install:client && npm run install:server",
+		"build:client": "(cd client && npm run build)",
+		"build": "npm run build:client",
     "start": "node server/bin/www",
     "startmon": "nodemon server/bin/www",
 		"test:client": "(cd client && npm test)",
 		"test:server": "(cd server && npm test)",
 		"test": "npm run test:client && npm run test:server",
-    "heroku-postbuild": "(cd client && npm run build)"
+    "heroku-postbuild": "npm run build"
   },
   "repository": {
     "type": "git",
