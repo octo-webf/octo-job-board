@@ -84,6 +84,7 @@ describe('JobList.vue', () => {
 		expect(firstJobCard.querySelector('.job__content').getAttribute('href')).to.equal('https://link.to.octopod.octo.com/projects/123456');
 
 	});
+
 	it('should render the appropriate status class', () => {
 
     // given
@@ -100,6 +101,22 @@ describe('JobList.vue', () => {
     // then
 		const firstJobCard = vm.$el.querySelectorAll('.job-card')[0];
 		expect(firstJobCard.querySelector('.job__status').getAttribute('class')).to.contain('job__status--proposal-in-progress');
+
+	});
+
+	it('should add number of available jobs', () => {
+
+    // given
+		jobsApiStub.resolves({
+			data: [{}, {}, {}, {}],
+		});
+		const Constructor = Vue.extend(JobList);
+
+    // when
+		const vm = new Constructor().$mount();
+
+    // then
+		expect(vm.$el.querySelector('.job-results__title').textContent).to.contain('4');
 
 	});
 

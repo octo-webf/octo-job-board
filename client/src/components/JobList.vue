@@ -6,7 +6,7 @@
         <div class="job-results-panel">
 
           <section class="job-results job-results--delivery">
-            <h1 class="job-results__title">Missions de delivery (13)</h1>
+            <h1 class="job-results__title">Missions ({{ jobs.length }})</h1>
             <ul class="job-results__list">
               <li class="job-results__item job-card" v-for="job in jobs">
                 <article class="job">
@@ -22,7 +22,7 @@
                   </a>
                   <footer class="job__footer">
                     <button class="job__apply-button">Je suis intéressé</button>
-                    <a class="job__alert-link" href="mailto:job-board@octo.com">Signaler un problème</a>
+                    <a class="job__alert-link" href="mailto:jobboard@octo.com">Signaler un problème</a>
                   </footer>
                 </article>
               </li>
