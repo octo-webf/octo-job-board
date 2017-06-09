@@ -1,11 +1,5 @@
 <template>
   <div>
-    <div class="job-list">{{ jobs }}
-      <ul>
-        <li class="job-card" v-for="job in jobs">
-        </li>
-      </ul>
-    </div>
     <main class="page__body">
       <div class="page__container">
 
@@ -14,155 +8,21 @@
           <section class="job-results job-results--delivery">
             <h1 class="job-results__title">Missions de delivery (13)</h1>
             <ul class="job-results__list">
-              <li class="job-results__item">
+              <li class="job-results__item job-card" v-for="job in jobs">
                 <article class="job">
                   <header class="job__header">
-                    <h2 class="job__title">Tech Lead Senior Tech Lead Senior</h2>
-                    <span class="job__status job__status--lead"></span>
+                    <h2 class="job__title">{{ job.title }}</h2>
+                    <span v-bind:class="['job__status job__status--'+job.status]"></span>
                   </header>
-                  <a class="job__content" href="https://octopod.octo.com/projects/2146904867">
-                    <p><span class="job__mission">DELIVERY ANEF [avril→juin 17]</span></p>
-                    <p class="job__client-wrapper">pour <span class="job__client">BNP Paribas BDDF</span></p>
-                    <p>dès <span class="job__start-date">juin 2017</span> sur <span class="job__duration">9 mois</span></p>
-                    <p>à <span class="job__location">Saint-Quentin-en-Yvelines</span></p>
+                  <a class="job__content" v-bind:href="job.octopod_link">
+                    <p><span class="job__mission">{{ job.project_name }}</span></p>
+                    <p class="job__client-wrapper">pour <span class="job__client">{{ job.customer_name }}</span></p>
+                    <p>dès <span class="job__start-date">{{ job.start_date }}</span> sur <span class="job__duration">{{ job.duration }}</span></p>
+                    <p>à <span class="job__location">{{ job.location }}</span></p>
                   </a>
                   <footer class="job__footer">
                     <button class="job__apply-button">Je suis intéressé</button>
                     <a class="job__alert-link" href="mailto:job-board@octo.com">Signaler un problème</a>
-                  </footer>
-                </article>
-              </li>
-              <li class="job-results__item">
-                <article class="job">
-                  <header class="job__header">
-                    <h2 class="job__title">Coaching Agile</h2>
-                    <span class="job__status job__status--proposal-in-progress"></span>
-                  </header>
-                  <a class="job__content" href="https://octopod.octo.com/projects/2146904867">
-                    <p><span class="job__mission">Track &amp; Trace PoC BPCE</span></p>
-                    <p class="job__client-wrapper">pour <span class="job__client">La Poste - Courrier</span></p>
-                    <p>dès <span class="job__start-date">juin 2017</span> sur <span class="job__duration">9 mois</span></p>
-                    <p>à <span class="job__location">SQY et OCTO</span></p>
-                  </a>
-                  <footer class="job__footer">
-                    <button class="job__apply-button">Je suis intéressé</button>
-                    <a class="job__alert-link" href="mailto:job-board@octo.com">Signaler un problème</a>
-                  </footer>
-                </article>
-              </li>
-              <li class="job-results__item">
-                <article class="job">
-                  <header class="job__header">
-                    <h2 class="job__title">Dév Senior / TL</h2>
-                    <span class="job__status job__status--lead"></span>
-                  </header>
-                  <a class="job__content" href="https://octopod.octo.com/projects/2146904867">
-                    <p><span class="job__mission">FC PRODUIT T3 2017</span></p>
-                    <p class="job__client-wrapper">pour <span class="job__client">DINSIC</span></p>
-                    <p>dès <span class="job__start-date">juillet 2017</span> sur <span class="job__duration">6 mois</span></p>
-                    <p>à <span class="job__location">Saint-Quentin-en-Yvelines</span></p>
-                  </a>
-                  <footer class="job__footer">
-                    <button class="job__apply-button">Je suis intéressé</button>
-                    <a class="job__alert-link" href="mailto:job-board@octo.com">Signaler un problème</a>
-                  </footer>
-                </article>
-              </li>
-              <li class="job-results__item">
-                <article class="job">
-                  <header class="job__header">
-                    <h2 class="job__title">Dév Senior / TL</h2>
-                    <span class="job__status job__status--proposal-sent"></span>
-                  </header>
-                  <a class="job__content" href="https://octopod.octo.com/projects/2146904867">
-                    <p><span class="job__mission">LE DRÔNE</span></p>
-                    <p class="job__client-wrapper">pour <span class="job__client">DINSIC</span></p>
-                    <p>dès <span class="job__start-date">juin 2017</span> sur <span class="job__duration">9 mois</span></p>
-                    <p>à <span class="job__location">39-43 quai André Citroën 75015 Paris</span></p>
-                  </a>
-                  <footer class="job__footer">
-                    <button class="job__apply-button">Je suis intéressé</button>
-                    <a class="job__alert-link" href="mailto:job-board@octo.com">Signaler un problème</a>
-                  </footer>
-                </article>
-              </li>
-              <li class="job-results__item">
-                <article class="job">
-                  <header class="job__header">
-                    <h2 class="job__title">Dev WF Confirmé 2</h2>
-                    <span class="job__status job__status--mission-signed"></span>
-                  </header>
-                  <a class="job__content" href="https://octopod.octo.com/projects/2146904867">
-                    <p><span class="job__mission">Accompagnement Connexis Cash</span></p>
-                    <p class="job__client-wrapper">pour <span class="job__client">BNP Paribas CIB - Cash Management</span></p>
-                    <p>dès <span class="job__start-date">juin 2017</span> sur <span class="job__duration">3 mois</span></p>
-                    <p>à <span class="job__location">N/A</span></p>
-                  </a>
-                  <footer class="job__footer">
-                    <button class="job__apply-button">Je suis intéressé</button>
-                    <a class="job__alert-link" href="mailto:job-board@octo.com">Signaler un problème</a>
-                  </footer>
-                </article>
-              </li>
-              <li class="job-results__item">
-                <article class="job">
-                  <header class="job__header">
-                    <h2 class="job__title">Développeur</h2>
-                    <span class="job__status job__status--mission-accepted"></span>
-                  </header>
-                  <a class="job__content" href="https://octopod.octo.com/projects/2146904867">
-                    <p><span class="job__mission">Développement LPS</span></p>
-                    <p class="job__client-wrapper">pour <span class="job__client">Lyreco</span></p>
-                    <p>dès <span class="job__start-date">avril 2017</span> sur <span class="job__duration">Trois mois</span></p>
-                    <p>à <span class="job__location">Valenciennes</span></p>
-                  </a>
-                  <footer class="job__footer">
-                    <button class="job__apply-button">Je suis intéressé</button>
-                    <a class="job__alert-link" href="mailto:job-board@octo.com">Signaler un problème</a>
-                  </footer>
-                </article>
-              </li>
-            </ul>
-          </section>
-
-          <section class="job-results job-results--consulting">
-            <h1 class="job-results__title">Missions de conseil (4)</h1>
-            <ul class="job-results__list">
-              <li class="job-results__item">
-                <article class="job">
-                  <header class="job__header">
-                    <h2 class="job__title">Tech Lead Senior Tech Lead Senior</h2>
-                    <span class="job__status job__status--lead"></span>
-                  </header>
-                  <a class="job__content" href="https://octopod.octo.com/projects/2146904867">
-                    <p class="job__mission">DELIVERY ANEF [avril→juin 17]</p>
-                    <p class="job__client">BNP Paribas BDDF</p>
-                    <p><span class="job__start-date">juin 2017</span> – <span class="job__duration">9 mois</span></p>
-                    <p>Lieu : <span class="job__location">Paris, 15ème</span></p>
-                    <p>Contact : <span class="job__contact">MAX</span></p>
-                  </a>
-                  <footer class="job__footer">
-                    <button class="job__apply-button">Je suis intéressé</button>
-                    <a class="job__alert-link" href="mailto:job-board@octo.com">Signaler une erreur</a>
-                  </footer>
-                </article>
-              </li>
-              <li class="job-results__item">
-                <article class="job">
-                  <header class="job__header">
-                    <h2 class="job__title">Data engineer</h2>
-                    <span class="job__status job__status--mission-signed"></span>
-                  </header>
-                  <a class="job__content" href="https://octopod.octo.com/projects/2146904867">
-                    <p class="job__mission">DELIVERY ANEF [avril→juin 17]</p>
-                    <p class="job__client">BNP Paribas BDDF</p>
-                    <p><span class="job__start-date">juin 2017</span> – <span class="job__duration">9 mois</span></p>
-                    <p>Lieu : <span class="job__location">OCTO</span></p>
-                    <p>Contact : <span class="job__contact">NCA</span></p>
-                  </a>
-                  <footer class="job__footer">
-                    <button class="job__apply-button">Je suis intéressé</button>
-                    <a class="job__alert-link" href="mailto:job-board@octo.com">Signaler une erreur</a>
                   </footer>
                 </article>
               </li>
