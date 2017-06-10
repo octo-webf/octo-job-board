@@ -7,10 +7,12 @@ Vue.use(VueResource);
 describe('JobList.vue', () => {
 
 	let jobsApiStub;
+	let Constructor;
 
 	beforeEach(() => {
 
 		jobsApiStub = sinon.stub(Vue.http, 'get').returnsPromise();
+		Constructor = Vue.extend(JobList);
 
 	});
 
@@ -22,12 +24,8 @@ describe('JobList.vue', () => {
 
 	it('should get job data from API', () => {
 
-    // given
-		const Constructor = Vue.extend(JobList);
-		const vm = new Constructor().$mount();
-
     // when
-		vm.getJobs();
+		new Constructor().$mount();
 
     // then
 		expect(Vue.http.get).to.have.been.calledWith('http://localhost:3000/api/activities');
@@ -40,7 +38,6 @@ describe('JobList.vue', () => {
 		jobsApiStub.resolves({
 			data: [{}, {}, {}],
 		});
-		const Constructor = Vue.extend(JobList);
 
     // when
 		const vm = new Constructor().$mount();
@@ -68,7 +65,6 @@ describe('JobList.vue', () => {
 				contacts: ['WBO', 'CDR'],
 			}],
 		});
-		const Constructor = Vue.extend(JobList);
 
     // when
 		const vm = new Constructor().$mount();
@@ -93,7 +89,6 @@ describe('JobList.vue', () => {
 				status: 'proposal-in-progress',
 			}],
 		});
-		const Constructor = Vue.extend(JobList);
 
     // when
 		const vm = new Constructor().$mount();
@@ -110,7 +105,6 @@ describe('JobList.vue', () => {
 		jobsApiStub.resolves({
 			data: [{}, {}, {}, {}],
 		});
-		const Constructor = Vue.extend(JobList);
 
     // when
 		const vm = new Constructor().$mount();
