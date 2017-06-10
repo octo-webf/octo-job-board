@@ -10,4 +10,4 @@ deployment:
   production:
     branch: master
     heroku:
-      appname: jobs-octo-production
+      appname: jobs-octo
