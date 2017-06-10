@@ -5,7 +5,7 @@
 ```bash
 # get project sources
 git clone git@github.com:octo-web-front-end-tribe/octo-job-board.git
-cd super-jobboard
+cd octo-job-board
 
 # install dependencies
 npm install
