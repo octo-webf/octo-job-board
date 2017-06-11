@@ -1,6 +1,6 @@
 const { describe, it, request, expect } = require('./test-helper')
 var app = require('../app')
-var jobs = require('../fixtures/jobs')
+var jobs = require('../src/fixtures/jobs')
 
 describe('/jobs', function () {
   it('should return fixtures jobs', function (done) {

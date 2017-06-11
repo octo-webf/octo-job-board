@@ -6,7 +6,7 @@ const chai = require('chai')
 const expect = chai.expect
 
 // Supertest
-const request = require('supertest');
+const request = require('supertest')
 
 module.exports = {
   describe,
