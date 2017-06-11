@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
 const index = require('./routes/index');
-const activities = require('./routes/activities');
+const jobs = require('./routes/jobs');
 const cors = require('cors');
 
 const app = express();
@@ -25,7 +25,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, '..', 'client', 'dist')));
 
 app.use('/', index);
-app.use('/api/activities', activities);
+app.use('/api/jobs', jobs);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

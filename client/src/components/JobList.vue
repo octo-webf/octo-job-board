@@ -49,14 +49,14 @@
   		this.getJobs().then((response) => {
 
   			this.jobs = response.data;
-  
+
 		});
 
 	},
   	methods: {
   		getJobs() {
 
-  			return this.$http.get('http://localhost:3000/api/activities');
+  			return this.$http.get('http://localhost:3000/api/jobs');
 
 		},
   	},
