@@ -1,11 +1,22 @@
-const { describe, it, request, expect } = require('./test-helper')
+const { describe, it, request } = require('./test-helper')
+const app = require('../app')
 
-describe('', function () {
-  it('should...', function () {
-    // given
+describe('Route | auth route', function () {
+  describe('POST /auth/token', function () {
+    it('should respond with json', (done) => {
+      request(app)
+        .post('/auth/token')
+        .set('Accept', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(200, done)
+    })
 
-    // when
+    it('should return an error if Google token is missing', () => {
 
-    // then
+    })
+
+    it('should return an error if Google token is invalid', () => {
+
+    })
   })
 })
