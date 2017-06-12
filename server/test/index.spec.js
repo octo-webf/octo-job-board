@@ -1,10 +1,8 @@
-/* global describe, it */
-var index = require('../app')
-var request = require('supertest')
-var expect = require('chai').expect
+const { describe, it, request, expect } = require('./test-helper')
+const index = require('../app')
 
-describe.skip('API', function () {
-  it('should have api informations on root', function (done) {
+describe('API', function () {
+  it('should have api informations on root', () => {
     request(index)
       .get('/')
       .expect('Content-Type', /json/)
@@ -13,7 +11,6 @@ describe.skip('API', function () {
           done(err)
         }
         expect(res.body).to.have.property('azerty')
-        done()
       })
   })
 })

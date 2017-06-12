@@ -1,9 +1,9 @@
 var express = require('express')
 var router = express.Router()
-var activitiesFixtures = require('../fixtures/activities')
+var jobsFixtures = require('../fixtures/jobs')
 
 router.get('/', function (req, res, next) {
-  res.json(activitiesFixtures)
+  res.json(jobsFixtures)
 })
 
 module.exports = router

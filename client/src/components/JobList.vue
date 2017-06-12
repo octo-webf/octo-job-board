@@ -17,7 +17,8 @@
                   <a class="job__content" v-bind:href="job.octopod_link">
                     <p><span class="job__mission">{{ job.project_name }}</span></p>
                     <p class="job__client-wrapper">pour <span class="job__client">{{ job.customer_name }}</span></p>
-                    <p>dès <span class="job__start-date">{{ job.start_date }}</span> sur <span class="job__duration">{{ job.duration }}</span></p>
+                    <p>dès <span class="job__start-date">{{ job.start_date }}</span> sur <span
+                      class="job__duration">{{ job.duration }}</span></p>
                     <p>à <span class="job__location">{{ job.location }}</span></p>
                   </a>
                   <footer class="job__footer">
@@ -49,16 +50,16 @@
   		this.getJobs().then((response) => {
 
   			this.jobs = response.data;
-  
-		});
 
-	},
+  		});
+
+  	},
   	methods: {
   		getJobs() {
 
-  			return this.$http.get('http://localhost:3000/api/activities');
+  			return this.$http.get(`${process.env.API_URL}/jobs`);
 
-		},
+  		},
   	},
   };
 </script>
@@ -152,9 +153,9 @@
     min-width: 260px;
     max-width: 260px;
     background: #ffffff;
-    border-radius: 4px!important;
+    border-radius: 4px !important;
     box-shadow: 0 1px 1px rgba(0, 0, 0, .15);
-    border: 1px solid rgba(0,0,0,.09);
+    border: 1px solid rgba(0, 0, 0, .09);
     display: flex;
     flex-direction: column;
     color: #535a60;

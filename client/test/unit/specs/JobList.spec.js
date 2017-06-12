@@ -28,7 +28,7 @@ describe('JobList.vue', () => {
 		new Constructor().$mount();
 
     // then
-		expect(Vue.http.get).to.have.been.calledWith('http://localhost:3000/api/activities');
+		expect(Vue.http.get).to.have.been.calledWith('http://localhost:3000/api/jobs');
 
 	});
 

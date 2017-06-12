@@ -1,5 +1,7 @@
 # JobBoard OCTO
 
+[![CircleCI](https://circleci.com/gh/octo-web-front-end-tribe/octo-job-board/tree/dev.svg?style=svg)](https://circleci.com/gh/octo-web-front-end-tribe/octo-job-board/tree/dev)
+
 ## Getting started
 
 ```bash
