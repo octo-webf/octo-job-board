@@ -1,20 +1,20 @@
-// Mocha
-const { describe, it, before, after, beforeEach, afterEach } = require('mocha')
-
 // Chai
 const chai = require('chai')
 const expect = chai.expect
+
+// Sinon
+const sinon = require('sinon')
+const assert = sinon.assert;
+
+const sinonChai = require("sinon-chai");
+chai.use(sinonChai);
 
 // Supertest
 const request = require('supertest')
 
 module.exports = {
-  describe,
-  it,
-  before,
-  after,
-  beforeEach,
-  afterEach,
   expect,
-  request
+  request,
+  sinon,
+  assert
 }

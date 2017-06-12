@@ -1,8 +1,8 @@
-const { describe, it, request, expect } = require('./test-helper')
-var app = require('../app')
-var jobs = require('../src/fixtures/jobs')
+const { request, expect } = require('../../test-helper')
+const app = require('../../../app')
+const jobs = require('../../../src/fixtures/jobs')
 
-describe('/jobs', function () {
+describe('Integration | Routes | jobs route', function () {
   it('should return fixtures jobs', function (done) {
     request(app)
       .get('/api/jobs')

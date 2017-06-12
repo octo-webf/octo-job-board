@@ -15,6 +15,7 @@
     "cors": "^2.8.3",
     "debug": "~2.6.3",
     "express": "~4.15.2",
+    "google-auth-library": "^0.10.0",
     "jade": "~1.11.0",
     "morgan": "~1.8.1",
     "serve-favicon": "~2.4.2"
@@ -28,6 +29,8 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
     "mocha": "^3.4.2",
+    "sinon": "^2.3.4",
+    "sinon-chai": "^2.11.0",
     "supertest": "^3.0.0"
   }
 }
