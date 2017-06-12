@@ -22,13 +22,18 @@ describe('Integration | Routes | auth route', function() {
         .post('/auth/token')
         .send({idToken: 'valid-id-token'})
         .set('Accept', 'application/json')
+
+        // then
         .expect('Content-Type', /json/)
         .expect(200, done)
     })
 
     it('should return an error when Google ID token is missing', (done) => {
+      // when
       request(app)
         .post('/auth/token')
+
+        // then
         .expect(400, done)
     })
 
@@ -36,10 +41,12 @@ describe('Integration | Routes | auth route', function() {
       // given
       GoogleAuthWrapper.verifyIdToken.rejects()
 
-      // then
+      // when
       request(app)
         .post('/auth/token')
         .send({ idToken: 'bad-token ' })
+
+        // then
         .expect(401, done)
     })
 
