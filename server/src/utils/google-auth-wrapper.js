@@ -1,6 +1,6 @@
 const GoogleAuth = require('google-auth-library')
 
-var CLIENT_ID = '1095728091059-u6m5nusuq5mdqjb0ddlufgrd6fo7gn06.apps.googleusercontent.com';
+var CLIENT_ID = '1095728091059-hke1g2idu0vh3knb4uuk4872jb18d8vu.apps.googleusercontent.com';
 
 const GoogleAuthWrapper = {
 
@@ -15,6 +15,10 @@ const GoogleAuthWrapper = {
           const payload = login.getPayload();
           const userId = payload['sub'];
           const domain = payload['hd'];
+
+          if ('octo.com' !== domain) {
+            reject(`User ${userId} does not belong to OCTO`)
+          }
           resolve({userId, domain})
         });
     })

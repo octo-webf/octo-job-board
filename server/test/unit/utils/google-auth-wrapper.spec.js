@@ -39,9 +39,7 @@ describe('Unit | Utils | google-auth-wrapper', function() {
       const promise = GoogleAuthWrapper.verifyIdToken('valid-id-token');
 
       // then
-      return promise.then(_ => {
-        expect(verifyIdTokenStub).to.have.been.called
-      })
+      return expect(promise).to.eventually.be.fulfilled
     });
 
     it('should return a rejected promise when authentication failed', () => {
@@ -55,9 +53,28 @@ describe('Unit | Utils | google-auth-wrapper', function() {
       const promise = GoogleAuthWrapper.verifyIdToken('invalid-id-token');
 
       // then
-      return promise.catch((message) => {
-        expect(verifyIdTokenStub).to.have.been.called
-      })
+      return expect(promise).to.eventually.be.rejected
+    });
+
+    it('should return a rejected promise when the user dit not authenticated with an OCTO account', () => {
+      // given
+      verifyIdTokenStub.callsFake((idToken, audience, callback) => {
+        const login = {
+          getPayload() {
+            return {
+              sub: 'user-id',
+              hd: 'not-octo.com'
+            }
+          }
+        }
+        callback(null, login)
+      });
+
+      // when
+      const promise = GoogleAuthWrapper.verifyIdToken('valid-id-token');
+
+      // then
+      return expect(promise).to.eventually.be.rejectedWith('User user-id does not belong to OCTO')
     });
 
   });
