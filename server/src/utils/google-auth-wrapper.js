@@ -1,16 +1,15 @@
 const GoogleAuth = require('google-auth-library')
-
-const CLIENT_ID = '1095728091059-hke1g2idu0vh3knb4uuk4872jb18d8vu.apps.googleusercontent.com';
+const config = require('../config')
 
 const GoogleAuthWrapper = {
 
   verifyIdToken(idToken) {
     return new Promise((resolve, reject) => {
       const auth = new GoogleAuth;
-      const client = new auth.OAuth2(CLIENT_ID, '', '');
+      const client = new auth.OAuth2(config.GOOGLE_CLIENT_ID, '', '');
       client.verifyIdToken(
         idToken,
-        CLIENT_ID,
+        config.GOOGLE_CLIENT_ID,
         (err, login) => {
           const payload = login.getPayload();
           const userId = payload['sub'];
