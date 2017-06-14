@@ -1,8 +1,9 @@
-var express = require('express')
-var router = express.Router()
-var jobsFixtures = require('../fixtures/jobs')
+const express = require('express')
+const router = express.Router()
+const jobsFixtures = require('../fixtures/jobs')
+const auth = require('../middlewares/auth')
 
-router.get('/', function (req, res, next) {
+router.get('/', auth, function (req, res, next) {
   res.json(jobsFixtures)
 })
 

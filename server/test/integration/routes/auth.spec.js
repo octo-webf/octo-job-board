@@ -2,9 +2,8 @@ const { request, sinon } = require('../../test-helper')
 const app = require('../../../app')
 const GoogleAuthWrapper = require('../../../src/utils/google-auth-wrapper')
 
-describe('Integration | Routes | auth route', function() {
-  describe('POST /auth/token', function() {
-
+describe('Integration | Routes | auth route', function () {
+  describe('POST /auth/token', function () {
     beforeEach(() => {
       sinon.stub(GoogleAuthWrapper, 'verifyIdToken')
     })
@@ -49,6 +48,5 @@ describe('Integration | Routes | auth route', function() {
         // then
         .expect(401, done)
     })
-
   })
 })

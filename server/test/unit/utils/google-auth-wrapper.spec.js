@@ -1,12 +1,10 @@
-const GoogleAuth = require('google-auth-library');
+const GoogleAuth = require('google-auth-library')
 const { expect, sinon } = require('../../test-helper')
-const GoogleAuthWrapper = require('../../../src/utils/google-auth-wrapper');
+const GoogleAuthWrapper = require('../../../src/utils/google-auth-wrapper')
 
-describe('Unit | Utils | google-auth-wrapper', function() {
-
-  describe('#verifyIdToken', function() {
-
-    let verifyIdTokenStub;
+describe('Unit | Utils | google-auth-wrapper', function () {
+  describe('#verifyIdToken', function () {
+    let verifyIdTokenStub
 
     beforeEach(() => {
       verifyIdTokenStub = sinon.stub()
@@ -19,13 +17,13 @@ describe('Unit | Utils | google-auth-wrapper', function() {
 
     it('should exist', () => {
       expect(GoogleAuthWrapper.verifyIdToken).to.exist
-    });
+    })
 
     it('should return a resolved promise when authentication (ID token) has been validated', () => {
       // given
       verifyIdTokenStub.callsFake((idToken, audience, callback) => {
         const login = {
-          getPayload() {
+          getPayload () {
             return {
               sub: 'user-id',
               hd: 'octo.com'
@@ -33,14 +31,14 @@ describe('Unit | Utils | google-auth-wrapper', function() {
           }
         }
         callback(null, login)
-      });
+      })
 
       // when
-      const promise = GoogleAuthWrapper.verifyIdToken('valid-id-token');
+      const promise = GoogleAuthWrapper.verifyIdToken('valid-id-token')
 
       // then
       return expect(promise).to.eventually.be.fulfilled
-    });
+    })
 
     it('should return a rejected promise when authentication failed', () => {
       // given
@@ -50,17 +48,17 @@ describe('Unit | Utils | google-auth-wrapper', function() {
       })
 
       // when
-      const promise = GoogleAuthWrapper.verifyIdToken('invalid-id-token');
+      const promise = GoogleAuthWrapper.verifyIdToken('invalid-id-token')
 
       // then
       return expect(promise).to.eventually.be.rejected
-    });
+    })
 
     it('should return a rejected promise when the user dit not authenticated with an OCTO account', () => {
       // given
       verifyIdTokenStub.callsFake((idToken, audience, callback) => {
         const login = {
-          getPayload() {
+          getPayload () {
             return {
               sub: 'user-id',
               hd: 'not-octo.com'
@@ -68,15 +66,13 @@ describe('Unit | Utils | google-auth-wrapper', function() {
           }
         }
         callback(null, login)
-      });
+      })
 
       // when
-      const promise = GoogleAuthWrapper.verifyIdToken('valid-id-token');
+      const promise = GoogleAuthWrapper.verifyIdToken('valid-id-token')
 
       // then
       return expect(promise).to.eventually.be.rejectedWith('User user-id does not belong to OCTO')
-    });
-
-  });
-
-});
+    })
+  })
+})

@@ -3,7 +3,6 @@ const auth = require('../../../src/middlewares/auth')
 const GoogleAuthWrapper = require('../../../src/utils/google-auth-wrapper')
 
 describe('Unit | Middlewares | auth', function () {
-
   let req
   let res
   let next
@@ -16,11 +15,11 @@ describe('Unit | Middlewares | auth', function () {
       httpCode: null,
       payload: null,
 
-      status(httpCode) {
+      status (httpCode) {
         this.httpCode = httpCode
         return this
       },
-      json(payload) {
+      json (payload) {
         this.payload = payload
         return this
       }
@@ -37,7 +36,6 @@ describe('Unit | Middlewares | auth', function () {
   })
 
   describe('Success management', function () {
-
     beforeEach(() => {
       // given
       req = {
@@ -55,27 +53,23 @@ describe('Unit | Middlewares | auth', function () {
     it('should set user into the request', (done) => {
       // when
       auth(req, res, () => {
-
         // then
         expect(req.user).to.deep.equal({userId: 'user-id', domain: 'octo.com'})
         done()
       })
-   })
+    })
 
     it('should verify Google access token (by calling Google Auth library)', (done) => {
       // when
       auth(req, res, () => {
-
         // then
         expect(GoogleAuthWrapper.verifyIdToken).to.have.been.calledWith('some_acess_token')
         done()
       })
     })
-
   })
 
   describe('Error management', function () {
-
     beforeEach(() => {
       sinon.stub(GoogleAuthWrapper, 'verifyIdToken').rejects()
     })
@@ -84,7 +78,7 @@ describe('Unit | Middlewares | auth', function () {
       GoogleAuthWrapper.verifyIdToken.restore()
     })
 
-    function _assert401Error(message) {
+    function _assert401Error (message) {
       const expectedResponseBody = {
         error: {
           msg: message
@@ -131,5 +125,4 @@ describe('Unit | Middlewares | auth', function () {
       })
     })
   })
-
 })
