@@ -1,4 +1,4 @@
-const { request, sinon } = require('../../test-helper')
+const {request, sinon, expect} = require('../../test-helper')
 const app = require('../../../app')
 const GoogleAuthWrapper = require('../../../src/utils/google-auth-wrapper')
 
@@ -14,7 +14,7 @@ describe('Integration | Routes | auth route', function () {
 
     it('should respond with json', (done) => {
       // given
-      GoogleAuthWrapper.verifyIdToken.resolves({userId: '1234-abcd'})
+      GoogleAuthWrapper.verifyIdToken.resolves({userId: '1234-abcd', domain: 'octo.com'})
 
       // when
       request(app)
@@ -24,7 +24,16 @@ describe('Integration | Routes | auth route', function () {
 
         // then
         .expect('Content-Type', /json/)
-        .expect(200, done)
+        .expect(200, (err, res) => {
+          if (err) {
+            done(err)
+          }
+          expect(res.body).to.deep.equal({
+            user: {userId: '1234-abcd', domain: 'octo.com'},
+            accessToken: 'valid-id-token'
+          })
+          done()
+        })
     })
 
     it('should return an error when Google ID token is missing', (done) => {
@@ -43,7 +52,7 @@ describe('Integration | Routes | auth route', function () {
       // when
       request(app)
         .post('/auth/token')
-        .send({ idToken: 'bad-token ' })
+        .send({idToken: 'bad-token '})
 
         // then
         .expect(401, done)

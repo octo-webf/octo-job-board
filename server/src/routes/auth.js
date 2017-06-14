@@ -11,7 +11,7 @@ router.post('/token', function (req, res, next) {
 
   GoogleAuthWrapper.verifyIdToken(idToken)
     .then((userId) => {
-      res.json(userId)
+      res.json({user: userId, accessToken: idToken})
     })
     .catch((err) => {
       res.status(401).json({error: {}})
