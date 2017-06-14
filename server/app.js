@@ -27,6 +27,10 @@ app.use(express.static(path.join(__dirname, '..', 'client', 'dist')));
 app.use('/', index);
 app.use('/api/jobs', jobs);
 
+app.get('/.well-known/acme-challenge/:content', function(req, res) {
+  res.send('Fz4KwoxqNbaEMWxcBM54Z2or-bYQNN_2Ypbv5Xuxpws.4M0QKfiH4yWeNOiLqoHVHpBHwxEpo1yiMyUHTclOD0s')
+})
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   const err = new Error('Not Found');
