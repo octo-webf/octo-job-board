@@ -1,6 +1,6 @@
 const GoogleAuth = require('google-auth-library')
 
-var CLIENT_ID = '1095728091059-hke1g2idu0vh3knb4uuk4872jb18d8vu.apps.googleusercontent.com';
+const CLIENT_ID = '1095728091059-hke1g2idu0vh3knb4uuk4872jb18d8vu.apps.googleusercontent.com';
 
 const GoogleAuthWrapper = {
 
