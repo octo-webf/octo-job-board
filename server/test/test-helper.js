@@ -8,7 +8,7 @@ const expect = chai.expect
 
 // Chai plugins
 chai.use(require('chai-as-promised'));
-chai.use(require("sinon-chai"));
+chai.use(require('sinon-chai'));
 
 // Supertest
 const request = require('supertest')
