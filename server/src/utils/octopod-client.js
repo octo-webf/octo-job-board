@@ -1,5 +1,4 @@
 const request = require('request')
-const GoogleAuth = require('google-auth-library')
 const config = require('../config')
 
 const OctopodClient = {
@@ -7,15 +6,15 @@ const OctopodClient = {
   getAccessToken() {
     return new Promise((resolve, reject) => {
       let options = {
-        url: 'https://octopod.octo.com/api/oauth/token',
+        url: `${config.OCTOPOD_API_URL}/oauth/token`,
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
           'Accept': 'application/json'
         },
         form: {
           grant_type: 'client_credentials',
-          client_id: 'abc1234',
-          client_secret: 'def5678'
+          client_id: config.OCTOPOD_CLIENT_ID,
+          client_secret: config.OCTOPOD_CLIENT_SECRET
         }
       }
 
@@ -31,7 +30,7 @@ const OctopodClient = {
   fetchProjectsWithStaffingNeeded(accessToken) {
     return new Promise((resolve, reject) => {
       let options = {
-        url: 'https://octopod.octo.com/api/oauth/token',
+        url: `${config.OCTOPOD_API_URL}/api/oauth/token`,
         headers: {
           'Authorization': 'Bearer ' + accessToken
         }
