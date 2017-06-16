@@ -15,5 +15,3 @@ new Vue({
 	template: '<App/>',
 	components: { App },
 });
-
-console.log(process.env.DB_HOST);

@@ -6,6 +6,7 @@
     "start": "node ./bin/www",
     "clean": "rm -rf node_modules",
     "test": "NODE_ENV=test ./node_modules/mocha/bin/mocha --recursive",
+    "test:watch": "NODE_ENV=test ./node_modules/mocha/bin/mocha --recursive --watch",
     "lint": "./node_modules/.bin/eslint --fix --ext .js routes test"
   },
   "dependencies": {
@@ -13,13 +14,16 @@
     "cookie-parser": "~1.4.3",
     "cors": "^2.8.3",
     "debug": "~2.6.3",
+    "dotenv": "^4.0.0",
     "express": "~4.15.2",
+    "google-auth-library": "^0.10.0",
     "jade": "~1.11.0",
     "morgan": "~1.8.1",
     "serve-favicon": "~2.4.2"
   },
   "devDependencies": {
     "chai": "^4.0.2",
+    "chai-as-promised": "^7.0.0",
     "eslint": "^3.19.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-plugin-import": "^2.3.0",
@@ -27,6 +31,8 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
     "mocha": "^3.4.2",
+    "sinon": "^2.3.4",
+    "sinon-chai": "^2.11.0",
     "supertest": "^3.0.0"
   }
 }

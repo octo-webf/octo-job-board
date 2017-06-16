@@ -1,18 +1,17 @@
 const express = require('express');
 const path = require('path');
-const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-
-const index = require('./routes/index');
-const jobs = require('./routes/jobs');
 const cors = require('cors');
+
+const index = require('./src/routes/index');
+const jobs = require('./src/routes/jobs');
+const auth = require('./src/routes/auth');
 
 const app = express();
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -22,10 +21,14 @@ app.use(cookieParser());
 app.use(cors());
 
 // static resources
-app.use(express.static(path.join(__dirname, '..', 'client', 'dist')));
+// FIXME manage better environment variables
+if ('test' !== process.env.NODE_ENV) {
+  app.use(express.static(path.join(__dirname, '..', 'client', 'dist')));
+}
 
 app.use('/', index);
 app.use('/api/jobs', jobs);
+app.use('/auth', auth);
 
 app.get('/.well-known/acme-challenge/:content', function(req, res) {
   res.send('Fz4KwoxqNbaEMWxcBM54Z2or-bYQNN_2Ypbv5Xuxpws.4M0QKfiH4yWeNOiLqoHVHpBHwxEpo1yiMyUHTclOD0s')
