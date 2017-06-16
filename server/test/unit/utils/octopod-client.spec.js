@@ -3,6 +3,17 @@ const OctopodClient = require('../../../src/utils/octopod-client')
 const {expect, sinon} = require('../../test-helper')
 
 describe('Unit | Utils | octopod-client', function () {
+
+  beforeEach(() => {
+    sinon.stub(request, 'post')
+    sinon.stub(request, 'get')
+  })
+
+  afterEach(() => {
+    request.post.restore()
+    request.get.restore()
+  })
+
   describe('#fetchProjectsWithStaffingNeeded', function () {
     let jobs = [{
       'id': 1,
@@ -11,14 +22,6 @@ describe('Unit | Utils | octopod-client', function () {
       'id': 2,
       'name': 'job 2'
     }]
-
-    beforeEach(() => {
-      sinon.stub(request, 'get')
-    })
-
-    afterEach(() => {
-      request.get.restore()
-    })
 
     it('should return jobs in a a promise', () => {
       // given
@@ -38,12 +41,35 @@ describe('Unit | Utils | octopod-client', function () {
           expect(res.body).to.equal(jobs)
         })
     })
+
+    it('should call Octopod API "GET /projects"', function () {
+      // given
+      request.get.callsFake((options, callback) => {
+        callback()
+      })
+      const accessToken = 'access-token'
+
+      // when
+      const promise = OctopodClient.fetchProjectsWithStaffingNeeded(accessToken)
+
+      // then
+      return promise.then((res) => {
+        const expectedOptions = {
+          url: `http://octopod.url/api/projects?staffing_needed=true&page=1&per_page=50`,
+          headers: {
+            'Authorization': 'Bearer access-token'
+          }
+        }
+        expect(request.get).to.have.been.calledWith(expectedOptions)
+      })
+    })
   })
 
   describe('#getAccessToken', function () {
+
     describe('with a successful request', function () {
       beforeEach(() => {
-        sinon.stub(request, 'post').callsFake((options, callback) => {
+        request.post.callsFake((options, callback) => {
           const httpResponse = {
             body: {
               'access_token': 'fakeAccessToken',
@@ -56,8 +82,31 @@ describe('Unit | Utils | octopod-client', function () {
         })
       })
 
-      afterEach(() => {
-        request.post.restore()
+      it('should call Octopod API "POST /oauth/token"', function () {
+        // given
+        request.post.callsFake((options, callback) => {
+          callback()
+        })
+
+        // when
+        const promise = OctopodClient.getAccessToken()
+
+        // then
+        return promise.then((res) => {
+          const expectedOptions = {
+            url: `http://octopod.url/api/oauth/token`,
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+              'Accept': 'application/json'
+            },
+            form: {
+              grant_type: 'client_credentials',
+              client_id: 'octopod-client-id',
+              client_secret: 'octopod-client-secret'
+            }
+          }
+          expect(request.post).to.have.been.calledWith(expectedOptions)
+        })
       })
 
       it('should return a resolved promise', () => {
@@ -73,13 +122,9 @@ describe('Unit | Utils | octopod-client', function () {
 
     describe('with an error', function () {
       beforeEach(() => {
-        sinon.stub(request, 'post').callsFake((options, callback) => {
+        request.post.callsFake((options, callback) => {
           callback(new Error('lol'), null)
         })
-      })
-
-      afterEach(() => {
-        request.post.restore()
       })
 
       it('should return a rejected promise', (done) => {

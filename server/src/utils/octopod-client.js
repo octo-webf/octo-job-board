@@ -30,7 +30,7 @@ const OctopodClient = {
   fetchProjectsWithStaffingNeeded(accessToken) {
     return new Promise((resolve, reject) => {
       let options = {
-        url: `${config.OCTOPOD_API_URL}/api/oauth/token`,
+        url: `${config.OCTOPOD_API_URL}/projects?staffing_needed=true&page=1&per_page=50`,
         headers: {
           'Authorization': 'Bearer ' + accessToken
         }

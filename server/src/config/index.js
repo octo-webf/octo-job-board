@@ -18,7 +18,7 @@ function config() {
 
   if ('test' === process.env.NODE_ENV) {
     APP_ENV.GOOGLE_CLIENT_ID = 'google-client-id'
-    APP_ENV.OCTOPOD_API_URL = 'http://octopod/api.url'
+    APP_ENV.OCTOPOD_API_URL = 'http://octopod.url/api'
     APP_ENV.OCTOPOD_CLIENT_ID = 'octopod-client-id'
     APP_ENV.OCTOPOD_CLIENT_SECRET = 'octopod-client-secret'
   }
