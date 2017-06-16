@@ -5,14 +5,17 @@ const GoogleAuthWrapper = require('../../../src/utils/google-auth-wrapper')
 const OctopodClient = require('../../../src/utils/octopod-client')
 
 describe('Integration | Routes | jobs route', function () {
+
   beforeEach(() => {
     sinon.stub(GoogleAuthWrapper, 'verifyIdToken').resolves({userId: 'user-id', domain: 'octo.com'})
-    sinon.stub(OctopodClient, 'fetchJobs').resolves(jobs)
+    sinon.stub(OctopodClient, 'getAccessToken').resolves('octopod-access-token')
+    sinon.stub(OctopodClient, 'fetchProjectsWithStaffingNeeded').resolves(jobs)
   })
 
   afterEach(() => {
     GoogleAuthWrapper.verifyIdToken.restore()
-    OctopodClient.fetchJobs.restore()
+    OctopodClient.getAccessToken.restore()
+    OctopodClient.fetchProjectsWithStaffingNeeded.restore()
   })
 
   it('should return 401 response if the user is not well authenticated', () => {
@@ -21,7 +24,7 @@ describe('Integration | Routes | jobs route', function () {
       .expect(401)
   })
 
-  it('should call octopod client to fetch actual job data', (done) => {
+  it('should call Octopod API client to get an (OAuth 2) access token', (done) => {
     request(app)
       .get('/api/jobs')
       .set('Authorization', 'Bearer titi-toto')
@@ -29,7 +32,20 @@ describe('Integration | Routes | jobs route', function () {
         if (err) {
           done(err)
         }
-        expect(OctopodClient.fetchJobs).to.have.been.called
+        expect(OctopodClient.getAccessToken).to.have.been.called
+        done()
+      })
+  })
+
+  it('should call Octopod API client to fetch actual projects with staffing needed', (done) => {
+    request(app)
+      .get('/api/jobs')
+      .set('Authorization', 'Bearer titi-toto')
+      .end((err, res) => {
+        if (err) {
+          done(err)
+        }
+        expect(OctopodClient.fetchProjectsWithStaffingNeeded).to.have.been.called
         done()
       })
   })
