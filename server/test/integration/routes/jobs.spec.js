@@ -5,7 +5,6 @@ const GoogleAuthWrapper = require('../../../src/utils/google-auth-wrapper')
 const OctopodClient = require('../../../src/utils/octopod-client')
 
 describe('Integration | Routes | jobs route', function () {
-
   beforeEach(() => {
     sinon.stub(GoogleAuthWrapper, 'verifyIdToken').resolves({userId: 'user-id', domain: 'octo.com'})
     sinon.stub(OctopodClient, 'getAccessToken').resolves('octopod-access-token')
