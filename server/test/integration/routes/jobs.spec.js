@@ -4,7 +4,6 @@ const jobs = require('../../../src/fixtures/jobs')
 const GoogleAuthWrapper = require('../../../src/utils/google-auth-wrapper')
 
 describe('Integration | Routes | jobs route', function () {
-
   beforeEach(() => {
     sinon.stub(GoogleAuthWrapper, 'verifyIdToken').resolves({userId: 'user-id', domain: 'octo.com'})
   })
