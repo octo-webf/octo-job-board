@@ -66,7 +66,7 @@ describe('Integration | Routes | jobs route', function () {
 
   it('should return the list of all activities to be staffed', (done) => {
     // given
-    const jobs = [{id: 1}, {id: 2}, {id: 3}]
+    const projects = [{id: 1}, {id: 2}, {id: 3}]
     const activities = [
       {title: 'Dév confirmé', project: {id: 1}},
       {title: 'Dév senior / TL', project: {id: 2}},
