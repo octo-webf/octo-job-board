@@ -18,11 +18,12 @@ const OctopodClient = {
         }
       }
 
-      request.post(options, (err, httpResponse) => {
+      request.post(options, (err, response) => {
         if (err) {
           reject(err)
         }
-        resolve(httpResponse)
+        const accessToken = JSON.parse(response.body).access_token
+        resolve(accessToken)
       })
     })
   },
@@ -30,17 +31,18 @@ const OctopodClient = {
   fetchProjectsToBeStaffed(accessToken) {
     return new Promise((resolve, reject) => {
       let options = {
-        url: `${config.OCTOPOD_API_URL}/projects?staffing_needed=true&page=1&per_page=50`,
+        url: `${config.OCTOPOD_API_URL}/v0/projects?staffing_needed=true&page=1&per_page=50`,
         headers: {
           'Authorization': 'Bearer ' + accessToken
         }
       }
 
-      request.get(options, (err, httpResponse) => {
+      request.get(options, (err, response) => {
         if (err) {
           reject(err)
         }
-        resolve(httpResponse)
+        const projects = JSON.parse(response.body)
+        resolve(projects)
       })
     })
   },
@@ -48,27 +50,33 @@ const OctopodClient = {
   _fetchActivityToBeStaffed(accessToken, project) {
     return new Promise((resolve, reject) => {
       const options = {
-        url: `${config.OCTOPOD_API_URL}/projects/${project.id}/activities`,
+        url: `${config.OCTOPOD_API_URL}/v0/projects/${project.id}/activities`,
         headers: {
           'Authorization': `Bearer ${accessToken}`
         }
       }
-      request.get(options, (err, httpResponse) => {
+      request.get(options, (err, response) => {
         if (err) {
           reject(err)
         }
-        resolve(httpResponse)
+        const activities = JSON.parse(response.body)
+        resolve(activities)
       })
     })
   },
 
   fetchActivitiesToBeStaffed(accessToken, projects) {
-    const activities = projects.reduce((promises, project) => {
+    const activitiesByProject = projects.reduce((promises, project) => {
       const activity = this._fetchActivityToBeStaffed(accessToken, project)
       promises.push(activity)
       return promises
     }, [])
-    return Promise.all(activities)
+    return Promise.all(activitiesByProject)
+      .then((projectActivities) => {
+        // https://stackoverflow.com/a/10865042/2120773
+        const concatenatedActivities = [].concat.apply([], projectActivities)
+        return Promise.resolve(concatenatedActivities)
+      })
   }
 
 }

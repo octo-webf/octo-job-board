@@ -23,23 +23,18 @@ describe('Unit | Utils | octopod-client', function () {
       beforeEach(() => {
         request.post.callsFake((options, callback) => {
           const httpResponse = {
-            body: {
+            body: JSON.stringify({
               'access_token': 'fakeAccessToken',
               'token_type': 'bearer',
               'expires_in': 7200,
               'created_at': 1497621634
-            }
+            })
           }
           callback(null, httpResponse)
         })
       })
 
       it('should call Octopod API "POST /oauth/token"', function () {
-        // given
-        request.post.callsFake((options, callback) => {
-          callback()
-        })
-
         // when
         const promise = OctopodClient.getAccessToken()
 
@@ -66,8 +61,8 @@ describe('Unit | Utils | octopod-client', function () {
         const promise = OctopodClient.getAccessToken()
 
         // then
-        return promise.then((res) => {
-          expect(res.body['access_token']).to.equal('fakeAccessToken')
+        return promise.then((accessToken) => {
+          expect(accessToken).to.equal('fakeAccessToken')
         })
       })
     })
@@ -99,7 +94,7 @@ describe('Unit | Utils | octopod-client', function () {
    */
 
   describe('#fetchProjectsToBeStaffed', function () {
-    let jobs = [{
+    let octopodProjects = [{
       'id': 1,
       'name': 'job 1'
     }, {
@@ -107,30 +102,28 @@ describe('Unit | Utils | octopod-client', function () {
       'name': 'job 2'
     }]
 
-    it('should return projects in a a promise', () => {
-      // given
+    beforeEach(() => {
       request.get.callsFake((options, callback) => {
         const httpResponse = {
-          body: jobs
+          body: JSON.stringify(octopodProjects)
         }
         callback(null, httpResponse)
       })
+    })
 
+    it('should return projects in a a promise', () => {
       // when
       const promise = OctopodClient.fetchProjectsToBeStaffed()
 
       // then
       return promise
-        .then((res) => {
-          expect(res.body).to.equal(jobs)
+        .then((projects) => {
+          expect(projects).to.deep.equal(octopodProjects)
         })
     })
 
     it('should call Octopod API "GET /projects"', function () {
       // given
-      request.get.callsFake((options, callback) => {
-        callback()
-      })
       const accessToken = 'access-token'
 
       // when
@@ -139,7 +132,7 @@ describe('Unit | Utils | octopod-client', function () {
       // then
       return promise.then((res) => {
         const expectedOptions = {
-          url: `http://octopod.url/api/projects?staffing_needed=true&page=1&per_page=50`,
+          url: `http://octopod.url/api/v0/projects?staffing_needed=true&page=1&per_page=50`,
           headers: {
             'Authorization': 'Bearer access-token'
           }
@@ -158,12 +151,15 @@ describe('Unit | Utils | octopod-client', function () {
     const accessToken = 'access-token'
     const projects = [{id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}]
 
-    it('should return a promise resolved with activities', function () {
-      // given
+    beforeEach(() => {
       request.get.callsFake((options, callback) => {
-        callback(null, {})
+        callback(null, {
+          body: JSON.stringify({})
+        })
       })
+    })
 
+    it('should return a promise resolved with activities', function () {
       // when
       const promise = OctopodClient.fetchActivitiesToBeStaffed(accessToken, projects)
 
@@ -175,9 +171,6 @@ describe('Unit | Utils | octopod-client', function () {
 
     it('should call Octopod API "GET /projects/{id}/activities" as many times as number of projects', function () {
       // given
-      request.get.callsFake((options, callback) => {
-        callback()
-      })
       const accessToken = 'access-token'
       const projects = [
         {id: 1},
