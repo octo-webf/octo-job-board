@@ -3,6 +3,7 @@ const app = require('../../../app')
 const jobs = require('../../../src/fixtures/jobs')
 const GoogleAuthWrapper = require('../../../src/utils/google-auth-wrapper')
 const OctopodClient = require('../../../src/utils/octopod-client')
+const JobsSerializer = require('../../../src/serializers/jobs')
 
 describe('Integration | Routes | jobs route', function () {
   beforeEach(() => {
@@ -10,6 +11,7 @@ describe('Integration | Routes | jobs route', function () {
     sinon.stub(OctopodClient, 'getAccessToken').resolves('octopod-access-token')
     sinon.stub(OctopodClient, 'fetchProjectsToBeStaffed').resolves(jobs)
     sinon.stub(OctopodClient, 'fetchActivitiesToBeStaffed').resolves([])
+    sinon.stub(JobsSerializer, 'serialize').returns([])
   })
 
   afterEach(() => {
@@ -17,6 +19,7 @@ describe('Integration | Routes | jobs route', function () {
     OctopodClient.getAccessToken.restore()
     OctopodClient.fetchProjectsToBeStaffed.restore()
     OctopodClient.fetchActivitiesToBeStaffed.restore()
+    JobsSerializer.serialize.restore()
   })
 
   it('should return 401 response if the user is not well authenticated', () => {
@@ -64,31 +67,15 @@ describe('Integration | Routes | jobs route', function () {
       })
   })
 
-  it('should return the list of all activities to be staffed', (done) => {
-    // given
-    const projects = [{id: 1}, {id: 2}, {id: 3}]
-    const activities = [
-      {title: 'Dév confirmé', project: {id: 1}},
-      {title: 'Dév senior / TL', project: {id: 2}},
-      {title: 'DM', project: {id: 2}},
-      {title: 'Dév', project: {id: 3}},
-      {title: 'Presales', project: {id: 3}},
-      {title: 'DiMi', project: {id: 3}}
-    ]
-
-    OctopodClient.fetchActivitiesToBeStaffed.resolves(activities)
-
-    // when
-    request(app).get('/api/jobs')
+  it('should call Jobs serializer to format response', (done) => {
+    request(app)
+      .get('/api/jobs')
       .set('Authorization', 'Bearer access-token')
       .end((err, res) => {
-
-        // then
         if (err) {
           done(err)
         }
-        expect(res.body).to.have.lengthOf(6)
-        expect(res.body).to.deep.equal(activities)
+        expect(JobsSerializer.serialize).to.have.been.called
         done()
       })
   })

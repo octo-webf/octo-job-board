@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const auth = require('../middlewares/auth')
 const OctopodClient = require('../utils/octopod-client')
+const JobsSerializer = require('../serializers/jobs')
 
 router.get('/', auth, (req, res, next) => {
 
@@ -20,7 +21,8 @@ router.get('/', auth, (req, res, next) => {
       return activities
     })
     .then(() => {
-      res.send(activities)
+    const jobs = JobsSerializer.serialize(projects, activities)
+      res.send(jobs)
     })
 })
 
