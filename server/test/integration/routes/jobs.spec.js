@@ -2,26 +2,74 @@ const {request, expect, sinon} = require('../../test-helper')
 const app = require('../../../app')
 const jobs = require('../../../src/fixtures/jobs')
 const GoogleAuthWrapper = require('../../../src/utils/google-auth-wrapper')
+const OctopodClient = require('../../../src/utils/octopod-client')
+const JobsSerializer = require('../../../src/serializers/jobs')
 
 describe('Integration | Routes | jobs route', function () {
   beforeEach(() => {
     sinon.stub(GoogleAuthWrapper, 'verifyIdToken').resolves({userId: 'user-id', domain: 'octo.com'})
+    sinon.stub(OctopodClient, 'getAccessToken').resolves('octopod-access-token')
+    sinon.stub(OctopodClient, 'fetchProjectsToBeStaffed').resolves(jobs)
+    sinon.stub(OctopodClient, 'fetchActivitiesToBeStaffed').resolves([])
+    sinon.stub(JobsSerializer, 'serialize').returns([])
   })
 
   afterEach(() => {
     GoogleAuthWrapper.verifyIdToken.restore()
+    OctopodClient.getAccessToken.restore()
+    OctopodClient.fetchProjectsToBeStaffed.restore()
+    OctopodClient.fetchActivitiesToBeStaffed.restore()
+    JobsSerializer.serialize.restore()
   })
 
-  it('should return fixtures jobs', (done) => {
+  it('should call Octopod API client to get an (OAuth 2) access token', (done) => {
     request(app)
       .get('/api/jobs')
-      .set('Authorization', 'Bearer titi-toto')
-      .expect('Content-Type', 'application/json; charset=utf-8')
-      .end((err, res) => {
+      .set('Authorization', 'Bearer access-token')
+      .expect(200, (err) => {
         if (err) {
           done(err)
         }
-        expect(res.body).to.deep.equal(jobs)
+        expect(OctopodClient.getAccessToken).to.have.been.called
+        done()
+      })
+  })
+
+  it('should call Octopod API client to fetch actual projects to be staffed', (done) => {
+    request(app)
+      .get('/api/jobs')
+      .set('Authorization', 'Bearer access-token')
+      .expect(200, (err) => {
+        if (err) {
+          done(err)
+        }
+        expect(OctopodClient.fetchProjectsToBeStaffed).to.have.been.called
+        done()
+      })
+  })
+
+  it('should call Octopod API client to fetch actual activities to be staffed', (done) => {
+    request(app)
+      .get('/api/jobs')
+      .set('Authorization', 'Bearer access-token')
+      .expect(200, (err) => {
+        if (err) {
+          done(err)
+        }
+        expect(OctopodClient.fetchActivitiesToBeStaffed).to.have.been.called
+        done()
+      })
+  })
+
+  it('should call Jobs serializer to format response', (done) => {
+    request(app)
+      .get('/api/jobs')
+      .set('Authorization', 'Bearer access-token')
+      .expect(200, (err) => {
+        if (err) {
+          done(err)
+        }
+        expect(JobsSerializer.serialize).to.have.been.called
         done()
       })
   })
