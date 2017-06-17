@@ -1,11 +1,15 @@
 module.exports = {
-  "extends": "standard",
-  "plugins": [
-    "standard",
-    "promise"
+  'extends': 'standard',
+  'plugins': [
+    'standard',
+    'promise'
   ],
-  "env": {
-    "node": true,
-    "es6": true
+  'rules': {
+    'handle-callback-err': 0,
+    'prefer-promise-reject-errors': 0
+  },
+  'env': {
+    'node': true,
+    'es6': true
   }
-};
+}

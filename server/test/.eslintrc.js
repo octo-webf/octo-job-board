@@ -1,9 +1,9 @@
 module.exports = {
-  "extends": "../.eslintrc.js",
-  "env": {
-    "mocha": true
+  'extends': '../.eslintrc.js',
+  'env': {
+    'mocha': true
   },
-  "rules": {
-    "no-unused-expressions": 0
+  'rules': {
+    'no-unused-expressions': 0
   }
-};
+}
