@@ -27,7 +27,7 @@ const OctopodClient = {
     })
   },
 
-  fetchProjectsWithStaffingNeeded(accessToken) {
+  fetchProjectsToBeStaffed(accessToken) {
     return new Promise((resolve, reject) => {
       let options = {
         url: `${config.OCTOPOD_API_URL}/projects?staffing_needed=true&page=1&per_page=50`,
@@ -43,6 +43,32 @@ const OctopodClient = {
         resolve(httpResponse)
       })
     })
+  },
+
+  _fetchActivityToBeStaffed(accessToken, project) {
+    return new Promise((resolve, reject) => {
+      const options = {
+        url: `${config.OCTOPOD_API_URL}/projects/${project.id}/activities`,
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
+      }
+      request.get(options, (err, httpResponse) => {
+        if (err) {
+          reject(err)
+        }
+        resolve(httpResponse)
+      })
+    })
+  },
+
+  fetchActivitiesToBeStaffed(accessToken, projects) {
+    const activities = projects.reduce((promises, project) => {
+      const activity = this._fetchActivityToBeStaffed(accessToken, project)
+      promises.push(activity)
+      return promises
+    }, [])
+    return Promise.all(activities)
   }
 
 }

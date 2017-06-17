@@ -5,11 +5,23 @@ const OctopodClient = require('../utils/octopod-client')
 
 router.get('/', auth, (req, res, next) => {
 
+  let projects
+  let activities
+
   OctopodClient.getAccessToken()
-    .then(OctopodClient.fetchProjectsWithStaffingNeeded)
-    .then((projects) => {
-    res.send(projects)
-  })
+    .then(OctopodClient.fetchProjectsToBeStaffed)
+    .then((resultProjects) => {
+      projects = resultProjects
+      return projects
+    })
+    .then(OctopodClient.fetchActivitiesToBeStaffed)
+    .then((resultActivities) => {
+      activities = resultActivities
+      return activities
+    })
+    .then(() => {
+      res.send(activities)
+    })
 })
 
 module.exports = router
