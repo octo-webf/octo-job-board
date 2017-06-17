@@ -2,7 +2,6 @@ const {expect} = require('../../test-helper')
 const serializer = require('../../../src/serializers/jobs')
 
 describe('Unit | Serializer | jobs', function () {
-
   it('should return an array of Job objects serialized from Projects and Activities to be staffed', () => {
     // given
     const octopodProjects = [{
@@ -11,10 +10,10 @@ describe('Unit | Serializer | jobs', function () {
       url: 'https://octopod.octo.com/api/v0/projects/1',
       reference: 'F2017-123',
       status: 'proposal_sent',
-      customer: { name: 'Client A'},
+      customer: {name: 'Client A'},
       nature: 'consulting',
-      business_contact: { nickname: 'ABC'},
-      mission_director: { nickname: 'DEF'},
+      business_contact: {nickname: 'ABC'},
+      mission_director: {nickname: 'DEF'},
       start_date: '2017-01-01',
       locations: 'OCTO'
     }, {
@@ -23,10 +22,10 @@ describe('Unit | Serializer | jobs', function () {
       url: 'https://octopod.octo.com/api/v0/projects/2',
       reference: 'F2017-456',
       status: 'proposal_in_progress',
-      customer: { name: 'Client B'},
+      customer: {name: 'Client B'},
       nature: 'training',
-      business_contact: { nickname: 'GHI'},
-      mission_director: { nickname: 'JKL'},
+      business_contact: {nickname: 'GHI'},
+      mission_director: {nickname: 'JKL'},
       start_date: '2017-02-02',
       locations: 'La Défense'
     }, {
@@ -35,10 +34,10 @@ describe('Unit | Serializer | jobs', function () {
       url: 'https://octopod.octo.com/api/v0/projects/3',
       reference: 'F2017-789',
       status: 'mission_accepted',
-      customer: { name: 'Client C'},
+      customer: {name: 'Client C'},
       nature: 'delivery',
-      business_contact: { nickname: 'MNO'},
-      mission_director: { nickname: 'PQR'},
+      business_contact: {nickname: 'MNO'},
+      mission_director: {nickname: 'PQR'},
       start_date: '2017-03-03',
       locations: 'Osny et OCTO'
     }]
@@ -63,10 +62,10 @@ describe('Unit | Serializer | jobs', function () {
         url: 'https://octopod.octo.com/api/v0/projects/1',
         reference: 'F2017-123',
         status: 'proposal_sent',
-        customer: { name: 'Client A'},
+        customer: {name: 'Client A'},
         nature: 'consulting',
-        business_contact: { nickname: 'ABC'},
-        mission_director: { nickname: 'DEF'},
+        business_contact: {nickname: 'ABC'},
+        mission_director: {nickname: 'DEF'},
         start_date: '2017-01-01',
         locations: 'OCTO'
       },
@@ -80,10 +79,10 @@ describe('Unit | Serializer | jobs', function () {
         url: 'https://octopod.octo.com/api/v0/projects/2',
         reference: 'F2017-456',
         status: 'proposal_in_progress',
-        customer: { name: 'Client B'},
+        customer: {name: 'Client B'},
         nature: 'training',
-        business_contact: { nickname: 'GHI'},
-        mission_director: { nickname: 'JKL'},
+        business_contact: {nickname: 'GHI'},
+        mission_director: {nickname: 'JKL'},
         start_date: '2017-02-02',
         locations: 'La Défense'
       },
@@ -97,10 +96,10 @@ describe('Unit | Serializer | jobs', function () {
         url: 'https://octopod.octo.com/api/v0/projects/2',
         reference: 'F2017-456',
         status: 'proposal_in_progress',
-        customer: { name: 'Client B'},
+        customer: {name: 'Client B'},
         nature: 'training',
-        business_contact: { nickname: 'GHI'},
-        mission_director: { nickname: 'JKL'},
+        business_contact: {nickname: 'GHI'},
+        mission_director: {nickname: 'JKL'},
         start_date: '2017-02-02',
         locations: 'La Défense'
       },
@@ -114,10 +113,10 @@ describe('Unit | Serializer | jobs', function () {
         url: 'https://octopod.octo.com/api/v0/projects/3',
         reference: 'F2017-789',
         status: 'mission_accepted',
-        customer: { name: 'Client C'},
+        customer: {name: 'Client C'},
         nature: 'delivery',
-        business_contact: { nickname: 'MNO'},
-        mission_director: { nickname: 'PQR'},
+        business_contact: {nickname: 'MNO'},
+        mission_director: {nickname: 'PQR'},
         start_date: '2017-03-03',
         locations: 'Osny et OCTO'
       },
@@ -131,10 +130,10 @@ describe('Unit | Serializer | jobs', function () {
         url: 'https://octopod.octo.com/api/v0/projects/3',
         reference: 'F2017-789',
         status: 'mission_accepted',
-        customer: { name: 'Client C'},
+        customer: {name: 'Client C'},
         nature: 'delivery',
-        business_contact: { nickname: 'MNO'},
-        mission_director: { nickname: 'PQR'},
+        business_contact: {nickname: 'MNO'},
+        mission_director: {nickname: 'PQR'},
         start_date: '2017-03-03',
         locations: 'Osny et OCTO'
       },
@@ -148,10 +147,10 @@ describe('Unit | Serializer | jobs', function () {
         url: 'https://octopod.octo.com/api/v0/projects/3',
         reference: 'F2017-789',
         status: 'mission_accepted',
-        customer: { name: 'Client C'},
+        customer: {name: 'Client C'},
         nature: 'delivery',
-        business_contact: { nickname: 'MNO'},
-        mission_director: { nickname: 'PQR'},
+        business_contact: {nickname: 'MNO'},
+        mission_director: {nickname: 'PQR'},
         start_date: '2017-03-03',
         locations: 'Osny et OCTO'
       },

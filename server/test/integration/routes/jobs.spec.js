@@ -22,17 +22,11 @@ describe('Integration | Routes | jobs route', function () {
     JobsSerializer.serialize.restore()
   })
 
-  it('should return 401 response if the user is not well authenticated', () => {
-    return request(app)
-      .get('/api/jobs')
-      .expect(401)
-  })
-
   it('should call Octopod API client to get an (OAuth 2) access token', (done) => {
     request(app)
       .get('/api/jobs')
       .set('Authorization', 'Bearer access-token')
-      .end((err, res) => {
+      .expect(200, (err) => {
         if (err) {
           done(err)
         }
@@ -45,7 +39,7 @@ describe('Integration | Routes | jobs route', function () {
     request(app)
       .get('/api/jobs')
       .set('Authorization', 'Bearer access-token')
-      .end((err, res) => {
+      .expect(200, (err) => {
         if (err) {
           done(err)
         }
@@ -58,7 +52,7 @@ describe('Integration | Routes | jobs route', function () {
     request(app)
       .get('/api/jobs')
       .set('Authorization', 'Bearer access-token')
-      .end((err, res) => {
+      .expect(200, (err) => {
         if (err) {
           done(err)
         }
@@ -71,12 +65,18 @@ describe('Integration | Routes | jobs route', function () {
     request(app)
       .get('/api/jobs')
       .set('Authorization', 'Bearer access-token')
-      .end((err, res) => {
+      .expect(200, (err) => {
         if (err) {
           done(err)
         }
         expect(JobsSerializer.serialize).to.have.been.called
         done()
       })
+  })
+
+  it('should return 401 response if the user is not well authenticated', () => {
+    return request(app)
+      .get('/api/jobs')
+      .expect(401)
   })
 })

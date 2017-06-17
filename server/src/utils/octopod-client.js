@@ -5,7 +5,7 @@ const OctopodClient = {
 
   getAccessToken() {
     return new Promise((resolve, reject) => {
-      let options = {
+      const options = {
         url: `${config.OCTOPOD_API_URL}/oauth/token`,
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',

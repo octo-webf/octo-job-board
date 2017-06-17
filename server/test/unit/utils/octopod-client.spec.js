@@ -41,7 +41,7 @@ describe('Unit | Utils | octopod-client', function () {
         // then
         return promise.then((res) => {
           const expectedOptions = {
-            url: `http://octopod.url/api/oauth/token`,
+            url: 'http://octopod.url/api/oauth/token',
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded',
               'Accept': 'application/json'
@@ -70,7 +70,7 @@ describe('Unit | Utils | octopod-client', function () {
     describe('with an error', function () {
       beforeEach(() => {
         request.post.callsFake((options, callback) => {
-          callback(new Error('lol'), null)
+          callback(new Error('Some error message'), null)
         })
       })
 
@@ -81,7 +81,7 @@ describe('Unit | Utils | octopod-client', function () {
         // then
         promise
           .catch((err) => {
-            expect(err.message).to.equal('lol')
+            expect(err.message).to.equal('Some error message')
             done()
           })
       })
@@ -132,7 +132,7 @@ describe('Unit | Utils | octopod-client', function () {
       // then
       return promise.then((res) => {
         const expectedOptions = {
-          url: `http://octopod.url/api/v0/projects?staffing_needed=true&page=1&per_page=50`,
+          url: 'http://octopod.url/api/v0/projects?staffing_needed=true&page=1&per_page=50',
           headers: {
             'Authorization': 'Bearer access-token'
           }
