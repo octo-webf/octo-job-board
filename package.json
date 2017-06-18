@@ -35,5 +35,5 @@
   "homepage": "https://github.com/octo-web-front-end-tribe/octo-job-board#readme",
   "devDependencies": {
     "nodemon": "^1.11.0"
-  },
+  }
 }
