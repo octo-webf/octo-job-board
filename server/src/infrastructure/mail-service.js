@@ -1,4 +1,4 @@
-const mailJet = require('../infrastructure/mailjet')
+const mailJet = require('./mailjet')
 
 function sendWelcomeEmail (interestedJobForm) {
   const options = buildMailOptions(interestedJobForm)

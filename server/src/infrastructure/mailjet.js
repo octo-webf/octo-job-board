@@ -1,5 +1,5 @@
 const _ = require('lodash')
-const mailjetConfig = require('../config/index').mailjet
+const mailjetConfig = require('../config/index').MAILJET
 const nodeMailjet = require('node-mailjet')
 
 function _formatPayload (options) {

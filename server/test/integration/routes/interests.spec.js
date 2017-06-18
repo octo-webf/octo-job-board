@@ -1,7 +1,7 @@
 const {request, expect, sinon} = require('../../test-helper')
 const app = require('../../../app')
-const GoogleAuthWrapper = require('../../../src/utils/google-auth-wrapper')
-const mailService = require('../../../src/utils/mail-service')
+const GoogleAuthWrapper = require('../../../src/infrastructure/google-auth')
+const mailService = require('../../../src/infrastructure/mail-service')
 
 describe('Integration | Routes | interests route', function () {
   let interestedJobForm
@@ -26,13 +26,13 @@ describe('Integration | Routes | interests route', function () {
 
   it('should return created status and succès', (done) => {
     // Given
-    mailService.sendWelcomeEmail.resolves(Promise.resolve(true))
+    mailService.sendWelcomeEmail.resolves()
 
     // When
     request(app)
       .post('/api/interests')
       .send({interestedJobForm: interestedJobForm})
-      .set('Authorization', 'Bearer titi-toto')
+      .set('Authorization', 'Bearer access-token')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(201, (err, res) => {
         if (err) {
@@ -47,13 +47,13 @@ describe('Integration | Routes | interests route', function () {
 
   it('should return error status and error', (done) => {
     // Given
-    mailService.sendWelcomeEmail.resolves(Promise.reject('some error'))
+    mailService.sendWelcomeEmail.rejects()
 
     // When
     request(app)
       .post('/api/interests')
       .send({interestedJobForm: interestedJobForm})
-      .set('Authorization', 'Bearer titi-toto')
+      .set('Authorization', 'Bearer access-token')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(500, (err, res) => {
         if (err) {
@@ -61,8 +61,7 @@ describe('Integration | Routes | interests route', function () {
         }
 
         // Then
-        expect(res.status).to.equal(500)
-        expect(res.body).to.deep.equal({error: 'some error'})
+        expect(res.body).to.deep.equal({error: {}})
         done()
       })
   })

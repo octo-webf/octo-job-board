@@ -1,4 +1,4 @@
-const GoogleAuthWrapper = require('../utils/google-auth-wrapper')
+const GoogleAuthWrapper = require('../infrastructure/google-auth')
 
 function _extractAccessTokenFromAuthorizationHeader (authorizationHeader) {
   let accessToken

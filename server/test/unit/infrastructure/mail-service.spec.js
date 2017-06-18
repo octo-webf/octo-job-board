@@ -1,7 +1,7 @@
 const { describe, it, beforeEach, afterEach, sinon, expect } = require('../../test-helper')
 
 const mailJet = require('../../../src/infrastructure/mailjet')
-const mailService = require('../../../src/utils/mail-service')
+const mailService = require('../../../src/infrastructure/mail-service')
 
 describe('Unit | Service | MailService', () => {
   describe('#sendWelcomeEmail', () => {

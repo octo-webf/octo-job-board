@@ -1,6 +1,6 @@
 const GoogleAuth = require('google-auth-library')
 const { expect, sinon } = require('../../test-helper')
-const GoogleAuthWrapper = require('../../../src/utils/google-auth-wrapper')
+const GoogleAuthWrapper = require('../../../src/infrastructure/google-auth')
 
 describe('Unit | Utils | google-auth-wrapper', function () {
   describe('#verifyIdToken', function () {

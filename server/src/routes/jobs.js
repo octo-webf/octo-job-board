@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const auth = require('../middlewares/auth')
-const OctopodClient = require('../utils/octopod-client')
+const OctopodClient = require('../infrastructure/octopod')
 const JobsSerializer = require('../serializers/jobs')
 
 router.get('/', auth, (req, res, next) => {

@@ -1,6 +1,6 @@
 const {sinon, expect} = require('../../test-helper')
 const auth = require('../../../src/middlewares/auth')
-const GoogleAuthWrapper = require('../../../src/utils/google-auth-wrapper')
+const GoogleAuthWrapper = require('../../../src/infrastructure/google-auth')
 
 describe('Unit | Middlewares | auth', function () {
   let req
