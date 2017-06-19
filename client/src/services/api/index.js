@@ -1,7 +1,5 @@
 import 'whatwg-fetch';
 
-// import auth from '@/services/auth';
-
 /**
 * Checks if a network request came back fine, and throws an error if not
 *

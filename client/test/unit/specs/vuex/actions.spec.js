@@ -44,7 +44,7 @@ const testAction = (action, payload, state, expectedMutations, done) => {
 	let count = 0;
 
 	// mock commit
-	const commit = (type, payload) => { // eslint-disable-line no-shadow
+	const commit = (type, expectedPayload) => {
 
 		const mutation = expectedMutations[count];
 
@@ -52,9 +52,9 @@ const testAction = (action, payload, state, expectedMutations, done) => {
 
 			expect(mutation.type).to.equal(type);
 
-			if (payload) {
+			if (expectedPayload) {
 
-				expect(mutation.payload).to.deep.equal(payload);
+				expect(mutation.payload).to.deep.equal(expectedPayload);
 
 			}
 
@@ -113,7 +113,7 @@ describe('Unit | vuex | actions', () => {
 
 		it('should commit AUTHENTICATE mutation, and AUTHENTICATION_ERROR on error', (done) => {
 
-			const idToken = 'xebiaCredentials';
+			const idToken = 'falsyCredentials';
 
 			testAction(actions.authenticate, { idToken }, {}, [
 

@@ -27,7 +27,7 @@ describe('Unit | vuex | authentication | mutations', () => {
 
 		it('should set the state accordingly', () => {
 
-			// given
+			// when
 			mutation[AUTHENTICATE](state);
 
 			const expected = {
@@ -48,7 +48,7 @@ describe('Unit | vuex | authentication | mutations', () => {
 
 		it('should set the state accordingly', () => {
 
-			// given
+			// when
 			const userId = '1234';
 			const accessToken = 'octo';
 			mutation[AUTHENTICATION_SUCCESS](state, { userId, accessToken });
@@ -71,7 +71,7 @@ describe('Unit | vuex | authentication | mutations', () => {
 
 		it('should set the state accordingly', () => {
 
-			// given
+			// when
 			mutation[AUTHENTICATION_ERROR](state);
 
 			const expected = {
@@ -92,7 +92,7 @@ describe('Unit | vuex | authentication | mutations', () => {
 
 		it('should set the state accordingly', () => {
 
-			// given
+			// when
 			mutation[SIGN_OUT](state);
 
 			const expected = {
