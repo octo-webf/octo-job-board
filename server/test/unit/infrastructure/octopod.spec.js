@@ -1,5 +1,5 @@
 const request = require('request')
-const OctopodClient = require('../../../src/utils/octopod-client')
+const OctopodClient = require('../../../src/infrastructure/octopod')
 const {expect, sinon} = require('../../test-helper')
 
 describe('Unit | Utils | octopod-client', function () {

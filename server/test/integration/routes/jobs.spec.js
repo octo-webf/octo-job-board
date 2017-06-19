@@ -1,8 +1,8 @@
 const {request, expect, sinon} = require('../../test-helper')
 const app = require('../../../app')
-const jobs = require('../../../src/fixtures/jobs')
-const GoogleAuthWrapper = require('../../../src/utils/google-auth-wrapper')
-const OctopodClient = require('../../../src/utils/octopod-client')
+const jobs = require('../fixtures/jobs')
+const GoogleAuthWrapper = require('../../../src/infrastructure/google-auth')
+const OctopodClient = require('../../../src/infrastructure/octopod')
 const JobsSerializer = require('../../../src/serializers/jobs')
 
 describe('Integration | Routes | jobs route', function () {

@@ -7,6 +7,7 @@ const cors = require('cors');
 
 const index = require('./src/routes/index');
 const jobs = require('./src/routes/jobs');
+const interests = require('./src/routes/interests');
 const auth = require('./src/routes/auth');
 
 const app = express();
@@ -28,6 +29,7 @@ if ('test' !== process.env.NODE_ENV) {
 
 app.use('/', index);
 app.use('/api/jobs', jobs);
+app.use('/api/interests', interests);
 app.use('/auth', auth);
 
 app.get('/.well-known/acme-challenge/:content', function(req, res) {

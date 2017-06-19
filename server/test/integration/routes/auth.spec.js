@@ -1,6 +1,6 @@
 const {request, sinon, expect} = require('../../test-helper')
 const app = require('../../../app')
-const GoogleAuthWrapper = require('../../../src/utils/google-auth-wrapper')
+const GoogleAuthWrapper = require('../../../src/infrastructure/google-auth')
 
 describe('Integration | Routes | auth route', function () {
   describe('POST /auth/token', function () {
