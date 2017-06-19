@@ -3,7 +3,7 @@ const router = express.Router()
 const GoogleAuthWrapper = require('../infrastructure/google-auth')
 const AuthorizationCodeValidator = require('../infrastructure/authorization-code-validator')
 
-function _getAccessTokenForGoogleAuth(req, res) {
+function _getAccessTokenForGoogleAuth (req, res) {
   const idToken = req.body.idToken
   if (!idToken) {
     res.status(400).json({error: {}})
@@ -18,7 +18,7 @@ function _getAccessTokenForGoogleAuth(req, res) {
     })
 }
 
-function _getAccessTokenForApplicationAuth(req, res) {
+function _getAccessTokenForApplicationAuth (req, res) {
   const applicationCode = req.body.code
   if (!applicationCode) {
     res.status(400).json({error: 'No authorization code was provided!'})

@@ -21,7 +21,9 @@ function config () {
     OCTOPOD_CLIENT_ID: process.env.OCTOPOD_CLIENT_ID,
     OCTOPOD_CLIENT_SECRET: process.env.OCTOPOD_CLIENT_SECRET,
 
-    AUTHORIZATION_PASSWORD: process.env.AUTHORIZATION_PASSWORD
+    AUTHORIZATION_ALGORITHM: process.env.AUTHORIZATION_ALGORITHM,
+    AUTHORIZATION_PASSWORD: process.env.AUTHORIZATION_PASSWORD,
+    AUTHORIZATION_CODES: process.env.AUTHORIZATION_CODES
   }
 
   if (process.env.NODE_ENV === 'test') {
@@ -33,7 +35,9 @@ function config () {
     APP_ENV.OCTOPOD_API_URL = 'http://octopod.url/api'
     APP_ENV.OCTOPOD_CLIENT_ID = 'octopod-client-id'
     APP_ENV.OCTOPOD_CLIENT_SECRET = 'octopod-client-secret'
+    APP_ENV.AUTHORIZATION_ALGORITHM = 'aes-128-ecb'
     APP_ENV.AUTHORIZATION_PASSWORD = 'authorization-password'
+    APP_ENV.AUTHORIZATION_CODES = 'test/test_authorization_codes'
   }
 
   return APP_ENV

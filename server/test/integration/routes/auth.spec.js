@@ -3,10 +3,8 @@ const app = require('../../../app')
 const GoogleAuthWrapper = require('../../../src/infrastructure/google-auth')
 const AuthorizationCodeValidator = require('../../../src/infrastructure/authorization-code-validator')
 
-
 describe('Integration | Routes | auth route', function () {
   describe('POST /auth/token', function () {
-
     describe('when grant type is implicit default one "client credentials"', function () {
       beforeEach(() => {
         sinon.stub(GoogleAuthWrapper, 'verifyIdToken')
@@ -61,11 +59,9 @@ describe('Integration | Routes | auth route', function () {
           // then
           .expect(401, done)
       })
-
     })
 
     describe('when grant type is "authorization_code"', () => {
-
       beforeEach(() => {
         sinon.stub(AuthorizationCodeValidator, 'verifyApplicationCode')
       })
@@ -73,7 +69,6 @@ describe('Integration | Routes | auth route', function () {
       afterEach(() => {
         AuthorizationCodeValidator.verifyApplicationCode.restore()
       })
-
 
       it('should response with a JWT access_token when (authorization) "code" is valid', (done) => {
         // given
@@ -120,6 +115,5 @@ describe('Integration | Routes | auth route', function () {
           })
       })
     })
-
   })
 })
