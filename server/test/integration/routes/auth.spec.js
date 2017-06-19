@@ -6,7 +6,6 @@ const AuthorizationCodeValidator = require('../../../src/infrastructure/authoriz
 
 describe('Integration | Routes | auth route', function () {
   describe('POST /auth/token', function () {
-
     beforeEach(() => {
       sinon.stub(jwt, 'sign').returns('generated-jwt-access-token')
     })

@@ -34,7 +34,7 @@ function _getAccessTokenForApplicationAuth (req, res) {
     })
 }
 
-function _generateJwtAccessToken(userId) {
+function _generateJwtAccessToken (userId) {
   return jwt.sign({userId}, config.ACCESS_TOKEN_SECRET)
 }
 
