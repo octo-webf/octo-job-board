@@ -4,58 +4,79 @@ const GoogleAuthWrapper = require('../../../src/infrastructure/google-auth')
 
 describe('Integration | Routes | auth route', function () {
   describe('POST /auth/token', function () {
-    beforeEach(() => {
-      sinon.stub(GoogleAuthWrapper, 'verifyIdToken')
-    })
 
-    afterEach(() => {
-      GoogleAuthWrapper.verifyIdToken.restore()
-    })
+    describe('when grant type is implicit default one "client credentials"', function () {
+      beforeEach(() => {
+        sinon.stub(GoogleAuthWrapper, 'verifyIdToken')
+      })
 
-    it('should respond with json', (done) => {
-      // given
-      GoogleAuthWrapper.verifyIdToken.resolves({userId: '1234-abcd', domain: 'octo.com'})
+      afterEach(() => {
+        GoogleAuthWrapper.verifyIdToken.restore()
+      })
 
-      // when
-      request(app)
-        .post('/auth/token')
-        .send({idToken: 'valid-id-token'})
-        .set('Accept', 'application/json')
+      it('should respond with json', (done) => {
+        // given
+        GoogleAuthWrapper.verifyIdToken.resolves({userId: '1234-abcd', domain: 'octo.com'})
 
-        // then
-        .expect('Content-Type', /json/)
-        .expect(200, (err, res) => {
-          if (err) {
-            done(err)
-          }
-          expect(res.body).to.deep.equal({
-            user: {userId: '1234-abcd', domain: 'octo.com'},
-            accessToken: 'valid-id-token'
+        // when
+        request(app)
+          .post('/auth/token')
+          .send({idToken: 'valid-id-token'})
+          .set('Accept', 'application/json')
+
+          // then
+          .expect('Content-Type', /json/)
+          .expect(200, (err, res) => {
+            if (err) {
+              done(err)
+            }
+            expect(res.body).to.deep.equal({
+              user: {userId: '1234-abcd', domain: 'octo.com'},
+              accessToken: 'valid-id-token'
+            })
+            done()
           })
-          done()
-        })
+      })
+
+      it('should return an error when Google ID token is missing', (done) => {
+        // when
+        request(app)
+          .post('/auth/token')
+
+          // then
+          .expect(400, done)
+      })
+
+      it('should return an error when Google ID token validation failed', (done) => {
+        // given
+        GoogleAuthWrapper.verifyIdToken.rejects()
+
+        // when
+        request(app)
+          .post('/auth/token')
+          .send({idToken: 'bad-token '})
+
+          // then
+          .expect(401, done)
+      })
+
     })
 
-    it('should return an error when Google ID token is missing', (done) => {
-      // when
-      request(app)
-        .post('/auth/token')
+    describe('when grant type is "authorization_code"', () => {
 
-        // then
-        .expect(400, done)
+      it('should respond with a 400 error when no "code" was provided', (done) => {
+        // when
+        request(app)
+          .post('/auth/token')
+          .send({grant_type: 'authorization_code'})
+
+          // then
+          .expect(400, (err, response) => {
+            expect(response.body.error).to.equal('No authorization code was provided!')
+            done()
+          })
+      })
     })
 
-    it('should return an error when Google ID token validation failed', (done) => {
-      // given
-      GoogleAuthWrapper.verifyIdToken.rejects()
-
-      // when
-      request(app)
-        .post('/auth/token')
-        .send({idToken: 'bad-token '})
-
-        // then
-        .expect(401, done)
-    })
   })
 })
