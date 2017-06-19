@@ -3,7 +3,7 @@ const app = require('../../../app')
 const GoogleAuthWrapper = require('../../../src/infrastructure/google-auth')
 
 describe('Integration | Routes | auth route', function () {
-  describe('POST /auth/google', function () {
+  describe('POST /auth/token', function () {
     beforeEach(() => {
       sinon.stub(GoogleAuthWrapper, 'verifyIdToken')
     })
@@ -18,7 +18,7 @@ describe('Integration | Routes | auth route', function () {
 
       // when
       request(app)
-        .post('/auth/google')
+        .post('/auth/token')
         .send({idToken: 'valid-id-token'})
         .set('Accept', 'application/json')
 
@@ -39,7 +39,7 @@ describe('Integration | Routes | auth route', function () {
     it('should return an error when Google ID token is missing', (done) => {
       // when
       request(app)
-        .post('/auth/google')
+        .post('/auth/token')
 
         // then
         .expect(400, done)
@@ -51,7 +51,7 @@ describe('Integration | Routes | auth route', function () {
 
       // when
       request(app)
-        .post('/auth/google')
+        .post('/auth/token')
         .send({idToken: 'bad-token '})
 
         // then
