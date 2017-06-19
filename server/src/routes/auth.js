@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const GoogleAuthWrapper = require('../infrastructure/google-auth')
 
-router.post('/token', function (req, res, next) {
+router.post('/google', function (req, res, next) {
   const idToken = req.body.idToken
 
   if (!idToken) {
