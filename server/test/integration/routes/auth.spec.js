@@ -1,6 +1,8 @@
 const {request, sinon, expect} = require('../../test-helper')
 const app = require('../../../app')
 const GoogleAuthWrapper = require('../../../src/infrastructure/google-auth')
+const AuthorizationCodeValidator = require('../../../src/infrastructure/authorization-code-validator')
+
 
 describe('Integration | Routes | auth route', function () {
   describe('POST /auth/token', function () {
@@ -64,6 +66,31 @@ describe('Integration | Routes | auth route', function () {
 
     describe('when grant type is "authorization_code"', () => {
 
+      beforeEach(() => {
+        sinon.stub(AuthorizationCodeValidator, 'verifyApplicationCode')
+      })
+
+      afterEach(() => {
+        AuthorizationCodeValidator.verifyApplicationCode.restore()
+      })
+
+
+      it('should response with a JWT access_token when (authorization) "code" is valid', (done) => {
+        // given
+        AuthorizationCodeValidator.verifyApplicationCode.resolves()
+
+        // when
+        request(app)
+          .post('/auth/token')
+          .send({grant_type: 'authorization_code', code: 'a-valid-application-code'})
+
+          // then
+          .expect(200, (err, response) => {
+            expect(response.body.access_token).to.equal('abcd-1234')
+            done()
+          })
+      })
+
       it('should respond with a 400 error when no "code" was provided', (done) => {
         // when
         request(app)
@@ -73,6 +100,22 @@ describe('Integration | Routes | auth route', function () {
           // then
           .expect(400, (err, response) => {
             expect(response.body.error).to.equal('No authorization code was provided!')
+            done()
+          })
+      })
+
+      it('should respond with a 401 error when provided "code" was not validated', (done) => {
+        // given
+        AuthorizationCodeValidator.verifyApplicationCode.rejects()
+
+        // when
+        request(app)
+          .post('/auth/token')
+          .send({grant_type: 'authorization_code', code: 'invalid-application-id'})
+
+          // then
+          .expect(401, (err, response) => {
+            expect(response.body.error).to.equal('Authorization code is invalid!')
             done()
           })
       })

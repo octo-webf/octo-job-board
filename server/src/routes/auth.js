@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const GoogleAuthWrapper = require('../infrastructure/google-auth')
-
+const AuthorizationCodeValidator = require('../infrastructure/authorization-code-validator')
 
 function _getAccessTokenForGoogleAuth(req, res) {
   const idToken = req.body.idToken
@@ -23,8 +23,13 @@ function _getAccessTokenForApplicationAuth(req, res) {
   if (!applicationCode) {
     res.status(400).json({error: 'No authorization code was provided!'})
   }
-  res.json({access_token: 'toto'})
-
+  AuthorizationCodeValidator.verifyApplicationCode(applicationCode)
+    .then(() => {
+      res.json({access_token: 'abcd-1234'})
+    })
+    .catch((err) => {
+      res.status(401).json({error: 'Authorization code is invalid!'})
+    })
 }
 
 router.post('/token', (req, res) => {
