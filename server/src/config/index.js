@@ -23,7 +23,9 @@ function config () {
 
     AUTHORIZATION_ALGORITHM: process.env.AUTHORIZATION_ALGORITHM,
     AUTHORIZATION_PASSWORD: process.env.AUTHORIZATION_PASSWORD,
-    AUTHORIZATION_CODES: process.env.AUTHORIZATION_CODES
+    AUTHORIZATION_CODES: process.env.AUTHORIZATION_CODES,
+
+    ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET
   }
 
   if (process.env.NODE_ENV === 'test') {
@@ -38,6 +40,7 @@ function config () {
     APP_ENV.AUTHORIZATION_ALGORITHM = 'aes-128-ecb'
     APP_ENV.AUTHORIZATION_PASSWORD = 'authorization-password'
     APP_ENV.AUTHORIZATION_CODES = 'test/test_authorization_codes'
+    APP_ENV.ACCESS_TOKEN_SECRET = 'access-token-password'
   }
 
   return APP_ENV

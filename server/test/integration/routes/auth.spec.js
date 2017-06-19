@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken')
 const {request, sinon, expect} = require('../../test-helper')
 const app = require('../../../app')
 const GoogleAuthWrapper = require('../../../src/infrastructure/google-auth')
@@ -5,6 +6,15 @@ const AuthorizationCodeValidator = require('../../../src/infrastructure/authoriz
 
 describe('Integration | Routes | auth route', function () {
   describe('POST /auth/token', function () {
+
+    beforeEach(() => {
+      sinon.stub(jwt, 'sign').returns('generated-jwt-access-token')
+    })
+
+    afterEach(() => {
+      jwt.sign.restore()
+    })
+
     describe('when grant type is implicit default one "client credentials"', function () {
       beforeEach(() => {
         sinon.stub(GoogleAuthWrapper, 'verifyIdToken')
@@ -31,8 +41,7 @@ describe('Integration | Routes | auth route', function () {
               done(err)
             }
             expect(res.body).to.deep.equal({
-              user: {userId: '1234-abcd', domain: 'octo.com'},
-              accessToken: 'valid-id-token'
+              access_token: 'generated-jwt-access-token'
             })
             done()
           })
@@ -81,7 +90,9 @@ describe('Integration | Routes | auth route', function () {
 
           // then
           .expect(200, (err, response) => {
-            expect(response.body.access_token).to.equal('abcd-1234')
+            expect(response.body).to.deep.equal({
+              access_token: 'generated-jwt-access-token'
+            })
             done()
           })
       })

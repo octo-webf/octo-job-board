@@ -1,7 +1,9 @@
+const jwt = require('jsonwebtoken')
 const express = require('express')
 const router = express.Router()
 const GoogleAuthWrapper = require('../infrastructure/google-auth')
 const AuthorizationCodeValidator = require('../infrastructure/authorization-code-validator')
+const config = require('../config')
 
 function _getAccessTokenForGoogleAuth (req, res) {
   const idToken = req.body.idToken
@@ -11,7 +13,7 @@ function _getAccessTokenForGoogleAuth (req, res) {
 
   GoogleAuthWrapper.verifyIdToken(idToken)
     .then((userId) => {
-      res.json({user: userId, accessToken: idToken})
+      res.json({access_token: _generateJwtAccessToken(userId)})
     })
     .catch((err) => {
       res.status(401).json({error: {}})
@@ -25,11 +27,15 @@ function _getAccessTokenForApplicationAuth (req, res) {
   }
   AuthorizationCodeValidator.verifyApplicationCode(applicationCode)
     .then(() => {
-      res.json({access_token: 'abcd-1234'})
+      res.json({access_token: _generateJwtAccessToken('app')})
     })
     .catch((err) => {
       res.status(401).json({error: 'Authorization code is invalid!'})
     })
+}
+
+function _generateJwtAccessToken(userId) {
+  return jwt.sign({userId}, config.ACCESS_TOKEN_SECRET)
 }
 
 router.post('/token', (req, res) => {
