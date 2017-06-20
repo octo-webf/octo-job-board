@@ -4,7 +4,7 @@ machine:
 
 test:
   post:
-    - (cd serfver && npm run coverage)
+    - (cd server && npm run coverage)
 
 deployment:
   staging:

@@ -2,6 +2,9 @@
 
 [![CircleCI](https://circleci.com/gh/octo-web-front-end-tribe/octo-job-board/tree/dev.svg?style=svg)](https://circleci.com/gh/octo-web-front-end-tribe/octo-job-board/tree/dev)
 
+[![Coverage Status](https://coveralls.io/repos/github/octo-web-front-end-tribe/octo-job-board/badge.svg?branch=tech-add-code-coverage)](https://coveralls.io/github/octo-web-front-end-tribe/octo-job-board?branch=tech-add-code-coverage)
+
+
 ## Getting started
 
 ```bash
