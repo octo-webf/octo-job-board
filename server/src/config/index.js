@@ -8,7 +8,6 @@ require('dotenv').config()
  * @returns {{GOOGLE_CLIENT_ID: (*|string), OCTOPOD_CLIENT_ID: (*|string), OCTOPOD_CLIENT_SECRET: (*|string)}}
  */
 function config () {
-
   const APP_ENV = {
 
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,

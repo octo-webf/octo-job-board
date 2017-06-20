@@ -3,7 +3,7 @@ const config = require('../config/index')
 
 const OctopodClient = {
 
-  getAccessToken() {
+  getAccessToken () {
     return new Promise((resolve, reject) => {
       const options = {
         url: `${config.OCTOPOD_API_URL}/oauth/token`,
@@ -28,7 +28,7 @@ const OctopodClient = {
     })
   },
 
-  fetchProjectsToBeStaffed(accessToken) {
+  fetchProjectsToBeStaffed (accessToken) {
     return new Promise((resolve, reject) => {
       let options = {
         url: `${config.OCTOPOD_API_URL}/v0/projects?staffing_needed=true&page=1&per_page=50`,
@@ -47,7 +47,7 @@ const OctopodClient = {
     })
   },
 
-  _fetchActivityToBeStaffed(accessToken, project) {
+  _fetchActivityToBeStaffed (accessToken, project) {
     return new Promise((resolve, reject) => {
       const options = {
         url: `${config.OCTOPOD_API_URL}/v0/projects/${project.id}/activities`,
@@ -65,7 +65,7 @@ const OctopodClient = {
     })
   },
 
-  fetchActivitiesToBeStaffed(accessToken, projects) {
+  fetchActivitiesToBeStaffed (accessToken, projects) {
     const activitiesByProject = projects.reduce((promises, project) => {
       const activity = this._fetchActivityToBeStaffed(accessToken, project)
       promises.push(activity)
