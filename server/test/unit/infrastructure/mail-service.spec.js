@@ -35,7 +35,7 @@ describe('Unit | Service | MailService', () => {
           to: 'jobboard@octo.com',
           fromName: 'Le Job Board - Ne pas répondre',
           subject: "[JobBoard] PTR intéressé·e par Oodrive - Liste d'initié - Développeur Front",
-          template: "\n    <h3><a href=\"mailto:ptr@octo.com\">PTR</a> est intéressé·e par la mission <strong>Oodrive - Liste d'initié</strong> en tant que <strong>Développeur Front</strong>.</h3>\n    <p>Voir le <a href=\"https://octopod.octo.com/timesheet/PTR\">CRA de PTR</a></p>\n    <p>Voir la <a href=\"https://octopod.octo.com/projects/2146904867\">page mission</a></p>\n    <p>Contacter <a href=\"mailto:ptr@octo.com\">PTR</a></p>\n    <p>Contacter le Contact commercial : <a href=\"mailto:xyz@octo.com\">XYZ</a></p>\n    <p>Contacter le Directeur de mission : <a href=\"mailto:zyx@octo.com\">ZYX</a></p>\n    "
+          template: "\n    <h3><a href=\"mailto:ptr@octo.com\">PTR</a> est intéressé·e par la mission <strong>Oodrive - Liste d'initié</strong> en tant que <strong>Développeur Front</strong>.</h3>\n    <p>Voir le <a href=\"https://octopod.octo.com/timesheet/PTR\">CRA de PTR</a></p>\n    <p>Voir la <a href=\"https://octopod.octo.com/projects/2146904867\">page mission</a></p>\n    <p>Contacter <a href=\"https://askbob.octo.com/users/ptr\">PTR</a></p>\n    <p>Contacter le Contact commercial : <a href=\"https://askbob.octo.com/users/xyz\">XYZ</a></p>\n    <p>Contacter le Directeur de mission : <a href=\"https://askbob.octo.com/users/zyx\">ZYX</a></p>\n    "
         })
       })
     })
