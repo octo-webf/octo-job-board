@@ -7,7 +7,8 @@
     "clean": "rm -rf node_modules",
     "test": "NODE_ENV=test ./node_modules/mocha/bin/mocha --recursive",
     "test:watch": "NODE_ENV=test ./node_modules/mocha/bin/mocha --recursive --watch",
-    "lint": "./node_modules/.bin/eslint --fix --ext .js src test"
+    "lint": "./node_modules/.bin/eslint --fix --ext .js src test",
+    "coverage": "NODE_ENV=test nyc mocha --recursive"
   },
   "dependencies": {
     "body-parser": "~1.17.1",
@@ -33,6 +34,7 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
     "mocha": "^3.4.2",
+    "nyc": "^11.0.2",
     "sinon": "^2.3.4",
     "sinon-chai": "^2.11.0",
     "supertest": "^3.0.0"

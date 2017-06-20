@@ -14,7 +14,7 @@
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit",
     "watch": "npm run lint --fix && cross-env BABEL_ENV=test karma start test/unit/karma.conf.js",
-    "lint": "eslint --fix --ext .js,.vue src test/unit/specs test/e2e/specs"
+    "lint": "eslint --fix --ext .js,.vue src test/unit"
   },
   "dependencies": {
     "autoprefixer": "^6.7.2",
