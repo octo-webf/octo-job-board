@@ -5,7 +5,6 @@ const OctopodClient = require('../infrastructure/octopod')
 const JobsSerializer = require('../serializers/jobs')
 
 router.get('/', auth, (req, res, next) => {
-
   let accessToken
   let projects
   let activities

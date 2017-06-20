@@ -1,6 +1,6 @@
 const JobsSerializer = {
 
-  serialize(projects, activities) {
+  serialize (projects, activities) {
     const jobs = []
 
     activities.reduce((jobs, octopodActivity) => {
