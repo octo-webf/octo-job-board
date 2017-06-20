@@ -1,4 +1,3 @@
-const _ = require('lodash')
 const mailjetConfig = require('../config/index').MAILJET
 const nodeMailjet = require('node-mailjet')
 
