@@ -2,6 +2,10 @@ machine:
   node:
    version: 7
 
+test:
+  post:
+    - (cd serfver && npm run coverage)
+
 deployment:
   staging:
     branch: dev
