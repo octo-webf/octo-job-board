@@ -32,9 +32,10 @@ module.exports = {
     }],
     'no-tabs': 0,
     'padded-blocks': [2, 'always'],
-    'no-console': 0,
+		'no-console': 0,
     'max-len': [2, 200],
     'indent': [2, 'tab'],
+		'no-param-reassign': 0,
     // allow optionalDependencies
     'import/no-extraneous-dependencies': ['error', {
       'optionalDependencies': ['test/unit/index.js']
