@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken')
 const {request, expect, sinon} = require('../../test-helper')
 const app = require('../../../app')
 const GoogleAuthWrapper = require('../../../src/infrastructure/google-auth')
@@ -16,11 +17,11 @@ describe('Integration | Routes | interests route', function () {
       missionName: 'Oodrive - Liste d\'initié'
     }
     sinon.stub(mailService, 'sendWelcomeEmail')
-    sinon.stub(GoogleAuthWrapper, 'verifyIdToken').resolves({userId: 'user-id', domain: 'octo.com'})
+    sinon.stub(jwt, 'verify').returns({userId: 'user-id'})
   })
 
   afterEach(() => {
-    GoogleAuthWrapper.verifyIdToken.restore()
+    jwt.verify.restore()
     mailService.sendWelcomeEmail.restore()
   })
 
