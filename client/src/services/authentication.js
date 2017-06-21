@@ -3,26 +3,39 @@ import authApi from '@/api/auth';
 
 export const LOCALSTORAGE_KEY = 'access_token';
 
+function _saveAccessTokenIntoLocalStorage(accessToken) {
+
+	return (canUseDOM) ? window.localStorage.setItem(LOCALSTORAGE_KEY, accessToken) : false;
+
+}
+
+function _removeAccessTokenFromLocalStorage() {
+
+	return (canUseDOM) ? window.localStorage.removeItem(LOCALSTORAGE_KEY) : null;
+
+}
+
 export default {
+
+	accessTokenKey: LOCALSTORAGE_KEY,
 
 	authenticate(googleIdToken) {
 
 		return new Promise((resolve, reject) => {
 
-			authApi.getAccessToken(googleIdToken)
-        .then((response) => {
+			authApi.verifyIdTokenAndGetAccessToken(googleIdToken).then((response) => {
 
-	const { accessToken } = response;
-	this.setToken(accessToken);
-	resolve();
+				const accessToken = response.access_token;
+				_saveAccessTokenIntoLocalStorage(accessToken);
 
-})
-        .catch((err) => {
+				resolve();
 
-	this.removeToken();
-	reject(err);
+			}).catch((err) => {
 
-});
+				_removeAccessTokenFromLocalStorage();
+				reject(err);
+
+			});
 
 		});
 
@@ -34,15 +47,4 @@ export default {
 
 	},
 
-	setToken(accessToken) {
-
-		return (canUseDOM) ? window.localStorage.setItem(LOCALSTORAGE_KEY, accessToken) : false;
-
-	},
-
-	removeToken() {
-
-		return (canUseDOM) ? window.localStorage.removeItem(LOCALSTORAGE_KEY) : null;
-
-	},
 };
