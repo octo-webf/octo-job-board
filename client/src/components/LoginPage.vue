@@ -31,11 +31,12 @@
 
   			const idToken = googleUser.getAuthResponse().id_token;
 
-  			const response = authentication.authenticate().then((access_token) => {
+  			authentication.authenticate(idToken)
+          .then(() => {
 
-  			  // 1. store access_token into local storage
-          // 2. redirect to index page
-        });
+  	this.$router.push('/');
+  
+});
 
   		},
 
