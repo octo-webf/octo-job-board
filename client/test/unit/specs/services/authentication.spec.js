@@ -1,4 +1,5 @@
 import authentication, { LOCALSTORAGE_KEY } from '@/services/authentication';
+import { authenticationRequest } from '@/api/auth';
 
 describe('Unit | Services | Auth', () => {
 
@@ -71,13 +72,18 @@ describe('Unit | Services | Auth', () => {
 
 		});
 
-		it('should return a resolved promise', (done) => {
+		it.only('should return a resolved promise', () => {
+
+			// given
+      sinon.stub(auth, 'authenticationRequest').resolves();
 
       // when
-			const promise = authentication.authenticate();
+			const promise = authentication.authenticationRequest();
 
       // then
-			promise.then(done);
+			promise.then(
+			expect(auth.authenticationRequest).to.have.been.called,
+			);
 
 		});
 

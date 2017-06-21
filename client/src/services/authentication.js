@@ -7,7 +7,11 @@ export default {
 
 	authenticate(googleIdToken) {
 
+		console.log('ici');
+
 		return new Promise((resolve, reject) => {
+
+			console.log('la');
 
 			authenticationRequest(googleIdToken)
         .then((response) => {
