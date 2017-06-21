@@ -1,5 +1,5 @@
 import canUseDOM from 'can-use-dom';
-import { authenticationRequest } from '@/api/auth';
+import authApi from '@/api/auth';
 
 export const LOCALSTORAGE_KEY = 'access_token';
 
@@ -7,19 +7,13 @@ export default {
 
 	authenticate(googleIdToken) {
 
-		console.log('ici');
-
 		return new Promise((resolve, reject) => {
 
-			console.log('la');
-
-			authenticationRequest(googleIdToken)
+			authApi.getAccessToken(googleIdToken)
         .then((response) => {
 
 	const { accessToken } = response;
-
 	this.setToken(accessToken);
-
 	resolve();
 
 })

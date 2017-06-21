@@ -8,7 +8,7 @@ import 'whatwg-fetch';
  * @return {object|undefined} Returns either the response, or throws an error
  */
 
-export const checkStatus = (response) => {
+function _checkStatus(response) {
 
 	if (response.status >= 200 && response.status < 300) {
 
@@ -20,7 +20,7 @@ export const checkStatus = (response) => {
 	error.response = response;
 	throw error;
 
-};
+}
 
 /**
  * Parses the JSON returned by a network request
@@ -30,27 +30,37 @@ export const checkStatus = (response) => {
  * @return {object}          The parsed JSON from the request
  */
 
-const parseJSON = response => response.json();
+function _parseJSON(response) {
 
-const headers = {
-	'Content-Type': 'application/json',
-  // Authorization: auth.getToken() ? `Bearer ${auth.getToken()}` : '',
+	return response.json();
+
+}
+
+const AuthApi = {
+
+  /**
+   * Requests a Authorization endpoint
+   *
+   * @param  {string} idToken idToken to validate
+   *
+   * @return {Promise} The response data
+   */
+	getAccessToken(idToken) {
+
+		const requestHeaders = {
+			'Content-Type': 'application/json',
+		};
+		const options = {
+			method: 'POST',
+			headers: requestHeaders,
+			body: JSON.stringify({ idToken }),
+		};
+
+		return fetch(process.env.AUTH_URL, options)
+      .then(_checkStatus)
+      .then(_parseJSON);
+
+	},
 };
 
-/**
- * Requests a Authorization endpoint
- *
- * @param  {string} idToken		idToken to validate
- *
- * @return {Promise}						The response data
- */
-
-export const authenticationRequest = idToken => fetch(process.env.AUTH_URL,
-	{
-		method: 'POST',
-		headers,
-		body: JSON.stringify({ idToken }),
-	},
-)
-  .then(checkStatus)
-  .then(parseJSON);
+export default AuthApi;

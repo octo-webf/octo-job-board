@@ -30,6 +30,7 @@ module.exports = {
       'js': 'never',
       'vue': 'never'
     }],
+    'no-underscore-dangle': 0,
     'no-tabs': 0,
     'padded-blocks': [2, 'always'],
     'no-console': 0,

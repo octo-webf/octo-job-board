@@ -1,5 +1,5 @@
 import authentication, { LOCALSTORAGE_KEY } from '@/services/authentication';
-import { authenticationRequest } from '@/api/auth';
+import authApi from '@/api/auth';
 
 describe('Unit | Services | Auth', () => {
 
@@ -66,24 +66,37 @@ describe('Unit | Services | Auth', () => {
 
 	describe('#authenticate', () => {
 
+		beforeEach(() => {
+
+			sinon.stub(authApi, 'getAccessToken');
+
+		});
+
+		afterEach(() => {
+
+			authApi.getAccessToken.restore();
+
+		});
+
 		it('should exist', () => {
 
 			expect(authentication.authenticate).to.exist;
 
 		});
 
-		it.only('should return a resolved promise', () => {
+		it('should return a resolved promise', () => {
 
-			// given
-      sinon.stub(auth, 'authenticationRequest').resolves();
+      // given
+			const googleIdToken = 'google-id_token';
+			authApi.getAccessToken.resolves();
 
       // when
-			const promise = authentication.authenticationRequest();
+			const promise = authentication.authenticate(googleIdToken);
 
       // then
 			promise.then(
-			expect(auth.authenticationRequest).to.have.been.called,
-			);
+        expect(authApi.getAccessToken).to.have.been.called,
+      );
 
 		});
 
