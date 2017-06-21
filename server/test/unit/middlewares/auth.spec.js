@@ -78,7 +78,7 @@ describe('Unit | Middlewares | auth', function () {
       jwt.verify.restore()
     })
 
-    function _assert401Error(message) {
+    function _assert401Error (message) {
       const expectedResponseBody = {
         error: {
           msg: message

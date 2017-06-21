@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken')
 const {request, expect, sinon} = require('../../test-helper')
 const app = require('../../../app')
 const jobs = require('../fixtures/jobs')
-const GoogleAuthWrapper = require('../../../src/infrastructure/google-auth')
 const OctopodClient = require('../../../src/infrastructure/octopod')
 const JobsSerializer = require('../../../src/serializers/jobs')
 

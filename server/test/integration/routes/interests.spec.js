@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken')
 const {request, expect, sinon} = require('../../test-helper')
 const app = require('../../../app')
-const GoogleAuthWrapper = require('../../../src/infrastructure/google-auth')
 const mailService = require('../../../src/infrastructure/mail-service')
 
 describe('Integration | Routes | interests route', function () {
