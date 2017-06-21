@@ -1,6 +1,6 @@
 const {sinon, expect} = require('../../test-helper')
 const auth = require('../../../src/middlewares/auth')
-const GoogleAuthWrapper = require('../../../src/infrastructure/google-auth')
+const jwt = require('jsonwebtoken')
 
 describe('Unit | Middlewares | auth', function () {
   let req
@@ -43,18 +43,18 @@ describe('Unit | Middlewares | auth', function () {
           authorization: 'Bearer some_acess_token'
         }
       }
-      sinon.stub(GoogleAuthWrapper, 'verifyIdToken').resolves({userId: 'user-id', domain: 'octo.com'})
+      sinon.stub(jwt, 'verify').returns({userId: 'user-id'})
     })
 
     afterEach(() => {
-      GoogleAuthWrapper.verifyIdToken.restore()
+      jwt.verify.restore()
     })
 
     it('should set user into the request', (done) => {
       // when
       auth(req, res, () => {
         // then
-        expect(req.user).to.deep.equal({userId: 'user-id', domain: 'octo.com'})
+        expect(req.userId).to.equal('user-id')
         done()
       })
     })
@@ -63,7 +63,7 @@ describe('Unit | Middlewares | auth', function () {
       // when
       auth(req, res, () => {
         // then
-        expect(GoogleAuthWrapper.verifyIdToken).to.have.been.calledWith('some_acess_token')
+        expect(jwt.verify).to.have.been.calledWith('some_acess_token')
         done()
       })
     })
@@ -71,14 +71,14 @@ describe('Unit | Middlewares | auth', function () {
 
   describe('Error management', function () {
     beforeEach(() => {
-      sinon.stub(GoogleAuthWrapper, 'verifyIdToken').rejects()
+      sinon.stub(jwt, 'verify').throws('Invalid token')
     })
 
     afterEach(() => {
-      GoogleAuthWrapper.verifyIdToken.restore()
+      jwt.verify.restore()
     })
 
-    function _assert401Error (message) {
+    function _assert401Error(message) {
       const expectedResponseBody = {
         error: {
           msg: message
@@ -96,7 +96,7 @@ describe('Unit | Middlewares | auth', function () {
       auth(req, res, next)
 
       // then
-      _assert401Error('No token!')
+      _assert401Error('No token was provided!')
     })
 
     it('should return an error with a status code 401 when there is no "Authorization" header in the request', function () {
@@ -107,7 +107,7 @@ describe('Unit | Middlewares | auth', function () {
       auth(req, res, next)
 
       // then
-      _assert401Error('No token!')
+      _assert401Error('No token was provided!')
     })
 
     it('should return an error with a status code 401 when the ID token verification failed', function () {

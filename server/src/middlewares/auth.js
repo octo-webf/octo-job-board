@@ -1,4 +1,5 @@
-const GoogleAuthWrapper = require('../infrastructure/google-auth')
+const jwt = require('jsonwebtoken')
+const config = require('../config')
 
 function _extractAccessTokenFromAuthorizationHeader (authorizationHeader) {
   let accessToken
@@ -13,21 +14,22 @@ module.exports = function (req, res, next) {
   if (req.headers && req.headers.authorization) {
     const accessToken = _extractAccessTokenFromAuthorizationHeader(req.headers.authorization)
 
-    GoogleAuthWrapper.verifyIdToken(accessToken).then(user => {
-      req.user = user
+    try {
+      const decoded = jwt.verify(accessToken, config.ACCESS_TOKEN_SECRET)
+      req.userId = decoded.userId
       next()
-    }).catch(err => {
+    } catch (err) {
       res.status(401).json({
         error: {
           msg: 'Failed to authenticate token!'
         }
       })
       next(err)
-    })
+    }
   } else {
     res.status(401).json({
       error: {
-        msg: 'No token!'
+        msg: 'No token was provided!'
       }
     })
   }

@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken')
 const {request, expect, sinon} = require('../../test-helper')
 const app = require('../../../app')
 const jobs = require('../fixtures/jobs')
@@ -7,7 +8,7 @@ const JobsSerializer = require('../../../src/serializers/jobs')
 
 describe('Integration | Routes | jobs route', function () {
   beforeEach(() => {
-    sinon.stub(GoogleAuthWrapper, 'verifyIdToken').resolves({userId: 'user-id', domain: 'octo.com'})
+    sinon.stub(jwt, 'verify').returns({userId: 'user-id'})
     sinon.stub(OctopodClient, 'getAccessToken').resolves('octopod-access-token')
     sinon.stub(OctopodClient, 'fetchProjectsToBeStaffed').resolves(jobs)
     sinon.stub(OctopodClient, 'fetchActivitiesToBeStaffed').resolves([])
@@ -15,7 +16,7 @@ describe('Integration | Routes | jobs route', function () {
   })
 
   afterEach(() => {
-    GoogleAuthWrapper.verifyIdToken.restore()
+    jwt.verify.restore()
     OctopodClient.getAccessToken.restore()
     OctopodClient.fetchProjectsToBeStaffed.restore()
     OctopodClient.fetchActivitiesToBeStaffed.restore()
