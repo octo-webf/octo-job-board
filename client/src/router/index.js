@@ -13,7 +13,7 @@ export default new Router({
 			component: JobList,
 		},
 		{
-			path: '/test-login-page',
+			path: '/login',
 			name: 'LoginPage',
 			component: LoginPage,
 		},
