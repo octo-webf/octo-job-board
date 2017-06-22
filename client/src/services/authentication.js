@@ -23,6 +23,8 @@ export default {
 
 		return new Promise((resolve, reject) => {
 
+			_removeAccessTokenFromLocalStorage();
+
 			authApi.verifyIdTokenAndGetAccessToken(googleIdToken).then((response) => {
 
 				const accessToken = response.access_token;
@@ -32,7 +34,6 @@ export default {
 
 			}).catch((err) => {
 
-				_removeAccessTokenFromLocalStorage();
 				reject(err);
 
 			});
