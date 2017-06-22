@@ -15,13 +15,12 @@
   import authentication from '@/services/authentication';
 
   export default {
+
   	name: 'login-page',
 
   	mounted() {
 
-  		this.onSignIn = this.onSignIn.bind(this);
-
-  		window.onSignIn = this.onSignIn;
+  		window.onSignIn = this.onSignIn.bind(this);
 
   	},
 
@@ -31,12 +30,11 @@
 
   			const idToken = googleUser.getAuthResponse().id_token;
 
-  			authentication.authenticate(idToken)
-          .then(() => {
+  			authentication.authenticate(idToken).then(() => {
 
-  	this.$router.push('/');
-  
-});
+  				this.$router.push('/jobs');
+
+  			});
 
   		},
 
