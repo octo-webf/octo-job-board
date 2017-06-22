@@ -1,25 +1,25 @@
-import 'whatwg-fetch'
+import 'whatwg-fetch';
 
 function _parseJSON(response) {
 
-  return response.json()
+	return response.json();
 
 }
 
 const JobsApi = {
 
-  fetchAll(accessToken) {
+	fetchAll(accessToken) {
 
-    const requestHeaders = {
-      'Authorization': `Bearer ${accessToken}`
-    }
-    const options = {
-      headers: requestHeaders,
-    }
+		const requestHeaders = {
+			Authorization: `Bearer ${accessToken}`,
+		};
+		const options = {
+			headers: requestHeaders,
+		};
 
-    return fetch(`${process.env.API_URL}/jobs`, options).then(_parseJSON)
+		return fetch(`${process.env.API_URL}/jobs`, options).then(response => _parseJSON(response));
 
-  },
-}
+	},
+};
 
-export default JobsApi
+export default JobsApi;

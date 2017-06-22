@@ -21,7 +21,7 @@ export default {
 
 	authenticate(googleIdToken) {
 
-		return new Promise((resolve, reject) => {
+		return new Promise((resolve) => {
 
 			_removeAccessTokenFromLocalStorage();
 
@@ -31,10 +31,6 @@ export default {
 				_saveAccessTokenIntoLocalStorage(accessToken);
 
 				resolve();
-
-			}).catch((err) => {
-
-				reject(err);
 
 			});
 
