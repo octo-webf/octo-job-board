@@ -1,5 +1,11 @@
 <template>
-  <div>
+  <div class="page page__jobs">
+    <header class="page__header">
+      <div class="page__container page__header--container">
+        <a class="logo-link" href="/"><span class="logo-link__job">Job</span><span class="logo-link__board">Board</span> </a>
+        <!--<a class="logout-link" href="/logout">Se déconnecter</a>-->
+      </div>
+    </header>
     <main class="page__body">
       <div class="page__container">
 
@@ -87,7 +93,6 @@
   };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .page__container {
     min-width: 1080px;
