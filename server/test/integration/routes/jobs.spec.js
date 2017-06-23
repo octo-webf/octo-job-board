@@ -7,6 +7,7 @@ const JobsSerializer = require('../../../src/serializers/jobs')
 const cache = require('../../../src/infrastructure/cache')
 
 describe('Integration | Routes | jobs route', function () {
+
   let sandbox
 
   beforeEach(() => {
