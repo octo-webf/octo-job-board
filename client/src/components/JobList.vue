@@ -1,11 +1,5 @@
 <template>
-  <div class="page page__jobs">
-    <header class="page__header">
-      <div class="page__container page__header--container">
-        <a class="logo-link" href="/"><span class="logo-link__job">Job</span><span class="logo-link__board">Board</span> </a>
-        <!--<a class="logout-link" href="/logout">Se déconnecter</a>-->
-      </div>
-    </header>
+  <div>
     <main class="page__body">
       <div class="page__container">
 
@@ -25,11 +19,11 @@
                     <p class="job__client-wrapper">pour <span class="job__client">{{ job.project.customer.name }}</span>
                     </p>
                     <p>dès <span class="job__start-date">{{ job.project.start_date }}</span> sur <span
-                        class="job__duration">{{ job.project.duration }}</span></p>
+                      class="job__duration">{{ job.project.duration }}</span></p>
                     <p>à <span class="job__location">{{ job.project.location }}</span></p>
                   </a>
                   <footer class="job__footer">
-                    <button class="job__apply-button" v-on:click="trackEvent()">Je suis intéressé</button>
+                    <button class="job__apply-button">Je suis intéressé</button>
                     <a class="job__alert-link" href="mailto:jobboard@octo.com">Signaler un problème</a>
                   </footer>
                 </article>
@@ -49,6 +43,7 @@
 
   export default {
   	name: 'job-list',
+
   	data() {
 
   		return {
@@ -57,42 +52,34 @@
 
   	},
 
-  	created() {
+  	mounted() {
 
-  		if (authenticationService.isAuthenticated()) {
-
-  			this.getJobs();
-
-  		}
+  		this.getJobs();
 
   	},
+
   	methods: {
+
   		getJobs() {
 
-  			const accessToken = window.localStorage.access_token;
+  			if (authenticationService.isAuthenticated()) {
 
-  			jobsApi.fetchAll(accessToken).then((jobs) => {
+  				const accessToken = window.localStorage.access_token;
 
-  				this.jobs = jobs;
+  				jobsApi.fetchAll(accessToken).then((jobs) => {
 
-  			});
+  					this.jobs = jobs;
 
-  		},
-
-  		trackEvent() {
-
-  			this.$ga.event({
-  				eventCategory: 'Job List',
-  				eventAction: 'click',
-  				eventLabel: 'I am interested',
-  				eventValue: null,
-  			});
+  				});
+  
+			}
 
   		},
   	},
   };
 </script>
 
+<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .page__container {
     min-width: 1080px;

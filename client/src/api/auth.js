@@ -1,18 +1,22 @@
-import Vue from 'vue';
+import axios from 'axios'
 
 const AuthApi = {
 
-	verifyIdTokenAndGetAccessToken(idToken) {
+  verifyIdTokenAndGetAccessToken(idToken) {
 
-		const url = `${process.env.API_URL}/auth/token`;
-		const body = { idToken };
-		const options = { headers: { 'Content-Type': 'application/json' } };
+    const url = `${process.env.API_URL}/auth/token`
+    const body = {idToken}
+    const options = {headers: {'Content-Type': 'application/json'}}
 
-		return Vue.http.post(url, body, options)
-      .then(response => Promise.resolve(response.data))
-      .catch(error => Promise.reject(error));
+    return axios.post(url, body, options)
+      .then((response) => {
 
-	},
-};
+        return Promise.resolve(response.data)
 
-export default AuthApi;
+      })
+      .catch(error => Promise.reject(error))
+
+  },
+}
+
+export default AuthApi

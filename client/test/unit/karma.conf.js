@@ -4,7 +4,7 @@ module.exports = (config) => {
 
 	config.set({
 		browsers: ['PhantomJS'],
-		frameworks: ['mocha', 'sinon-chai', 'phantomjs-shim'],
+		frameworks: ['mocha', 'promise', 'sinon-chai', 'phantomjs-shim'],
 		reporters: ['spec', 'coverage'],
 		files: ['./index.js'],
 		preprocessors: {

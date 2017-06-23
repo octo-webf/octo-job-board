@@ -1,8 +1,5 @@
-import Vue from 'vue';
-import VueResource from 'vue-resource';
+import axios from 'axios';
 import api from '@/api/auth';
-
-Vue.use(VueResource);
 
 describe('Unit | API | auth api', () => {
 
@@ -12,19 +9,17 @@ describe('Unit | API | auth api', () => {
 
 			const stubbedResponse = {
 				status: 200,
-				json() {
-
-					return { access_token: 'some-access_token' };
-
+				data: {
+					foo: 'bar',
 				},
 			};
-			sinon.stub(Vue.http, 'post').resolves(stubbedResponse);
+			sinon.stub(axios, 'post').resolves(stubbedResponse);
 
 		});
 
 		afterEach(() => {
 
-			Vue.http.post.restore();
+			axios.post.restore();
 
 		});
 
@@ -43,7 +38,7 @@ describe('Unit | API | auth api', () => {
       // then
 			return promise.then(() => {
 
-				expect(Vue.http.post).to.have.been.calledWith(expectedUrl, expectedBody, expectedOptions);
+				expect(axios.post).to.have.been.calledWith(expectedUrl, expectedBody, expectedOptions);
 
 			});
 

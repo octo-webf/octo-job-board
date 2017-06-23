@@ -40,7 +40,7 @@ export default {
 
 	isAuthenticated() {
 
-		return !!window.localStorage.getItem(LOCALSTORAGE_KEY);
+		return !!window.localStorage[LOCALSTORAGE_KEY];
 
 	},
 
