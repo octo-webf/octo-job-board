@@ -19,11 +19,11 @@
                     <p class="job__client-wrapper">pour <span class="job__client">{{ job.project.customer.name }}</span>
                     </p>
                     <p>dès <span class="job__start-date">{{ job.project.start_date }}</span> sur <span
-                      class="job__duration">{{ job.project.duration }}</span></p>
+                        class="job__duration">{{ job.project.duration }}</span></p>
                     <p>à <span class="job__location">{{ job.project.location }}</span></p>
                   </a>
                   <footer class="job__footer">
-                    <button class="job__apply-button">Je suis intéressé</button>
+                    <button class="job__apply-button" v-on:click="trackEvent()">Je suis intéressé</button>
                     <a class="job__alert-link" href="mailto:jobboard@octo.com">Signaler un problème</a>
                   </footer>
                 </article>
@@ -57,13 +57,13 @@
 
   			this.getJobs();
 
-		}
+  		}
 
   	},
   	methods: {
   		getJobs() {
 
-  			const accessToken = window.localStorage['access_token'];
+  			const accessToken = window.localStorage.access_token;
 
   			jobsApi.fetchAll(accessToken).then((jobs) => {
 
@@ -71,7 +71,18 @@
 
   			});
 
-		},
+  		},
+
+  		trackEvent() {
+
+  			this.$ga.event({
+  				eventCategory: 'Job List',
+  				eventAction: 'click',
+  				eventLabel: 'I am interested',
+  				eventValue: null,
+  			});
+
+  		},
   	},
   };
 </script>
