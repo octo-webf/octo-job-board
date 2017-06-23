@@ -1,42 +1,18 @@
-import 'whatwg-fetch';
-
-function _checkStatus(response) {
-
-	if (response.status >= 200 && response.status < 300) {
-
-		return response;
-
-	}
-	const error = new Error(response.statusText);
-	error.response = response;
-	throw error;
-
-}
-
-function _parseJSON(response) {
-
-	return response.json();
-
-}
+import Vue from 'vue'
 
 const AuthApi = {
 
-	verifyIdTokenAndGetAccessToken(idToken) {
+  verifyIdTokenAndGetAccessToken(idToken) {
 
-		const requestHeaders = {
-			'Content-Type': 'application/json',
-		};
-		const options = {
-			method: 'POST',
-			headers: requestHeaders,
-			body: JSON.stringify({ idToken }),
-		};
+    const url = `${process.env.API_URL}/auth/token`
+    const body = {idToken}
+    const options = {headers: {'Content-Type': 'application/json'}}
 
-		return fetch(process.env.AUTH_URL, options)
-      .then(_checkStatus)
-      .then(_parseJSON);
+    return Vue.http.post(url, body, options)
+      .then((response) => Promise.resolve(response.data))
+      .catch((error) => Promise.reject(error))
 
-	},
-};
+  },
+}
 
-export default AuthApi;
+export default AuthApi

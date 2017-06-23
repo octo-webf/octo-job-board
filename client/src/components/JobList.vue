@@ -49,7 +49,7 @@
 
   	},
 
-  	mounted() {
+  	created() {
 
   		this.getJobs();
 
@@ -61,9 +61,9 @@
   			jobsApi.fetchAll(accessToken).then((jobs) => {
 
   				this.jobs = jobs;
-  
+
 			});
-  
+
 		},
   	},
   };

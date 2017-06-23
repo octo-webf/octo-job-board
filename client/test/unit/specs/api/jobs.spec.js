@@ -1,4 +1,3 @@
-import sinon from 'sinon';
 import api from '@/api/jobs';
 
 describe('Unit | API | jobs api', () => {

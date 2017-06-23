@@ -1,7 +1,6 @@
-import sinon from 'sinon';
 import api from '@/api/auth';
 
-describe.only('Unit | API | auth api', () => {
+describe('Unit | API | auth api', () => {
 
 	describe('#verifyIdTokenAndGetAccessToken', () => {
 

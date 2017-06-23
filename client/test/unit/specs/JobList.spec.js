@@ -1,24 +1,21 @@
 import Vue from 'vue';
 import JobList from '@/components/JobList';
-import VueResource from 'vue-resource';
+import api from '@/api/jobs'
 
-Vue.use(VueResource);
+describe.only('JobList.vue', () => {
 
-describe('JobList.vue', () => {
-
-	let jobsApiStub;
 	let Constructor;
 
 	beforeEach(() => {
 
-		jobsApiStub = sinon.stub(Vue.http, 'get').returnsPromise();
+		sinon.stub(api, 'fetchAll')
 		Constructor = Vue.extend(JobList);
 
 	});
 
 	afterEach(() => {
 
-		Vue.http.get.restore();
+    api.fetchAll.restore();
 
 	});
 
@@ -28,14 +25,14 @@ describe('JobList.vue', () => {
 		new Constructor().$mount();
 
     // then
-		expect(Vue.http.get).to.have.been.calledWith('http://localhost:3000/api/jobs');
+		expect(api.fetchAll).to.have.been.calledWith('access-token');
 
 	});
 
 	it('should render as many jobs as received from the API', () => {
 
     // given
-		jobsApiStub.resolves({
+		api.fetchAll.resolves({
 			data: [{}, {}, {}],
 		});
 
@@ -51,7 +48,7 @@ describe('JobList.vue', () => {
 	it('should render the details of a job', () => {
 
     // given
-		jobsApiStub.resolves({
+    api.fetchAll.resolves({
 			data: [{
 				id: 2,
 				title: 'Tech Lead',
@@ -84,7 +81,7 @@ describe('JobList.vue', () => {
 	it('should render the appropriate status class', () => {
 
     // given
-		jobsApiStub.resolves({
+    api.fetchAll.resolves({
 			data: [{
 				status: 'proposal-in-progress',
 			}],
@@ -102,7 +99,7 @@ describe('JobList.vue', () => {
 	it('should add number of available jobs', () => {
 
     // given
-		jobsApiStub.resolves({
+    api.fetchAll.resolves({
 			data: [{}, {}, {}, {}],
 		});
 
