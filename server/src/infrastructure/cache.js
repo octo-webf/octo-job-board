@@ -8,4 +8,4 @@ const options = {
 
 const cache = LRUCache(options)
 
-module.exports = cache;
+module.exports = cache
