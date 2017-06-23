@@ -6,6 +6,7 @@ const OctopodClient = require('../../../src/infrastructure/octopod')
 const JobsSerializer = require('../../../src/serializers/jobs')
 
 describe('Integration | Routes | jobs route', function () {
+
   beforeEach(() => {
     sinon.stub(jwt, 'verify').returns({userId: 'user-id'})
     sinon.stub(OctopodClient, 'getAccessToken').resolves('octopod-access-token')
@@ -78,5 +79,13 @@ describe('Integration | Routes | jobs route', function () {
     return request(app)
       .get('/api/jobs')
       .expect(401)
+  })
+
+  it('should ', () => {
+    // given
+
+    // when
+
+    // then
   })
 })
