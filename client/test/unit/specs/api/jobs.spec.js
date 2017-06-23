@@ -1,4 +1,8 @@
+import Vue from 'vue';
+import VueResource from 'vue-resource';
 import api from '@/api/jobs';
+
+Vue.use(VueResource);
 
 describe('Unit | API | jobs api', () => {
 
@@ -14,13 +18,13 @@ describe('Unit | API | jobs api', () => {
 
 				},
 			};
-			sinon.stub(window, 'fetch').resolves(stubbedResponse);
+			sinon.stub(Vue.http, 'get').resolves(stubbedResponse);
 
 		});
 
 		afterEach(() => {
 
-			window.fetch.restore();
+			Vue.http.get.restore();
 
 		});
 
@@ -28,11 +32,9 @@ describe('Unit | API | jobs api', () => {
 
       // given
 			const accessToken = 'valid-access-token';
-			const expectedArguments = {
-				headers: {
-					Authorization: `Bearer ${accessToken}`,
-				},
-			};
+
+			const expectedUrl = 'http://localhost:3000/api/jobs';
+			const expectedOptions = { headers: { Authorization: `Bearer ${accessToken}` } };
 
       // when
 			const promise = api.fetchAll(accessToken);
@@ -40,7 +42,7 @@ describe('Unit | API | jobs api', () => {
       // then
 			return promise.then(() => {
 
-				expect(window.fetch).to.have.been.calledWith('http://localhost:3000/api/jobs', expectedArguments);
+				expect(Vue.http.get).to.have.been.calledWith(expectedUrl, expectedOptions);
 
 			});
 

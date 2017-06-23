@@ -16,7 +16,8 @@
                   </header>
                   <a class="job__content" v-bind:href="'https://octopod.octo.com/projects/' + job.project.id">
                     <p><span class="job__mission">{{ job.project.name }}</span></p>
-                    <p class="job__client-wrapper">pour <span class="job__client">{{ job.project.customer.name }}</span></p>
+                    <p class="job__client-wrapper">pour <span class="job__client">{{ job.project.customer.name }}</span>
+                    </p>
                     <p>dès <span class="job__start-date">{{ job.project.start_date }}</span> sur <span
                       class="job__duration">{{ job.project.duration }}</span></p>
                     <p>à <span class="job__location">{{ job.project.location }}</span></p>
@@ -37,6 +38,7 @@
 
 <script>
 
+  import authenticationService from '@/services/authentication';
   import jobsApi from '@/api/jobs';
 
   export default {
@@ -51,18 +53,23 @@
 
   	created() {
 
-  		this.getJobs();
+  		if (authenticationService.isAuthenticated()) {
+
+  			this.getJobs();
+
+		}
 
   	},
   	methods: {
   		getJobs() {
 
-  			const accessToken = window.localStorage.getItem('access_token');
+  			const accessToken = window.localStorage['access_token'];
+
   			jobsApi.fetchAll(accessToken).then((jobs) => {
 
   				this.jobs = jobs;
 
-			});
+  			});
 
 		},
   	},

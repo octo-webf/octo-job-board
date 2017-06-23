@@ -38,6 +38,12 @@ export default {
 
 	},
 
+	isAuthenticated() {
+
+		return !!window.localStorage.getItem(LOCALSTORAGE_KEY);
+
+	},
+
 	getToken() {
 
 		return (canUseDOM) ? window.localStorage[LOCALSTORAGE_KEY] : null;

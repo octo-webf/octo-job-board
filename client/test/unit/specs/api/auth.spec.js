@@ -1,4 +1,8 @@
+import Vue from 'vue';
+import VueResource from 'vue-resource';
 import api from '@/api/auth';
+
+Vue.use(VueResource);
 
 describe('Unit | API | auth api', () => {
 
@@ -14,13 +18,13 @@ describe('Unit | API | auth api', () => {
 
 				},
 			};
-			sinon.stub(window, 'fetch').resolves(stubbedResponse);
+			sinon.stub(Vue.http, 'post').resolves(stubbedResponse);
 
 		});
 
 		afterEach(() => {
 
-			window.fetch.restore();
+			Vue.http.post.restore();
 
 		});
 
@@ -28,11 +32,10 @@ describe('Unit | API | auth api', () => {
 
       // given
 			const idToken = 'valid-id_token';
-			const expectedArguments = {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: '{"idToken":"valid-id_token"}',
-			};
+
+			const expectedUrl = 'http://localhost:3000/auth/token';
+			const expectedBody = { idToken: 'valid-id_token' };
+			const expectedOptions = { headers: { 'Content-Type': 'application/json' } };
 
       // when
 			const promise = api.verifyIdTokenAndGetAccessToken(idToken);
@@ -40,7 +43,7 @@ describe('Unit | API | auth api', () => {
       // then
 			return promise.then(() => {
 
-				expect(window.fetch).to.have.been.calledWith('http://localhost:3000/auth/token', expectedArguments);
+				expect(Vue.http.post).to.have.been.calledWith(expectedUrl, expectedBody, expectedOptions);
 
 			});
 
