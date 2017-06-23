@@ -19,6 +19,7 @@ describe('Integration | Routes | jobs route', function () {
     sandbox.stub(JobsSerializer, 'serialize').returns([])
     sandbox.stub(cache, 'get').returns(null)
     sandbox.stub(cache, 'set').returns(null)
+    sandbox.stub(cache, 'del')
   })
 
   afterEach(() => {
@@ -125,5 +126,25 @@ describe('Integration | Routes | jobs route', function () {
           done()
         })
     })
+
+    it('should reset force to reset cache when URL param "refresh" is set to true', (done) => {
+      // given
+      const jobs = [{ chi: 'shi' }, { fou: 'foo' }, { bar: 'bare' }]
+      JobsSerializer.serialize.returns(jobs)
+
+      // when
+      request(app)
+        .get('/api/jobs?refresh=true')
+        .set('Authorization', 'Bearer access-token')
+        .expect(200, (err) => {
+          // then
+          if (err) {
+            done(err)
+          }
+          expect(cache.del).to.have.been.called
+          expect(cache.set).to.have.been.called
+          done()
+        })
+    });
   })
 })

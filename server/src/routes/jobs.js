@@ -12,6 +12,10 @@ router.get('/', auth, (req, res, next) => {
   let projects
   let activities
 
+  if (req.query.refresh && req.query.refresh == 'true') {
+    cache.del(CACHE_KEY)
+  }
+
   const cachedJobs = cache.get(CACHE_KEY)
   if (cachedJobs) {
     return res.send(cachedJobs)
