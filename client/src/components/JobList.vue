@@ -75,7 +75,7 @@
 
   		trackEvent() {
 
-        this.$ga.event({
+  			this.$ga.event({
   				eventCategory: 'Job List',
   				eventAction: 'click',
   				eventLabel: 'I am interested',
