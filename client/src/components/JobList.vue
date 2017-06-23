@@ -11,15 +11,16 @@
               <li class="job-results__item job-card" v-for="job in jobs">
                 <article class="job">
                   <header class="job__header">
-                    <h2 class="job__title">{{ job.title }}</h2>
-                    <span v-bind:class="['job__status job__status--'+job.status]"></span>
+                    <h2 class="job__title">{{ job.activity.title }}</h2>
+                    <span v-bind:class="['job__status job__status--'+job.project.status]"></span>
                   </header>
-                  <a class="job__content" v-bind:href="job.octopod_link">
-                    <p><span class="job__mission">{{ job.project_name }}</span></p>
-                    <p class="job__client-wrapper">pour <span class="job__client">{{ job.customer_name }}</span></p>
-                    <p>dès <span class="job__start-date">{{ job.start_date }}</span> sur <span
-                      class="job__duration">{{ job.duration }}</span></p>
-                    <p>à <span class="job__location">{{ job.location }}</span></p>
+                  <a class="job__content" v-bind:href="'https://octopod.octo.com/projects/' + job.project.id">
+                    <p><span class="job__mission">{{ job.project.name }}</span></p>
+                    <p class="job__client-wrapper">pour <span class="job__client">{{ job.project.customer.name }}</span>
+                    </p>
+                    <p>dès <span class="job__start-date">{{ job.project.start_date }}</span> sur <span
+                      class="job__duration">{{ job.project.duration }}</span></p>
+                    <p>à <span class="job__location">{{ job.project.location }}</span></p>
                   </a>
                   <footer class="job__footer">
                     <button class="job__apply-button">Je suis intéressé</button>
@@ -36,6 +37,10 @@
 </template>
 
 <script>
+
+  import authenticationService from '@/services/authentication';
+  import jobsApi from '@/api/jobs';
+
   export default {
   	name: 'job-list',
   	data() {
@@ -45,21 +50,28 @@
   		};
 
   	},
+
   	created() {
 
-  		this.getJobs().then((response) => {
+  		if (authenticationService.isAuthenticated()) {
 
-  			this.jobs = response.data;
+  			this.getJobs();
 
-  		});
+		}
 
   	},
   	methods: {
   		getJobs() {
 
-  			return this.$http.get(`${process.env.API_URL}/jobs`);
+  			const accessToken = window.localStorage['access_token'];
 
-  		},
+  			jobsApi.fetchAll(accessToken).then((jobs) => {
+
+  				this.jobs = jobs;
+
+  			});
+
+		},
   	},
   };
 </script>

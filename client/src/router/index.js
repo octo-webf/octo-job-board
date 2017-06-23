@@ -1,21 +1,21 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import JobList from '@/components/JobList';
-import TestLoginPage from '@/components/TestLoginPage';
+import LoginPage from '@/components/LoginPage';
 
 Vue.use(Router);
 
 export default new Router({
 	routes: [
 		{
-			path: '/',
+			path: '/jobs',
 			name: 'JobList',
 			component: JobList,
 		},
 		{
-			path: '/test-login-page',
-			name: 'TestLoginPage',
-			component: TestLoginPage,
+			path: '/login',
+			name: 'LoginPage',
+			component: LoginPage,
 		},
 	],
 });
