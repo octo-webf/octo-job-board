@@ -92,13 +92,12 @@ describe('JobList.vue', () => {
 
 		});
 
-    // skip en attente du fetchActivities
-		it.skip('on click on button job__apply-button', () => {
+		it('on click on button job__apply-button', () => Vue.nextTick().then(() => {
 
       // given
 
 			authentication.isAuthenticated.returns(true);
-
+			axios.post.resolves(true);
 			sinon.stub(component.$ga, 'event');
 			component.$ga.event.returns(true);
 
@@ -117,7 +116,7 @@ describe('JobList.vue', () => {
       // after
 			component.$ga.event.restore();
 
-		});
+		}));
 
 	});
 

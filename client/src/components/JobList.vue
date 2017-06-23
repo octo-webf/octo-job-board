@@ -91,8 +91,8 @@
 
   			this.trackEvent();
   			this.sendInterest(job);
-  
-		},
+
+  		},
 
   		trackEvent() {
 
@@ -118,8 +118,7 @@
   				},
   			};
 
-  			return axios.post(`${process.env.API_URL}/api/interests`, body)
-          .catch(error => Promise.reject(error));
+  			return axios.post(`${process.env.API_URL}/api/interests`, body);
 
   		},
   	},
