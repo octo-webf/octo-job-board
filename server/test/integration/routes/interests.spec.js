@@ -31,7 +31,7 @@ describe('Integration | Routes | interests route', function () {
     // When
     request(app)
       .post('/api/interests')
-      .send({interestedJobForm: interestedJobForm})
+      .send({interestedJobForm})
       .set('Authorization', 'Bearer access-token')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(201, (err, res) => {

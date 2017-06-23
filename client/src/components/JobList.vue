@@ -2,7 +2,9 @@
   <div class="page page__jobs">
     <header class="page__header">
       <div class="page__container page__header--container">
-        <a class="logo-link" href="/"><span class="logo-link__job">Job</span><span class="logo-link__board">Board</span>
+        <a class="logo-link" href="/">
+          <span class="logo-link__job">Job</span>
+          <span class="logo-link__board">Board</span>
         </a>
         <!--<a class="logout-link" href="/logout">Se déconnecter</a>-->
       </div>
@@ -31,7 +33,7 @@
                     <p>à <span class="job__location">{{ job.project.location }}</span></p>
                   </a>
                   <footer class="job__footer">
-                    <button class="job__apply-button" v-on:click="trackEvent()">Je suis intéressé</button>
+                    <button class="job__apply-button" v-on:click="submitInterest(job)">Je suis intéressé</button>
                     <a class="job__alert-link" href="mailto:jobboard@octo.com">Signaler un problème</a>
                   </footer>
                 </article>
@@ -48,6 +50,7 @@
 
   import authenticationService from '@/services/authentication';
   import jobsApi from '@/api/jobs';
+  import axios from 'axios';
 
   export default {
   	name: 'job-list',
@@ -81,6 +84,13 @@
   				});
 
   			}
+
+  		},
+
+  		submitInterest(job) {
+
+  			this.trackEvent();
+  			this.sendInterest(job);
   
 		},
 
@@ -92,6 +102,24 @@
   				eventLabel: 'I am interested',
   				eventValue: null,
   			});
+
+  		},
+
+  		sendInterest(job) {
+
+  			const body = {
+  				interestedJobForm: {
+  					interestedNickname: 'PTR',
+  					businessContactNickname: job.project.business_contact.nickname,
+  					missionDirectorNickname: job.project.mission_director.nickname,
+  					octopodLink: `https://octopod.octo.com/projects/${job.project.id}`,
+  					activityName: job.activity.title,
+  					missionName: job.project.name,
+  				},
+  			};
+
+  			return axios.post(`${process.env.API_URL}/api/interests`, body)
+          .catch(error => Promise.reject(error));
 
   		},
   	},
