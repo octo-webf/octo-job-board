@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import axios from 'axios';
 
 const AuthApi = {
 
@@ -8,7 +8,7 @@ const AuthApi = {
 		const body = { idToken };
 		const options = { headers: { 'Content-Type': 'application/json' } };
 
-		return Vue.http.post(url, body, options)
+		return axios.post(url, body, options)
       .then(response => Promise.resolve(response.data))
       .catch(error => Promise.reject(error));
 

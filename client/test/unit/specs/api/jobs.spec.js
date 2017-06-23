@@ -1,8 +1,5 @@
-import Vue from 'vue';
-import VueResource from 'vue-resource';
+import axios from 'axios';
 import api from '@/api/jobs';
-
-Vue.use(VueResource);
 
 describe('Unit | API | jobs api', () => {
 
@@ -12,19 +9,17 @@ describe('Unit | API | jobs api', () => {
 
 			const stubbedResponse = {
 				status: 200,
-				json() {
-
-					return { foo: 'bar' };
-
+				data: {
+					foo: 'bar',
 				},
 			};
-			sinon.stub(Vue.http, 'get').resolves(stubbedResponse);
+			sinon.stub(axios, 'get').resolves(stubbedResponse);
 
 		});
 
 		afterEach(() => {
 
-			Vue.http.get.restore();
+			axios.get.restore();
 
 		});
 
@@ -42,7 +37,7 @@ describe('Unit | API | jobs api', () => {
       // then
 			return promise.then(() => {
 
-				expect(Vue.http.get).to.have.been.calledWith(expectedUrl, expectedOptions);
+				expect(axios.get).to.have.been.calledWith(expectedUrl, expectedOptions);
 
 			});
 

@@ -2,10 +2,12 @@
   <div class="page page__jobs">
     <header class="page__header">
       <div class="page__container page__header--container">
-        <a class="logo-link" href="/"><span class="logo-link__job">Job</span><span class="logo-link__board">Board</span> </a>
+        <a class="logo-link" href="/"><span class="logo-link__job">Job</span><span class="logo-link__board">Board</span>
+        </a>
         <!--<a class="logout-link" href="/logout">Se déconnecter</a>-->
       </div>
     </header>
+
     <main class="page__body">
       <div class="page__container">
 
@@ -49,6 +51,7 @@
 
   export default {
   	name: 'job-list',
+
   	data() {
 
   		return {
@@ -57,27 +60,29 @@
 
   	},
 
-  	created() {
+  	mounted() {
 
-  		if (authenticationService.isAuthenticated()) {
-
-  			this.getJobs();
-
-  		}
+  		this.getJobs();
 
   	},
+
   	methods: {
+
   		getJobs() {
 
-  			const accessToken = window.localStorage.access_token;
+  			if (authenticationService.isAuthenticated()) {
 
-  			jobsApi.fetchAll(accessToken).then((jobs) => {
+  				const accessToken = window.localStorage.access_token;
 
-  				this.jobs = jobs;
+  				jobsApi.fetchAll(accessToken).then((jobs) => {
 
-  			});
+  					this.jobs = jobs;
 
-  		},
+  				});
+
+  			}
+  
+		},
 
   		trackEvent() {
 

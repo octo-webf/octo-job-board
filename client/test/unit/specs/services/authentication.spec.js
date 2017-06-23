@@ -15,12 +15,6 @@ describe('Unit | Services | Auth', () => {
 
 	});
 
-	it('should have a method authenticate', () => {
-
-		expect(authentication.authenticate).to.exist;
-
-	});
-
 	describe('#authenticate', () => {
 
 		let promise;
@@ -36,6 +30,12 @@ describe('Unit | Services | Auth', () => {
 		afterEach(() => {
 
 			api.verifyIdTokenAndGetAccessToken.restore();
+
+		});
+
+		it('should exist', () => {
+
+			expect(authentication.authenticate).to.exist;
 
 		});
 
