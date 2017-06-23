@@ -19,7 +19,7 @@
                     <p class="job__client-wrapper">pour <span class="job__client">{{ job.project.customer.name }}</span>
                     </p>
                     <p>dès <span class="job__start-date">{{ job.project.start_date }}</span> sur <span
-                      class="job__duration">{{ job.project.duration }}</span></p>
+                        class="job__duration">{{ job.project.duration }}</span></p>
                     <p>à <span class="job__location">{{ job.project.location }}</span></p>
                   </a>
                   <footer class="job__footer">
@@ -57,7 +57,7 @@
 
   			this.getJobs();
 
-		}
+  		}
 
   	},
   	methods: {
@@ -71,18 +71,18 @@
 
   			});
 
-		},
+  		},
 
   		trackEvent() {
 
-  			this.$ga.event({
+        this.$ga.event({
   				eventCategory: 'Job List',
   				eventAction: 'click',
   				eventLabel: 'I am interested',
   				eventValue: null,
   			});
-  
-		},
+
+  		},
   	},
   };
 </script>

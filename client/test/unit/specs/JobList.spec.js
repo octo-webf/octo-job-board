@@ -1,12 +1,16 @@
 import Vue from 'vue'
 import VueResource from 'vue-resource'
+import VueAnalytics from 'vue-analytics'
 import JobList from '@/components/JobList'
 import authentication from '@/services/authentication'
 import jobsApi from '@/api/jobs'
 
 Vue.use(VueResource)
+Vue.use(VueAnalytics, {
+  id: `${process.env.ANALYTICS_ID}`,
+})
 
-describe.skip('JobList.vue', () => {
+describe('JobList.vue', () => {
 
   let Constructor
 
@@ -38,7 +42,64 @@ describe.skip('JobList.vue', () => {
 
   })
 
-  it('should render as many jobs as received from the API', () => {
+  describe('#trackEvent', () => {
+
+    it('should check analytics', () => {
+
+      // given
+
+      authentication.isAuthenticated.returns(true)
+      const component = new Constructor().$mount()
+
+      sinon.stub(component.$ga, 'event')
+      component.$ga.event.returns(true)
+
+      // when
+      component.trackEvent()
+
+      // then
+      expect(component.$ga.event).to.have.been.calledWith(
+        {
+          eventCategory: 'Job List',
+          eventAction: 'click',
+          eventLabel: 'I am interested',
+          eventValue: null,
+        })
+
+      // after
+      component.$ga.event.restore()
+    })
+
+    // skip en attente du fetchActivities
+    it.skip('on click on button job__apply-button', () => {
+
+      // given
+
+      authentication.isAuthenticated.returns(true)
+      const component = new Constructor().$mount()
+
+      sinon.stub(component.$ga, 'event')
+      component.$ga.event.returns(true)
+
+      // when
+      component.$el.querySelector('button.job__apply-button').click()
+
+      // then
+      expect(component.$ga.event).to.have.been.calledWith(
+        {
+          eventCategory: 'Job List',
+          eventAction: 'click',
+          eventLabel: 'I am interested',
+          eventValue: null,
+        })
+
+      // after
+      component.$ga.event.restore()
+    })
+
+  })
+
+  it.skip('should render as many jobs as received from the API', () => {
 
     // given
     authentication.isAuthenticated.returns(true)
@@ -46,13 +107,13 @@ describe.skip('JobList.vue', () => {
     // given
     jobsApi.fetchAll.resolves([{
       activity: {},
-      project: {}
+      project: {},
     }, {
       activity: {},
-      project: {}
+      project: {},
     }, {
       activity: {},
-      project: {}
+      project: {},
     }])
 
     // when
@@ -64,12 +125,13 @@ describe.skip('JobList.vue', () => {
 
   })
 
-  it('should render the details of a job', () => {
+  it.skip('should render the details of a job', () => {
 
     // given
     authentication.isAuthenticated.returns(true)
 
     jobsApi.fetchAll.callFakes(() => {
+
       console.log('COUCOU')
       return Promise.resolve([{
         id: 2,
@@ -94,6 +156,7 @@ describe.skip('JobList.vue', () => {
           },
         },
       }])
+
     })
 
     // when
@@ -111,7 +174,7 @@ describe.skip('JobList.vue', () => {
 
   })
 
-  it('should render the appropriate status class', () => {
+  it.skip('should render the appropriate status class', () => {
 
     // given
     authentication.isAuthenticated.returns(true)
@@ -129,7 +192,7 @@ describe.skip('JobList.vue', () => {
 
   })
 
-  it('should add number of available jobs', () => {
+  it.skip('should add number of available jobs', () => {
 
     // given
     authentication.isAuthenticated.returns(true)
