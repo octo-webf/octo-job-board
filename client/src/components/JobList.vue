@@ -118,7 +118,7 @@
   				},
   			};
 
-  			return axios.post(`${process.env.API_URL}/api/interests`, body);
+  			return axios.post(`${process.env.API_URL}api/interests`, body);
 
   		},
   	},
