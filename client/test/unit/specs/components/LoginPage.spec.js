@@ -3,7 +3,7 @@ import LoginPage from '@/components/LoginPage';
 import authentication from '@/services/authentication';
 
 
-describe('LoginPage.vue', () => {
+describe('Unit | Component | LoginPage.vue', () => {
 
 	let component;
 
