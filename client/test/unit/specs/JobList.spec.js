@@ -3,6 +3,7 @@ import VueAnalytics from 'vue-analytics';
 import JobList from '@/components/JobList';
 import authentication from '@/services/authentication';
 import jobsApi from '@/api/jobs';
+import axios from 'axios';
 
 Vue.use(VueAnalytics, {
 	id: `${process.env.ANALYTICS_ID}`,
@@ -11,12 +12,12 @@ Vue.use(VueAnalytics, {
 describe('JobList.vue', () => {
 
 	let component;
+	let jobs;
 
 	beforeEach(() => {
 
     // given
-		sinon.stub(authentication, 'isAuthenticated').returns(true);
-		sinon.stub(jobsApi, 'fetchAll').resolves([{
+		jobs = {
 			id: 2,
 			activity: {
 				title: 'Tech Lead',
@@ -38,7 +39,10 @@ describe('JobList.vue', () => {
 					nickname: 'XYZ',
 				},
 			},
-		}]);
+		};
+		sinon.stub(axios, 'post');
+		sinon.stub(authentication, 'isAuthenticated').returns(true);
+		sinon.stub(jobsApi, 'fetchAll').resolves([jobs]);
 
 		const Constructor = Vue.extend(JobList);
 
@@ -49,6 +53,7 @@ describe('JobList.vue', () => {
 
 	afterEach(() => {
 
+		axios.post.restore();
 		authentication.isAuthenticated.restore();
 		jobsApi.fetchAll.restore();
 
@@ -87,13 +92,12 @@ describe('JobList.vue', () => {
 
 		});
 
-    // skip en attente du fetchActivities
-		it.skip('on click on button job__apply-button', () => {
+		it('on click on button job__apply-button', () => Vue.nextTick().then(() => {
 
       // given
 
 			authentication.isAuthenticated.returns(true);
-
+			axios.post.resolves(true);
 			sinon.stub(component.$ga, 'event');
 			component.$ga.event.returns(true);
 
@@ -112,7 +116,7 @@ describe('JobList.vue', () => {
       // after
 			component.$ga.event.restore();
 
-		});
+		}));
 
 	});
 
@@ -148,6 +152,71 @@ describe('JobList.vue', () => {
 		expect(component.$el.querySelector('.job-results__title').textContent.trim()).to.equal('Missions (1)');
 
 	}));
+
+	describe('.sendInterest()', () => {
+
+		let expectedUrl;
+		let expectedBody;
+		beforeEach(() => {
+
+			expectedUrl = 'http://localhost:3000/api/interests';
+			expectedBody = {
+				interestedJobForm: {
+					interestedNickname: 'PTR',
+					businessContactNickname: 'ABC',
+					missionDirectorNickname: 'XYZ',
+					octopodLink: 'https://octopod.octo.com/projects/123456',
+					activityName: 'Tech Lead',
+					missionName: 'Delivery PUBLICIS / TITAN',
+				},
+			};
+
+		});
+
+		it('should call the API with good params', () => {
+
+      // given
+			const stubbedResponse = {
+				status: 200,
+				data: {
+					foo: 'bar',
+				},
+			};
+			axios.post.resolves(stubbedResponse);
+
+      // when
+			const promise = component.sendInterest(jobs);
+
+      // then
+			return promise.then(() => {
+
+				expect(axios.post).to.have.been.calledWith(expectedUrl, expectedBody);
+
+			});
+
+		});
+
+		it('should POST on click', () => Vue.nextTick().then(() => {
+
+      // Given
+			const stubbedResponse = {
+				status: 200,
+				data: {
+					foo: 'bar',
+				},
+			};
+			axios.post.resolves(stubbedResponse);
+			const myButton = component.$el.querySelector('button');
+
+      // When
+			myButton.click();
+
+      // Then
+			expect(axios.post).to.have.been.calledWith(expectedUrl, expectedBody);
+
+		}));
+
+	});
 
 });
 
