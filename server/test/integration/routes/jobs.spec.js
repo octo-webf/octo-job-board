@@ -1,25 +1,28 @@
 const jwt = require('jsonwebtoken')
-const {request, expect, sinon} = require('../../test-helper')
+const { request, expect, sinon } = require('../../test-helper')
 const app = require('../../../app')
 const jobs = require('../fixtures/jobs')
 const OctopodClient = require('../../../src/infrastructure/octopod')
 const JobsSerializer = require('../../../src/serializers/jobs')
+const cache = require('../../../src/infrastructure/cache')
 
 describe('Integration | Routes | jobs route', function () {
+  let sandbox
+
   beforeEach(() => {
-    sinon.stub(jwt, 'verify').returns({userId: 'user-id'})
-    sinon.stub(OctopodClient, 'getAccessToken').resolves('octopod-access-token')
-    sinon.stub(OctopodClient, 'fetchProjectsToBeStaffed').resolves(jobs)
-    sinon.stub(OctopodClient, 'fetchActivitiesToBeStaffed').resolves([])
-    sinon.stub(JobsSerializer, 'serialize').returns([])
+    sandbox = sinon.sandbox.create()
+    sandbox.stub(jwt, 'verify').returns({ userId: 'user-id' })
+    sandbox.stub(OctopodClient, 'getAccessToken').resolves('octopod-access-token')
+    sandbox.stub(OctopodClient, 'fetchProjectsToBeStaffed').resolves(jobs)
+    sandbox.stub(OctopodClient, 'fetchActivitiesToBeStaffed').resolves([])
+    sandbox.stub(JobsSerializer, 'serialize').returns([])
+    sandbox.stub(cache, 'get').returns(null)
+    sandbox.stub(cache, 'set').returns(null)
+    sandbox.stub(cache, 'del')
   })
 
   afterEach(() => {
-    jwt.verify.restore()
-    OctopodClient.getAccessToken.restore()
-    OctopodClient.fetchProjectsToBeStaffed.restore()
-    OctopodClient.fetchActivitiesToBeStaffed.restore()
-    JobsSerializer.serialize.restore()
+    sandbox.restore()
   })
 
   it('should call Octopod API client to get an (OAuth 2) access token', (done) => {
@@ -78,5 +81,69 @@ describe('Integration | Routes | jobs route', function () {
     return request(app)
       .get('/api/jobs')
       .expect(401)
+  })
+
+  describe('Caching', () => {
+    it('should simply return the cached value without make any call or cache set', (done) => {
+      // given
+      const cachedResponse = [{ chi: 'shi' }, { fou: 'foo' }, { bar: 'bare' }]
+      cache.get.returns(cachedResponse)
+
+      // when
+      request(app)
+        .get('/api/jobs')
+        .set('Authorization', 'Bearer access-token')
+        .expect(200, (err, response) => {
+          // then
+          if (err) {
+            done(err)
+          }
+          expect(response.body).to.deep.equal(cachedResponse)
+          expect(OctopodClient.getAccessToken).to.have.not.been.called
+          expect(OctopodClient.fetchProjectsToBeStaffed).to.have.not.been.called
+          expect(JobsSerializer.serialize).to.have.not.been.called
+          expect(cache.set).to.have.not.been.called
+          done()
+        })
+    })
+
+    it('should cache the jobs after they have been fetched when they were not already cached', (done) => {
+      // given
+      const freshJobs = [{ chi: 'shi' }, { fou: 'foo' }, { bar: 'bare' }]
+      JobsSerializer.serialize.returns(freshJobs)
+
+      // when
+      request(app)
+        .get('/api/jobs')
+        .set('Authorization', 'Bearer access-token')
+        .expect(200, (err, response) => {
+          // then
+          if (err) {
+            done(err)
+          }
+          expect(cache.set).to.have.been.calledWith('get_jobs', freshJobs)
+          done()
+        })
+    })
+
+    it('should reset force to reset cache when URL param "refresh" is set to true', (done) => {
+      // given
+      const jobs = [{ chi: 'shi' }, { fou: 'foo' }, { bar: 'bare' }]
+      JobsSerializer.serialize.returns(jobs)
+
+      // when
+      request(app)
+        .get('/api/jobs?refresh=true')
+        .set('Authorization', 'Bearer access-token')
+        .expect(200, (err) => {
+          // then
+          if (err) {
+            done(err)
+          }
+          expect(cache.del).to.have.been.called
+          expect(cache.set).to.have.been.called
+          done()
+        })
+    })
   })
 })
