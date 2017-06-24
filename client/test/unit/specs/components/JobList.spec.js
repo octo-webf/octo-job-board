@@ -3,7 +3,6 @@ import VueAnalytics from 'vue-analytics';
 import JobList from '@/components/JobList';
 import authentication from '@/services/authentication';
 import jobsApi from '@/api/jobs';
-import axios from 'axios';
 
 Vue.use(VueAnalytics, {
 	id: `${process.env.ANALYTICS_ID}`,
@@ -40,7 +39,6 @@ describe('Unit | Component | JobList.vue', () => {
 				},
 			},
 		}];
-		sinon.stub(axios, 'post');
 		sinon.stub(authentication, 'isAuthenticated').returns(true);
 		sinon.stub(jobsApi, 'fetchAll').resolves(jobs);
 
@@ -53,13 +51,12 @@ describe('Unit | Component | JobList.vue', () => {
 
 	afterEach(() => {
 
-		axios.post.restore();
 		authentication.isAuthenticated.restore();
 		jobsApi.fetchAll.restore();
 
 	});
 
-	describe('#getJobs', () => {
+	describe('method #getJobs', () => {
 
 		it('should verify that user is authenticated', () => {
 
@@ -71,26 +68,6 @@ describe('Unit | Component | JobList.vue', () => {
 
 			const jobCards = component.$el.querySelectorAll('.job-card');
 			expect(jobCards.length).to.equal(1);
-
-		}));
-
-		it('should render the details of a job', () => Vue.nextTick().then(() => {
-
-			const firstJobCard = component.$el.querySelectorAll('.job-card')[0];
-			expect(firstJobCard.querySelector('.job__title').textContent).to.equal('Tech Lead');
-			expect(firstJobCard.querySelector('.job__mission').textContent).to.equal('SCLOU - Cloud computing : enjeux, architecture et');
-			expect(firstJobCard.querySelector('.job__client').textContent).to.equal('La Poste - Courrier');
-			expect(firstJobCard.querySelector('.job__start-date').textContent).to.equal('juillet 2017');
-			expect(firstJobCard.querySelector('.job__duration').textContent).to.equal('10 mois');
-			expect(firstJobCard.querySelector('.job__location').textContent).to.equal('OCTO');
-			expect(firstJobCard.querySelector('.job__content').getAttribute('href')).to.equal('https://octopod.octo.com/projects/123456');
-
-		}));
-
-		it('should render the appropriate status class', () => Vue.nextTick().then(() => {
-
-			const firstJobCard = component.$el.querySelectorAll('.job-card')[0];
-			expect(firstJobCard.querySelector('.job__status').getAttribute('class')).to.contain('job__status--proposal-in-progress');
 
 		}));
 

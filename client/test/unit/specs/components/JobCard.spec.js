@@ -18,13 +18,13 @@ describe('Unit | Component | JobCard.vue', () => {
 		project: {
 			id: 123456,
 			status: 'proposal-in-progress',
-			name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
+			name: 'Refonte du SI',
 			customer: {
 				name: 'La Poste - Courrier',
 			},
 			start_date: 'juillet 2017',
 			duration: '10 mois',
-			location: 'OCTO',
+			locations: 'OCTO',
 			business_contact: {
 				nickname: 'ABC',
 			},
@@ -47,6 +47,38 @@ describe('Unit | Component | JobCard.vue', () => {
 		}).$mount();
 
 	});
+
+  describe('rendering', () => {
+
+    it('should display the appropriate project status', () => {
+      expect(component.$el.querySelector('.job__status').getAttribute('class')).to.contain('job__status--proposal-in-progress');
+    });
+
+    it('should display the activity title', () => {
+      expect(component.$el.querySelector('.job__title').textContent.trim()).to.equal('Tech Lead');
+    });
+
+    it('should display the mission name', () => {
+      expect(component.$el.querySelector('.job__mission').textContent.trim()).to.equal('Refonte du SI');
+    });
+
+    it('should display the client name', () => {
+      expect(component.$el.querySelector('.job__client').textContent.trim()).to.equal('La Poste - Courrier');
+    });
+
+    it('should display the start date', () => {
+      expect(component.$el.querySelector('.job__start-date').textContent.trim()).to.equal('juillet 2017');
+    });
+
+    it('should display the duration', () => {
+      expect(component.$el.querySelector('.job__duration').textContent.trim()).to.equal('10 mois');
+    });
+
+    it('should display the locations', () => {
+      expect(component.$el.querySelector('.job__locations').textContent.trim()).to.equal('OCTO');
+    });
+
+  });
 
 	describe('method #trackEvent', () => {
 
@@ -101,7 +133,7 @@ describe('Unit | Component | JobCard.vue', () => {
 				missionDirectorNickname: 'XYZ',
 				octopodLink: 'https://octopod.octo.com/projects/123456',
 				activityName: 'Tech Lead',
-				missionName: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
+				missionName: 'Refonte du SI',
 			},
 		};
 		const stubbedResponse = {

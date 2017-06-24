@@ -11,7 +11,7 @@
         </p>
         <p>dès <span class="job__start-date">{{ job.project.start_date }}</span> sur <span
           class="job__duration">{{ job.project.duration }}</span></p>
-        <p>à <span class="job__location">{{ job.project.location }}</span></p>
+        <p>à <span class="job__locations">{{ job.project.locations }}</span></p>
       </a>
       <footer class="job__footer">
         <button class="job__apply-button" v-on:click="submitInterest(job)">Je suis intéressé</button>
@@ -180,7 +180,7 @@
     font-weight: 700;
   }
 
-  .job__location {
+  .job__locations {
     color: #07c;
   }
 
