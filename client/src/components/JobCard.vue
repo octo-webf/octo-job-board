@@ -10,7 +10,7 @@
         <p class="job__customer-wrapper">pour <span class="job__customer">{{ job.project.customer.name }}</span>
         </p>
         <p>à partir de <span class="job__start-date">{{ startDate }}</span></p>
-        <p>à <span class="job__locations">{{ job.project.locations }}</span></p>
+        <p>à <span v-bind:class="locationsClasses">{{ locations }}</span></p>
       </a>
       <footer class="job__footer">
         <button class="job__apply-button" v-on:click="submitInterest(job)">Je suis intéressé</button>
@@ -46,7 +46,29 @@
         const startDate = new Date(this.job.project.start_date);
         return startDate.toLocaleDateString('fr-FR', {month: 'long', year: 'numeric'});
 
+      },
+
+      locations() {
+
+  	    const locations = this.job.project.locations;
+  	    if (!locations || locations.trim() === '') {
+  	      return 'non renseigné'
+        }
+        return locations;
+
+      },
+
+      locationsClasses() {
+
+  	    const classes = ['job__locations'];
+
+        const locations = this.job.project.locations;
+        if (!locations || locations.trim() === '') {
+          classes.push('job__locations--empty');
+        }
+  	    return classes;
       }
+
   	},
 
   	methods: {
@@ -86,6 +108,7 @@
   			return axios.post(`${process.env.API_URL}/api/interests`, body);
 
   		},
+
   	},
 
   };
@@ -171,7 +194,8 @@
   }
 
   .job__mission {
-    color: #71a5cb;
+    color: #5fba7d;
+    font-weight: 500;
   }
 
   .job__customer-wrapper {
@@ -181,12 +205,13 @@
   }
 
   .job__customer {
-    color: #9199a1;
+    color: #07c;
+    font-weight: 500;
   }
 
   .job__start-date {
-    color: #f98c71;
-    text-transform: capitalize;
+    color: #07c;
+    font-weight: 500;
   }
 
   .job__duration {
@@ -196,6 +221,11 @@
 
   .job__locations {
     color: #07c;
+    font-weight: 500;
+  }
+
+  .job__locations--empty {
+    color: #9199a1;
   }
 
   .job__footer {
