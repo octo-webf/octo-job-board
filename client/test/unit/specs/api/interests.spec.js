@@ -33,7 +33,7 @@ describe('Unit | API | interests api', () => {
       const accessToken = 'valid-access-token';
 
       const expectedUrl = 'http://localhost:3000/api/interests';
-      const body = {
+      const expectedBody = {
         interestedConsultant: {
           name: 'Samurai Jack',
           email: 'sjack@octo.com',
@@ -44,10 +44,7 @@ describe('Unit | API | interests api', () => {
         activityName: 'Tech Lead',
         missionName: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
       };
-      const expectedOptions = {
-        headers: { Authorization: `Bearer ${accessToken}` },
-        body,
-      };
+      const expectedOptions = { headers: { Authorization: `Bearer ${accessToken}` } };
       const job = {
         id: 2,
         activity: {
@@ -78,7 +75,7 @@ describe('Unit | API | interests api', () => {
       // then
       return promise.then(() => {
 
-        expect(axios.post).to.have.been.calledWith(expectedUrl, expectedOptions);
+        expect(axios.post).to.have.been.calledWith(expectedUrl, expectedBody, expectedOptions);
 
       });
 

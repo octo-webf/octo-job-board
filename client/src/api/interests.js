@@ -13,12 +13,9 @@ const InterestsApi = {
       activityName: job.activity.title,
       missionName: job.project.name,
     };
-    const options = {
-      headers: { Authorization: `Bearer ${accessToken}` },
-      body,
-    };
+    const options = { headers: { Authorization: `Bearer ${accessToken}` } };
 
-    return axios.post(url, options)
+    return axios.post(url, body, options)
       .then(response => Promise.resolve(response.data))
       .catch(error => Promise.reject(error));
 
