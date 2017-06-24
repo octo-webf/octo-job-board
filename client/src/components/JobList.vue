@@ -25,7 +25,7 @@
                     <span v-bind:class="['job__status job__status--'+job.project.status]"></span>
                   </header>
                   <a class="job__content" v-bind:href="'https://octopod.octo.com/projects/' + job.project.id">
-                    <p><span class="job__mission">{{ job.project.name }}</span></p>
+                    <p><span class="job__mission">{{ shortenMissionName(job.project.name) }}</span></p>
                     <p class="job__client-wrapper">pour <span class="job__client">{{ job.project.customer.name }}</span>
                     </p>
                     <p>dès <span class="job__start-date">{{ job.project.start_date }}</span> sur <span
@@ -101,6 +101,12 @@
   				eventLabel: 'I am interested',
   				eventValue: null,
   			});
+
+  		},
+
+  		shortenMissionName(missionName) {
+
+  			return missionName.substring(0, 49);
 
   		},
 
