@@ -33,7 +33,6 @@
 
   import authenticationService from '@/services/authentication';
   import jobsApi from '@/api/jobs';
-  import interestsApi from '@/api/interests';
   import JobCard from '@/components/JobCard';
 
   export default {

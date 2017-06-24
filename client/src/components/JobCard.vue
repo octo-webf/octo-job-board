@@ -13,7 +13,10 @@
         <p>à <span v-bind:class="locationsClasses">{{ locations }}</span></p>
       </a>
       <footer class="job__footer">
-        <button class="job__apply-button" v-on:click="submitInterest(job)" title="Si vous cliquez sur ce bouton, un mail sera envoyé à l'équipe jobBoard (uniquement!) avec les informations utiles pour aider au staffing.">Je suis intéressé</button>
+        <button class="job__apply-button" v-on:click="submitInterest(job)"
+                title="Si vous cliquez sur ce bouton, un mail sera envoyé à l'équipe jobBoard (uniquement!) avec les informations utiles pour aider au staffing.">
+          Je suis intéressé
+        </button>
       </footer>
     </article>
   </div>
@@ -21,8 +24,7 @@
 
 <script>
 
-  import axios from 'axios';
-  import interestsApi from '@/api/interests'
+  import interestsApi from '@/api/interests';
 
   export default {
 
@@ -30,45 +32,52 @@
 
   	computed: {
 
-  	  octopodUrl() {
-  	    const octopodProjectId = this.job.project.id;
-        return `https://octopod.octo.com/projects/${octopodProjectId}`
-      },
+  		octopodUrl() {
 
-      mission() {
+  			const octopodProjectId = this.job.project.id;
+  			return `https://octopod.octo.com/projects/${octopodProjectId}`;
 
-        const missionName = this.job.project.name;
+  		},
+
+  		mission() {
+
+  			const missionName = this.job.project.name;
   			return missionName.substring(0, 49);
 
   		},
 
-      startDate() {
+  		startDate() {
 
-        const startDate = new Date(this.job.project.start_date);
-        return startDate.toLocaleDateString('fr-FR', {month: 'long', year: 'numeric'});
+  			const startDate = new Date(this.job.project.start_date);
+  			return startDate.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
 
-      },
+  		},
 
-      locations() {
+  		locations() {
 
-  	    const locations = this.job.project.locations;
-  	    if (!locations || locations.trim() === '') {
-  	      return 'non renseigné'
-        }
-        return locations;
+  			const locations = this.job.project.locations;
+  			if (!locations || locations.trim() === '') {
 
-      },
+  				return 'non renseigné';
 
-      locationsClasses() {
+  			}
+  			return locations;
 
-  	    const classes = ['job__locations'];
+  		},
 
-        const locations = this.job.project.locations;
-        if (!locations || locations.trim() === '') {
-          classes.push('job__locations--empty');
-        }
-  	    return classes;
-      }
+  		locationsClasses() {
+
+  			const classes = ['job__locations'];
+
+  			const locations = this.job.project.locations;
+  			if (!locations || locations.trim() === '') {
+
+  				classes.push('job__locations--empty');
+
+  			}
+  			return classes;
+
+  		},
 
   	},
 
@@ -94,9 +103,9 @@
 
   		sendInterest() {
 
-        const accessToken = window.localStorage.access_token;
+  			const accessToken = window.localStorage.access_token;
 
-        interestsApi.sendInterest(this.job, accessToken);
+  			interestsApi.sendInterest(this.job, accessToken);
 
   		},
 
