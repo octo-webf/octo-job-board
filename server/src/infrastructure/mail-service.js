@@ -6,13 +6,12 @@ function sendWelcomeEmail (interestedJobForm) {
 }
 
 function buildMailOptions (interestedJobForm) {
-  const subject = `[JobBoard] ${interestedJobForm.interestedNickname} intéressé·e par ${interestedJobForm.missionName} - ${interestedJobForm.activityName}`
+  const {interestedConsultant} = interestedJobForm;
+  const subject = `[JobBoard] ${interestedConsultant.name} intéressé·e par ${interestedJobForm.missionName} - ${interestedJobForm.activityName}`
 
   const template = `
-    <h3><a href="mailto:${interestedJobForm.interestedNickname.toLowerCase()}@octo.com">${interestedJobForm.interestedNickname}</a> est intéressé·e par la mission <strong>${interestedJobForm.missionName}</strong> en tant que <strong>${interestedJobForm.activityName}</strong>.</h3>
-    <p>Voir le <a href="https://octopod.octo.com/timesheet/${interestedJobForm.interestedNickname}">CRA de PTR</a></p>
+    <h3><a href="mailto:${interestedConsultant.email}">${interestedConsultant.name}</a> est intéressé·e par la mission <strong>${interestedJobForm.missionName}</strong> en tant que <strong>${interestedJobForm.activityName}</strong>.</h3>
     <p>Voir la <a href="${interestedJobForm.octopodLink}">page mission</a></p>
-    <p>Contacter <a href="https://askbob.octo.com/users/${interestedJobForm.interestedNickname.toLowerCase()}">${interestedJobForm.interestedNickname}</a></p>
     <p>Contacter le Contact commercial : <a href="https://askbob.octo.com/users/${interestedJobForm.businessContactNickname.toLowerCase()}">${interestedJobForm.businessContactNickname}</a></p>
     <p>Contacter le Directeur de mission : <a href="https://askbob.octo.com/users/${interestedJobForm.missionDirectorNickname.toLowerCase()}">${interestedJobForm.missionDirectorNickname}</a></p>
     `

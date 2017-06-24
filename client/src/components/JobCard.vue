@@ -106,9 +106,10 @@
 
         if (authenticationService.isAuthenticated()) {
 
+          const consultant = authenticationService.getAuthenticatedUser();
           const accessToken = authenticationService.getAccessToken();
 
-          interestsApi.sendInterest(this.job, accessToken);
+          interestsApi.sendInterest(this.job, consultant, accessToken);
         }
 
       },
