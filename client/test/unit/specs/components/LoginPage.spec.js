@@ -2,20 +2,20 @@ import Vue from 'vue';
 import LoginPage from '@/components/LoginPage';
 import authentication from '@/services/authentication';
 
-
 describe('Unit | Component | LoginPage.vue', () => {
 
 	let component;
 
-	describe('onMounted Hook', () => {
+  beforeEach(() => {
 
-		beforeEach(() => {
+    const Constructor = Vue.extend(LoginPage);
 
-			const Constructor = Vue.extend(LoginPage);
+    component = new Constructor().$mount();
 
-			component = new Constructor().$mount();
+  });
 
-		});
+
+  describe('onMounted Hook', () => {
 
 		it('should define an onSignIn on the window namespace', () => {
 
@@ -33,15 +33,12 @@ describe('Unit | Component | LoginPage.vue', () => {
 	});
 
 
-	describe('onSignIn', () => {
+	describe('method #onSignIn', () => {
 
 		beforeEach(() => {
 
-			const Constructor = Vue.extend(LoginPage);
-
 			sinon.stub(authentication, 'authenticate').resolves();
-
-			component = new Constructor().$mount();
+      window.localStorage.clear();
 
 		});
 
@@ -51,25 +48,16 @@ describe('Unit | Component | LoginPage.vue', () => {
 
 		});
 
-		it('should call authenticate function', (done) => {
+		it('should call authenticate function', () => {
 
       // given
-			const googleUser = {
-				getAuthResponse() {
-
-					return {
-						id_token: 'google-id_token',
-					};
-
-				},
-			};
+			const googleUser = {};
 
       // when
 			component.onSignIn(googleUser);
 
       // then
 			expect(authentication.authenticate).to.have.been.called;
-			done();
 
 		});
 

@@ -4,8 +4,6 @@
 
     <div class="g-signin2" ref="g-signin2" data-onsuccess="onSignIn"></div>
 
-    <!-- <button @click="signOut">Sign out</button> -->
-
   </div>
 
 </template>
@@ -28,11 +26,9 @@
 
   		onSignIn(googleUser) {
 
-  			const idToken = googleUser.getAuthResponse().id_token;
+  			authentication.authenticate(googleUser).then(() => {
 
-  			authentication.authenticate(idToken).then(() => {
-
-  				this.$router.push('/');
+          this.$router.push('/');
 
   			});
 

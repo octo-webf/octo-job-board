@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueAnalytics from 'vue-analytics';
 import JobCard from '@/components/JobCard';
 import interestsApi from '@/api/interests';
+import authenticationService from '@/services/authentication';
 
 Vue.use(VueAnalytics, {
 	id: `${process.env.ANALYTICS_ID}`,
@@ -136,12 +137,14 @@ describe('Unit | Component | JobCard.vue', () => {
 
 		beforeEach(() => {
 
+		  sinon.stub(authenticationService, 'isAuthenticated').returns(true);
 			sinon.stub(interestsApi, 'sendInterest').resolves();
 
 		});
 
 		afterEach(() => {
 
+      authenticationService.isAuthenticated.restore();
 			interestsApi.sendInterest.restore();
 
 		});
@@ -149,10 +152,10 @@ describe('Unit | Component | JobCard.vue', () => {
 		it('should call the API with good params', () => {
 
       // when
-			component.sendInterest(job);
+			component.sendInterest();
 
       // then
-			expect(interestsApi.sendInterest).to.have.been.calledWith(job, undefined);
+			expect(interestsApi.sendInterest).to.have.been.calledWith(job, null);
 
 
 		});
@@ -166,7 +169,7 @@ describe('Unit | Component | JobCard.vue', () => {
 			myButton.click();
 
       // Then
-			expect(interestsApi.sendInterest).to.have.been.calledWith(job, undefined);
+			expect(interestsApi.sendInterest).to.have.been.calledWith(job, null);
 
 		}));
 

@@ -25,91 +25,95 @@
 <script>
 
   import interestsApi from '@/api/interests';
+  import authenticationService from '@/services/authentication';
 
   export default {
 
-  	props: ['job'],
+    props: ['job'],
 
-  	computed: {
+    computed: {
 
-  		octopodUrl() {
+      octopodUrl() {
 
-  			const octopodProjectId = this.job.project.id;
-  			return `https://octopod.octo.com/projects/${octopodProjectId}`;
+        const octopodProjectId = this.job.project.id;
+        return `https://octopod.octo.com/projects/${octopodProjectId}`;
 
-  		},
+      },
 
-  		mission() {
+      mission() {
 
-  			const missionName = this.job.project.name;
-  			return missionName.substring(0, 49);
+        const missionName = this.job.project.name;
+        return missionName.substring(0, 49);
 
-  		},
+      },
 
-  		startDate() {
+      startDate() {
 
-  			const startDate = new Date(this.job.project.start_date);
-  			return startDate.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+        const startDate = new Date(this.job.project.start_date);
+        return startDate.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
 
-  		},
+      },
 
-  		locations() {
+      locations() {
 
-  			const locations = this.job.project.locations;
-  			if (!locations || locations.trim() === '') {
+        const locations = this.job.project.locations;
+        if (!locations || locations.trim() === '') {
 
-  				return 'non renseigné';
+          return 'non renseigné';
 
-  			}
-  			return locations;
+        }
+        return locations;
 
-  		},
+      },
 
-  		locationsClasses() {
+      locationsClasses() {
 
-  			const classes = ['job__locations'];
+        const classes = ['job__locations'];
 
-  			const locations = this.job.project.locations;
-  			if (!locations || locations.trim() === '') {
+        const locations = this.job.project.locations;
+        if (!locations || locations.trim() === '') {
 
-  				classes.push('job__locations--empty');
+          classes.push('job__locations--empty');
 
-  			}
-  			return classes;
+        }
+        return classes;
 
-  		},
+      },
 
-  	},
+    },
 
-  	methods: {
+    methods: {
 
-  		submitInterest() {
+      submitInterest() {
 
-  			this.trackEvent();
-  			this.sendInterest();
+        this.trackEvent();
+        this.sendInterest();
 
-  		},
+      },
 
-  		trackEvent() {
+      trackEvent() {
 
-  			this.$ga.event({
-  				eventCategory: 'Job List',
-  				eventAction: 'click',
-  				eventLabel: 'I am interested',
-  				eventValue: null,
-  			});
+        this.$ga.event({
+          eventCategory: 'Job List',
+          eventAction: 'click',
+          eventLabel: 'I am interested',
+          eventValue: null,
+        });
 
-  		},
+      },
 
-  		sendInterest() {
+      sendInterest() {
 
-  			const accessToken = window.localStorage.access_token;
+        if (authenticationService.isAuthenticated()) {
 
-  			interestsApi.sendInterest(this.job, accessToken);
+          const accessToken = authenticationService.getAccessToken();
 
-  		},
+          interestsApi.sendInterest(this.job, accessToken);
+        }
 
-  	},
+      },
+
+    },
 
   };
 
