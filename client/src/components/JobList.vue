@@ -16,7 +16,7 @@
         <div class="job-results-panel">
 
           <section class="job-results job-results--delivery">
-            <h1 class="job-results__title">Missions ({{ jobs.length }})</h1>
+            <h1 class="job-results__title">Missions à staffer ({{ jobs.length }})</h1>
             <ul class="job-results__list">
               <li class="job-results__item" v-for="job in jobs">
                 <job-card v-bind:job="job"></job-card>
