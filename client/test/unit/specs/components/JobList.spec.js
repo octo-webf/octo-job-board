@@ -28,7 +28,7 @@ describe('Unit | Component | JobList.vue', () => {
 				customer: {
 					name: 'La Poste - Courrier',
 				},
-				start_date: 'juillet 2017',
+				start_date: '2017-07-01',
 				duration: '10 mois',
 				location: 'OCTO',
 				business_contact: {

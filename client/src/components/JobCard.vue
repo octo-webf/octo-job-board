@@ -5,12 +5,11 @@
         <h2 class="job__title">{{ job.activity.title }}</h2>
         <span v-bind:class="['job__status job__status--'+job.project.status]"></span>
       </header>
-      <a class="job__content" v-bind:href="'https://octopod.octo.com/projects/' + job.project.id">
-        <p><span class="job__mission">{{ shortenMissionName }}</span></p>
-        <p class="job__client-wrapper">pour <span class="job__client">{{ job.project.customer.name }}</span>
+      <a class="job__content" v-bind:href="octopodUrl">
+        <p><span class="job__mission">{{ mission }}</span></p>
+        <p class="job__customer-wrapper">pour <span class="job__customer">{{ job.project.customer.name }}</span>
         </p>
-        <p>dès <span class="job__start-date">{{ job.project.start_date }}</span> sur <span
-          class="job__duration">{{ job.project.duration }}</span></p>
+        <p>à partir de <span class="job__start-date">{{ startDate }}</span></p>
         <p>à <span class="job__locations">{{ job.project.locations }}</span></p>
       </a>
       <footer class="job__footer">
@@ -29,11 +28,25 @@
   	props: ['job'],
 
   	computed: {
-  		shortenMissionName() {
 
-  			return this.job.project.name.substring(0, 49);
+  	  octopodUrl() {
+  	    const octopodProjectId = this.job.project.id;
+        return `https://octopod.octo.com/projects/${octopodProjectId}`
+      },
+
+      mission() {
+
+        const missionName = this.job.project.name;
+  			return missionName.substring(0, 49);
 
   		},
+
+      startDate() {
+
+        const startDate = new Date(this.job.project.start_date);
+        return startDate.toLocaleDateString('fr-FR', {month: 'long', year: 'numeric'});
+
+      }
   	},
 
   	methods: {
@@ -161,18 +174,19 @@
     color: #71a5cb;
   }
 
-  .job__client-wrapper {
+  .job__customer-wrapper {
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
   }
 
-  .job__client {
+  .job__customer {
     color: #9199a1;
   }
 
   .job__start-date {
     color: #f98c71;
+    text-transform: capitalize;
   }
 
   .job__duration {

@@ -32,7 +32,7 @@
 
   			authentication.authenticate(idToken).then(() => {
 
-  				this.$router.push('/jobs');
+  				this.$router.push('/');
 
   			});
 

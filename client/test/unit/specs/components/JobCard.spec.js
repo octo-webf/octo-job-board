@@ -4,49 +4,49 @@ import JobCard from '@/components/JobCard';
 import axios from 'axios';
 
 Vue.use(VueAnalytics, {
-	id: `${process.env.ANALYTICS_ID}`,
+  id: `${process.env.ANALYTICS_ID}`,
 });
 
 describe('Unit | Component | JobCard.vue', () => {
 
-	let component;
-	const job = {
-		id: 2,
-		activity: {
-			title: 'Tech Lead',
-		},
-		project: {
-			id: 123456,
-			status: 'proposal-in-progress',
-			name: 'Refonte du SI',
-			customer: {
-				name: 'La Poste - Courrier',
-			},
-			start_date: 'juillet 2017',
-			duration: '10 mois',
-			locations: 'OCTO',
-			business_contact: {
-				nickname: 'ABC',
-			},
-			mission_director: {
-				nickname: 'XYZ',
-			},
-		},
-	};
+  let component;
+  const job = {
+    id: 2,
+    activity: {
+      title: 'Tech Lead',
+    },
+    project: {
+      id: 123456,
+      status: 'proposal-in-progress',
+      name: 'Refonte du SI',
+      customer: {
+        name: 'La Poste - Courrier',
+      },
+      start_date: '2017-07-01',
+      duration: '10 mois',
+      locations: 'OCTO',
+      business_contact: {
+        nickname: 'ABC',
+      },
+      mission_director: {
+        nickname: 'XYZ',
+      },
+    },
+  };
 
-	beforeEach(() => {
+  beforeEach(() => {
 
     // given
-		const Constructor = Vue.extend(JobCard);
+    const Constructor = Vue.extend(JobCard);
 
     // when
-		component = new Constructor({
-			data: {
-				job,
-			},
-		}).$mount();
+    component = new Constructor({
+      data: {
+        job,
+      },
+    }).$mount();
 
-	});
+  });
 
   describe('rendering', () => {
 
@@ -63,15 +63,11 @@ describe('Unit | Component | JobCard.vue', () => {
     });
 
     it('should display the client name', () => {
-      expect(component.$el.querySelector('.job__client').textContent.trim()).to.equal('La Poste - Courrier');
+      expect(component.$el.querySelector('.job__customer').textContent.trim()).to.equal('La Poste - Courrier');
     });
 
     it('should display the start date', () => {
-      expect(component.$el.querySelector('.job__start-date').textContent.trim()).to.equal('juillet 2017');
-    });
-
-    it('should display the duration', () => {
-      expect(component.$el.querySelector('.job__duration').textContent.trim()).to.equal('10 mois');
+      expect(component.$el.querySelector('.job__start-date').textContent.trim()).to.contain('juillet 2017');
     });
 
     it('should display the locations', () => {
@@ -80,139 +76,171 @@ describe('Unit | Component | JobCard.vue', () => {
 
   });
 
-	describe('method #trackEvent', () => {
+  describe('method #trackEvent', () => {
 
-		const expectedCallParams = {
-			eventCategory: 'Job List',
-			eventAction: 'click',
-			eventLabel: 'I am interested',
-			eventValue: null,
-		};
+    const expectedCallParams = {
+      eventCategory: 'Job List',
+      eventAction: 'click',
+      eventLabel: 'I am interested',
+      eventValue: null,
+    };
 
-		beforeEach(() => {
+    beforeEach(() => {
 
-			sinon.stub(component.$ga, 'event').returns(true);
+      sinon.stub(component.$ga, 'event').returns(true);
 
-		});
+    });
 
-		afterEach(() => {
+    afterEach(() => {
 
-			component.$ga.event.restore();
+      component.$ga.event.restore();
 
-		});
+    });
 
-		it('should check analytics', () => {
-
-      // when
-			component.trackEvent();
-
-      // then
-			expect(component.$ga.event).to.have.been.calledWith(expectedCallParams);
-
-		});
-
-		it('on click on button job__apply-button', () => Vue.nextTick().then(() => {
+    it('should check analytics', () => {
 
       // when
-			component.$el.querySelector('button.job__apply-button').click();
+      component.trackEvent();
 
       // then
-			expect(component.$ga.event).to.have.been.calledWith(expectedCallParams);
+      expect(component.$ga.event).to.have.been.calledWith(expectedCallParams);
 
-		}));
+    });
 
-	});
-
-	describe('method #sendInterest', () => {
-
-		const expectedUrl = 'http://localhost:3000/api/interests';
-		const expectedBody = {
-			interestedJobForm: {
-				interestedNickname: 'PTR',
-				businessContactNickname: 'ABC',
-				missionDirectorNickname: 'XYZ',
-				octopodLink: 'https://octopod.octo.com/projects/123456',
-				activityName: 'Tech Lead',
-				missionName: 'Refonte du SI',
-			},
-		};
-		const stubbedResponse = {
-			status: 200,
-			data: {
-				foo: 'bar',
-			},
-		};
-
-		beforeEach(() => {
-
-			sinon.stub(axios, 'post').resolves(stubbedResponse);
-
-		});
-
-		afterEach(() => {
-
-			axios.post.restore();
-
-		});
-
-		it('should call the API with good params', () => {
+    it('on click on button job__apply-button', () => Vue.nextTick().then(() => {
 
       // when
-			const promise = component.sendInterest();
+      component.$el.querySelector('button.job__apply-button').click();
 
       // then
-			return promise.then(() => {
+      expect(component.$ga.event).to.have.been.calledWith(expectedCallParams);
 
-				expect(axios.post).to.have.been.calledWith(expectedUrl, expectedBody);
+    }));
 
-			});
+  });
 
-		});
+  describe('method #sendInterest', () => {
 
-		it('should POST on click', () => Vue.nextTick().then(() => {
+    const expectedUrl = 'http://localhost:3000/api/interests';
+    const expectedBody = {
+      interestedJobForm: {
+        interestedNickname: 'PTR',
+        businessContactNickname: 'ABC',
+        missionDirectorNickname: 'XYZ',
+        octopodLink: 'https://octopod.octo.com/projects/123456',
+        activityName: 'Tech Lead',
+        missionName: 'Refonte du SI',
+      },
+    };
+    const stubbedResponse = {
+      status: 200,
+      data: {
+        foo: 'bar',
+      },
+    };
+
+    beforeEach(() => {
+
+      sinon.stub(axios, 'post').resolves(stubbedResponse);
+
+    });
+
+    afterEach(() => {
+
+      axios.post.restore();
+
+    });
+
+    it('should call the API with good params', () => {
+
+      // when
+      const promise = component.sendInterest();
+
+      // then
+      return promise.then(() => {
+
+        expect(axios.post).to.have.been.calledWith(expectedUrl, expectedBody);
+
+      });
+
+    });
+
+    it('should POST on click', () => Vue.nextTick().then(() => {
 
       // given
-			const myButton = component.$el.querySelector('button');
+      const myButton = component.$el.querySelector('button');
 
       // when
-			myButton.click();
+      myButton.click();
 
       // then
-			expect(axios.post).to.have.been.calledWith(expectedUrl, expectedBody);
+      expect(axios.post).to.have.been.calledWith(expectedUrl, expectedBody);
 
-		}));
+    }));
 
-	});
+  });
 
-	describe('computed property #shortenMissionName', () => {
+  describe('computed property #mission', () => {
 
-		it('should not shorten short mission name', () => {
-
-      // Given
-			job.project.name = 'Name shorter than 50 characters';
-
-      // When
-			const trimedMissionName = component.shortenMissionName;
-
-      // Then
-			expect(trimedMissionName).to.equal('Name shorter than 50 characters');
-
-		});
-
-		it('should shorten long mission name to 50 characters', () => {
+    it('should not shorten short mission name', () => {
 
       // Given
-			job.project.name = 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017';
+      job.project.name = 'Name shorter than 50 characters';
 
       // When
-			const trimedMissionName = component.shortenMissionName;
+      const missionName = component.mission;
 
       // Then
-			expect(trimedMissionName).to.equal('SCLOU - Cloud computing : enjeux, architecture et');
+      expect(missionName).to.equal('Name shorter than 50 characters');
 
-		});
+    });
 
-	});
+    it('should shorten long mission name to 50 characters', () => {
+
+      // Given
+      job.project.name = 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017';
+
+      // When
+      const missionName = component.mission;
+
+      // Then
+      expect(missionName).to.equal('SCLOU - Cloud computing : enjeux, architecture et');
+
+    });
+
+  });
+
+  describe('computed property #startDate', () => {
+
+    it('should format the mission start date (ex : "2017-07-01" => "Juillet 2017")', () => {
+
+      // Given
+      job.project.start_date = '2017-07-01';
+
+      // When
+      const startDate = component.startDate;
+
+      // Then
+      expect(startDate).to.contain('juillet 2017');
+
+    });
+  });
+
+  describe('computed property #octopodUrl', () => {
+
+    it('should format the link to Octopod project page', () => {
+
+      // Given
+      job.project.id = 12357;
+
+      // When
+      const octopodUrl = component.octopodUrl;
+
+      // Then
+      expect(octopodUrl).to.equal('https://octopod.octo.com/projects/12357');
+
+    });
+  });
 
 });
 
