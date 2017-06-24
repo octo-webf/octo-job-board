@@ -34,7 +34,6 @@
                   </a>
                   <footer class="job__footer">
                     <button class="job__apply-button" v-on:click="submitInterest(job)">Je suis intéressé</button>
-                    <a class="job__alert-link" href="mailto:jobboard@octo.com">Signaler un problème</a>
                   </footer>
                 </article>
               </li>
