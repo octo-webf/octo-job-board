@@ -4,7 +4,7 @@ const AuthApi = {
 
 	verifyIdTokenAndGetAccessToken(idToken) {
 
-		const url = `${process.env.API_URL}/auth/token`;
+		const url = `${process.env.API_URL}auth/token`;
 		const body = { idToken };
 		const options = { headers: { 'Content-Type': 'application/json' } };
 
