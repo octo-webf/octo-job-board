@@ -25,7 +25,7 @@ describe('JobList.vue', () => {
 			project: {
 				id: 123456,
 				status: 'proposal-in-progress',
-				name: 'Delivery PUBLICIS / TITAN',
+				name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
 				customer: {
 					name: 'La Poste - Courrier',
 				},
@@ -56,12 +56,6 @@ describe('JobList.vue', () => {
 		axios.post.restore();
 		authentication.isAuthenticated.restore();
 		jobsApi.fetchAll.restore();
-
-	});
-
-	it('should verify that user is authenticated', () => {
-
-		expect(authentication.isAuthenticated).to.have.been.called;
 
 	});
 
@@ -120,40 +114,50 @@ describe('JobList.vue', () => {
 
 	});
 
-	it('should render as many jobs as received from the API', () => Vue.nextTick().then(() => {
+	describe('#getJobs', () => {
 
-		const jobCards = component.$el.querySelectorAll('.job-card');
-		expect(jobCards.length).to.equal(1);
+		it('should verify that user is authenticated', () => {
 
-	}));
+			expect(authentication.isAuthenticated).to.have.been.called;
 
-	it('should render the details of a job', () => Vue.nextTick().then(() => {
+		});
 
-		const firstJobCard = component.$el.querySelectorAll('.job-card')[0];
-		expect(firstJobCard.querySelector('.job__title').textContent).to.equal('Tech Lead');
-		expect(firstJobCard.querySelector('.job__mission').textContent).to.equal('Delivery PUBLICIS / TITAN');
-		expect(firstJobCard.querySelector('.job__client').textContent).to.equal('La Poste - Courrier');
-		expect(firstJobCard.querySelector('.job__start-date').textContent).to.equal('juillet 2017');
-		expect(firstJobCard.querySelector('.job__duration').textContent).to.equal('10 mois');
-		expect(firstJobCard.querySelector('.job__location').textContent).to.equal('OCTO');
-		expect(firstJobCard.querySelector('.job__content').getAttribute('href')).to.equal('https://octopod.octo.com/projects/123456');
+		it('should render as many jobs as received from the API', () => Vue.nextTick().then(() => {
 
-	}));
+			const jobCards = component.$el.querySelectorAll('.job-card');
+			expect(jobCards.length).to.equal(1);
 
-	it('should render the appropriate status class', () => Vue.nextTick().then(() => {
+		}));
 
-		const firstJobCard = component.$el.querySelectorAll('.job-card')[0];
-		expect(firstJobCard.querySelector('.job__status').getAttribute('class')).to.contain('job__status--proposal-in-progress');
+		it('should render the details of a job', () => Vue.nextTick().then(() => {
 
-	}));
+			const firstJobCard = component.$el.querySelectorAll('.job-card')[0];
+			expect(firstJobCard.querySelector('.job__title').textContent).to.equal('Tech Lead');
+			expect(firstJobCard.querySelector('.job__mission').textContent).to.equal('SCLOU - Cloud computing : enjeux, architecture et');
+			expect(firstJobCard.querySelector('.job__client').textContent).to.equal('La Poste - Courrier');
+			expect(firstJobCard.querySelector('.job__start-date').textContent).to.equal('juillet 2017');
+			expect(firstJobCard.querySelector('.job__duration').textContent).to.equal('10 mois');
+			expect(firstJobCard.querySelector('.job__location').textContent).to.equal('OCTO');
+			expect(firstJobCard.querySelector('.job__content').getAttribute('href')).to.equal('https://octopod.octo.com/projects/123456');
 
-	it('should add number of available jobs', () => Vue.nextTick().then(() => {
+		}));
 
-		expect(component.$el.querySelector('.job-results__title').textContent.trim()).to.equal('Missions (1)');
+		it('should render the appropriate status class', () => Vue.nextTick().then(() => {
 
-	}));
+			const firstJobCard = component.$el.querySelectorAll('.job-card')[0];
+			expect(firstJobCard.querySelector('.job__status').getAttribute('class')).to.contain('job__status--proposal-in-progress');
 
-	describe('.sendInterest()', () => {
+		}));
+
+		it('should add number of available jobs', () => Vue.nextTick().then(() => {
+
+			expect(component.$el.querySelector('.job-results__title').textContent.trim()).to.equal('Missions (1)');
+
+		}));
+
+	});
+
+	describe('#sendInterest', () => {
 
 		let expectedUrl;
 		let expectedBody;
@@ -167,7 +171,7 @@ describe('JobList.vue', () => {
 					missionDirectorNickname: 'XYZ',
 					octopodLink: 'https://octopod.octo.com/projects/123456',
 					activityName: 'Tech Lead',
-					missionName: 'Delivery PUBLICIS / TITAN',
+					missionName: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
 				},
 			};
 
@@ -215,6 +219,36 @@ describe('JobList.vue', () => {
 			expect(axios.post).to.have.been.calledWith(expectedUrl, expectedBody);
 
 		}));
+
+	});
+
+	describe('#shortenMissionName', () => {
+
+		it('should not shorten short mission name', () => {
+
+      // Given
+			const missionName = 'SCLOU - Cloud computing';
+
+      // When
+			const trimedMissionName = component.shortenMissionName(missionName);
+
+      // Then
+			expect(trimedMissionName).to.equal('SCLOU - Cloud computing');
+
+		});
+
+		it('should shorten long mission name to 50 characters', () => {
+
+      // Given
+			const missionName = 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017';
+
+      // When
+			const trimedMissionName = component.shortenMissionName(missionName);
+
+      // Then
+			expect(trimedMissionName).to.equal('SCLOU - Cloud computing : enjeux, architecture et');
+
+		});
 
 	});
 

@@ -25,7 +25,7 @@
                     <span v-bind:class="['job__status job__status--'+job.project.status]"></span>
                   </header>
                   <a class="job__content" v-bind:href="'https://octopod.octo.com/projects/' + job.project.id">
-                    <p><span class="job__mission">{{ job.project.name }}</span></p>
+                    <p><span class="job__mission">{{ shortenMissionName(job.project.name) }}</span></p>
                     <p class="job__client-wrapper">pour <span class="job__client">{{ job.project.customer.name }}</span>
                     </p>
                     <p>dès <span class="job__start-date">{{ job.project.start_date }}</span> sur <span
@@ -34,7 +34,6 @@
                   </a>
                   <footer class="job__footer">
                     <button class="job__apply-button" v-on:click="submitInterest(job)">Je suis intéressé</button>
-                    <a class="job__alert-link" href="mailto:jobboard@octo.com">Signaler un problème</a>
                   </footer>
                 </article>
               </li>
@@ -105,6 +104,12 @@
 
   		},
 
+  		shortenMissionName(missionName) {
+
+  			return missionName.substring(0, 49);
+
+  		},
+
   		sendInterest(job) {
 
   			const body = {
@@ -139,6 +144,10 @@
     height: 60px;
     background: #ffffff;
     border-bottom: 1px solid #e6e6e6;
+    width: 100%;
+    padding-left: 20px;
+    position: fixed;
+    top: 0;
   }
 
   .page__header--container {
@@ -178,6 +187,7 @@
     display: flex;
     width: 100%;
     padding: 20px 0;
+    margin-top: 60px;
   }
 
   /* Job results
