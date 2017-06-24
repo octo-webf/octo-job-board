@@ -49,7 +49,7 @@
 
   import authenticationService from '@/services/authentication';
   import jobsApi from '@/api/jobs';
-  import axios from 'axios';
+  import interestsApi from '@/api/interests';
 
   export default {
   	name: 'job-list',
@@ -86,6 +86,14 @@
 
   		},
 
+  		sendInterest(job) {
+
+  			const accessToken = window.localStorage.access_token;
+
+  			interestsApi.sendInterest(job, accessToken);
+
+  		},
+
   		submitInterest(job) {
 
   			this.trackEvent();
@@ -107,23 +115,6 @@
   		shortenMissionName(missionName) {
 
   			return missionName.substring(0, 49);
-
-  		},
-
-  		sendInterest(job) {
-
-  			const body = {
-  				interestedJobForm: {
-  					interestedNickname: 'PTR',
-  					businessContactNickname: job.project.business_contact.nickname,
-  					missionDirectorNickname: job.project.mission_director.nickname,
-  					octopodLink: `https://octopod.octo.com/projects/${job.project.id}`,
-  					activityName: job.activity.title,
-  					missionName: job.project.name,
-  				},
-  			};
-
-  			return axios.post(`${process.env.API_URL}api/interests`, body);
 
   		},
   	},

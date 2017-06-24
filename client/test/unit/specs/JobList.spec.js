@@ -3,7 +3,7 @@ import VueAnalytics from 'vue-analytics';
 import JobList from '@/components/JobList';
 import authentication from '@/services/authentication';
 import jobsApi from '@/api/jobs';
-import axios from 'axios';
+import interestsApi from '@/api/interests';
 
 Vue.use(VueAnalytics, {
 	id: `${process.env.ANALYTICS_ID}`,
@@ -40,9 +40,9 @@ describe('JobList.vue', () => {
 				},
 			},
 		};
-		sinon.stub(axios, 'post');
 		sinon.stub(authentication, 'isAuthenticated').returns(true);
 		sinon.stub(jobsApi, 'fetchAll').resolves([jobs]);
+		sinon.stub(interestsApi, 'sendInterest');
 
 		const Constructor = Vue.extend(JobList);
 
@@ -53,9 +53,9 @@ describe('JobList.vue', () => {
 
 	afterEach(() => {
 
-		axios.post.restore();
 		authentication.isAuthenticated.restore();
 		jobsApi.fetchAll.restore();
+		interestsApi.sendInterest.restore();
 
 	});
 
@@ -91,7 +91,6 @@ describe('JobList.vue', () => {
       // given
 
 			authentication.isAuthenticated.returns(true);
-			axios.post.resolves(true);
 			sinon.stub(component.$ga, 'event');
 			component.$ga.event.returns(true);
 
@@ -159,64 +158,27 @@ describe('JobList.vue', () => {
 
 	describe('#sendInterest', () => {
 
-		let expectedUrl;
-		let expectedBody;
-		beforeEach(() => {
-
-			expectedUrl = 'http://localhost:3000/api/interests';
-			expectedBody = {
-				interestedJobForm: {
-					interestedNickname: 'PTR',
-					businessContactNickname: 'ABC',
-					missionDirectorNickname: 'XYZ',
-					octopodLink: 'https://octopod.octo.com/projects/123456',
-					activityName: 'Tech Lead',
-					missionName: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
-				},
-			};
-
-		});
-
 		it('should call the API with good params', () => {
 
-      // given
-			const stubbedResponse = {
-				status: 200,
-				data: {
-					foo: 'bar',
-				},
-			};
-			axios.post.resolves(stubbedResponse);
-
       // when
-			const promise = component.sendInterest(jobs);
+			component.sendInterest(jobs);
 
       // then
-			return promise.then(() => {
+			expect(interestsApi.sendInterest).to.have.been.calledWith(jobs, undefined);
 
-				expect(axios.post).to.have.been.calledWith(expectedUrl, expectedBody);
-
-			});
 
 		});
 
-		it('should POST on click', () => Vue.nextTick().then(() => {
+		it('should send interests on click on job__apply-button', () => Vue.nextTick().then(() => {
 
       // Given
-			const stubbedResponse = {
-				status: 200,
-				data: {
-					foo: 'bar',
-				},
-			};
-			axios.post.resolves(stubbedResponse);
-			const myButton = component.$el.querySelector('button');
+			const myButton = component.$el.querySelector('button.job__apply-button');
 
       // When
 			myButton.click();
 
       // Then
-			expect(axios.post).to.have.been.calledWith(expectedUrl, expectedBody);
+			expect(interestsApi.sendInterest).to.have.been.calledWith(jobs, undefined);
 
 		}));
 
