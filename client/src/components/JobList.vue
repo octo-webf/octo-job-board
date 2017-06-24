@@ -144,6 +144,10 @@
     height: 60px;
     background: #ffffff;
     border-bottom: 1px solid #e6e6e6;
+    width: 100%;
+    padding-left: 20px;
+    position: fixed;
+    top: 0;
   }
 
   .page__header--container {
@@ -183,6 +187,7 @@
     display: flex;
     width: 100%;
     padding: 20px 0;
+    margin-top: 60px;
   }
 
   /* Job results
