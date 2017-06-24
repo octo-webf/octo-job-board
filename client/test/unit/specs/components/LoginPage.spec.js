@@ -6,16 +6,16 @@ describe('Unit | Component | LoginPage.vue', () => {
 
 	let component;
 
-  beforeEach(() => {
+	beforeEach(() => {
 
-    const Constructor = Vue.extend(LoginPage);
+		const Constructor = Vue.extend(LoginPage);
 
-    component = new Constructor().$mount();
+		component = new Constructor().$mount();
 
-  });
+	});
 
 
-  describe('onMounted Hook', () => {
+	describe('onMounted Hook', () => {
 
 		it('should define an onSignIn on the window namespace', () => {
 
@@ -38,7 +38,7 @@ describe('Unit | Component | LoginPage.vue', () => {
 		beforeEach(() => {
 
 			sinon.stub(authentication, 'authenticate').resolves();
-      window.localStorage.clear();
+			window.localStorage.clear();
 
 		});
 

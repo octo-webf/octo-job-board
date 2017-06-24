@@ -75,7 +75,7 @@ describe('Unit | Component | JobCard.vue', () => {
 
 		});
 
-		// TODO: it works on local or on browser, but fails in CircleCI :-/
+    // TODO: it works on local or on browser, but fails in CircleCI :-/
 		it.skip('should display the start date', () => {
 
 			expect(component.$el.querySelector('.job__start-date').textContent.trim()).to.contain('juillet 2017');
@@ -137,14 +137,14 @@ describe('Unit | Component | JobCard.vue', () => {
 
 		beforeEach(() => {
 
-		  sinon.stub(authenticationService, 'isAuthenticated').returns(true);
+			sinon.stub(authenticationService, 'isAuthenticated').returns(true);
 			sinon.stub(interestsApi, 'sendInterest').resolves();
 
 		});
 
 		afterEach(() => {
 
-      authenticationService.isAuthenticated.restore();
+			authenticationService.isAuthenticated.restore();
 			interestsApi.sendInterest.restore();
 
 		});
@@ -156,7 +156,6 @@ describe('Unit | Component | JobCard.vue', () => {
 
       // then
 			expect(interestsApi.sendInterest).to.have.been.calledWith(job, null);
-
 
 		});
 

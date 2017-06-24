@@ -6,7 +6,7 @@ function sendWelcomeEmail (interestedJobForm) {
 }
 
 function buildMailOptions (interestedJobForm) {
-  const {interestedConsultant} = interestedJobForm;
+  const {interestedConsultant} = interestedJobForm
   const subject = `[JobBoard] ${interestedConsultant.name} intéressé·e par ${interestedJobForm.missionName} - ${interestedJobForm.activityName}`
 
   const template = `

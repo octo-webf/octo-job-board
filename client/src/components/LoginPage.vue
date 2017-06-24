@@ -28,7 +28,7 @@
 
   			authentication.authenticate(googleUser).then(() => {
 
-          this.$router.push('/');
+  				this.$router.push('/');
 
   			});
 

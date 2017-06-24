@@ -61,9 +61,9 @@
 
   			if (authenticationService.isAuthenticated()) {
 
-          const accessToken = authenticationService.getAccessToken();
+  				const accessToken = authenticationService.getAccessToken();
 
-          jobsApi.fetchAll(accessToken).then((jobs) => {
+  				jobsApi.fetchAll(accessToken).then((jobs) => {
 
   					this.jobs = jobs;
 
