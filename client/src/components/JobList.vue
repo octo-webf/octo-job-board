@@ -79,8 +79,8 @@
 
 <style scoped>
   .page__container {
-    min-width: 1080px;
-    max-width: 1080px;
+    min-width: 270px;
+    max-width: 270px;
     margin: 0 auto;
   }
 
@@ -161,6 +161,29 @@
     list-style-type: none;
     padding: 0;
     margin: 5px;
+  }
+
+  /* tablet */
+  @media only screen and (min-width : 768px) {
+    .page__container {
+      min-width: 540px;
+      max-width: 540px;
+    }
+  }
+
+  /* desktop */
+  @media only screen and (min-width : 992px) {
+    .page__container {
+      min-width: 810px;
+      max-width: 810px;
+    }
+  }
+  /* desktop */
+  @media only screen and (min-width : 1200px) {
+    .page__container {
+      min-width: 1080px;
+      max-width: 1080px;
+    }
   }
 
 </style>
