@@ -21,7 +21,6 @@
     methods: {
       signOut() {
         authenticationService.disconnect().then(() => {
-          debugger
           this.$router.push('/login');
         });
       }

@@ -41,7 +41,6 @@ export default {
       if (window.gapi) {
         const auth2 = window.gapi.auth2.getAuthInstance();
         auth2.signOut().then(() => {
-          debugger
           _removeItemFromLocalStorage(ACCESS_TOKEN_STORAGE_KEY);
           _removeItemFromLocalStorage(AUTHENTICATED_USER_STORAGE_KEY);
           resolve()
