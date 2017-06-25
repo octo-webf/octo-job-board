@@ -3,7 +3,6 @@ import axios from 'axios';
 const InterestsApi = {
 
 	sendInterest(job, consultant, accessToken) {
-
 		const url = `${process.env.API_URL}api/interests`;
 		const body = {
 			interestedConsultant: consultant,
@@ -18,7 +17,6 @@ const InterestsApi = {
 		return axios.post(url, body, options)
       .then(response => Promise.resolve(response.data))
       .catch(error => Promise.reject(error));
-
 	},
 };
 

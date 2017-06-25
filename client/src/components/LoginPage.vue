@@ -17,22 +17,16 @@
   	name: 'login-page',
 
   	mounted() {
-
-  		window.onSignIn = this.onSignIn.bind(this);
-
-  	},
+		window.onSignIn = this.onSignIn.bind(this);
+	},
 
   	methods: {
 
   		onSignIn(googleUser) {
-
-  			authentication.authenticate(googleUser).then(() => {
-
-  				this.$router.push('/');
-
-  			});
-
-  		},
+			authentication.authenticate(googleUser).then(() => {
+				this.$router.push('/');
+			});
+		},
 
   	},
   };

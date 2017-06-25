@@ -34,86 +34,64 @@
   	computed: {
 
   		octopodUrl() {
-
-  			const octopodProjectId = this.job.project.id;
+			const octopodProjectId = this.job.project.id;
   			return `https://octopod.octo.com/projects/${octopodProjectId}`;
-
-  		},
+		},
 
   		mission() {
-
-  			const missionName = this.job.project.name;
+			const missionName = this.job.project.name;
   			return missionName.substring(0, 49);
-
-  		},
+		},
 
   		startDate() {
-
-  			const startDate = new Date(this.job.project.start_date);
+			const startDate = new Date(this.job.project.start_date);
   			return startDate.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
-
-  		},
+		},
 
   		locations() {
-
-  			const locations = this.job.project.locations;
+			const locations = this.job.project.locations;
   			if (!locations || locations.trim() === '') {
-
-  				return 'non renseigné';
-
-  			}
+				return 'non renseigné';
+			}
   			return locations;
-
-  		},
+		},
 
   		locationsClasses() {
-
-  			const classes = ['job__locations'];
+			const classes = ['job__locations'];
 
   			const locations = this.job.project.locations;
   			if (!locations || locations.trim() === '') {
-
-  				classes.push('job__locations--empty');
-
-  			}
+				classes.push('job__locations--empty');
+			}
   			return classes;
-
-  		},
+		},
 
   	},
 
   	methods: {
 
   		submitInterest() {
-
-  			this.trackEvent();
+			this.trackEvent();
   			this.sendInterest();
-
-  		},
+		},
 
   		trackEvent() {
-
-  			this.$ga.event({
+			this.$ga.event({
   				eventCategory: 'Job List',
   				eventAction: 'click',
   				eventLabel: 'I am interested',
   				eventValue: null,
   			});
-
-  		},
+		},
 
   		sendInterest() {
-
-  			if (authenticationService.isAuthenticated()) {
-
-  				const consultant = authenticationService.getAuthenticatedUser();
+			if (authenticationService.isAuthenticated()) {
+				const consultant = authenticationService.getAuthenticatedUser();
   				const accessToken = authenticationService.getAccessToken();
 
   				interestsApi.sendInterest(this.job, consultant, accessToken);
-  
 			}
-
-  		},
+		},
 
   	},
 

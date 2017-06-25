@@ -2,11 +2,8 @@ import axios from 'axios';
 import api from '@/api/jobs';
 
 describe('Unit | API | jobs api', () => {
-
 	describe('#fetchAll', () => {
-
 		beforeEach(() => {
-
 			const stubbedResponse = {
 				status: 200,
 				data: {
@@ -14,17 +11,13 @@ describe('Unit | API | jobs api', () => {
 				},
 			};
 			sinon.stub(axios, 'get').resolves(stubbedResponse);
-
 		});
 
 		afterEach(() => {
-
 			axios.get.restore();
-
 		});
 
 		it('should fetch API with the good params', () => {
-
       // given
 			const accessToken = 'valid-access-token';
 
@@ -36,13 +29,8 @@ describe('Unit | API | jobs api', () => {
 
       // then
 			return promise.then(() => {
-
 				expect(axios.get).to.have.been.calledWith(expectedUrl, expectedOptions);
-
 			});
-
 		});
-
 	});
-
 });

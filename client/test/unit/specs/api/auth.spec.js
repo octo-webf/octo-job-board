@@ -2,11 +2,8 @@ import axios from 'axios';
 import api from '@/api/auth';
 
 describe('Unit | API | auth api', () => {
-
 	describe('#verifyIdTokenAndGetAccessToken', () => {
-
 		beforeEach(() => {
-
 			const stubbedResponse = {
 				status: 200,
 				data: {
@@ -14,17 +11,13 @@ describe('Unit | API | auth api', () => {
 				},
 			};
 			sinon.stub(axios, 'post').resolves(stubbedResponse);
-
 		});
 
 		afterEach(() => {
-
 			axios.post.restore();
-
 		});
 
 		it('should fetch API with the good params', () => {
-
       // given
 			const idToken = 'valid-id_token';
 
@@ -37,13 +30,8 @@ describe('Unit | API | auth api', () => {
 
       // then
 			return promise.then(() => {
-
 				expect(axios.post).to.have.been.calledWith(expectedUrl, expectedBody, expectedOptions);
-
 			});
-
 		});
-
 	});
-
 });

@@ -9,12 +9,10 @@ Vue.use(VueAnalytics, {
 });
 
 describe('Unit | Component | JobList.vue', () => {
-
 	let component;
 	let jobs;
 
 	beforeEach(() => {
-
     // given
 		jobs = [{
 			id: 2,
@@ -46,38 +44,26 @@ describe('Unit | Component | JobList.vue', () => {
 
     // when
 		component = new Constructor().$mount();
-
 	});
 
 	afterEach(() => {
-
 		authentication.isAuthenticated.restore();
 		jobsApi.fetchAll.restore();
-
 	});
 
 	describe('method #getJobs', () => {
-
 		it('should verify that user is authenticated', () => {
-
 			expect(authentication.isAuthenticated).to.have.been.called;
-
 		});
 
 		it('should render as many jobs as received from the API', () => Vue.nextTick().then(() => {
-
 			const jobCards = component.$el.querySelectorAll('.job-card');
 			expect(jobCards.length).to.equal(1);
-
 		}));
 
 		it('should add number of available jobs', () => Vue.nextTick().then(() => {
-
 			expect(component.$el.querySelector('.job-results__title').textContent.trim()).to.equal('Missions à staffer (1)');
-
 		}));
-
 	});
-
 });
 

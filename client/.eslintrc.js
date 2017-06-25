@@ -32,7 +32,11 @@ module.exports = {
     }],
     'no-underscore-dangle': 0,
     'no-tabs': 0,
-    'padded-blocks': [2, 'always'],
+    'padded-blocks': [2, {
+      'blocks': 'never',
+      'classes': 'always',
+      'switches': 'never'
+    }],
     'no-console': 0,
     'max-len': [2, 200],
     'indent': [2, 'tab'],

@@ -42,36 +42,26 @@
   	},
 
   	data() {
-
-  		return {
+		return {
   			jobs: [],
   		};
-
-  	},
+	},
 
   	mounted() {
-
-  		this.getJobs();
-
-  	},
+		this.getJobs();
+	},
 
   	methods: {
 
   		getJobs() {
-
-  			if (authenticationService.isAuthenticated()) {
-
-  				const accessToken = authenticationService.getAccessToken();
+			if (authenticationService.isAuthenticated()) {
+				const accessToken = authenticationService.getAccessToken();
 
   				jobsApi.fetchAll(accessToken).then((jobs) => {
-
-  					this.jobs = jobs;
-
-  				});
-
-  			}
-
-  		},
+					this.jobs = jobs;
+				});
+			}
+		},
 
   	},
   };

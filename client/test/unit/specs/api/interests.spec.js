@@ -2,11 +2,8 @@ import axios from 'axios';
 import api from '@/api/interests';
 
 describe('Unit | API | interests api', () => {
-
 	describe('#sendInterest', () => {
-
 		beforeEach(() => {
-
 			const stubbedResponse = {
 				status: 200,
 				data: {
@@ -14,17 +11,13 @@ describe('Unit | API | interests api', () => {
 				},
 			};
 			sinon.stub(axios, 'post').resolves(stubbedResponse);
-
 		});
 
 		afterEach(() => {
-
 			axios.post.restore();
-
 		});
 
 		it('should post interests to API with the good params', () => {
-
       // given
 			const consultant = {
 				name: 'Samurai Jack',
@@ -74,13 +67,8 @@ describe('Unit | API | interests api', () => {
 
       // then
 			return promise.then(() => {
-
 				expect(axios.post).to.have.been.calledWith(expectedUrl, expectedBody, expectedOptions);
-
 			});
-
 		});
-
 	});
-
 });
