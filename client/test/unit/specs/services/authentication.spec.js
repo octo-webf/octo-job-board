@@ -107,6 +107,78 @@ describe('Unit | Services | Auth', () => {
 		});
 	});
 
+  describe('method #disconnect', () => {
+
+    let auth2 = {
+      signOut() {
+        return Promise.resolve();
+      }
+    };
+
+    beforeEach(() => {
+      window.gapi = {
+        auth2: {
+          getAuthInstance() {
+            return auth2;
+          }
+        }
+      };
+      sinon.stub(auth2, 'signOut').resolves();
+    });
+
+    afterEach(() => {
+      auth2.signOut.restore();
+      delete window.gapi;
+    });
+
+    it('should exist', () => {
+      expect(authentication.disconnect).to.exist.and.to.be.a.function;
+    });
+
+    it('should return a promise', (done) => {
+      authentication.disconnect().then(done);
+    });
+
+    it('should remove access_token from local storage', () => {
+      // given
+      window.localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, 'some-token');
+
+      // when
+      const promise = authentication.disconnect();
+
+      // then
+      return promise.then(() => {
+        expect(window.localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY)).to.be.null;
+      });
+    });
+
+    it('should remove authenticated_user from local storage', () => {
+      // given
+      window.localStorage.setItem(AUTHENTICATED_USER_STORAGE_KEY, JSON.stringify({}));
+
+      // when
+      const promise = authentication.disconnect();
+
+      // then
+      return promise.then(() => {
+        expect(window.localStorage.getItem(AUTHENTICATED_USER_STORAGE_KEY)).to.be.null;
+      });
+    });
+
+    it('should execute Google Sign-in API #signOut method', () => {
+      // given
+
+      // when
+      const promise = authentication.disconnect();
+
+      // then
+      return promise.then(() => {
+        expect(auth2.signOut).to.have.been.called;
+      });
+    });
+
+  });
+
 	describe('method #isAuthenticated', () => {
 		it('should exist', () => {
 			expect(authentication.isAuthenticated).to.exist.and.to.be.a.function;

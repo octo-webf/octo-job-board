@@ -8,15 +8,15 @@ function _saveAccessTokenIntoLocalStorage(accessToken) {
 	return (canUseDOM) ? window.localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, accessToken) : false;
 }
 
-function _removeAccessTokenFromLocalStorage() {
-	return (canUseDOM) ? window.localStorage.removeItem(ACCESS_TOKEN_STORAGE_KEY) : null;
+function _removeItemFromLocalStorage(storageKey) {
+	return (canUseDOM) ? window.localStorage.removeItem(storageKey) : null;
 }
 
 export default {
 
 	authenticate(googleUser) {
 		return new Promise((resolve) => {
-			_removeAccessTokenFromLocalStorage();
+			_removeItemFromLocalStorage(ACCESS_TOKEN_STORAGE_KEY);
 
 			const idToken = googleUser.getAuthResponse().id_token;
 
@@ -35,6 +35,23 @@ export default {
 			});
 		});
 	},
+
+  disconnect() {
+    return new Promise((resolve, reject) => {
+      if (window.gapi) {
+        const auth2 = window.gapi.auth2.getAuthInstance();
+        auth2.signOut().then(() => {
+          debugger
+          _removeItemFromLocalStorage(ACCESS_TOKEN_STORAGE_KEY);
+          _removeItemFromLocalStorage(AUTHENTICATED_USER_STORAGE_KEY);
+          resolve()
+        });
+      } else {
+        resolve()
+      }
+
+    })
+  },
 
 	isAuthenticated() {
 		return (canUseDOM) ? !!window.localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY) : null;

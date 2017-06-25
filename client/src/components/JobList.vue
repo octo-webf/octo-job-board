@@ -1,14 +1,6 @@
 <template>
   <div class="page page__jobs">
-    <header class="page__header">
-      <div class="page__container page__header--container">
-        <a class="logo-link" href="/">
-          <span class="logo-link__job">Job</span>
-          <span class="logo-link__board">Board</span>
-        </a>
-        <!--<a class="logout-link" href="/logout">Se déconnecter</a>-->
-      </div>
-    </header>
+    <app-header />
 
     <main class="page__body">
       <div class="page__container">
@@ -33,11 +25,13 @@
 
   import authenticationService from '@/services/authentication';
   import jobsApi from '@/api/jobs';
+  import AppHeader from '@/components/AppHeader';
   import JobCard from '@/components/JobCard';
 
   export default {
 
   	components: {
+  	  'app-header': AppHeader,
   		'job-card': JobCard,
   	},
 
@@ -68,65 +62,6 @@
 </script>
 
 <style scoped>
-  .page__container {
-    min-width: 270px;
-    max-width: 270px;
-    margin: 0 auto;
-  }
-
-  /* App header
-  /* ------------------- */
-
-  .page__header {
-    height: 60px;
-    background: #ffffff;
-    border-bottom: 1px solid #e6e6e6;
-    width: 100%;
-    padding-left: 20px;
-    position: fixed;
-    top: 0;
-  }
-
-  .page__header--container {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .logo-link {
-    text-decoration: none;
-    font-size: 26px;
-    font-weight: 900;
-    display: inline-block;
-    padding: 15px 0;
-  }
-
-  .logo-link__job {
-    color: #07c;
-  }
-
-  .logo-link__board {
-    color: #F48024;
-  }
-
-  .logout-link {
-    color: #9199a1;
-    display: inline-block;
-    padding: 17px 0;
-    line-height: 28px;
-    text-decoration: none;
-  }
-
-  .logout-link:hover {
-    text-decoration: underline;
-  }
-
-  .page__body {
-    display: flex;
-    width: 100%;
-    padding: 20px 0;
-    margin-top: 60px;
-  }
-
   /* Job results
   /* ------------------- */
 
@@ -151,29 +86,6 @@
     list-style-type: none;
     padding: 0;
     margin: 5px;
-  }
-
-  /* tablet */
-  @media only screen and (min-width : 768px) {
-    .page__container {
-      min-width: 540px;
-      max-width: 540px;
-    }
-  }
-
-  /* desktop */
-  @media only screen and (min-width : 992px) {
-    .page__container {
-      min-width: 810px;
-      max-width: 810px;
-    }
-  }
-  /* desktop */
-  @media only screen and (min-width : 1200px) {
-    .page__container {
-      min-width: 1080px;
-      max-width: 1080px;
-    }
   }
 
 </style>
