@@ -18,8 +18,8 @@ git pull origin master
 
 echo "Merge and push branch dev on master"
 git checkout master
-git merge dev
-git push origin master --force
+git merge -X theirs dev
+git push origin master
 
 echo "Go back to branch dev"
 git checkout dev
