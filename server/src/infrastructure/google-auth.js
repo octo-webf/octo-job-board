@@ -11,12 +11,17 @@ const GoogleAuthWrapper = {
         idToken,
         config.GOOGLE_CLIENT_ID,
         (err, login) => {
+          if (err) {
+            console.error(err)
+            return reject(err)
+          }
+
           const payload = login.getPayload()
           const userId = payload['sub']
           const domain = payload['hd']
 
           if (domain !== 'octo.com') {
-            reject(`User ${userId} does not belong to OCTO`)
+            return reject(`User ${userId} does not belong to OCTO`)
           }
           resolve({userId, domain})
         })

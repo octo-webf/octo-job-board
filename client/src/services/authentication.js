@@ -36,21 +36,20 @@ export default {
 		});
 	},
 
-  disconnect() {
-    return new Promise((resolve, reject) => {
-      if (window.gapi) {
-        const auth2 = window.gapi.auth2.getAuthInstance();
-        auth2.signOut().then(() => {
-          _removeItemFromLocalStorage(ACCESS_TOKEN_STORAGE_KEY);
-          _removeItemFromLocalStorage(AUTHENTICATED_USER_STORAGE_KEY);
-          resolve()
-        });
-      } else {
-        resolve()
-      }
-
-    })
-  },
+	disconnect() {
+		return new Promise((resolve) => {
+			if (window.gapi) {
+				const auth2 = window.gapi.auth2.getAuthInstance();
+				auth2.signOut().then(() => {
+					_removeItemFromLocalStorage(ACCESS_TOKEN_STORAGE_KEY);
+					_removeItemFromLocalStorage(AUTHENTICATED_USER_STORAGE_KEY);
+					resolve();
+				});
+			} else {
+				resolve();
+			}
+		});
+	},
 
 	isAuthenticated() {
 		return (canUseDOM) ? !!window.localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY) : null;

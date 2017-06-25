@@ -16,17 +16,17 @@
 
   import authenticationService from '@/services/authentication';
 
-  export default  {
+  export default {
 
-    methods: {
-      signOut() {
-        authenticationService.disconnect().then(() => {
-          this.$router.push('/login');
-        });
-      }
-    }
+  	methods: {
+  		signOut() {
+  			authenticationService.disconnect().then(() => {
+  				this.$router.push('/login');
+  			});
+  		},
+  	},
 
-  }
+  };
 </script>
 <style scoped>
   /* App header
