@@ -77,15 +77,21 @@
 
   .job-results__list {
     padding: 0;
-    margin: -5px; /* set to cancel job-results__item#margin */
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
   }
 
   .job-results__item {
     list-style-type: none;
     padding: 0;
     margin: 5px;
+  }
+
+  @media only screen and (min-width: 640px) {
+    .job-results__list {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
   }
 
 </style>

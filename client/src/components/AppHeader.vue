@@ -3,10 +3,13 @@
     <header class="page__header">
       <div class="page__container page__header--container">
         <a class="logo-link" href="/">
-          <span class="logo-link__job">Job</span>
-          <span class="logo-link__board">Board</span>
+          <span class="logo-link__job">job</span><span class="logo-link__board">board</span>
         </a>
-        <a class="logout-link" href="#" @click="signOut">Se déconnecter</a>
+        <nav class="app-header__navigation navigation" role="navigation" aria-label="site navigation">
+          <ol class="navigation__links">
+            <li class="navigation__link"><a class="logout-link" href="#" @click="signOut">Se déconnecter</a></li>
+          </ol>
+        </nav>
       </div>
     </header>
 
@@ -37,20 +40,18 @@
     background: #ffffff;
     border-bottom: 1px solid #e6e6e6;
     width: 100%;
-    padding-left: 20px;
     position: fixed;
     top: 0;
   }
 
   .page__header--container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
   }
 
   .logo-link {
     text-decoration: none;
     font-size: 26px;
-    font-weight: 900;
     display: inline-block;
     padding: 15px 0;
   }
@@ -61,6 +62,7 @@
 
   .logo-link__board {
     color: #F48024;
+    font-weight: 900;
   }
 
   .logout-link {
@@ -75,5 +77,24 @@
     text-decoration: underline;
   }
 
+  .navigation {
+    display: none;
+  }
+
+  .navigation__links {
+    list-style: none;
+    margin: 0;
+  }
+
+  @media only screen and (min-width: 640px) {
+    .page__header--container {
+      justify-content: space-between;
+    }
+
+    .app-header__navigation {
+      display: inline-block;
+    }
+
+  }
 
 </style>
