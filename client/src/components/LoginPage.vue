@@ -46,6 +46,7 @@
 </script>
 
 <style scoped>
+
   .g-signin-button {
     display: inline-block;
     padding: 4px 8px;
@@ -53,5 +54,7 @@
     background-color: #3c82f7;
     color: #fff;
     box-shadow: 0 3px 0 #0f69ff;
+    cursor: pointer;
+    margin-top: 200px;
   }
 </style>
