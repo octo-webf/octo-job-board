@@ -12,14 +12,13 @@ export default new Router({
 			path: '/',
 			name: 'JobList',
 			component: JobList,
-      beforeEnter(to, from, next) {
-        if (! authenticationService.isAuthenticated()) {
-          next('/login');
-        } else {
-          next()
-        }
-
-      }
+			beforeEnter(to, from, next) {
+				if (!authenticationService.isAuthenticated()) {
+					next('/login');
+				} else {
+					next();
+				}
+			},
 		},
 		{
 			path: '/login',

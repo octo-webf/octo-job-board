@@ -38,11 +38,12 @@ export default {
 
 	disconnect() {
 		return new Promise((resolve) => {
-			if (window.gapi) {
+			_removeItemFromLocalStorage(ACCESS_TOKEN_STORAGE_KEY);
+			_removeItemFromLocalStorage(AUTHENTICATED_USER_STORAGE_KEY);
+
+			if (window.gapi && window.gapi.auth2) {
 				const auth2 = window.gapi.auth2.getAuthInstance();
 				auth2.signOut().then(() => {
-					_removeItemFromLocalStorage(ACCESS_TOKEN_STORAGE_KEY);
-					_removeItemFromLocalStorage(AUTHENTICATED_USER_STORAGE_KEY);
 					resolve();
 				});
 			} else {
