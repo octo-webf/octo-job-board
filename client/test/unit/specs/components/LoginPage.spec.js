@@ -12,18 +12,7 @@ describe('Unit | Component | LoginPage.vue', () => {
 	});
 
 
-	describe('onMounted Hook', () => {
-		it('should define an onSignIn on the window namespace', () => {
-			expect(window.onSignIn).to.exist;
-		});
-
-		it('should render a g-signin2 Button', () => {
-			expect(component.$el.querySelectorAll('.g-signin2').length).to.equal(1);
-		});
-	});
-
-
-	describe('method #onSignIn', () => {
+	describe.skip('method #onSignIn', () => {
 		beforeEach(() => {
 			sinon.stub(authentication, 'authenticate').resolves();
 			window.localStorage.clear();
