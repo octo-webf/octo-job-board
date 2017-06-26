@@ -147,14 +147,31 @@ describe('Unit | Utils | octopod-client', function () {
    * ---------------------------
    */
 
-  describe.skip('#fetchActivitiesToBeStaffed', function () {
+  describe('#fetchActivitiesToBeStaffed', function () {
     const accessToken = 'access-token'
     const projects = [{id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}]
 
     beforeEach(() => {
       request.get.callsFake((options, callback) => {
+        const projectActivities = [
+          // project with id #1 - only one activity to be staffed
+          [{id: 11, staffing_needed: true}],
+          // project with id #2 - two activities but only one to be staffed
+          [{id: 21, staffing_needed: true}, {id: 22, staffing_needed: false}],
+          // project with id #3 - a mix of activities to be staffed and not
+          [{id: 31, staffing_needed: true}, {id: 32, staffing_needed: false}, {id: 33, staffing_needed: true}],
+          // project with id #4 - no activities
+          [],
+          // project with id #5 - only activities with no staffing needed
+          [{id: 31, staffing_needed: false}, {id: 32, staffing_needed: false}, {id: 33, staffing_needed: false}]
+        ]
+
+        const url = options.url
+        const urlParts = url.split('/')
+        const projectId = urlParts[6] - 1
+
         callback(null, {
-          body: JSON.stringify({})
+          body: JSON.stringify(projectActivities[projectId])
         })
       })
     })
@@ -165,27 +182,30 @@ describe('Unit | Utils | octopod-client', function () {
 
       // then
       return promise.then(activities => {
-        expect(activities).to.have.lengthOf(5)
+        expect(activities).to.have.lengthOf(4)
       })
     })
 
     it('should call Octopod API "GET /projects/{id}/activities" as many times as number of projects', function () {
       // given
       const accessToken = 'access-token'
-      const projects = [
-        {id: 1},
-        {id: 2},
-        {id: 3},
-        {id: 4},
-        {id: 5}
-      ]
 
       // when
       const promise = OctopodClient.fetchActivitiesToBeStaffed(accessToken, projects)
 
       // then
-      return promise.then((res) => {
+      return promise.then(() => {
         expect(request.get).to.have.callCount(5)
+      })
+    })
+
+    it('should not return activities that are not flagged as "staffing needed"', () => {
+      // when
+      const promise = OctopodClient.fetchActivitiesToBeStaffed(accessToken, projects)
+
+      // then
+      return promise.then(activities => {
+        expect(activities).to.have.lengthOf(4)
       })
     })
   })
