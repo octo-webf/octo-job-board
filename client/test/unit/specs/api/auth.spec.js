@@ -33,5 +33,20 @@ describe('Unit | API | auth api', () => {
 				expect(axios.post).to.have.been.calledWith(expectedUrl, expectedBody, expectedOptions);
 			});
 		});
+
+		it('should return a rejected promise when an error is thrown', (done) => {
+      // given
+			const idToken = 'invalid-id_token';
+			axios.post.rejects(new Error('some error'));
+
+      // when
+			const promise = api.verifyIdTokenAndGetAccessToken(idToken);
+
+      // then
+			promise.catch((error) => {
+				expect(error.message).to.equal('some error');
+				done();
+			});
+		});
 	});
 });
