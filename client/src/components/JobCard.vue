@@ -14,8 +14,8 @@
       </a>
       <footer class="job__footer">
         <button class="job__apply-button" v-on:click="submitInterest(job)"
-                title="Si vous cliquez sur ce bouton, un mail sera envoyé à l'équipe jobBoard (uniquement!) avec les informations utiles pour aider au staffing.">
-          Je suis intéressé
+                title="Si vous cliquez sur ce bouton, un mail sera envoyé à l'équipe Job Board (uniquement !) avec les informations utiles pour aider au staffing.">
+          Je suis intéressé·e
         </button>
       </footer>
     </article>
