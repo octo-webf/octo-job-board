@@ -75,7 +75,10 @@ const OctopodClient = {
       .then((projectActivities) => {
         // https://stackoverflow.com/a/10865042/2120773
         const concatenatedActivities = [].concat.apply([], projectActivities)
-        return Promise.resolve(concatenatedActivities)
+        const activitiesToBeStaffed = concatenatedActivities.filter((activity) => {
+          return activity.staffing_needed === true
+        })
+        return Promise.resolve(activitiesToBeStaffed)
       })
   }
 
