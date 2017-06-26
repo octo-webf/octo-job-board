@@ -154,15 +154,10 @@ describe('Unit | Utils | octopod-client', function () {
     beforeEach(() => {
       request.get.callsFake((options, callback) => {
         const projectActivities = [
-          // project with id #1 - only one activity to be staffed
           [{id: 11, staffing_needed: true}],
-          // project with id #2 - two activities but only one to be staffed
           [{id: 21, staffing_needed: true}, {id: 22, staffing_needed: false}],
-          // project with id #3 - a mix of activities to be staffed and not
           [{id: 31, staffing_needed: true}, {id: 32, staffing_needed: false}, {id: 33, staffing_needed: true}],
-          // project with id #4 - no activities
           [],
-          // project with id #5 - only activities with no staffing needed
           [{id: 31, staffing_needed: false}, {id: 32, staffing_needed: false}, {id: 33, staffing_needed: false}]
         ]
 
