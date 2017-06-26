@@ -39,7 +39,7 @@
   			});
   		},
 
-  		onSignInError(error) {
+  		onSignInError() {
   		},
 
   	},

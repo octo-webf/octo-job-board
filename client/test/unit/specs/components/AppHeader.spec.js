@@ -14,9 +14,9 @@ describe('Unit | Component | AppHeader.vue', () => {
 	});
 
 	describe('rendering', () => {
-    it('should display a link to home', () => {
-      expect(component.$el.querySelector('.logo-link')).to.exist;
-    })
+		it('should display a link to home', () => {
+			expect(component.$el.querySelector('.logo-link')).to.exist;
+		});
 	});
 
 	describe('#signOut', () => {
