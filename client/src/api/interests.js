@@ -3,7 +3,7 @@ import axios from 'axios';
 const InterestsApi = {
 
 	sendInterest(job, consultant, accessToken) {
-    const url = `${process.env.API_URL}api/interests`;
+		const url = `${process.env.API_URL}api/interests`;
 		const body = {
 			interestedConsultant: consultant,
 			businessContactNickname: (job.project.business_contact) ? job.project.business_contact.nickname : 'N/A',
