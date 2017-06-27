@@ -165,14 +165,25 @@ describe('Unit | Services | Auth', () => {
 		});
 
 		it('should execute Google Sign-in API #signOut method', () => {
-      // given
-
       // when
 			const promise = authentication.disconnect();
 
       // then
 			return promise.then(() => {
 				expect(auth2.signOut).to.have.been.called;
+			});
+		});
+
+		it('should return a resolved promise even when window.gapi.auth2 is not loaded', (done) => {
+      // given
+			delete window.gapi;
+
+      // when
+			const promise = authentication.disconnect();
+
+      // then
+			promise.then(() => {
+				done();
 			});
 		});
 	});

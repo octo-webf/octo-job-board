@@ -12,7 +12,6 @@ const auth = require('./src/routes/auth');
 
 const app = express();
 
-// uncomment after placing your favicon in /public
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

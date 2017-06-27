@@ -7,6 +7,7 @@
         </a>
         <nav class="app-header__navigation navigation" role="navigation" aria-label="site navigation">
           <ol class="navigation__links">
+            <li class="navigation__link"><a class="suggestion-link" href="mailto:jobboard@octo.com">Proposer des améliorations</a></li>
             <li class="navigation__link"><a class="logout-link" href="#" @click="signOut">Se déconnecter</a></li>
           </ol>
         </nav>
@@ -65,6 +66,19 @@
     font-weight: 900;
   }
 
+  .suggestion-link {
+    color: #9199a1;
+    display: inline-block;
+    padding: 17px 0;
+    line-height: 28px;
+    text-decoration: none;
+    margin-right: 50px;
+  }
+
+  .suggestion-link:hover {
+    text-decoration: underline;
+  }
+
   .logout-link {
     color: #9199a1;
     display: inline-block;
@@ -84,6 +98,7 @@
   .navigation__links {
     list-style: none;
     margin: 0;
+    display: inline-flex;
   }
 
   @media only screen and (min-width: 640px) {

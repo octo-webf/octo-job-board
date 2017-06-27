@@ -9,15 +9,17 @@
       Sign in with Google
     </g-signin-button>
 
-    <div class="g-signin2" ref="g-signin2" data-onsuccess="onSignIn"></div>
-
   </div>
 
 </template>
 
 <script>
 
+  import Vue from 'vue';
+  import GSignInButton from 'vue-google-signin-button';
   import authentication from '@/services/authentication';
+
+  Vue.use(GSignInButton);
 
   export default {
 
@@ -37,8 +39,7 @@
   			});
   		},
 
-  		onSignInError(error) {
-  			console.error(error);
+  		onSignInError() {
   		},
 
   	},
