@@ -42,15 +42,8 @@ describe('Unit | Component | JobCard.vue', () => {
 		component = new Constructor({
 			data: {
 				job,
-				isClicked: false,
 			},
 		}).$mount();
-	});
-
-	describe('$data', () => {
-		it('should have isClicked property set to false', () => {
-			expect(component.$data.isClicked).to.be.false;
-		});
 	});
 
 	describe('rendering', () => {
@@ -77,10 +70,6 @@ describe('Unit | Component | JobCard.vue', () => {
 
 		it('should display the locations', () => {
 			expect(component.$el.querySelector('.job__locations').textContent.trim()).to.equal('OCTO');
-		});
-
-		it('should have enabled button', () => {
-			expect(component.$el.querySelector('.job__apply-button').disabled).to.be.false;
 		});
 	});
 
@@ -126,23 +115,6 @@ describe('Unit | Component | JobCard.vue', () => {
 		afterEach(() => {
 			authenticationService.isAuthenticated.restore();
 			interestsApi.sendInterest.restore();
-		});
-
-		it('should set isClicked to true', () => {
-      // when
-			component.sendInterest();
-
-      // then
-			expect(component.$data.isClicked).to.be.true;
-		});
-
-		it('should disable the button', () => {
-      // When
-			component.$el.querySelector('button.job__apply-button').click();
-
-			Vue.nextTick().then(() => {
-				expect(component.$el.querySelector('.job__apply-button').disabled).to.be.true;
-			});
 		});
 
 		it('should call the API with good params', () => {
@@ -216,3 +188,4 @@ describe('Unit | Component | JobCard.vue', () => {
 		});
 	});
 });
+
