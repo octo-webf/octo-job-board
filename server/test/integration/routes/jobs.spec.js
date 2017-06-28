@@ -121,7 +121,7 @@ describe('Integration | Routes | jobs route', function () {
           if (err) {
             done(err)
           }
-          expect(cache.set).to.have.been.calledWith('get_jobs', freshJobs)
+          expect(cache.set).to.have.been.calledWithExactly('get_jobs', freshJobs, 1000 * 60 * 5)
           done()
         })
     })

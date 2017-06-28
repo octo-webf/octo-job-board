@@ -6,6 +6,7 @@ const JobsSerializer = require('../serializers/jobs')
 const cache = require('../infrastructure/cache')
 
 const CACHE_KEY = 'get_jobs'
+const FIVE_MINUTES = 1000 * 60 * 5
 
 router.get('/', auth, (req, res, next) => {
   let accessToken
@@ -38,7 +39,7 @@ router.get('/', auth, (req, res, next) => {
     })
     .then(() => {
       const jobs = JobsSerializer.serialize(projects, activities)
-      cache.set(CACHE_KEY, jobs)
+      cache.set(CACHE_KEY, jobs, FIVE_MINUTES)
       res.send(jobs)
     })
 })
