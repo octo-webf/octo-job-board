@@ -27,6 +27,7 @@ function config () {
 
     ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET,
 
+    MAIL_FROM: process.env.MAIL_FROM,
     MAIL_TO: process.env.MAIL_TO
   }
 
@@ -43,6 +44,7 @@ function config () {
     APP_ENV.AUTHORIZATION_PASSWORD = 'authorization-password'
     APP_ENV.AUTHORIZATION_CODES = 'test/test_authorization_codes'
     APP_ENV.ACCESS_TOKEN_SECRET = 'access-token-password'
+    APP_ENV.MAIL_FROM = 'jobboard+test@octo.com'
     APP_ENV.MAIL_TO = 'jobboard+test@octo.com'
   }
 

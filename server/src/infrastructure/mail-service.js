@@ -18,7 +18,7 @@ function buildMailOptions (interestedJobForm) {
     `
 
   const options = {
-    from: 'jobboard@octo.com',
+    from: config.MAIL_FROM,
     fromName: 'Le Job Board - Ne pas répondre',
     to: config.MAIL_TO,
     subject: subject,

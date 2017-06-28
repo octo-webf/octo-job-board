@@ -29,7 +29,7 @@ describe('Unit | Service | MailService', () => {
     it('should send an email with correct options', () => {
       // given
       const expectedParams = {
-        from: 'jobboard@octo.com',
+        from: 'jobboard+test@octo.com',
         to: 'jobboard+test@octo.com',
         fromName: 'Le Job Board - Ne pas répondre',
         subject: "[JobBoard] Samurai Jack intéressé·e par Oodrive - Liste d'initié - Développeur Front",
