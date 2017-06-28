@@ -1,4 +1,5 @@
 const mailJet = require('./mailjet')
+const config = require('../config')
 
 function sendWelcomeEmail (interestedJobForm) {
   const options = buildMailOptions(interestedJobForm)
@@ -19,7 +20,7 @@ function buildMailOptions (interestedJobForm) {
   const options = {
     from: 'jobboard@octo.com',
     fromName: 'Le Job Board - Ne pas répondre',
-    to: 'jobboard@octo.com',
+    to: config.MAIL_TO,
     subject: subject,
     template: template
   }
