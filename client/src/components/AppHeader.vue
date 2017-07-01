@@ -7,7 +7,7 @@
         </a>
         <nav class="app-header__navigation navigation" role="navigation" aria-label="site navigation">
           <ol class="navigation__links">
-            <li class="navigation__link"><a class="suggestion-link" href="mailto:jobboard@octo.com">Proposer des améliorations</a></li>
+            <li class="navigation__link"><a class="suggestion-link" href="#" @click="displayFeedbackModal">Proposer des améliorations</a></li>
             <li class="navigation__link"><a class="logout-link" href="#" @click="signOut">Se déconnecter</a></li>
           </ol>
         </nav>
@@ -23,6 +23,10 @@
   export default {
 
   	methods: {
+      displayFeedbackModal() {
+        this.$modal.show('feedback-modal');
+      },
+
   		signOut() {
   			authenticationService.disconnect().then(() => {
   				this.$router.push('/login');

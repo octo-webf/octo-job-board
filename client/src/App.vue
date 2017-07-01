@@ -1,30 +1,37 @@
 <template>
-	<div id="app">
-		<router-view></router-view>
-	</div>
+  <div id="app">
+    <router-view></router-view>
+    <feedback-modal/>
+  </div>
 </template>
 
 <script>
-export default {
-	name: 'app',
-};
+
+  import FeedbackModal from '@/components/FeedbackModal';
+
+  export default {
+    name: 'app',
+    components: {
+    	'feedback-modal': FeedbackModal
+    }
+  };
 </script>
 
 <style>
 
-	body {
-		background: #f5f5f5;
-		padding: 0;
-		margin: 0;
-	}
+  body {
+    background: #f5f5f5;
+    padding: 0;
+    margin: 0;
+  }
 
-	#app {
-		font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
-		-webkit-font-smoothing: antialiased;
-		-moz-osx-font-smoothing: grayscale;
-		text-align: center;
-		color: #2c3e50;
-	}
+  #app {
+    font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+  }
 
   .page__body {
     display: flex;
@@ -36,6 +43,10 @@ export default {
 
   .page__container {
     margin: 0 auto;
+  }
+
+  .v--modal {
+    border-radius: 5px;
   }
 
   @media only screen and (min-width: 640px) {
