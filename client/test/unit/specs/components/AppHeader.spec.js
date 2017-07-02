@@ -71,4 +71,3 @@ describe('Unit | Component | AppHeader.vue', () => {
 		});
 	});
 });
-

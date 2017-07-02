@@ -2,17 +2,20 @@
   <div id="app">
     <router-view></router-view>
     <feedback-modal/>
+    <github-corner/>
   </div>
 </template>
 
 <script>
 
   import FeedbackModal from '@/components/FeedbackModal';
+  import GithubCorner from '@/components/GithubCorner';
 
   export default {
   	name: 'app',
   	components: {
   		'feedback-modal': FeedbackModal,
+      'github-corner': GithubCorner
   	},
   };
 </script>
