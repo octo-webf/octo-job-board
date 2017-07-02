@@ -11,12 +11,12 @@
 </template>
 <script>
   export default {
-    data() {
-      return {
-      	repositoryUrl: 'https://github.com/octo-web-front-end-tribe/octo-job-board'
-      }
-    }
-  }
+  	data() {
+  		return {
+			repositoryUrl: 'https://github.com/octo-web-front-end-tribe/octo-job-board',
+  		};
+  	},
+  };
 </script>
 <style>
   .github-corner__link:hover .octo-arm {
