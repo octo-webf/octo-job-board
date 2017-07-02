@@ -1,6 +1,6 @@
-const {sinon, expect} = require('../../test-helper')
-const auth = require('../../../src/middlewares/auth')
 const jwt = require('jsonwebtoken')
+const {sinon, expect} = require('../../../test-helper')
+const auth = require('../../../../src/infrastructure/middlewares/auth')
 
 describe('Unit | Middlewares | auth', function () {
   let req

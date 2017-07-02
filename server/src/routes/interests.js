@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const auth = require('../middlewares/auth')
+const auth = require('../infrastructure/middlewares/auth')
 const mailService = require('../infrastructure/mail-service')
 
 router.post('/', auth, (req, res) => {

@@ -1,5 +1,5 @@
-const {expect} = require('../../test-helper')
-const serializer = require('../../../src/serializers/jobs')
+const {expect} = require('../../../test-helper')
+const serializer = require('../../../../src/infrastructure/serializers/jobs')
 
 describe('Unit | Serializer | jobs', function () {
   it('should return an array of Job objects serialized from Projects and Activities to be staffed', () => {

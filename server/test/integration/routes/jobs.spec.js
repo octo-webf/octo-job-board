@@ -3,7 +3,7 @@ const { request, expect, sinon } = require('../../test-helper')
 const app = require('../../../app')
 const jobs = require('../fixtures/jobs')
 const OctopodClient = require('../../../src/infrastructure/octopod')
-const JobsSerializer = require('../../../src/serializers/jobs')
+const JobsSerializer = require('../../../src/infrastructure/serializers/jobs')
 const cache = require('../../../src/infrastructure/cache')
 
 describe('Integration | Routes | jobs route', function () {
