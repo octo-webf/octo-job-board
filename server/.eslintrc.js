@@ -1,15 +1,20 @@
 module.exports = {
-  'extends': 'standard',
+  'extends': 'airbnb-base',
   'plugins': [
-    'standard',
     'promise'
   ],
-  'rules': {
-    'handle-callback-err': 0,
-    'prefer-promise-reject-errors': 0
-  },
   'env': {
     'node': true,
     'es6': true
+  },
+  'settings': {
+    'import/resolver': {
+      'node' : true
+    }
+  },
+  'rules': {
+    'max-len': 0,
+    'no-underscore-dangle': 0,
+    'no-tabs': 2,
   }
 }

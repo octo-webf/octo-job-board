@@ -1,87 +1,89 @@
-const request = require('request')
-const config = require('../config/index')
+const request = require('request');
+const config = require('../config/index');
 
 const OctopodClient = {
 
-  getAccessToken () {
+  getAccessToken() {
     return new Promise((resolve, reject) => {
       const options = {
         url: `${config.OCTOPOD_API_URL}/oauth/token`,
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
-          'Accept': 'application/json'
+          Accept: 'application/json',
         },
         form: {
           grant_type: 'client_credentials',
           client_id: config.OCTOPOD_CLIENT_ID,
-          client_secret: config.OCTOPOD_CLIENT_SECRET
-        }
-      }
+          client_secret: config.OCTOPOD_CLIENT_SECRET,
+        },
+      };
 
       request.post(options, (err, response) => {
         if (err) {
-          reject(err)
+          reject(err);
         }
-        const accessToken = JSON.parse(response.body).access_token
-        resolve(accessToken)
-      })
-    })
+        const accessToken = JSON.parse(response.body).access_token;
+        resolve(accessToken);
+      });
+    });
   },
 
-  fetchProjectsToBeStaffed (accessToken) {
+  fetchProjectsToBeStaffed(accessToken) {
     return new Promise((resolve, reject) => {
-      let options = {
+      const options = {
         url: `${config.OCTOPOD_API_URL}/v0/projects?staffing_needed=true&page=1&per_page=50`,
         headers: {
-          'Authorization': 'Bearer ' + accessToken
-        }
-      }
+          Authorization: `Bearer ${accessToken}`,
+        },
+      };
 
       request.get(options, (err, response) => {
         if (err) {
-          reject(err)
+          reject(err);
         }
-        const projects = JSON.parse(response.body)
-        resolve(projects)
-      })
-    })
+        const projects = JSON.parse(response.body);
+        resolve(projects);
+      });
+    });
   },
 
-  _fetchActivityToBeStaffed (accessToken, project) {
+  _fetchActivityToBeStaffed(accessToken, project) {
     return new Promise((resolve, reject) => {
       const options = {
         url: `${config.OCTOPOD_API_URL}/v0/projects/${project.id}/activities`,
         headers: {
-          'Authorization': `Bearer ${accessToken}`
-        }
-      }
+          Authorization: `Bearer ${accessToken}`,
+        },
+      };
       request.get(options, (err, response) => {
         if (err) {
-          reject(err)
+          reject(err);
         }
-        const activities = JSON.parse(response.body)
-        resolve(activities)
-      })
-    })
+        const activities = JSON.parse(response.body);
+        resolve(activities);
+      });
+    });
   },
 
-  fetchActivitiesToBeStaffed (accessToken, projects) {
+  // https://stackoverflow.com/a/15030117/2120773
+  _flatten(arr) {
+    return arr.reduce((flat, toFlatten) => flat.concat(Array.isArray(toFlatten) ? this._flatten(toFlatten) : toFlatten), []);
+  },
+
+  fetchActivitiesToBeStaffed(accessToken, projects) {
     const activitiesByProject = projects.reduce((promises, project) => {
-      const activity = this._fetchActivityToBeStaffed(accessToken, project)
-      promises.push(activity)
-      return promises
-    }, [])
+      const activity = this._fetchActivityToBeStaffed(accessToken, project);
+      promises.push(activity);
+      return promises;
+    }, []);
     return Promise.all(activitiesByProject)
       .then((projectActivities) => {
-        // https://stackoverflow.com/a/10865042/2120773
-        const concatenatedActivities = [].concat.apply([], projectActivities)
-        const activitiesToBeStaffed = concatenatedActivities.filter((activity) => {
-          return activity.staffing_needed === true
-        })
-        return Promise.resolve(activitiesToBeStaffed)
-      })
-  }
+        const concatenatedActivities = this._flatten(projectActivities);
+        const activitiesToBeStaffed = concatenatedActivities.filter(activity => activity.staffing_needed === true);
+        return Promise.resolve(activitiesToBeStaffed);
+      });
+  },
 
-}
+};
 
-module.exports = OctopodClient
+module.exports = OctopodClient;

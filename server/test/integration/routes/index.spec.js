@@ -1,17 +1,17 @@
-const { request, expect } = require('../../test-helper')
-const app = require('../../../app')
+const { request, expect } = require('../../test-helper');
+const app = require('../../../app');
 
-describe('Integration | Routes | index route', function () {
+describe('Integration | Routes | index route', () => {
   it('should have api informations on root', (done) => {
     request(app)
       .get('/')
       .expect('Content-Type', /json/)
-      .end(function (err, res) {
+      .end((err, res) => {
         if (err) {
-          done(err)
+          done(err);
         }
-        expect(res.body).to.have.property('azerty')
-        done()
-      })
-  })
-})
+        expect(res.body).to.have.property('azerty');
+        done();
+      });
+  });
+});

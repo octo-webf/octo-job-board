@@ -1,13 +1,13 @@
-const LRUCache = require('lru-cache')
+const LRUCache = require('lru-cache');
 
-const ONE_HOUR = 1000 * 60 * 60
+const ONE_HOUR = 1000 * 60 * 60;
 
 // See https://github.com/isaacs/node-lru-cache for more options
 const options = {
   max: 500,
-  maxAge: ONE_HOUR
-}
+  maxAge: ONE_HOUR,
+};
 
-const cache = LRUCache(options)
+const cache = LRUCache(options);
 
-module.exports = cache
+module.exports = cache;
