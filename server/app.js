@@ -9,6 +9,7 @@ const index = require('./src/routes/index');
 const jobs = require('./src/routes/jobs');
 const interests = require('./src/routes/interests');
 const auth = require('./src/routes/auth');
+const feedbacks = require('./src/routes/feedbacks');
 
 const app = express();
 
@@ -27,23 +28,24 @@ if ('test' !== process.env.NODE_ENV) {
 }
 
 app.use('/', index);
+app.use('/api/feedbacks', feedbacks);
 app.use('/api/jobs', jobs);
 app.use('/api/interests', interests);
 app.use('/auth', auth);
 
-app.get('/.well-known/acme-challenge/:content', function(req, res) {
+app.get('/.well-known/acme-challenge/:content', (req, res) => {
   res.send('Fz4KwoxqNbaEMWxcBM54Z2or-bYQNN_2Ypbv5Xuxpws.4M0QKfiH4yWeNOiLqoHVHpBHwxEpo1yiMyUHTclOD0s')
 })
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   const err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use((err, req, res) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

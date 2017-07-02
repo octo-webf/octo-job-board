@@ -10,7 +10,7 @@ function _extractAccessTokenFromAuthorizationHeader (authorizationHeader) {
   return accessToken
 }
 
-module.exports = function (req, res, next) {
+module.exports = (req, res, next) => {
   if (req.headers && req.headers.authorization) {
     const accessToken = _extractAccessTokenFromAuthorizationHeader(req.headers.authorization)
 
