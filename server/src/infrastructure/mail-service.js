@@ -24,8 +24,8 @@ function sendInterestEmail (form) {
 }
 
 function sendFeedbackEmail (form) {
-  const subject = '[JobBoard] [Support] Quelqu\'un a émis une demande d\'aide ou un commentaire'
-
+  const consultant = form.consultant
+  const subject = `[JobBoard] [Support] ${consultant.name} a émis un message`
   const template = `${form.feedback}`
 
   const options = {

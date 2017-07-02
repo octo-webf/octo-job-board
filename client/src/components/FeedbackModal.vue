@@ -30,47 +30,60 @@
 
 <script>
 
+  import authenticationService from '@/services/authentication';
+  import feedbacksApi from '@/api/feedbacks';
+
   export default {
+
+  	name: 'feedback-modal',
 
   	data() {
   		return {
   			feedback: null,
-        error: null
-      };
-    },
+  			error: null,
+  		};
+  	},
 
-    methods: {
-      beforeOpen() {
-      	this._resetFeedback();
-      	this._removeError();
-      },
+  	methods: {
+  		beforeOpen() {
+  			this._resetFeedback();
+  			this._removeError();
+  		},
 
   		sendFeedback() {
   			this._removeError();
-  			if (!this.feedback || this.feedback.trim().length === 0) {
+  			if (!this.feedback || this.feedback.trim().length === 0) {
   				this.error = 'Vous devez saisir un message.';
-          return;
-        }
-        console.log(this.feedback);
-        this._closeModal();
-      },
+  				return;
+  			}
 
-      cancelFeedback() {
+  			const consultant = authenticationService.getAuthenticatedUser();
+  			const accessToken = authenticationService.getAccessToken();
+  			feedbacksApi.sendFeedback(this.feedback, consultant, accessToken)
+          .then(() => {
+  	this._closeModal();
+  })
+          .catch(() => {
+  	this.error = 'Une erreur est survenue durant l\'envoi de votre message.';
+  });
+  		},
+
+  		cancelFeedback() {
   			this._closeModal();
-      },
+  		},
 
-      _resetFeedback() {
+  		_resetFeedback() {
   			this.feedback = null;
-      },
+  		},
 
-      _removeError() {
-        this.error = null;
-      },
+  		_removeError() {
+  			this.error = null;
+  		},
 
-      _closeModal() {
-        this.$modal.hide('feedback-modal');
-      }
-    }
+  		_closeModal() {
+  			this.$modal.hide('feedback-modal');
+  		},
+  	},
   };
 
 </script>
@@ -106,7 +119,7 @@
     color: white;
     border-radius: 3px;
     padding: 10px;
-    margin: 0 0 10px;
+    margin: 0 0 20px;
   }
 
   .feedback-modal__label {
@@ -119,7 +132,7 @@
     border: 1px solid #d8dde6;
     resize: none;
     overflow: auto;
-    height: 156px;
+    height: 152px;
     font-size: 16px;
     box-sizing: border-box;
     padding: 5px;

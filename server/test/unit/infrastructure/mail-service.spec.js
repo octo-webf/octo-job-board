@@ -47,6 +47,10 @@ describe('Unit | Service | MailService', () => {
     it('should send an email with correct options', () => {
       // given
       const form = {
+        consultant: {
+          name: 'Tony Stark',
+          email: 'tony@stark.im'
+        },
         feedback: 'Long ago in a distant land...'
       }
 
@@ -59,7 +63,7 @@ describe('Unit | Service | MailService', () => {
           from: 'jobboard@octo.com',
           to: 'jobboard@octo.com',
           fromName: 'Le Job Board - Ne pas répondre',
-          subject: '[JobBoard] [Support] Quelqu\'un a émis une demande d\'aide ou un commentaire',
+          subject: '[JobBoard] [Support] Tony Stark a émis un message',
           template: 'Long ago in a distant land...'
         })
       })

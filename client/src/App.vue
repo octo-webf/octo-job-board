@@ -10,10 +10,10 @@
   import FeedbackModal from '@/components/FeedbackModal';
 
   export default {
-    name: 'app',
-    components: {
-    	'feedback-modal': FeedbackModal
-    }
+  	name: 'app',
+  	components: {
+  		'feedback-modal': FeedbackModal,
+  	},
   };
 </script>
 

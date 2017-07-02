@@ -22,10 +22,12 @@
 
   export default {
 
+  	name: 'app-header',
+
   	methods: {
-      displayFeedbackModal() {
-        this.$modal.show('feedback-modal');
-      },
+  		displayFeedbackModal() {
+  			this.$modal.show('feedback-modal');
+  		},
 
   		signOut() {
   			authenticationService.disconnect().then(() => {
