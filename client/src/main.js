@@ -13,19 +13,19 @@ require('vue-toastr/dist/vue-toastr.css');
 Vue.config.productionTip = false;
 
 Vue.use(VueAnalytics, {
-	id: `${process.env.ANALYTICS_ID}`,
-	router,
+  id: `${process.env.ANALYTICS_ID}`,
+  router,
 });
 
 Vue.use(VueModal);
 
 /* eslint-disable no-new */
 new Vue({
-	el: '#app',
-	router,
-	template: '<div><App/><vue-toastr ref="toastr"></vue-toastr></div>',
-	components: { App },
-	mounted() {
-		this.$refs.toastr.defaultPosition = 'toast-bottom-right';
-	},
+  el: '#app',
+  router,
+  template: '<div><App/><vue-toastr ref="toastr"></vue-toastr></div>',
+  components: { App },
+  mounted() {
+    this.$refs.toastr.defaultPosition = 'toast-bottom-right';
+  },
 });

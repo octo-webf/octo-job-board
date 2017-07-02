@@ -1,5 +1,5 @@
 module.exports = {
-  'extends': 'airbnb-base',
+  'extends': '../.eslintrc.js',
   'plugins': [
     'promise'
   ],
@@ -12,9 +12,4 @@ module.exports = {
       'node' : true
     }
   },
-  'rules': {
-    'max-len': 0,
-    'no-underscore-dangle': 0,
-    'no-tabs': 2,
-  }
 }
