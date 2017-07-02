@@ -16,4 +16,6 @@ selenium-debug.log
 *.iml
 
 **/.nyc_output
+
+# NPM package-lock files
 package-lock.json
