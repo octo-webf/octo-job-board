@@ -13,10 +13,7 @@
 
   export default {
   	name: 'app',
-  	components: {
-  		'feedback-modal': FeedbackModal,
-      'github-corner': GithubCorner
-  	},
+  	components: { 'github-corner': GithubCorner },
   };
 </script>
 
