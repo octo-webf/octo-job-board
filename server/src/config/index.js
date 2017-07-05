@@ -25,7 +25,10 @@ function config () {
     AUTHORIZATION_PASSWORD: process.env.AUTHORIZATION_PASSWORD,
     AUTHORIZATION_CODES: process.env.AUTHORIZATION_CODES,
 
-    ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET
+    ACCESS_TOKEN_SECRET: process.env.ACCESS_TOKEN_SECRET,
+
+    MAIL_FROM: process.env.MAIL_FROM,
+    MAIL_TO: process.env.MAIL_TO
   }
 
   if (process.env.NODE_ENV === 'test') {
@@ -41,6 +44,8 @@ function config () {
     APP_ENV.AUTHORIZATION_PASSWORD = 'authorization-password'
     APP_ENV.AUTHORIZATION_CODES = 'test/test_authorization_codes'
     APP_ENV.ACCESS_TOKEN_SECRET = 'access-token-password'
+    APP_ENV.MAIL_FROM = 'jobboard+test@octo.com'
+    APP_ENV.MAIL_TO = 'jobboard+test@octo.com'
   }
 
   return APP_ENV
