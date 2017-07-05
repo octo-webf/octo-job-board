@@ -16,3 +16,4 @@ selenium-debug.log
 *.iml
 
 **/.nyc_output
+package-lock.json

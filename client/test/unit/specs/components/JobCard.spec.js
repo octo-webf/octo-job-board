@@ -33,18 +33,32 @@ describe('Unit | Component | JobCard.vue', () => {
 			},
 		},
 	};
+	const consultant = {
+		name: 'Samurai Jack',
+		email: 'sjack@octo.com',
+	};
+	const accessToken = 'abcd-1234';
 
 	beforeEach(() => {
     // given
-		const Constructor = Vue.extend(JobCard);
+		sinon.stub(authenticationService, 'getAuthenticatedUser').returns(consultant);
+		sinon.stub(authenticationService, 'getAccessToken').returns(accessToken);
+		sinon.stub(interestsApi, 'sendInterest').resolves();
 
     // when
+		const Constructor = Vue.extend(JobCard);
 		component = new Constructor({
 			data: {
 				job,
 				isClicked: false,
 			},
 		}).$mount();
+	});
+
+	afterEach(() => {
+		authenticationService.getAuthenticatedUser.restore();
+		authenticationService.getAccessToken.restore();
+		interestsApi.sendInterest.restore();
 	});
 
 	describe('$data', () => {
@@ -84,6 +98,18 @@ describe('Unit | Component | JobCard.vue', () => {
 		});
 	});
 
+	describe('clicking on button "I am interested in"', () => {
+		it('should disable button', () => {
+      // when
+			component.$el.querySelector('button.job__apply-button').click();
+
+      // then
+			Vue.nextTick().then(() => {
+				expect(component.$el.querySelector('.job__apply-button').disabled).to.be.true;
+			});
+		});
+	});
+
 	describe('method #trackEvent', () => {
 		const expectedCallParams = {
 			eventCategory: 'Job List',
@@ -117,40 +143,13 @@ describe('Unit | Component | JobCard.vue', () => {
 		}));
 	});
 
-	describe('#sendInterest', () => {
-		beforeEach(() => {
-			sinon.stub(authenticationService, 'isAuthenticated').returns(true);
-			sinon.stub(interestsApi, 'sendInterest').resolves();
-		});
-
-		afterEach(() => {
-			authenticationService.isAuthenticated.restore();
-			interestsApi.sendInterest.restore();
-		});
-
-		it('should set isClicked to true', () => {
-      // when
-			component.sendInterest();
-
-      // then
-			expect(component.$data.isClicked).to.be.true;
-		});
-
-		it('should disable the button', () => {
-      // When
-			component.$el.querySelector('button.job__apply-button').click();
-
-			Vue.nextTick().then(() => {
-				expect(component.$el.querySelector('.job__apply-button').disabled).to.be.true;
-			});
-		});
-
+	describe('method #sendInterest', () => {
 		it('should call the API with good params', () => {
       // when
 			component.sendInterest();
 
       // then
-			expect(interestsApi.sendInterest).to.have.been.calledWith(job, null);
+			expect(interestsApi.sendInterest).to.have.been.calledWithExactly(job, consultant, accessToken);
 		});
 
 		it('should send interests on click on job__apply-button', () => Vue.nextTick().then(() => {
@@ -161,7 +160,7 @@ describe('Unit | Component | JobCard.vue', () => {
 			myButton.click();
 
       // Then
-			expect(interestsApi.sendInterest).to.have.been.calledWith(job, null);
+			expect(interestsApi.sendInterest).to.have.been.calledWithExactly(job, consultant, accessToken);
 		}));
 	});
 
