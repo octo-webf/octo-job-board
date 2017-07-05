@@ -33,7 +33,10 @@ describe('Unit | Component | JobCard.vue', () => {
 			},
 		},
 	};
-	const consultant = { foo: 'bar' };
+	const consultant = {
+		name: 'Samurai Jack',
+		email: 'sjack@octo.com',
+	};
 	const accessToken = 'abcd-1234';
 
 	beforeEach(() => {
