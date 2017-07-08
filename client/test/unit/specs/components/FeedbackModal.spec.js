@@ -1,7 +1,10 @@
 import Vue from 'vue';
+import VueModal from 'vue-js-modal';
 import FeedbackModal from '@/components/FeedbackModal';
 import feedbacksApi from '@/api/feedbacks';
 import authenticationService from '@/services/authentication';
+
+Vue.use(VueModal);
 
 describe('Unit | Component | FeedbackModal.vue', () => {
 	let component;
@@ -20,11 +23,21 @@ describe('Unit | Component | FeedbackModal.vue', () => {
 		component = new Constructor({
 			data: {
 				feedback,
-			},
+			}
 		}).$mount();
-	});
 
-	describe('#sendFeedback', () => {
+  });
+
+  describe('rendering', () => {
+
+    it('should display the modal', () => {
+      Vue.nextTick().then(() => {
+        expect(component.$el.querySelector('.feedback-modal')).to.exist;
+      });
+    });
+  });
+
+  describe('#sendFeedback', () => {
 		beforeEach(() => {
 			sinon.stub(feedbacksApi, 'sendFeedback').resolves();
 			sinon.stub(authenticationService, 'getAuthenticatedUser').returns(consultant);
@@ -45,17 +58,23 @@ describe('Unit | Component | FeedbackModal.vue', () => {
 			expect(feedbacksApi.sendFeedback).to.have.been.calledWith(feedback, consultant, 'some-access-token');
 		});
 
-		it('should send interests on click on "send" button', () => Vue.nextTick().then(() => {
+		it('should send interests on click on "send" button', () => {
       // Given
-			const myButton = component.$el.querySelector('.feedback-modal__action--send');
+      component.$modal.show('feedback-panel');
 
-      // When
-			myButton.click();
+      Vue.nextTick().then(() => {
 
-      // Then
-			Vue.nextTick().then(() => {
-				expect(feedbacksApi.sendFeedback).to.have.been.calledWith(feedback, consultant, 'some-access-token');
-			});
-		}));
+        const myButton = component.$el.querySelector('.feedback-modal__action--send');
+
+        // When
+        myButton.click();
+
+        // Then
+        expect(feedbacksApi.sendFeedback).to.have.been.calledWith(feedback, consultant, 'some-access-token');
+      });
+
+		});
+
+    it('should close the modal');
 	});
 });

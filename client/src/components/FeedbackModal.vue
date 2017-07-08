@@ -1,31 +1,33 @@
 <template>
-  <modal class="feedback-modal" name="feedback-modal" @before-open="beforeOpen" :height="400">
+  <div class="feedback-modal-wrapper">
+    <modal class="feedback-modal" name="feedback-modal" @before-open="beforeOpen" :height="400">
 
-    <!-- modal header-->
-    <div class="feedback-modal__header">
-      <h2 class="feedback-modal__title">Contacter le support</h2>
-    </div>
-
-    <!-- modal body -->
-    <div class="feedback-modal__body">
-      <form class="feedback-modal__form">
-
-        <p class="feedback-modal__error" v-if="error">{{error}}</p>
-
-        <label class="feedback-modal__label" for="feedback-content">Contenu du message :</label>
-        <textarea class="feedback-modal__text" id="feedback-content" v-model="feedback"></textarea>
-      </form>
-    </div>
-
-    <!-- modal body -->
-    <div class="feedback-modal__footer">
-      <div class="feedback-modal__actions">
-        <button class="feedback-modal__action feedback-modal__action--cancel" @click="cancelFeedback">Annuler</button>
-        <button class="feedback-modal__action feedback-modal__action--send" @click="sendFeedback">Envoyer</button>
+      <!-- modal header-->
+      <div class="feedback-modal__header">
+        <h2 class="feedback-modal__title">Contacter le support</h2>
       </div>
-    </div>
 
-  </modal>
+      <!-- modal body -->
+      <div class="feedback-modal__body">
+        <form class="feedback-modal__form">
+
+          <p class="feedback-modal__error" v-if="error">{{error}}</p>
+
+          <label class="feedback-modal__label" for="feedback-content">Contenu du message :</label>
+          <textarea class="feedback-modal__text" id="feedback-content" v-model="feedback"></textarea>
+        </form>
+      </div>
+
+      <!-- modal body -->
+      <div class="feedback-modal__footer">
+        <div class="feedback-modal__actions">
+          <button class="feedback-modal__action feedback-modal__action--cancel" @click="cancelFeedback">Annuler</button>
+          <button class="feedback-modal__action feedback-modal__action--send" @click="sendFeedback">Envoyer</button>
+        </div>
+      </div>
+
+    </modal>
+  </div>
 </template>
 
 <script>
@@ -35,7 +37,7 @@
 
   export default {
 
-  	name: 'feedback-modal',
+  	name: 'FeedbackModal',
 
   	data() {
   		return {
@@ -61,11 +63,10 @@
   			const accessToken = authenticationService.getAccessToken();
   			feedbacksApi.sendFeedback(this.feedback, consultant, accessToken)
           .then(() => {
-  	this._closeModal();
-  })
-          .catch(() => {
-  	this.error = 'Une erreur est survenue durant l\'envoi de votre message.';
-  });
+  					this._closeModal();
+  				}).catch(() => {
+  					this.error = 'Une erreur est survenue durant l\'envoi de votre message.';
+  			});
   		},
 
   		cancelFeedback() {
