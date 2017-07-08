@@ -1,7 +1,7 @@
 import axios from 'axios';
 import api from '@/api/feedbacks';
 
-describe('Unit | API | interests api', () => {
+describe('Unit | API | feedbacks api', () => {
 	describe('#sendFeedback', () => {
 		const accessToken = 'access-token';
 
