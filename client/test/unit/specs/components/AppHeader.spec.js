@@ -30,27 +30,26 @@ describe('Unit | Component | AppHeader.vue', () => {
 		});
 	});
 
-  describe('#displayFeedbackModal', () => {
+	describe('#displayFeedbackModal', () => {
+		beforeEach(() => {
+			sinon.stub(component.$modal, 'show');
+		});
 
-    beforeEach(() => {
-      sinon.stub(component.$modal, 'show');
-    });
+		afterEach(() => {
+			component.$modal.show.restore();
+		});
 
-    afterEach(() => {
-      component.$modal.show.restore();
-    });
-
-    it('should display the feedback-modal', () => {
+		it('should display the feedback-modal', () => {
       // when
-      component.displayFeedbackModal();
+			component.displayFeedbackModal();
 
       // then
-      expect(component.$modal.show).to.have.been.calledWith('feedback-modal');
-    });
-  });
+			expect(component.$modal.show).to.have.been.calledWith('feedback-modal');
+		});
+	});
 
 
-  describe('#signOut', () => {
+	describe('#signOut', () => {
 		beforeEach(() => {
 			sinon.stub(authenticationService, 'disconnect').resolves();
 		});

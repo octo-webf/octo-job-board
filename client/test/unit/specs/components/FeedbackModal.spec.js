@@ -23,21 +23,19 @@ describe('Unit | Component | FeedbackModal.vue', () => {
 		component = new Constructor({
 			data: {
 				feedback,
-			}
+			},
 		}).$mount();
+	});
 
-  });
+	describe('rendering', () => {
+		it('should display the modal', () => {
+			Vue.nextTick().then(() => {
+				expect(component.$el.querySelector('.feedback-modal')).to.exist;
+			});
+		});
+	});
 
-  describe('rendering', () => {
-
-    it('should display the modal', () => {
-      Vue.nextTick().then(() => {
-        expect(component.$el.querySelector('.feedback-modal')).to.exist;
-      });
-    });
-  });
-
-  describe('#sendFeedback', () => {
+	describe('#sendFeedback', () => {
 		beforeEach(() => {
 			sinon.stub(feedbacksApi, 'sendFeedback').resolves();
 			sinon.stub(authenticationService, 'getAuthenticatedUser').returns(consultant);
@@ -60,21 +58,19 @@ describe('Unit | Component | FeedbackModal.vue', () => {
 
 		it('should send interests on click on "send" button', () => {
       // Given
-      component.$modal.show('feedback-panel');
+			component.$modal.show('feedback-panel');
 
-      Vue.nextTick().then(() => {
-
-        const myButton = component.$el.querySelector('.feedback-modal__action--send');
+			Vue.nextTick().then(() => {
+				const myButton = component.$el.querySelector('.feedback-modal__action--send');
 
         // When
-        myButton.click();
+				myButton.click();
 
         // Then
-        expect(feedbacksApi.sendFeedback).to.have.been.calledWith(feedback, consultant, 'some-access-token');
-      });
-
+				expect(feedbacksApi.sendFeedback).to.have.been.calledWith(feedback, consultant, 'some-access-token');
+			});
 		});
 
-    it('should close the modal');
+		it('should close the modal');
 	});
 });

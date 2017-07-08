@@ -63,10 +63,10 @@
   			const accessToken = authenticationService.getAccessToken();
   			feedbacksApi.sendFeedback(this.feedback, consultant, accessToken)
           .then(() => {
-  					this._closeModal();
-  				}).catch(() => {
-  					this.error = 'Une erreur est survenue durant l\'envoi de votre message.';
-  			});
+  	this._closeModal();
+  }).catch(() => {
+  	this.error = 'Une erreur est survenue durant l\'envoi de votre message.';
+  });
   		},
 
   		cancelFeedback() {
