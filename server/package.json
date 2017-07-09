@@ -36,6 +36,7 @@
     "eslint-plugin-node": "^5.0.0",
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
+    "lru-cache": "^4.1.1",
     "mocha": "^3.4.2",
     "nyc": "^11.0.2",
     "sinon": "^2.3.4",
