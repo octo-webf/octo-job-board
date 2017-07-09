@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
-const auth = require('../middlewares/auth')
+const auth = require('../infrastructure/middlewares/auth')
 const OctopodClient = require('../infrastructure/octopod')
-const JobsSerializer = require('../serializers/jobs')
+const JobsSerializer = require('../infrastructure/serializers/jobs')
 const cache = require('../infrastructure/cache')
 
 const CACHE_KEY = 'get_jobs'

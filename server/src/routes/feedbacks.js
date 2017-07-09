@@ -5,9 +5,9 @@ const router = express.Router()
 
 router.post('/', auth, (req, res) => {
   const form = req.body
-  mailService.sendInterestEmail(form)
+  mailService.sendFeedbackEmail(form)
     .then(() => {
-      res.status(201).json('Succès')
+      res.status(201).json('Feedback sent')
     })
     .catch(err => {
       res.status(500).json({error: err})

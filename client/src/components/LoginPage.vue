@@ -23,6 +23,8 @@
 
   export default {
 
+  	name: 'login-page',
+
   	data() {
   		return {
   			googleSignInParams: {

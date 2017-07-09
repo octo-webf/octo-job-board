@@ -7,8 +7,8 @@
         </a>
         <nav class="app-header__navigation navigation" role="navigation" aria-label="site navigation">
           <ol class="navigation__links">
-            <li class="navigation__link"><a class="suggestion-link" href="mailto:jobboard@octo.com">Proposer des améliorations</a></li>
-            <li class="navigation__link"><a class="logout-link" href="#" @click="signOut">Se déconnecter</a></li>
+            <li class="navigation__link"><button class="navbar-action navbar-action__suggestion" type="button" @click="displayFeedbackModal">Proposer des améliorations</button></li>
+            <li class="navigation__link"><button class="navbar-action navbar-action__logout" type="button" @click="signOut">Se déconnecter</button></li>
           </ol>
         </nav>
       </div>
@@ -22,7 +22,13 @@
 
   export default {
 
+  	name: 'app-header',
+
   	methods: {
+  		displayFeedbackModal() {
+  			this.$modal.show('feedback-modal');
+  		},
+
   		signOut() {
   			authenticationService.disconnect().then(() => {
   				this.$router.push('/login');
@@ -66,28 +72,31 @@
     font-weight: 900;
   }
 
-  .suggestion-link {
+  .navbar-action {
+    cursor: pointer;
+    background: transparent;
+    font-size: 16px;
+    border: none;
+    padding: 16px 0;
+    line-height: 28px;
+  }
+
+  .navbar-action__suggestion {
     color: #9199a1;
     display: inline-block;
-    padding: 17px 0;
-    line-height: 28px;
-    text-decoration: none;
     margin-right: 50px;
   }
 
-  .suggestion-link:hover {
+  .navbar-action__suggestion:hover {
     text-decoration: underline;
   }
 
-  .logout-link {
+  .navbar-action__logout {
     color: #9199a1;
     display: inline-block;
-    padding: 17px 0;
-    line-height: 28px;
-    text-decoration: none;
   }
 
-  .logout-link:hover {
+  .navbar-action__logout:hover {
     text-decoration: underline;
   }
 

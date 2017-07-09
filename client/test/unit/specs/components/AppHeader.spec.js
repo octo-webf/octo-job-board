@@ -1,6 +1,9 @@
 import Vue from 'vue';
+import VueModal from 'vue-js-modal';
 import AppHeader from '@/components/AppHeader';
 import authenticationService from '@/services/authentication';
+
+Vue.use(VueModal);
 
 describe('Unit | Component | AppHeader.vue', () => {
 	let component;
@@ -17,7 +20,34 @@ describe('Unit | Component | AppHeader.vue', () => {
 		it('should display a link to home', () => {
 			expect(component.$el.querySelector('.logo-link')).to.exist;
 		});
+
+		it('should display a button to open the feedback-modal', () => {
+			expect(component.$el.querySelector('.navbar-action__suggestion')).to.exist;
+		});
+
+		it('should display a button to logout', () => {
+			expect(component.$el.querySelector('.navbar-action__logout')).to.exist;
+		});
 	});
+
+	describe('#displayFeedbackModal', () => {
+		beforeEach(() => {
+			sinon.stub(component.$modal, 'show');
+		});
+
+		afterEach(() => {
+			component.$modal.show.restore();
+		});
+
+		it('should display the feedback-modal', () => {
+      // when
+			component.displayFeedbackModal();
+
+      // then
+			expect(component.$modal.show).to.have.been.calledWith('feedback-modal');
+		});
+	});
+
 
 	describe('#signOut', () => {
 		beforeEach(() => {

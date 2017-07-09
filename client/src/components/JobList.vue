@@ -30,6 +30,8 @@
 
   export default {
 
+  	name: 'job-list',
+
   	components: {
   		'app-header': AppHeader,
   		'job-card': JobCard,
