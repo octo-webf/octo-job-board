@@ -37,54 +37,54 @@
 
   export default {
 
-  	name: 'FeedbackModal',
+    name: 'FeedbackModal',
 
-  	data() {
-  		return {
-  			feedback: null,
-  			error: null,
-  		};
-  	},
+    data() {
+      return {
+        feedback: null,
+        error: null,
+      };
+    },
 
-  	methods: {
-  		beforeOpen() {
-  			this._resetFeedback();
-  			this._removeError();
-  		},
+    methods: {
+      beforeOpen() {
+        this._resetFeedback();
+        this._removeError();
+      },
 
-  		sendFeedback() {
-  			this._removeError();
-  			if (!this.feedback || this.feedback.trim().length === 0) {
-  				this.error = 'Vous devez saisir un message.';
-  				return;
-  			}
+      sendFeedback() {
+        this._removeError();
+        if (!this.feedback || this.feedback.trim().length === 0) {
+          this.error = 'Vous devez saisir un message.';
+          return;
+        }
 
-  			const consultant = authenticationService.getAuthenticatedUser();
-  			const accessToken = authenticationService.getAccessToken();
-  			feedbacksApi.sendFeedback(this.feedback, consultant, accessToken)
+        const consultant = authenticationService.getAuthenticatedUser();
+        const accessToken = authenticationService.getAccessToken();
+        feedbacksApi.sendFeedback(this.feedback, consultant, accessToken)
           .then(() => {
-  	this._closeModal();
-  }).catch(() => {
-  	this.error = 'Une erreur est survenue durant l\'envoi de votre message.';
-  });
-  		},
+            this._closeModal();
+          }).catch(() => {
+            this.error = 'Une erreur est survenue durant l\'envoi de votre message.';
+          });
+      },
 
-  		cancelFeedback() {
-  			this._closeModal();
-  		},
+      cancelFeedback() {
+        this._closeModal();
+      },
 
-  		_resetFeedback() {
-  			this.feedback = null;
-  		},
+      _resetFeedback() {
+        this.feedback = null;
+      },
 
-  		_removeError() {
-  			this.error = null;
-  		},
+      _removeError() {
+        this.error = null;
+      },
 
-  		_closeModal() {
-  			this.$modal.hide('feedback-modal');
-  		},
-  	},
+      _closeModal() {
+        this.$modal.hide('feedback-modal');
+      },
+    },
   };
 
 </script>

@@ -6,6 +6,8 @@ const router = express.Router();
 
 router.post('/', auth, (req, res) => {
   const form = req.body;
+  res.status(201).json('Succès');
+/*
   mailService.sendInterestEmail(form)
     .then(() => {
       res.status(201).json('Succès');
@@ -13,6 +15,7 @@ router.post('/', auth, (req, res) => {
     .catch((err) => {
       res.status(500).json({ error: err });
     });
+*/
 });
 
 module.exports = router;
