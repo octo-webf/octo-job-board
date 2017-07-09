@@ -63,6 +63,12 @@ describe('Unit | Component | JobCard.vue', () => {
 		interestsApi.sendInterest.restore();
 	});
 
+	describe('name', () => {
+		it('should have name job-card', () => {
+			expect(component.$options.name).to.equal('job-card');
+		});
+	});
+
 	describe('$data', () => {
 		it('should have isClicked property set to false', () => {
 			expect(component.$data.isClicked).to.be.false;
