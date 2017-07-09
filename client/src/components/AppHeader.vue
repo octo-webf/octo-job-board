@@ -22,7 +22,7 @@
 
   export default {
 
-  	name: 'app-header',
+  	name: 'AppHeader',
 
   	methods: {
   		displayFeedbackModal() {

@@ -23,7 +23,7 @@
 
   export default {
 
-  	name: 'login-page',
+  	name: 'LoginPage',
 
   	data() {
   		return {

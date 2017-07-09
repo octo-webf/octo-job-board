@@ -29,7 +29,7 @@
 
   export default {
 
-	name: 'job-card',
+	name: 'JobCard',
 
 	props: ['job'],
 

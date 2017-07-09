@@ -30,7 +30,7 @@
 
   export default {
 
-  	name: 'job-list',
+  	name: 'JobList',
 
   	components: {
   		'app-header': AppHeader,

@@ -33,6 +33,7 @@ describe('Unit | Component | JobCard.vue', () => {
 			},
 		},
 	};
+
 	const consultant = {
 		name: 'Samurai Jack',
 		email: 'sjack@octo.com',
@@ -64,12 +65,12 @@ describe('Unit | Component | JobCard.vue', () => {
 	});
 
 	describe('name', () => {
-		it('should have name job-card', () => {
-			expect(component.$options.name).to.equal('job-card');
-		});
+    it('should be named "JobCard"', () => {
+      expect(component.$options.name).to.equal('JobCard');
+    });
 	});
 
-	describe('$data', () => {
+  describe('$data', () => {
 		it('should have isClicked property set to false', () => {
 			expect(component.$data.isClicked).to.be.false;
 		});
