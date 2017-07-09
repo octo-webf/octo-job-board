@@ -140,6 +140,22 @@ describe('Unit | Utils | octopod-client', function () {
         expect(request.get).to.have.been.calledWith(expectedOptions)
       })
     })
+
+    it('should return a rejected promise when the call to Octopod API fails', () => {
+      // given
+      request.get.callsFake((options, callback) => {
+        callback(new Error('some error'))
+      })
+
+      // when
+      const promise = OctopodClient.fetchProjectsToBeStaffed()
+
+      // then
+      return promise.catch(err => {
+        expect(err).to.exist
+        expect(err.message).to.equal('some error')
+      })
+    })
   })
 
   /**

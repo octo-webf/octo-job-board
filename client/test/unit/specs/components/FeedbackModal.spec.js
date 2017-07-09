@@ -27,9 +27,9 @@ describe('Unit | Component | FeedbackModal.vue', () => {
 		}).$mount();
 	});
 
-  it('should be named "FeedbackModal"', () => {
-    expect(component.$options.name).to.equal('FeedbackModal');
-  });
+	it('should be named "FeedbackModal"', () => {
+		expect(component.$options.name).to.equal('FeedbackModal');
+	});
 
 	describe('rendering', () => {
 		it('should display the modal', () => {

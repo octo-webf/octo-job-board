@@ -16,11 +16,11 @@ describe('Unit | Component | AppHeader.vue', () => {
 		component = new Constructor().$mount();
 	});
 
-  it('should be named "AppHeader"', () => {
-    expect(component.$options.name).to.equal('AppHeader');
-  });
+	it('should be named "AppHeader"', () => {
+		expect(component.$options.name).to.equal('AppHeader');
+	});
 
-  describe('rendering', () => {
+	describe('rendering', () => {
 		it('should display a link to home', () => {
 			expect(component.$el.querySelector('.logo-link')).to.exist;
 		});

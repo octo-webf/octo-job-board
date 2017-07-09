@@ -65,12 +65,12 @@ describe('Unit | Component | JobCard.vue', () => {
 	});
 
 	describe('name', () => {
-    it('should be named "JobCard"', () => {
-      expect(component.$options.name).to.equal('JobCard');
-    });
+		it('should be named "JobCard"', () => {
+			expect(component.$options.name).to.equal('JobCard');
+		});
 	});
 
-  describe('$data', () => {
+	describe('$data', () => {
 		it('should have isClicked property set to false', () => {
 			expect(component.$data.isClicked).to.be.false;
 		});

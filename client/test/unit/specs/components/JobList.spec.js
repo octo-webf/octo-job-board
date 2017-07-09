@@ -51,11 +51,11 @@ describe('Unit | Component | JobList.vue', () => {
 		jobsApi.fetchAll.restore();
 	});
 
-  it('should be named "JobList"', () => {
-    expect(component.$options.name).to.equal('JobList');
-  });
+	it('should be named "JobList"', () => {
+		expect(component.$options.name).to.equal('JobList');
+	});
 
-  describe('method #getJobs', () => {
+	describe('method #getJobs', () => {
 		it('should verify that user is authenticated', () => {
 			expect(authentication.isAuthenticated).to.have.been.called;
 		});

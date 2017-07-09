@@ -24,11 +24,11 @@ describe('Unit | Component | LoginPage.vue', () => {
 		delete window.gapi;
 	});
 
-  it('should be named "LoginPage"', () => {
-    expect(component.$options.name).to.equal('LoginPage');
-  });
+	it('should be named "LoginPage"', () => {
+		expect(component.$options.name).to.equal('LoginPage');
+	});
 
-  describe('method #onSignInSuccess', () => {
+	describe('method #onSignInSuccess', () => {
 		beforeEach(() => {
 			sinon.stub(authentication, 'authenticate').resolves();
 			window.localStorage.clear();
