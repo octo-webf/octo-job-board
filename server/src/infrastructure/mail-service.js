@@ -20,7 +20,7 @@ function sendInterestEmail (form) {
     template: template
   }
 
-  return mailjet.sendEmail(options)
+  return mailJet.sendEmail(options)
 }
 
 function sendFeedbackEmail (form) {

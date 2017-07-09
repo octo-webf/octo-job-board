@@ -5,11 +5,11 @@ const mailService = require('../../../src/infrastructure/mail-service')
 
 describe('Unit | Service | MailService', () => {
   beforeEach(() => {
-    sinon.stub(mailjet, 'sendEmail').resolves()
+    sinon.stub(mailJet, 'sendEmail').resolves()
   })
 
   afterEach(() => {
-    mailjet.sendEmail.restore()
+    mailJet.sendEmail.restore()
   })
 
   describe('#sendInterestEmail', () => {
@@ -32,7 +32,7 @@ describe('Unit | Service | MailService', () => {
 
       // then
       return promise.then(() => {
-        expect(mailjet.sendEmail).to.have.been.calledWithExactly({
+        expect(mailJet.sendEmail).to.have.been.calledWithExactly({
           from: 'jobboard+test@octo.com',
           to: 'jobboard+test@octo.com',
           fromName: 'Le Job Board - Ne pas répondre',
@@ -59,7 +59,7 @@ describe('Unit | Service | MailService', () => {
 
       // then
       return promise.then(() => {
-        expect(mailjet.sendEmail).to.have.been.calledWithExactly({
+        expect(mailJet.sendEmail).to.have.been.calledWithExactly({
           from: 'jobboard@octo.com',
           to: 'jobboard@octo.com',
           fromName: 'Le Job Board - Ne pas répondre',
