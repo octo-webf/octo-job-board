@@ -41,6 +41,7 @@ describe('Unit | Component | JobCard.vue', () => {
 
 	beforeEach(() => {
     // given
+		sinon.stub(authenticationService, 'isAuthenticated').returns(true);
 		sinon.stub(authenticationService, 'getAuthenticatedUser').returns(consultant);
 		sinon.stub(authenticationService, 'getAccessToken').returns(accessToken);
 		sinon.stub(interestsApi, 'sendInterest').resolves();
@@ -56,6 +57,7 @@ describe('Unit | Component | JobCard.vue', () => {
 	});
 
 	afterEach(() => {
+		authenticationService.isAuthenticated.restore();
 		authenticationService.getAuthenticatedUser.restore();
 		authenticationService.getAccessToken.restore();
 		interestsApi.sendInterest.restore();
@@ -144,6 +146,18 @@ describe('Unit | Component | JobCard.vue', () => {
 	});
 
 	describe('method #sendInterest', () => {
+		it('should not send interest when user is not authenticated', () => {
+			// Given
+			authenticationService.isAuthenticated.restore();
+			sinon.stub(authenticationService, 'isAuthenticated').returns(false);
+
+			// When
+			component.sendInterest();
+
+      // Then
+			expect(interestsApi.sendInterest).not.to.have.been.calledWithExactly(job, consultant, accessToken);
+		});
+
 		it('should call the API with good params', () => {
       // when
 			component.sendInterest();
