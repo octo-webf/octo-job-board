@@ -12,11 +12,11 @@
   import GithubCorner from '@/components/GithubCorner';
 
   export default {
-  	name: 'app',
-  	components: {
-  		'feedback-modal': FeedbackModal,
-  		'github-corner': GithubCorner,
-  	},
+    name: 'app',
+    components: {
+      'feedback-modal': FeedbackModal,
+      'github-corner': GithubCorner,
+    },
   };
 </script>
 
