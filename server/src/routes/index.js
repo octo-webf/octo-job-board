@@ -1,8 +1,9 @@
-const express = require('express')
-const router = express.Router()
+const express = require('express');
 
-router.get('/', function (req, res, next) {
-  res.json({azerty: 'azertty'})
-})
+const router = express.Router();
 
-module.exports = router
+router.get('/', (req, res) => {
+  res.json({ azerty: 'azertty' });
+});
+
+module.exports = router;

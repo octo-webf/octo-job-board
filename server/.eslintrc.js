@@ -1,15 +1,15 @@
 module.exports = {
-  'extends': 'standard',
+  'extends': '../.eslintrc.js',
   'plugins': [
-    'standard',
     'promise'
   ],
-  'rules': {
-    'handle-callback-err': 0,
-    'prefer-promise-reject-errors': 0
-  },
   'env': {
     'node': true,
     'es6': true
-  }
+  },
+  'settings': {
+    'import/resolver': {
+      'node' : true
+    }
+  },
 }

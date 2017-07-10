@@ -1,10 +1,10 @@
-const jwt = require('jsonwebtoken')
-const {request, expect, sinon} = require('../../test-helper')
-const app = require('../../../app')
-const mailService = require('../../../src/infrastructure/mail-service')
+const jwt = require('jsonwebtoken');
+const { request, expect, sinon } = require('../../test-helper');
+const app = require('../../../app');
+const mailService = require('../../../src/infrastructure/mail-service');
 
-describe('Integration | Routes | interests route', function () {
-  let interestedJobForm
+describe('Integration | Routes | interests route', () => {
+  let interestedJobForm;
 
   beforeEach(() => {
     interestedJobForm = {
@@ -13,63 +13,61 @@ describe('Integration | Routes | interests route', function () {
       missionDirectorNickname: 'ZYX',
       octopodLink: 'https://octopod.octo.com/projects/2146904867',
       activityName: 'Développeur Front',
-      missionName: 'Oodrive - Liste d\'initié'
-    }
-    sinon.stub(mailService, 'sendInterestEmail')
-    sinon.stub(jwt, 'verify').returns({userId: 'user-id'})
-  })
+      missionName: 'Oodrive - Liste d\'initié',
+    };
+    sinon.stub(mailService, 'sendInterestEmail');
+    sinon.stub(jwt, 'verify').returns({ userId: 'user-id' });
+  });
 
   afterEach(() => {
-    jwt.verify.restore()
-    mailService.sendInterestEmail.restore()
-  })
+    jwt.verify.restore();
+    mailService.sendInterestEmail.restore();
+  });
 
   it('should return created status and succès', (done) => {
     // Given
-    mailService.sendInterestEmail.resolves()
+    mailService.sendInterestEmail.resolves();
 
     // When
     request(app)
       .post('/api/interests')
-      .send({interestedJobForm})
+      .send({ interestedJobForm })
       .set('Authorization', 'Bearer access-token')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(201, (err, res) => {
         if (err) {
-          done(err)
+          done(err);
         }
 
         // Then
-        expect(res.body).to.deep.equal('Succès')
-        done()
-      })
-  })
+        expect(res.body).to.deep.equal('Succès');
+        done();
+      });
+  });
 
   it('should return error status and error', (done) => {
     // Given
-    mailService.sendInterestEmail.rejects()
+    mailService.sendInterestEmail.rejects();
 
     // When
     request(app)
       .post('/api/interests')
-      .send({interestedJobForm: interestedJobForm})
+      .send({ interestedJobForm })
       .set('Authorization', 'Bearer access-token')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(500, (err, res) => {
         if (err) {
-          done(err)
+          done(err);
         }
 
         // Then
-        expect(res.body).to.deep.equal({error: {}})
-        done()
-      })
-  })
+        expect(res.body).to.deep.equal({ error: {} });
+        done();
+      });
+  });
 
-  it('should return 401 response if the user is not well authenticated', () => {
-    return request(app)
+  it('should return 401 response if the user is not well authenticated', () => request(app)
       .post('/api/interests')
-      .send({interestedJobForm: interestedJobForm})
-      .expect(401)
-  })
-})
+      .send({ interestedJobForm })
+      .expect(401));
+});

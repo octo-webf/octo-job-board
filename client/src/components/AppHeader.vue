@@ -22,19 +22,19 @@
 
   export default {
 
-  	name: 'AppHeader',
+    name: 'AppHeader',
 
-  	methods: {
-  		displayFeedbackModal() {
-  			this.$modal.show('feedback-modal');
-  		},
+    methods: {
+      displayFeedbackModal() {
+        this.$modal.show('feedback-modal');
+      },
 
-  		signOut() {
-  			authenticationService.disconnect().then(() => {
-  				this.$router.push('/login');
-  			});
-  		},
-  	},
+      signOut() {
+        authenticationService.disconnect().then(() => {
+          this.$router.push('/login');
+        });
+      },
+    },
 
   };
 </script>

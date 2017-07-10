@@ -23,28 +23,28 @@
 
   export default {
 
-  	name: 'LoginPage',
+    name: 'LoginPage',
 
-  	data() {
-  		return {
-  			googleSignInParams: {
-  				client_id: process.env.CLIENT_ID,
-  			},
-  		};
-  	},
+    data() {
+      return {
+        googleSignInParams: {
+          client_id: process.env.CLIENT_ID,
+        },
+      };
+    },
 
-  	methods: {
+    methods: {
 
-  		onSignInSuccess(googleUser) {
-  			authentication.authenticate(googleUser).then(() => {
-  				this.$router.push('/');
-  			});
-  		},
+      onSignInSuccess(googleUser) {
+        authentication.authenticate(googleUser).then(() => {
+          this.$router.push('/');
+        });
+      },
 
-  		onSignInError() {
-  		},
+      onSignInError() {
+      },
 
-  	},
+    },
   };
 </script>
 

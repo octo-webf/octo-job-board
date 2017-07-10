@@ -6,68 +6,68 @@ import authenticationService from '@/services/authentication';
 Vue.use(VueModal);
 
 describe('Unit | Component | AppHeader.vue', () => {
-	let component;
+  let component;
 
-	beforeEach(() => {
+  beforeEach(() => {
     // given
-		const Constructor = Vue.extend(AppHeader);
+    const Constructor = Vue.extend(AppHeader);
 
     // when
-		component = new Constructor().$mount();
-	});
+    component = new Constructor().$mount();
+  });
 
-	it('should be named "AppHeader"', () => {
-		expect(component.$options.name).to.equal('AppHeader');
-	});
+  it('should be named "AppHeader"', () => {
+    expect(component.$options.name).to.equal('AppHeader');
+  });
 
-	describe('rendering', () => {
-		it('should display a link to home', () => {
-			expect(component.$el.querySelector('.logo-link')).to.exist;
-		});
+  describe('rendering', () => {
+    it('should display a link to home', () => {
+      expect(component.$el.querySelector('.logo-link')).to.exist;
+    });
 
-		it('should display a button to open the feedback-modal', () => {
-			expect(component.$el.querySelector('.navbar-action__suggestion')).to.exist;
-		});
+    it('should display a button to open the feedback-modal', () => {
+      expect(component.$el.querySelector('.navbar-action__suggestion')).to.exist;
+    });
 
-		it('should display a button to logout', () => {
-			expect(component.$el.querySelector('.navbar-action__logout')).to.exist;
-		});
-	});
+    it('should display a button to logout', () => {
+      expect(component.$el.querySelector('.navbar-action__logout')).to.exist;
+    });
+  });
 
-	describe('#displayFeedbackModal', () => {
-		beforeEach(() => {
-			sinon.stub(component.$modal, 'show');
-		});
+  describe('#displayFeedbackModal', () => {
+    beforeEach(() => {
+      sinon.stub(component.$modal, 'show');
+    });
 
-		afterEach(() => {
-			component.$modal.show.restore();
-		});
+    afterEach(() => {
+      component.$modal.show.restore();
+    });
 
-		it('should display the feedback-modal', () => {
+    it('should display the feedback-modal', () => {
       // when
-			component.displayFeedbackModal();
+      component.displayFeedbackModal();
 
       // then
-			expect(component.$modal.show).to.have.been.calledWith('feedback-modal');
-		});
-	});
+      expect(component.$modal.show).to.have.been.calledWith('feedback-modal');
+    });
+  });
 
 
-	describe('#signOut', () => {
-		beforeEach(() => {
-			sinon.stub(authenticationService, 'disconnect').resolves();
-		});
+  describe('#signOut', () => {
+    beforeEach(() => {
+      sinon.stub(authenticationService, 'disconnect').resolves();
+    });
 
-		afterEach(() => {
-			authenticationService.disconnect.restore();
-		});
+    afterEach(() => {
+      authenticationService.disconnect.restore();
+    });
 
-		it('should call the API with good params', () => {
+    it('should call the API with good params', () => {
       // when
-			component.signOut();
+      component.signOut();
 
       // then
-			expect(authenticationService.disconnect).to.have.been.called;
-		});
-	});
+      expect(authenticationService.disconnect).to.have.been.called;
+    });
+  });
 });

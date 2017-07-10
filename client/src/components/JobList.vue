@@ -30,36 +30,36 @@
 
   export default {
 
-  	name: 'JobList',
+    name: 'JobList',
 
-  	components: {
-  		'app-header': AppHeader,
-  		'job-card': JobCard,
-  	},
+    components: {
+      'app-header': AppHeader,
+      'job-card': JobCard,
+    },
 
-  	data() {
-  		return {
-  			jobs: [],
-  		};
-  	},
+    data() {
+      return {
+        jobs: [],
+      };
+    },
 
-  	mounted() {
-  		this.getJobs();
-  	},
+    mounted() {
+      this.getJobs();
+    },
 
-  	methods: {
+    methods: {
 
-  		getJobs() {
-  			if (authenticationService.isAuthenticated()) {
-  				const accessToken = authenticationService.getAccessToken();
+      getJobs() {
+        if (authenticationService.isAuthenticated()) {
+          const accessToken = authenticationService.getAccessToken();
 
-  				jobsApi.fetchAll(accessToken).then((jobs) => {
-  					this.jobs = jobs;
-  				});
-  			}
-  		},
+          jobsApi.fetchAll(accessToken).then((jobs) => {
+            this.jobs = jobs;
+          });
+        }
+      },
 
-  	},
+    },
   };
 </script>
 

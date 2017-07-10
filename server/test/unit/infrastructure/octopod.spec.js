@@ -1,223 +1,220 @@
-const request = require('request')
-const OctopodClient = require('../../../src/infrastructure/octopod')
-const {expect, sinon} = require('../../test-helper')
+const request = require('request');
+const OctopodClient = require('../../../src/infrastructure/octopod');
+const { expect, sinon } = require('../../test-helper');
 
-describe('Unit | Utils | octopod-client', function () {
+describe('Unit | Utils | octopod-client', () => {
   beforeEach(() => {
-    sinon.stub(request, 'post')
-    sinon.stub(request, 'get')
-  })
+    sinon.stub(request, 'post');
+    sinon.stub(request, 'get');
+  });
 
   afterEach(() => {
-    request.post.restore()
-    request.get.restore()
-  })
+    request.post.restore();
+    request.get.restore();
+  });
 
   /**
    * #getAccessToken
    * ---------------
    */
 
-  describe('#getAccessToken', function () {
-    describe('with a successful request', function () {
+  describe('#getAccessToken', () => {
+    describe('with a successful request', () => {
       beforeEach(() => {
         request.post.callsFake((options, callback) => {
           const httpResponse = {
             body: JSON.stringify({
-              'access_token': 'fakeAccessToken',
-              'token_type': 'bearer',
-              'expires_in': 7200,
-              'created_at': 1497621634
-            })
-          }
-          callback(null, httpResponse)
-        })
-      })
+              access_token: 'fakeAccessToken',
+              token_type: 'bearer',
+              expires_in: 7200,
+              created_at: 1497621634,
+            }),
+          };
+          callback(null, httpResponse);
+        });
+      });
 
-      it('should call Octopod API "POST /oauth/token"', function () {
+      it('should call Octopod API "POST /oauth/token"', () => {
         // when
-        const promise = OctopodClient.getAccessToken()
+        const promise = OctopodClient.getAccessToken();
 
         // then
-        return promise.then((res) => {
+        return promise.then(() => {
           const expectedOptions = {
             url: 'http://octopod.url/api/oauth/token',
             headers: {
               'Content-Type': 'application/x-www-form-urlencoded',
-              'Accept': 'application/json'
+              Accept: 'application/json',
             },
             form: {
               grant_type: 'client_credentials',
               client_id: 'octopod-client-id',
-              client_secret: 'octopod-client-secret'
-            }
-          }
-          expect(request.post).to.have.been.calledWith(expectedOptions)
-        })
-      })
+              client_secret: 'octopod-client-secret',
+            },
+          };
+          expect(request.post).to.have.been.calledWith(expectedOptions);
+        });
+      });
 
       it('should return a resolved promise', () => {
         // when
-        const promise = OctopodClient.getAccessToken()
+        const promise = OctopodClient.getAccessToken();
 
         // then
         return promise.then((accessToken) => {
-          expect(accessToken).to.equal('fakeAccessToken')
-        })
-      })
-    })
+          expect(accessToken).to.equal('fakeAccessToken');
+        });
+      });
+    });
 
-    describe('with an error', function () {
+    describe('with an error', () => {
       beforeEach(() => {
         request.post.callsFake((options, callback) => {
-          callback(new Error('Some error message'), null)
-        })
-      })
+          callback(new Error('Some error message'), null);
+        });
+      });
 
       it('should return a rejected promise', (done) => {
         // when
-        const promise = OctopodClient.getAccessToken()
+        const promise = OctopodClient.getAccessToken();
 
         // then
         promise
           .catch((err) => {
-            expect(err.message).to.equal('Some error message')
-            done()
-          })
-      })
-    })
-  })
+            expect(err.message).to.equal('Some error message');
+            done();
+          });
+      });
+    });
+  });
 
   /**
    * #fetchProjectsToBeStaffed
    * -------------------------
    */
 
-  describe('#fetchProjectsToBeStaffed', function () {
-    let octopodProjects = [{
-      'id': 1,
-      'name': 'job 1'
+  describe('#fetchProjectsToBeStaffed', () => {
+    const octopodProjects = [{
+      id: 1,
+      name: 'job 1',
     }, {
-      'id': 2,
-      'name': 'job 2'
-    }]
+      id: 2,
+      name: 'job 2',
+    }];
 
     beforeEach(() => {
       request.get.callsFake((options, callback) => {
         const httpResponse = {
-          body: JSON.stringify(octopodProjects)
-        }
-        callback(null, httpResponse)
-      })
-    })
+          body: JSON.stringify(octopodProjects),
+        };
+        callback(null, httpResponse);
+      });
+    });
 
     it('should return projects in a a promise', () => {
       // when
-      const promise = OctopodClient.fetchProjectsToBeStaffed()
+      const promise = OctopodClient.fetchProjectsToBeStaffed();
 
       // then
       return promise
         .then((projects) => {
-          expect(projects).to.deep.equal(octopodProjects)
-        })
-    })
+          expect(projects).to.deep.equal(octopodProjects);
+        });
+    });
 
-    it('should call Octopod API "GET /projects"', function () {
+    it('should call Octopod API "GET /projects"', () => {
       // given
-      const accessToken = 'access-token'
+      const accessToken = 'access-token';
 
       // when
-      const promise = OctopodClient.fetchProjectsToBeStaffed(accessToken)
+      const promise = OctopodClient.fetchProjectsToBeStaffed(accessToken);
 
       // then
-      return promise.then((res) => {
+      return promise.then(() => {
         const expectedOptions = {
           url: 'http://octopod.url/api/v0/projects?staffing_needed=true&page=1&per_page=50',
           headers: {
-            'Authorization': 'Bearer access-token'
-          }
-        }
-        expect(request.get).to.have.been.calledWith(expectedOptions)
-      })
-    })
+            Authorization: 'Bearer access-token',
+          },
+        };
+        expect(request.get).to.have.been.calledWith(expectedOptions);
+      });
+    });
 
     it('should return a rejected promise when the call to Octopod API fails', () => {
       // given
       request.get.callsFake((options, callback) => {
-        callback(new Error('some error'))
-      })
+        callback(new Error('some error'));
+      });
 
       // when
-      const promise = OctopodClient.fetchProjectsToBeStaffed()
+      const promise = OctopodClient.fetchProjectsToBeStaffed();
 
       // then
-      return promise.catch(err => {
-        expect(err).to.exist
-        expect(err.message).to.equal('some error')
-      })
-    })
-  })
+      return promise.catch((err) => {
+        expect(err).to.exist;
+        expect(err.message).to.equal('some error');
+      });
+    });
+  });
 
   /**
    * #fetchActivitiesToBeStaffed
    * ---------------------------
    */
 
-  describe('#fetchActivitiesToBeStaffed', function () {
-    const accessToken = 'access-token'
-    const projects = [{id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}]
+  describe('#fetchActivitiesToBeStaffed', () => {
+    const accessToken = 'access-token';
+    const projects = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }];
 
     beforeEach(() => {
       request.get.callsFake((options, callback) => {
         const projectActivities = [
-          [{id: 11, staffing_needed: true}],
-          [{id: 21, staffing_needed: true}, {id: 22, staffing_needed: false}],
-          [{id: 31, staffing_needed: true}, {id: 32, staffing_needed: false}, {id: 33, staffing_needed: true}],
+          [{ id: 11, staffing_needed: true }],
+          [{ id: 21, staffing_needed: true }, { id: 22, staffing_needed: false }],
+          [{ id: 31, staffing_needed: true }, { id: 32, staffing_needed: false }, { id: 33, staffing_needed: true }],
           [],
-          [{id: 31, staffing_needed: false}, {id: 32, staffing_needed: false}, {id: 33, staffing_needed: false}]
-        ]
+          [{ id: 31, staffing_needed: false }, { id: 32, staffing_needed: false }, { id: 33, staffing_needed: false }],
+        ];
 
-        const url = options.url
-        const urlParts = url.split('/')
-        const projectId = urlParts[6] - 1
+        const url = options.url;
+        const urlParts = url.split('/');
+        const projectId = urlParts[6] - 1;
 
         callback(null, {
-          body: JSON.stringify(projectActivities[projectId])
-        })
-      })
-    })
+          body: JSON.stringify(projectActivities[projectId]),
+        });
+      });
+    });
 
-    it('should return a promise resolved with activities', function () {
+    it('should return a promise resolved with activities', () => {
       // when
-      const promise = OctopodClient.fetchActivitiesToBeStaffed(accessToken, projects)
+      const promise = OctopodClient.fetchActivitiesToBeStaffed(accessToken, projects);
 
       // then
-      return promise.then(activities => {
-        expect(activities).to.have.lengthOf(4)
-      })
-    })
+      return promise.then((activities) => {
+        expect(activities).to.have.lengthOf(4);
+      });
+    });
 
-    it('should call Octopod API "GET /projects/{id}/activities" as many times as number of projects', function () {
-      // given
-      const accessToken = 'access-token'
-
+    it('should call Octopod API "GET /projects/{id}/activities" as many times as number of projects', () => {
       // when
-      const promise = OctopodClient.fetchActivitiesToBeStaffed(accessToken, projects)
+      const promise = OctopodClient.fetchActivitiesToBeStaffed(accessToken, projects);
 
       // then
       return promise.then(() => {
-        expect(request.get).to.have.callCount(5)
-      })
-    })
+        expect(request.get).to.have.callCount(5);
+      });
+    });
 
     it('should not return activities that are not flagged as "staffing needed"', () => {
       // when
-      const promise = OctopodClient.fetchActivitiesToBeStaffed(accessToken, projects)
+      const promise = OctopodClient.fetchActivitiesToBeStaffed(accessToken, projects);
 
       // then
-      return promise.then(activities => {
-        expect(activities).to.have.lengthOf(4)
-      })
-    })
-  })
-})
+      return promise.then((activities) => {
+        expect(activities).to.have.lengthOf(4);
+      });
+    });
+  });
+});

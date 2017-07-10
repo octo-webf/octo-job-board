@@ -1,21 +1,21 @@
-const { sinon } = require('../../test-helper')
-const Mailjet = require('../../../src/infrastructure/mailjet')
+const { sinon } = require('../../test-helper');
+const Mailjet = require('../../../src/infrastructure/mailjet');
 
-const nodeMailjet = require('node-mailjet')
+const nodeMailjet = require('node-mailjet');
 
-describe('Unit | Class | Mailjet', function () {
-  let mailJetConnectStub
+describe('Unit | Class | Mailjet', () => {
+  let mailJetConnectStub;
 
   beforeEach(() => {
-    mailJetConnectStub = sinon.stub(nodeMailjet, 'connect')
-  })
+    mailJetConnectStub = sinon.stub(nodeMailjet, 'connect');
+  });
 
   afterEach(() => {
-    mailJetConnectStub.restore()
-  })
+    mailJetConnectStub.restore();
+  });
 
   describe('#sendEmail', () => {
-    let options
+    let options;
 
     beforeEach(() => {
       options = {
@@ -23,61 +23,59 @@ describe('Unit | Class | Mailjet', function () {
         fromName: 'Ne Pas Repondre',
         subject: 'PTR intéressé par une activité du Dashboard',
         template: 'Corps du mail',
-        to: 'jobboard@octo.com'
-      }
-    })
+        to: 'jobboard@octo.com',
+      };
+    });
 
     it('should create an instance of mailJet', () => {
       // Given
       mailJetConnectStub.returns({
-        post: () => {
-          return {
-            request: () => {
-            }
-          }
-        }
-      })
+        post: () => ({
+          request: () => {
+          },
+        }),
+      });
 
       // When
-      Mailjet.sendEmail(options)
+      Mailjet.sendEmail(options);
 
       // Then
-      sinon.assert.calledWith(mailJetConnectStub, 'test-api-key', 'test-api-secret')
-    })
+      sinon.assert.calledWith(mailJetConnectStub, 'test-api-key', 'test-api-secret');
+    });
 
     it('should post a send instruction', () => {
       // Given
-      const postStub = sinon.stub().returns({ request: _ => Promise.resolve() })
-      mailJetConnectStub.returns({ post: postStub })
+      const postStub = sinon.stub().returns({ request: () => Promise.resolve() });
+      mailJetConnectStub.returns({ post: postStub });
 
       // When
-      const result = Mailjet.sendEmail(options)
+      const result = Mailjet.sendEmail(options);
 
       // Then
       return result.then(() => {
-        sinon.assert.calledWith(postStub, 'send')
-      })
-    })
+        sinon.assert.calledWith(postStub, 'send');
+      });
+    });
 
     it('should request with a payload', () => {
       // Given
-      const requestStub = sinon.stub().returns(Promise.resolve())
-      const postStub = sinon.stub().returns({ request: requestStub })
-      mailJetConnectStub.returns({ post: postStub })
+      const requestStub = sinon.stub().returns(Promise.resolve());
+      const postStub = sinon.stub().returns({ request: requestStub });
+      mailJetConnectStub.returns({ post: postStub });
 
       // When
-      const result = Mailjet.sendEmail(options)
+      const result = Mailjet.sendEmail(options);
 
       // Then
       return result.then(() => {
         sinon.assert.calledWith(requestStub, {
-          'FromEmail': 'jobboard@octo.com',
-          'FromName': 'Ne Pas Repondre',
-          'Subject': 'PTR intéressé par une activité du Dashboard',
+          FromEmail: 'jobboard@octo.com',
+          FromName: 'Ne Pas Repondre',
+          Subject: 'PTR intéressé par une activité du Dashboard',
           'Html-part': 'Corps du mail',
-          'Recipients': [ { 'Email': 'jobboard@octo.com' } ]
-        })
-      })
-    })
-  })
-})
+          Recipients: [{ Email: 'jobboard@octo.com' }],
+        });
+      });
+    });
+  });
+});
