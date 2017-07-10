@@ -7,23 +7,23 @@ import authenticationService from '@/services/authentication';
 Vue.use(Router);
 
 export default new Router({
-	routes: [
-		{
-			path: '/',
-			name: 'JobList',
-			component: JobList,
-			beforeEnter(to, from, next) {
-				if (!authenticationService.isAuthenticated()) {
-					next('/login');
-				} else {
-					next();
-				}
-			},
-		},
-		{
-			path: '/login',
-			name: 'LoginPage',
-			component: LoginPage,
-		},
-	],
+  routes: [
+    {
+      path: '/',
+      name: 'JobList',
+      component: JobList,
+      beforeEnter(to, from, next) {
+        if (!authenticationService.isAuthenticated()) {
+          next('/login');
+        } else {
+          next();
+        }
+      },
+    },
+    {
+      path: '/login',
+      name: 'LoginPage',
+      component: LoginPage,
+    },
+  ],
 });

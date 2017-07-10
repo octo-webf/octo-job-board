@@ -9,7 +9,7 @@ module.exports = [
     start_date: 'juin 2017',
     duration: '9 mois',
     location: 'Saint-Quentin-en-Yvelines',
-    contacts: ['WBO', 'CDR']
+    contacts: ['WBO', 'CDR'],
   },
   {
     id: 2,
@@ -21,7 +21,7 @@ module.exports = [
     start_date: 'juin 2017',
     duration: '9 mois',
     location: 'SQY et OCTO',
-    contacts: ['WBO', 'CDR']
+    contacts: ['WBO', 'CDR'],
   },
   {
     id: 3,
@@ -33,7 +33,7 @@ module.exports = [
     start_date: 'juillet 2017',
     duration: '6 mois',
     location: 'Saint-Quentin-en-Yvelines',
-    contacts: ['ERL']
+    contacts: ['ERL'],
   },
   {
     id: 4,
@@ -45,7 +45,7 @@ module.exports = [
     start_date: 'juin 2017',
     duration: '5 mois',
     location: '39-43 quai André Citroën 75015 Paris',
-    contacts: ['WBO']
+    contacts: ['WBO'],
   },
   {
     id: 5,
@@ -57,7 +57,7 @@ module.exports = [
     start_date: 'juin 2017',
     duration: '5 mois',
     location: 'N/A',
-    contacts: ['CDR']
+    contacts: ['CDR'],
   },
   {
     id: 6,
@@ -69,7 +69,7 @@ module.exports = [
     start_date: 'juin 2017',
     duration: '5 mois',
     location: 'Valenciennes',
-    contacts: ['NCA']
+    contacts: ['NCA'],
   },
   {
     id: 7,
@@ -81,6 +81,6 @@ module.exports = [
     start_date: 'juin 2017',
     duration: '5 mois',
     location: 'Paris, 15ème',
-    contacts: ['MAX']
-  }
-]
+    contacts: ['MAX'],
+  },
+];

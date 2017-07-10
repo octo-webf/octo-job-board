@@ -1,17 +1,17 @@
 const JobsSerializer = {
 
-  serialize (projects, activities) {
-    const jobs = []
+  serialize(projects, activities) {
+    const serializedJobs = [];
 
     activities.reduce((jobs, octopodActivity) => {
-      const activity = {title: octopodActivity.title}
-      const project = projects.find((project) => project.id === octopodActivity.project.id)
-      jobs.push({project, activity})
-      return jobs
-    }, jobs)
+      const activity = { title: octopodActivity.title };
+      const project = projects.find(p => p.id === octopodActivity.project.id);
+      jobs.push({ project, activity });
+      return jobs;
+    }, serializedJobs);
 
-    return jobs
-  }
-}
+    return serializedJobs;
+  },
+};
 
-module.exports = JobsSerializer
+module.exports = JobsSerializer;

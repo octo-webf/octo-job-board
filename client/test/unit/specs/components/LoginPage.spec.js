@@ -3,56 +3,56 @@ import LoginPage from '@/components/LoginPage';
 import authentication from '@/services/authentication';
 
 describe('Unit | Component | LoginPage.vue', () => {
-	let component;
+  let component;
 
-	beforeEach(() => {
-		window.gapi = {
-			load() {
+  beforeEach(() => {
+    window.gapi = {
+      load() {
 
-			},
-			auth2: {
-				getAuthInstance() {
-					return {};
-				},
-			},
-		};
-		const Constructor = Vue.extend(LoginPage);
-		component = new Constructor().$mount();
-	});
+      },
+      auth2: {
+        getAuthInstance() {
+          return {};
+        },
+      },
+    };
+    const Constructor = Vue.extend(LoginPage);
+    component = new Constructor().$mount();
+  });
 
-	afterEach(() => {
-		delete window.gapi;
-	});
+  afterEach(() => {
+    delete window.gapi;
+  });
 
-	it('should be named "LoginPage"', () => {
-		expect(component.$options.name).to.equal('LoginPage');
-	});
+  it('should be named "LoginPage"', () => {
+    expect(component.$options.name).to.equal('LoginPage');
+  });
 
-	describe('method #onSignInSuccess', () => {
-		beforeEach(() => {
-			sinon.stub(authentication, 'authenticate').resolves();
-			window.localStorage.clear();
-		});
+  describe('method #onSignInSuccess', () => {
+    beforeEach(() => {
+      sinon.stub(authentication, 'authenticate').resolves();
+      window.localStorage.clear();
+    });
 
-		afterEach(() => {
-			authentication.authenticate.restore();
-		});
+    afterEach(() => {
+      authentication.authenticate.restore();
+    });
 
-		it('should call authenticate function', () => {
+    it('should call authenticate function', () => {
       // given
-			const googleUser = {};
+      const googleUser = {};
 
       // when
-			component.onSignInSuccess(googleUser);
+      component.onSignInSuccess(googleUser);
 
       // then
-			expect(authentication.authenticate).to.have.been.called;
-		});
-	});
+      expect(authentication.authenticate).to.have.been.called;
+    });
+  });
 
-	describe('method #onSignInError', () => {
-		it('should exist', () => {
-			expect(component.onSignInError).to.exist.and.to.be.a.function;
-		});
-	});
+  describe('method #onSignInError', () => {
+    it('should exist', () => {
+      expect(component.onSignInError).to.exist.and.to.be.a.function;
+    });
+  });
 });

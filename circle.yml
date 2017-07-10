@@ -3,6 +3,8 @@ machine:
    version: 7
 
 test:
+  pre:
+    - npm run lint
   post:
     - (cd server && npm run coverage)
 
