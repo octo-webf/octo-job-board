@@ -2,7 +2,7 @@
   <div class="job-card">
     <article class="job">
       <header class="job__header">
-        <h2 class="job__title">{{ job.activity.title }}</h2>
+        <span class="job__title">{{ job.activity.title }}</span>
         <span :class="['job__status job__status--'+job.project.status]"></span>
       </header>
       <a class="job__content" :href="octopodUrl">
@@ -13,10 +13,10 @@
         <p>à <span :class="locationsClasses">{{ locations }}</span></p>
       </a>
       <footer class="job__footer">
-        <button class="job__apply-button" :disabled="isClicked" @click.prevent.once="submitInterest"
+        <a class="job__apply-button" :disabled="isClicked" @click.prevent.once="submitInterest"
                 title="Si vous cliquez sur ce bouton, un mail sera envoyé à l'équipe Job Board (uniquement !) avec les informations utiles pour aider au staffing.">
           Je suis intéressé·e
-        </button>
+        </a>
       </footer>
     </article>
   </div>
