@@ -29,9 +29,9 @@ function sendFeedbackEmail(form) {
   const template = `${form.feedback}`;
 
   const options = {
-    from: 'jobboard@octo.com',
+    from: config.MAIL_FROM,
     fromName: 'Le Job Board - Ne pas répondre',
-    to: 'jobboard@octo.com',
+    to: config.MAIL_TO,
     subject,
     template,
   };

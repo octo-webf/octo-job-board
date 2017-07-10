@@ -60,8 +60,8 @@ describe('Unit | Service | MailService', () => {
       // then
       return promise.then(() => {
         expect(mailJet.sendEmail).to.have.been.calledWithExactly({
-          from: 'jobboard@octo.com',
-          to: 'jobboard@octo.com',
+          from: 'jobboard+test@octo.com',
+          to: 'jobboard+test@octo.com',
           fromName: 'Le Job Board - Ne pas répondre',
           subject: '[JobBoard] [Support] Tony Stark a émis un message',
           template: 'Long ago in a distant land...',
