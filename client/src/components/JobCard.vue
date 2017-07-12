@@ -15,7 +15,7 @@
       <footer class="job__footer">
         <button class="job__apply-button" :disabled="isClicked" @click.prevent.once="submitInterest"
                 title="Si vous cliquez sur ce bouton, un mail sera envoyé à l'équipe Job Board (uniquement !) avec les informations utiles pour aider au staffing.">
-          Je suis intéressé·e
+          Je suis intéressé·e <span class="sr-only">par cette mission {{ mission }} en tant que {{ job.activity.title }}</span>
         </button>
       </footer>
     </article>
@@ -118,6 +118,18 @@
 </script>
 
 <style scoped>
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
+    display: block;
+  }
 
   /* Job
   /* ------------------- */
