@@ -184,7 +184,7 @@
   .job__content {
     font-size: 15px;
     padding: 15px;
-    height: 130px;
+    height: 150px;
     text-decoration: none;
     display: block;
     color: #000;
