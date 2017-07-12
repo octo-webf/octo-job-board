@@ -11,7 +11,7 @@
       <div class="feedback-modal__body">
         <form class="feedback-modal__form">
 
-          <p class="feedback-modal__error" v-if="error">{{error}}</p>
+          <p class="feedback-modal__error" v-if="error" aria-live="polite">{{error}}</p>
 
           <label class="feedback-modal__label" for="feedback-content">Contenu du message :</label>
           <textarea class="feedback-modal__text" id="feedback-content" v-model="feedback"></textarea>
@@ -21,8 +21,8 @@
       <!-- modal body -->
       <div class="feedback-modal__footer">
         <div class="feedback-modal__actions">
-          <button class="feedback-modal__action feedback-modal__action--cancel" @click="cancelFeedback">Annuler</button>
           <button class="feedback-modal__action feedback-modal__action--send" @click="sendFeedback">Envoyer</button>
+          <button class="feedback-modal__action feedback-modal__action--cancel" @click="cancelFeedback">Annuler</button>
         </div>
       </div>
 
@@ -162,6 +162,10 @@
     height: 34px;
     font-weight: 500;
     margin: 0;
+  }
+
+  .feedback-modal__action:focus {
+    border: 3px #000000 solid;
   }
 
   .feedback-modal__action:hover {
