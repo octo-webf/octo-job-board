@@ -9,7 +9,7 @@
         <p><span class="job__mission">{{ mission }}</span></p>
         <p class="job__customer-wrapper">pour <span class="job__customer">{{ job.project.customer.name }}</span>
         </p>
-        <p>à partir de <span class="job__start-date">{{ startDate }}</span></p>
+        <p>à partir de <span class="job__start-date">{{ staffingNeededSince }}</span></p>
         <p>à <span :class="locationsClasses">{{ locations }}</span></p>
       </a>
       <footer class="job__footer">
@@ -51,9 +51,9 @@
         return missionName.substring(0, 49);
       },
 
-      startDate() {
-        const startDate = new Date(this.job.project.start_date);
-        return startDate.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+      staffingNeededSince() {
+        const staffingNeededSince = new Date(this.job.project.staffing_needed_since);
+        return staffingNeededSince.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
       },
 
       locations() {
