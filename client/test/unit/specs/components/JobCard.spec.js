@@ -22,7 +22,7 @@ describe('Unit | Component | JobCard.vue', () => {
       customer: {
         name: 'La Poste - Courrier',
       },
-      start_date: '2017-07-01',
+      staffing_needed_since: '2017-07-01',
       duration: '10 mois',
       locations: 'OCTO',
       business_contact: {
@@ -94,7 +94,7 @@ describe('Unit | Component | JobCard.vue', () => {
     });
 
     // TODO: it works on local or on browser, but fails in CircleCI :-/
-    it.skip('should display the start date', () => {
+    it.skip('should display the staffing_needed_since', () => {
       expect(component.$el.querySelector('.job__start-date').textContent.trim()).to.contain('juillet 2017');
     });
 
@@ -197,17 +197,17 @@ describe('Unit | Component | JobCard.vue', () => {
     });
   });
 
-  describe('computed property #startDate', () => {
+  describe('computed property #staffingNeededSince', () => {
     // TODO: it works on local or on browser, but fails in CircleCI :-/
-    it.skip('should format the mission start date (ex : "2017-07-01" => "Juillet 2017")', () => {
+    it.skip('should format the mission staffing_needed_since date (ex : "2017-07-01" => "Juillet 2017")', () => {
       // Given
-      job.project.start_date = '2017-07-01';
+      job.project.staffing_needed_since = '2017-07-01';
 
       // When
-      const startDate = component.startDate;
+      const staffingNeededSince = component.staffingNeededSince;
 
       // Then
-      expect(startDate).to.contain('juillet 2017');
+      expect(staffingNeededSince).to.contain('juillet 2017');
     });
   });
 
