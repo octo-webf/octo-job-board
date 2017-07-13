@@ -14,7 +14,6 @@ describe('Unit | Serializer | jobs', () => {
       nature: 'consulting',
       business_contact: { nickname: 'ABC' },
       mission_director: { nickname: 'DEF' },
-      start_date: '2017-01-01',
       locations: 'OCTO',
     }, {
       id: 2,
@@ -26,7 +25,6 @@ describe('Unit | Serializer | jobs', () => {
       nature: 'training',
       business_contact: { nickname: 'GHI' },
       mission_director: { nickname: 'JKL' },
-      start_date: '2017-02-02',
       locations: 'La Défense',
     }, {
       id: 3,
@@ -38,17 +36,16 @@ describe('Unit | Serializer | jobs', () => {
       nature: 'delivery',
       business_contact: { nickname: 'MNO' },
       mission_director: { nickname: 'PQR' },
-      start_date: '2017-03-03',
       locations: 'Osny et OCTO',
     }];
 
     const octopodActivities = [
-      { title: 'Activity 1-A', project: { id: 1 } },
-      { title: 'Activity 2-A', project: { id: 2 } },
-      { title: 'Activity 2-B', project: { id: 2 } },
-      { title: 'Activity 3-A', project: { id: 3 } },
-      { title: 'Activity 3-B', project: { id: 3 } },
-      { title: 'Activity 3-C', project: { id: 3 } },
+      { title: 'Activity 1-A', project: { id: 1 }, staffing_needed_since: '2017-07-01' },
+      { title: 'Activity 2-A', project: { id: 2 }, staffing_needed_since: '2017-08-01' },
+      { title: 'Activity 2-B', project: { id: 2 }, staffing_needed_since: '2017-09-01' },
+      { title: 'Activity 3-A', project: { id: 3 }, staffing_needed_since: '2017-10-01' },
+      { title: 'Activity 3-B', project: { id: 3 }, staffing_needed_since: '2017-11-01' },
+      { title: 'Activity 3-C', project: { id: 3 }, staffing_needed_since: '2017-12-01' },
     ];
 
     // when
@@ -66,11 +63,11 @@ describe('Unit | Serializer | jobs', () => {
         nature: 'consulting',
         business_contact: { nickname: 'ABC' },
         mission_director: { nickname: 'DEF' },
-        start_date: '2017-01-01',
         locations: 'OCTO',
       },
       activity: {
         title: 'Activity 1-A',
+        staffing_needed_since: '2017-07-01',
       },
     }, {
       project: {
@@ -83,11 +80,11 @@ describe('Unit | Serializer | jobs', () => {
         nature: 'training',
         business_contact: { nickname: 'GHI' },
         mission_director: { nickname: 'JKL' },
-        start_date: '2017-02-02',
         locations: 'La Défense',
       },
       activity: {
         title: 'Activity 2-A',
+        staffing_needed_since: '2017-08-01',
       },
     }, {
       project: {
@@ -100,11 +97,11 @@ describe('Unit | Serializer | jobs', () => {
         nature: 'training',
         business_contact: { nickname: 'GHI' },
         mission_director: { nickname: 'JKL' },
-        start_date: '2017-02-02',
         locations: 'La Défense',
       },
       activity: {
         title: 'Activity 2-B',
+        staffing_needed_since: '2017-09-01',
       },
     }, {
       project: {
@@ -117,11 +114,11 @@ describe('Unit | Serializer | jobs', () => {
         nature: 'delivery',
         business_contact: { nickname: 'MNO' },
         mission_director: { nickname: 'PQR' },
-        start_date: '2017-03-03',
         locations: 'Osny et OCTO',
       },
       activity: {
         title: 'Activity 3-A',
+        staffing_needed_since: '2017-10-01',
       },
     }, {
       project: {
@@ -134,11 +131,11 @@ describe('Unit | Serializer | jobs', () => {
         nature: 'delivery',
         business_contact: { nickname: 'MNO' },
         mission_director: { nickname: 'PQR' },
-        start_date: '2017-03-03',
         locations: 'Osny et OCTO',
       },
       activity: {
         title: 'Activity 3-B',
+        staffing_needed_since: '2017-11-01',
       },
     }, {
       project: {
@@ -151,11 +148,11 @@ describe('Unit | Serializer | jobs', () => {
         nature: 'delivery',
         business_contact: { nickname: 'MNO' },
         mission_director: { nickname: 'PQR' },
-        start_date: '2017-03-03',
         locations: 'Osny et OCTO',
       },
       activity: {
         title: 'Activity 3-C',
+        staffing_needed_since: '2017-12-01',
       },
     }];
 
