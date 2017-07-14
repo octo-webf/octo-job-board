@@ -9,6 +9,7 @@
     </a>
   </div>
 </template>
+
 <script>
   export default {
     data() {
@@ -18,6 +19,7 @@
     },
   };
 </script>
+
 <style>
   .github-corner__link:hover .octo-arm {
     animation: octocat-wave 560ms ease-in-out

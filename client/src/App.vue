@@ -21,7 +21,6 @@
 </script>
 
 <style>
-
   body {
     background: #f5f5f5;
     padding: 0;
@@ -34,18 +33,6 @@
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-  }
-
-  .page__body {
-    display: flex;
-    width: 100%;
-    padding: 20px 0;
-    margin-top: 60px;
-    justify-content: center;
-  }
-
-  .page__container {
-    margin: 0 auto;
   }
 
   .v--modal {

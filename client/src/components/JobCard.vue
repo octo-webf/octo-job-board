@@ -23,7 +23,6 @@
 </template>
 
 <script>
-
   import interestsApi from '@/api/interests';
   import authenticationService from '@/services/authentication';
 
@@ -119,11 +118,9 @@
     },
 
   };
-
 </script>
 
 <style scoped>
-
   .sr-only {
     position: absolute;
     width: 1px;
@@ -135,9 +132,6 @@
     border: 0;
     display: block;
   }
-
-  /* Job
-  /* ------------------- */
 
   .job {
     min-width: 260px;
@@ -251,11 +245,6 @@
     font-weight: 500;
   }
 
-  .job__duration {
-    color: #5fba7d;
-    font-weight: 700;
-  }
-
   .job__locations {
     color: #07c;
     font-weight: 500;
@@ -297,15 +286,4 @@
     color: #FAFAFA;
     cursor: auto;
   }
-
-  .job__alert-link {
-    text-decoration: none;
-    font-size: 12px;
-    color: #9199a1;
-  }
-
-  .job__alert-link:hover {
-    text-decoration: underline;
-  }
-
 </style>
