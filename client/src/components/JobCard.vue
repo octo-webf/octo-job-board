@@ -3,7 +3,7 @@
     <article class="job">
       <header class="job__header">
         <h2 class="job__title">{{ job.activity.title }}</h2>
-        <span :class="['job__status job__status--'+job.project.status]"></span>
+        <span :class="['job__status job__status--'+job.project.status]">{{ job.project.status }}</span>
       </header>
       <a class="job__content" :href="octopodUrl">
         <p><span class="job__mission">{{ mission }}</span></p>
@@ -40,6 +40,11 @@
     },
 
     computed: {
+
+      status() {
+        const status = this.job.project.status;
+        return (status.startsWith('mission')) ? 'mission' : 'propale';
+      },
 
       octopodUrl() {
         const octopodProjectId = this.job.project.id;
@@ -165,31 +170,49 @@
     max-width: 200px;
   }
 
+  /* used line 6*/
   .job__status {
     display: inline-block;
-    width: 17px;
-    height: 17px;
-    border-radius: 50%;
+    border-radius: 3px;
     margin-left: 5px;
+    text-transform: uppercase;
+    padding: 5px 8px;
+    color: white;
+    font-size: 11px
   }
 
+  /* not used*/
   .job__status--lead {
     background: orange;
   }
 
+  /* not used*/
   .job__status--mission_signed {
     background: green;
   }
 
+  /* not used*/
   .job__status--proposal_in_progress {
     background: #0000FF;
   }
 
+  /* not used*/
   .job__status--proposal_sent {
     background: #6699FF;
   }
 
+  /* not used*/
   .job__status--mission_accepted {
+    background-color: #33CC00;
+  }
+
+  /* used line 6*/
+  .job__status--propale {
+    background: #6699FF;
+  }
+
+  /* used line 6*/
+  .job__status--mission {
     background-color: #33CC00;
   }
 
