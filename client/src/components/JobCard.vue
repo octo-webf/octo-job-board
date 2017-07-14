@@ -208,7 +208,7 @@
   }
 
   .job__mission {
-    color: #5fba7d;
+    color: #288653;
     font-weight: 500;
   }
 
@@ -239,7 +239,7 @@
   }
 
   .job__locations--empty {
-    color: #9199a1;
+    color: #6d7882;
   }
 
   .job__footer {
@@ -250,18 +250,20 @@
 
   .job__apply-button {
     text-transform: uppercase;
-    color: #F57C00;
+    color: #d14800;
     background: #ffffff;
-    border: 1px solid #F48024;
+    border: 1px solid #d14800;
     cursor: pointer;
     padding: 15px 30px;
     border-radius: 4px;
     width: 100%;
     margin-bottom: 10px;
+    font-weight: 700;
   }
 
   .job__apply-button:hover {
-    background: #FFE0B2;
+    background: #d14800;
+    color: #ffffff;
   }
 
   .job__apply-button:disabled,
