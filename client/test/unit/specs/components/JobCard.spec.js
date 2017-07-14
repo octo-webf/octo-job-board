@@ -223,4 +223,61 @@ describe.skip('Unit | Component | JobCard.vue', () => {
       expect(octopodUrl).to.equal('https://octopod.octo.com/projects/12357');
     });
   });
+
+  describe('computed property #status', () => {
+    it('should return status is mission when api status is mission_accepted', () => {
+      // Given
+      job.project.status = 'mission_accepted';
+
+      // When
+      const status = component.status;
+
+      // Then
+      expect(status).to.equal('mission');
+    });
+
+    it('should return status is mission when api status is mission_signed', () => {
+      // Given
+      job.project.status = 'mission_signed';
+
+      // When
+      const status = component.status;
+
+      // Then
+      expect(status).to.equal('mission');
+    });
+
+    it('should return status is propale when api status is proposal_in_progress', () => {
+      // Given
+      job.project.status = 'proposal_in_progress';
+
+      // When
+      const status = component.status;
+
+      // Then
+      expect(status).to.equal('propale');
+    });
+
+    it('should return status is propale when api status is proposal_sent', () => {
+      // Given
+      job.project.status = 'proposal_sent';
+
+      // When
+      const status = component.status;
+
+      // Then
+      expect(status).to.equal('propale');
+    });
+
+    it('should return status is propale when api status is lead', () => {
+      // Given
+      job.project.status = 'lead';
+
+      // When
+      const status = component.status;
+
+      // Then
+      expect(status).to.equal('propale');
+    });
+  });
 });
