@@ -54,11 +54,22 @@
           const accessToken = authenticationService.getAccessToken();
 
           jobsApi.fetchAll(accessToken).then((jobs) => {
-            this.jobs = jobs;
+            this.jobs = this._sortJobs(jobs);
           });
         }
       },
 
+      _sortJobs(jobs) {
+        return jobs.sort((job1, job2) => {
+          if (job1.project.status.startsWith('mission')) {
+            return -1;
+          }
+          if (job2.project.status.startsWith('mission')) {
+            return 1;
+          }
+          return 0;
+        })
+      }
     },
   };
 </script>
