@@ -154,7 +154,7 @@
     text-align: center;
     vertical-align: middle;
     cursor: pointer;
-    background: #3cc782;
+    background: #008a00;
     outline: none;
     border: none;
     -webkit-border-radius: 3px;

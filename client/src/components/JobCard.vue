@@ -239,7 +239,7 @@
   }
 
   .job__locations--empty {
-    color: #6d7882;
+    color: #808080;
   }
 
   .job__footer {
