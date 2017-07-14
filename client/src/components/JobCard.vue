@@ -177,19 +177,19 @@
     background: orange;
   }
 
-  .job__status--mission-signed {
+  .job__status--mission_signed {
     background: green;
   }
 
-  .job__status--proposal-in-progress {
+  .job__status--proposal_in_progress {
     background: #0000FF;
   }
 
-  .job__status--proposal-sent {
+  .job__status--proposal_sent {
     background: #6699FF;
   }
 
-  .job__status--mission-accepted {
+  .job__status--mission_accepted {
     background-color: #33CC00;
   }
 
