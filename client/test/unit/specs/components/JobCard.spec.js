@@ -17,7 +17,7 @@ describe.skip('Unit | Component | JobCard.vue', () => {
     },
     project: {
       id: 123456,
-      status: 'proposal-in-progress',
+      status: 'proposal_in_progress',
       name: 'Refonte du SI',
       customer: {
         name: 'La Poste - Courrier',
@@ -78,7 +78,7 @@ describe.skip('Unit | Component | JobCard.vue', () => {
 
   describe('rendering', () => {
     it('should display the appropriate project status', () => {
-      expect(component.$el.querySelector('.job__status').getAttribute('class')).to.contain('job__status--proposal-in-progress');
+      expect(component.$el.querySelector('.job__status').getAttribute('class')).to.contain('job__status--proposal_in_progress');
     });
 
     it('should display the activity title', () => {
