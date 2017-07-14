@@ -83,7 +83,7 @@ describe('Unit | Component | JobList.vue', () => {
             nickname: 'XYZ',
           },
         },
-      },{
+      }, {
         id: 4,
         activity: {
           title: 'Tech Lead mission 4',
@@ -105,7 +105,7 @@ describe('Unit | Component | JobList.vue', () => {
             nickname: 'XYZ',
           },
         },
-      }
+      },
     ];
     sinon.stub(authentication, 'isAuthenticated').returns(true);
     sinon.stub(jobsApi, 'fetchAll').resolves(jobs);
@@ -140,7 +140,7 @@ describe('Unit | Component | JobList.vue', () => {
     }));
 
     it('should sort the mission jobs', () => Vue.nextTick().then(() => {
-      const jobTitles = component.$el.querySelectorAll('.job__title')
+      const jobTitles = component.$el.querySelectorAll('.job__title');
       expect(jobTitles[0].textContent).to.equal('Tech Lead mission 3');
       expect(jobTitles[1].textContent).to.equal('Tech Lead mission 2');
       expect(jobTitles[2].textContent).to.equal('Tech Lead mission 1');

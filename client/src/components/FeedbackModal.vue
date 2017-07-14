@@ -18,7 +18,7 @@
         </form>
       </div>
 
-      <!-- modal body -->
+      <!-- modal footer -->
       <div class="feedback-modal__footer">
         <div class="feedback-modal__actions">
           <button class="feedback-modal__action feedback-modal__action--send" @click="sendFeedback">Envoyer</button>
@@ -31,7 +31,6 @@
 </template>
 
 <script>
-
   import authenticationService from '@/services/authentication';
   import feedbacksApi from '@/api/feedbacks';
 
@@ -90,7 +89,6 @@
 </script>
 
 <style scoped>
-
   .feedback-modal__header {
     background-color: #eef0f4;
     padding: 10px 20px;
@@ -181,5 +179,4 @@
   .feedback-modal__action--cancel:hover {
     box-shadow: 0 0 3px 0 #d8dde6;
   }
-
 </style>

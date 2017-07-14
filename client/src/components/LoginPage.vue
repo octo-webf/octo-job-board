@@ -1,20 +1,15 @@
 <template>
-
   <div class="login">
-
     <g-signin-button
       :params="googleSignInParams"
       @success="onSignInSuccess"
       @error="onSignInError">
       Sign in with Google
     </g-signin-button>
-
   </div>
-
 </template>
 
 <script>
-
   import Vue from 'vue';
   import GSignInButton from 'vue-google-signin-button';
   import authentication from '@/services/authentication';
@@ -49,7 +44,6 @@
 </script>
 
 <style scoped>
-
   .g-signin-button {
     display: inline-block;
     padding: 4px 8px;
