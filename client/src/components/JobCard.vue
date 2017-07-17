@@ -3,7 +3,7 @@
     <article class="job">
       <header class="job__header">
         <h2 class="job__title">{{ job.activity.title }}</h2>
-        <span :class="['job__status job__status--'+job.project.status]">{{ job.project.status }}</span>
+        <span :class="['job__status job__status--'+job.project.status]">{{ status }}</span>
       </header>
       <a class="job__content" :href="octopodUrl">
         <p><span class="job__mission">{{ mission }}</span></p>
