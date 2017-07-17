@@ -83,7 +83,8 @@ describe('Unit | Component | JobList.vue', () => {
             nickname: 'XYZ',
           },
         },
-      }, {
+      },
+      {
         id: 4,
         activity: {
           title: 'Tech Lead mission 4',
@@ -96,6 +97,52 @@ describe('Unit | Component | JobList.vue', () => {
             name: 'La Poste - Courrier',
           },
           staffing_needed_from: '2017-07-01',
+          duration: '10 mois',
+          location: 'OCTO',
+          business_contact: {
+            nickname: 'ABC',
+          },
+          mission_director: {
+            nickname: 'XYZ',
+          },
+        },
+      },
+      {
+        id: 5,
+        activity: {
+          title: 'Tech Lead mission 5',
+        },
+        project: {
+          id: 123456,
+          status: 'proposal_sent',
+          name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
+          customer: {
+            name: 'La Poste - Courrier',
+          },
+          start_date: '2017-07-01',
+          duration: '10 mois',
+          location: 'OCTO',
+          business_contact: {
+            nickname: 'ABC',
+          },
+          mission_director: {
+            nickname: 'XYZ',
+          },
+        },
+      },
+      {
+        id: 6,
+        activity: {
+          title: 'Tech Lead mission 6',
+        },
+        project: {
+          id: 123456,
+          status: 'lead',
+          name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
+          customer: {
+            name: 'La Poste - Courrier',
+          },
+          start_date: '2017-07-01',
           duration: '10 mois',
           location: 'OCTO',
           business_contact: {
@@ -132,19 +179,21 @@ describe('Unit | Component | JobList.vue', () => {
 
     it('should render as many jobs as received from the API', () => Vue.nextTick().then(() => {
       const jobCards = component.$el.querySelectorAll('.job-card');
-      expect(jobCards.length).to.equal(4);
+      expect(jobCards.length).to.equal(6);
     }));
 
     it('should add number of available jobs', () => Vue.nextTick().then(() => {
-      expect(component.$el.querySelector('.job-results__title').textContent.trim()).to.equal('Missions à staffer (4)');
+      expect(component.$el.querySelector('.job-results__title').textContent.trim()).to.equal('Missions à staffer (6)');
     }));
 
     it('should sort the mission jobs', () => Vue.nextTick().then(() => {
       const jobTitles = component.$el.querySelectorAll('.job__title');
-      expect(jobTitles[0].textContent).to.equal('Tech Lead mission 3');
-      expect(jobTitles[1].textContent).to.equal('Tech Lead mission 2');
-      expect(jobTitles[2].textContent).to.equal('Tech Lead mission 1');
+      expect(jobTitles[0].textContent).to.equal('Tech Lead mission 2');
+      expect(jobTitles[1].textContent).to.equal('Tech Lead mission 3');
+      expect(jobTitles[2].textContent).to.equal('Tech Lead mission 5');
       expect(jobTitles[3].textContent).to.equal('Tech Lead mission 4');
+      expect(jobTitles[4].textContent).to.equal('Tech Lead mission 1');
+      expect(jobTitles[5].textContent).to.equal('Tech Lead mission 6');
     }));
   });
 });
