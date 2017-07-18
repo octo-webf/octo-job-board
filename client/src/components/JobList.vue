@@ -20,6 +20,7 @@
 
 <script>
   import authenticationService from '@/services/authentication';
+  import projectStatus from '@/utils/projectStatus';
   import jobsApi from '@/api/jobs';
   import AppHeader from '@/components/AppHeader';
   import JobCard from '@/components/JobCard';
@@ -50,39 +51,13 @@
           const accessToken = authenticationService.getAccessToken();
 
           jobsApi.fetchAll(accessToken).then((jobs) => {
-            this.jobs = this._sortJobs(jobs);
+            this.jobs = this._sortJobsByProjectStatus(jobs);
           });
         }
       },
 
-      _sortJobs(jobs) {
-        return jobs.sort((job1, job2) => {
-          if (job1.project.status === 'mission_signed') {
-            return -1;
-          }
-          if (job2.project.status === 'mission_signed') {
-            return 1;
-          }
-          if (job1.project.status === 'mission_accepted') {
-            return -1;
-          }
-          if (job2.project.status === 'mission_accepted') {
-            return 1;
-          }
-          if (job1.project.status === 'proposal_sent') {
-            return -1;
-          }
-          if (job2.project.status === 'proposal_sent') {
-            return 1;
-          }
-          if (job1.project.status === 'proposal_in_progress') {
-            return -1;
-          }
-          if (job2.project.status === 'proposal_in_progress') {
-            return 1;
-          }
-          return 0;
-        });
+      _sortJobsByProjectStatus(jobs) {
+        return projectStatus.sort(jobs);
       },
     },
   };
