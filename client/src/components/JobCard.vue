@@ -3,7 +3,7 @@
     <article class="job">
       <header class="job__header">
         <h2 class="job__title">{{ job.activity.title }}</h2>
-        <span :class="['job__status job__status--'+job.project.status]">{{ status }}</span>
+        <span :class="statusClass">{{ status }}</span>
       </header>
       <a class="job__content" :href="octopodUrl">
         <p><span class="job__mission">{{ mission }}</span></p>
@@ -15,7 +15,8 @@
       <footer class="job__footer">
         <button class="job__apply-button" :disabled="isClicked" @click.prevent.once="submitInterest"
                 title="Si vous cliquez sur ce bouton, un mail sera envoyé à l'équipe Job Board (uniquement !) avec les informations utiles pour aider au staffing.">
-          Je suis intéressé·e <span class="sr-only">par cette mission {{ mission }} en tant que {{ job.activity.title }}</span>
+          Je suis intéressé·e <span class="sr-only">par cette mission {{ mission }} en tant que {{ job.activity.title
+          }}</span>
         </button>
       </footer>
     </article>
@@ -42,7 +43,17 @@
 
       status() {
         const status = this.job.project.status;
+        if (!status) {
+          return 'propale';
+        }
         return (status.startsWith('mission')) ? 'signé' : 'propale';
+      },
+
+      statusClass() {
+        if (this.job.project.status) {
+          return 'job__status job__status--' + this.job.project.status
+        }
+        return '';
       },
 
       octopodUrl() {
@@ -57,7 +68,7 @@
 
       staffingNeededSince() {
         const staffingNeededSince = new Date(this.job.activity.staffing_needed_from);
-        return staffingNeededSince.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+        return staffingNeededSince.toLocaleDateString('fr-FR', { day: 'numeric',month: 'long', year: 'numeric' });
       },
 
       locations() {
@@ -128,7 +139,7 @@
     padding: 0;
     margin: -1px;
     overflow: hidden;
-    clip: rect(0,0,0,0);
+    clip: rect(0, 0, 0, 0);
     border: 0;
     display: block;
   }
