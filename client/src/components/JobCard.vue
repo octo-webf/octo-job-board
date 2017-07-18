@@ -51,7 +51,7 @@
 
       statusClass() {
         if (this.job.project.status) {
-          return 'job__status job__status--' + this.job.project.status
+          return `job__status job__status--${this.job.project.status}`;
         }
         return '';
       },
