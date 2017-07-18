@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueAnalytics from 'vue-analytics';
 import JobList from '@/components/JobList';
 import authentication from '@/services/authentication';
+import projectStatus from '@/utils/projectStatus';
 import jobsApi from '@/api/jobs';
 
 Vue.use(VueAnalytics, {
@@ -11,6 +12,7 @@ Vue.use(VueAnalytics, {
 describe('Unit | Component | JobList.vue', () => {
   let component;
   let jobs;
+  let expectedJobs;
 
   beforeEach(() => {
     // given
@@ -61,14 +63,15 @@ describe('Unit | Component | JobList.vue', () => {
           },
         },
       },
-      {
-        id: 3,
+    ];
+    expectedJobs = [  {
+        id: 2,
         activity: {
-          title: 'Tech Lead mission 3',
+          title: 'Tech Lead mission 2',
         },
         project: {
           id: 123456,
-          status: 'mission_accepted',
+          status: 'mission_signed',
           name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
           customer: {
             name: 'La Poste - Courrier',
@@ -85,9 +88,9 @@ describe('Unit | Component | JobList.vue', () => {
         },
       },
       {
-        id: 4,
+        id: 1,
         activity: {
-          title: 'Tech Lead mission 4',
+          title: 'Tech Lead mission 1',
         },
         project: {
           id: 123456,
@@ -107,54 +110,9 @@ describe('Unit | Component | JobList.vue', () => {
           },
         },
       },
-      {
-        id: 5,
-        activity: {
-          title: 'Tech Lead mission 5',
-        },
-        project: {
-          id: 123456,
-          status: 'proposal_sent',
-          name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
-          customer: {
-            name: 'La Poste - Courrier',
-          },
-          start_date: '2017-07-01',
-          duration: '10 mois',
-          location: 'OCTO',
-          business_contact: {
-            nickname: 'ABC',
-          },
-          mission_director: {
-            nickname: 'XYZ',
-          },
-        },
-      },
-      {
-        id: 6,
-        activity: {
-          title: 'Tech Lead mission 6',
-        },
-        project: {
-          id: 123456,
-          status: 'lead',
-          name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
-          customer: {
-            name: 'La Poste - Courrier',
-          },
-          start_date: '2017-07-01',
-          duration: '10 mois',
-          location: 'OCTO',
-          business_contact: {
-            nickname: 'ABC',
-          },
-          mission_director: {
-            nickname: 'XYZ',
-          },
-        },
-      },
     ];
     sinon.stub(authentication, 'isAuthenticated').returns(true);
+    sinon.stub(projectStatus, 'sort').returns(expectedJobs);
     sinon.stub(jobsApi, 'fetchAll').resolves(jobs);
 
     const Constructor = Vue.extend(JobList);
@@ -164,6 +122,7 @@ describe('Unit | Component | JobList.vue', () => {
   });
 
   afterEach(() => {
+    projectStatus.sort.restore();
     authentication.isAuthenticated.restore();
     jobsApi.fetchAll.restore();
   });
@@ -179,21 +138,17 @@ describe('Unit | Component | JobList.vue', () => {
 
     it('should render as many jobs as received from the API', () => Vue.nextTick().then(() => {
       const jobCards = component.$el.querySelectorAll('.job-card');
-      expect(jobCards.length).to.equal(6);
+      expect(jobCards.length).to.equal(2);
     }));
 
     it('should add number of available jobs', () => Vue.nextTick().then(() => {
-      expect(component.$el.querySelector('.job-results__title').textContent.trim()).to.equal('Missions à staffer (6)');
+      expect(component.$el.querySelector('.job-results__title').textContent.trim()).to.equal('Missions à staffer (2)');
     }));
 
     it('should sort the mission jobs', () => Vue.nextTick().then(() => {
       const jobTitles = component.$el.querySelectorAll('.job__title');
       expect(jobTitles[0].textContent).to.equal('Tech Lead mission 2');
-      expect(jobTitles[1].textContent).to.equal('Tech Lead mission 3');
-      expect(jobTitles[2].textContent).to.equal('Tech Lead mission 5');
-      expect(jobTitles[3].textContent).to.equal('Tech Lead mission 4');
-      expect(jobTitles[4].textContent).to.equal('Tech Lead mission 1');
-      expect(jobTitles[5].textContent).to.equal('Tech Lead mission 6');
+      expect(jobTitles[1].textContent).to.equal('Tech Lead mission 1');
     }));
   });
 });
