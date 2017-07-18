@@ -225,7 +225,7 @@ describe.skip('Unit | Component | JobCard.vue', () => {
   });
 
   describe('computed property #status', () => {
-    it('should return status is mission when api status is mission_accepted', () => {
+    it('should return status is signé when api status is mission_accepted', () => {
       // Given
       job.project.status = 'mission_accepted';
 
@@ -233,10 +233,10 @@ describe.skip('Unit | Component | JobCard.vue', () => {
       const status = component.status;
 
       // Then
-      expect(status).to.equal('mission');
+      expect(status).to.equal('signé');
     });
 
-    it('should return status is mission when api status is mission_signed', () => {
+    it('should return status is signé when api status is mission_signed', () => {
       // Given
       job.project.status = 'mission_signed';
 
@@ -244,7 +244,7 @@ describe.skip('Unit | Component | JobCard.vue', () => {
       const status = component.status;
 
       // Then
-      expect(status).to.equal('mission');
+      expect(status).to.equal('signé');
     });
 
     it('should return status is propale when api status is proposal_in_progress', () => {

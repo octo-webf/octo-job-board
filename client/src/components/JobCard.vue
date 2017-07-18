@@ -42,7 +42,7 @@
 
       status() {
         const status = this.job.project.status;
-        return (status.startsWith('mission')) ? 'mission' : 'propale';
+        return (status.startsWith('mission')) ? 'signé' : 'propale';
       },
 
       octopodUrl() {
