@@ -170,11 +170,11 @@ describe('Unit | Utils | octopod-client', () => {
     beforeEach(() => {
       request.get.callsFake((options, callback) => {
         const projectActivities = [
-          [{ id: 11, staffing_needed: true }],
-          [{ id: 21, staffing_needed: true }, { id: 22, staffing_needed: false }],
-          [{ id: 31, staffing_needed: true }, { id: 32, staffing_needed: false }, { id: 33, staffing_needed: true }],
+          [{ id: 11, staffing_needed_from: true }],
+          [{ id: 21, staffing_needed_from: true }, { id: 22, staffing_needed_from: false }],
+          [{ id: 31, staffing_needed_from: true }, { id: 32, staffing_needed_from: false }, { id: 33, staffing_needed_from: true }],
           [],
-          [{ id: 31, staffing_needed: false }, { id: 32, staffing_needed: false }, { id: 33, staffing_needed: false }],
+          [{ id: 31, staffing_needed_from: false }, { id: 32, staffing_needed_from: false }, { id: 33, staffing_needed_from: false }],
         ];
 
         const url = options.url;

@@ -1,6 +1,6 @@
 const LRUCache = require('lru-cache');
 
-const FIVE_MINUTES = 1000 * 60 * 5;
+const FIVE_MINUTES = 1;
 
 // See https://github.com/isaacs/node-lru-cache for more options
 const options = {
