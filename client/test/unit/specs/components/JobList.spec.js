@@ -26,7 +26,7 @@ describe('Unit | Component | JobList.vue', () => {
         customer: {
           name: 'La Poste - Courrier',
         },
-        staffing_needed_since: '2017-07-01',
+        staffing_needed_from: '2017-07-01',
         duration: '10 mois',
         location: 'OCTO',
         business_contact: {
