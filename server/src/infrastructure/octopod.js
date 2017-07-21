@@ -79,7 +79,7 @@ const OctopodClient = {
     return Promise.all(activitiesByProject)
       .then((projectActivities) => {
         const concatenatedActivities = this._flatten(projectActivities);
-        const activitiesToBeStaffed = concatenatedActivities.filter(activity => activity.staffing_needed === true);
+        const activitiesToBeStaffed = concatenatedActivities.filter(activity => !!activity.staffing_needed_from);
         return Promise.resolve(activitiesToBeStaffed);
       });
   },

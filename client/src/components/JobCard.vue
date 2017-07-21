@@ -9,7 +9,7 @@
         <p><span class="job__mission">{{ mission }}</span></p>
         <p class="job__customer-wrapper">pour <span class="job__customer">{{ job.project.customer.name }}</span>
         </p>
-        <p>à partir de <span class="job__start-date">{{ startDate }}</span></p>
+        <p>à partir de <span class="job__start-date">{{ staffingNeededSince }}</span></p>
         <p>à <span :class="locationsClasses">{{ locations }}</span></p>
       </a>
       <footer class="job__footer">
@@ -51,9 +51,9 @@
         return missionName.substring(0, 49);
       },
 
-      startDate() {
-        const startDate = new Date(this.job.project.start_date);
-        return startDate.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+      staffingNeededSince() {
+        const staffingNeededSince = new Date(this.job.activity.staffing_needed_from);
+        return staffingNeededSince.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
       },
 
       locations() {
@@ -208,7 +208,7 @@
   }
 
   .job__mission {
-    color: #5fba7d;
+    color: #288653;
     font-weight: 500;
   }
 
@@ -239,7 +239,7 @@
   }
 
   .job__locations--empty {
-    color: #9199a1;
+    color: #808080;
   }
 
   .job__footer {
@@ -250,18 +250,20 @@
 
   .job__apply-button {
     text-transform: uppercase;
-    color: #F57C00;
+    color: #d14800;
     background: #ffffff;
-    border: 1px solid #F48024;
+    border: 1px solid #d14800;
     cursor: pointer;
     padding: 15px 30px;
     border-radius: 4px;
     width: 100%;
     margin-bottom: 10px;
+    font-weight: 700;
   }
 
   .job__apply-button:hover {
-    background: #FFE0B2;
+    background: #d14800;
+    color: #ffffff;
   }
 
   .job__apply-button:disabled,

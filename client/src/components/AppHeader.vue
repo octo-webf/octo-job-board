@@ -3,7 +3,7 @@
     <header class="page__header">
       <div class="page__container page__header--container">
         <a class="logo-link" href="/">
-          <span class="logo-link__job">job</span><span class="logo-link__board">board</span>
+          <img src="../assets/logo_JobBoard.png" height="40"/>
         </a>
         <nav class="app-header__navigation navigation" role="navigation" aria-label="site navigation">
           <ol class="navigation__links">
@@ -60,7 +60,7 @@
     text-decoration: none;
     font-size: 26px;
     display: inline-block;
-    padding: 15px 0;
+    padding: 10px 0;
   }
 
   .logo-link__job {
@@ -68,7 +68,7 @@
   }
 
   .logo-link__board {
-    color: #F48024;
+    color: #d14800;
     font-weight: 900;
   }
 
@@ -79,24 +79,11 @@
     border: none;
     padding: 16px 0;
     line-height: 28px;
-  }
-
-  .navbar-action__suggestion {
-    color: #9199a1;
-    display: inline-block;
-    margin-right: 50px;
-  }
-
-  .navbar-action__suggestion:hover {
-    text-decoration: underline;
-  }
-
-  .navbar-action__logout {
-    color: #9199a1;
+    color: #333333;
     display: inline-block;
   }
 
-  .navbar-action__logout:hover {
+  .navbar-action:hover {
     text-decoration: underline;
   }
 
@@ -108,6 +95,10 @@
     list-style: none;
     margin: 0;
     display: inline-flex;
+  }
+
+  .navigation__link {
+    margin-left: 25px;
   }
 
   @media only screen and (min-width: 640px) {
