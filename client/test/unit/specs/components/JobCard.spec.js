@@ -94,8 +94,8 @@ describe.skip('Unit | Component | JobCard.vue', () => {
     });
 
     // TODO: it works on local or on browser, but fails in CircleCI :-/
-    it.skip('should display the staffing_needed_from', () => {
-      expect(component.$el.querySelector('.job__start-date').textContent.trim()).to.contain('juillet 2017');
+    it('should display the staffing_needed_from', () => {
+      expect(component.$el.querySelector('.job__start-date').textContent.trim()).to.equal('1 juillet 2017');
     });
 
     it('should display the locations', () => {

@@ -3,7 +3,7 @@
     <header class="page__header">
       <div class="page__container page__header--container">
         <a class="logo-link" href="/">
-          <span class="logo-link__job">job</span><span class="logo-link__board">board</span>
+          <img src="../assets/logo_JobBoard.png" height="40"/>
         </a>
         <nav class="app-header__navigation navigation" role="navigation" aria-label="site navigation">
           <ol class="navigation__links">
@@ -60,7 +60,7 @@
     text-decoration: none;
     font-size: 26px;
     display: inline-block;
-    padding: 15px 0;
+    padding: 10px 0;
   }
 
   .logo-link__job {
