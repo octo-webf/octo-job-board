@@ -8,7 +8,7 @@ Vue.use(VueAnalytics, {
   id: `${process.env.ANALYTICS_ID}`,
 });
 
-describe('Unit | Component | JobCard.vue', () => {
+describe.skip('Unit | Component | JobCard.vue', () => {
   let component;
   const job = {
     id: 2,
