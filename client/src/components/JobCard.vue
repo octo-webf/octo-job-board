@@ -68,7 +68,7 @@
 
       staffingNeededSince() {
         const staffingNeededSince = new Date(this.job.activity.staffing_needed_from);
-        return staffingNeededSince.toLocaleDateString('fr-FR', { day: 'numeric',month: 'long', year: 'numeric' });
+        return staffingNeededSince.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
       },
 
       locations() {
