@@ -40,12 +40,12 @@ describe('Unit | Serializer | jobs', () => {
     }];
 
     const octopodActivities = [
-      { title: 'Activity 1-A', project: { id: 1 }, staffing_needed_since: '2017-07-01' },
-      { title: 'Activity 2-A', project: { id: 2 }, staffing_needed_since: '2017-08-01' },
-      { title: 'Activity 2-B', project: { id: 2 }, staffing_needed_since: '2017-09-01' },
-      { title: 'Activity 3-A', project: { id: 3 }, staffing_needed_since: '2017-10-01' },
-      { title: 'Activity 3-B', project: { id: 3 }, staffing_needed_since: '2017-11-01' },
-      { title: 'Activity 3-C', project: { id: 3 }, staffing_needed_since: '2017-12-01' },
+      { title: 'Activity 1-A', project: { id: 1 }, staffing_needed_from: '2017-07-01' },
+      { title: 'Activity 2-A', project: { id: 2 }, staffing_needed_from: '2017-08-01' },
+      { title: 'Activity 2-B', project: { id: 2 }, staffing_needed_from: '2017-09-01' },
+      { title: 'Activity 3-A', project: { id: 3 }, staffing_needed_from: '2017-10-01' },
+      { title: 'Activity 3-B', project: { id: 3 }, staffing_needed_from: '2017-11-01' },
+      { title: 'Activity 3-C', project: { id: 3 }, staffing_needed_from: '2017-12-01' },
     ];
 
     // when
@@ -67,7 +67,7 @@ describe('Unit | Serializer | jobs', () => {
       },
       activity: {
         title: 'Activity 1-A',
-        staffing_needed_since: '2017-07-01',
+        staffing_needed_from: '2017-07-01',
       },
     }, {
       project: {
@@ -84,7 +84,7 @@ describe('Unit | Serializer | jobs', () => {
       },
       activity: {
         title: 'Activity 2-A',
-        staffing_needed_since: '2017-08-01',
+        staffing_needed_from: '2017-08-01',
       },
     }, {
       project: {
@@ -101,7 +101,7 @@ describe('Unit | Serializer | jobs', () => {
       },
       activity: {
         title: 'Activity 2-B',
-        staffing_needed_since: '2017-09-01',
+        staffing_needed_from: '2017-09-01',
       },
     }, {
       project: {
@@ -118,7 +118,7 @@ describe('Unit | Serializer | jobs', () => {
       },
       activity: {
         title: 'Activity 3-A',
-        staffing_needed_since: '2017-10-01',
+        staffing_needed_from: '2017-10-01',
       },
     }, {
       project: {
@@ -135,7 +135,7 @@ describe('Unit | Serializer | jobs', () => {
       },
       activity: {
         title: 'Activity 3-B',
-        staffing_needed_since: '2017-11-01',
+        staffing_needed_from: '2017-11-01',
       },
     }, {
       project: {
@@ -152,7 +152,7 @@ describe('Unit | Serializer | jobs', () => {
       },
       activity: {
         title: 'Activity 3-C',
-        staffing_needed_since: '2017-12-01',
+        staffing_needed_from: '2017-12-01',
       },
     }];
 

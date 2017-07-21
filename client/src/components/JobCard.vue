@@ -52,7 +52,7 @@
       },
 
       staffingNeededSince() {
-        const staffingNeededSince = new Date(this.job.project.staffing_needed_since);
+        const staffingNeededSince = new Date(this.job.project.staffing_needed_from);
         return staffingNeededSince.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
       },
 
