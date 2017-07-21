@@ -36,7 +36,7 @@ describe('Unit | API | interests api', () => {
           customer: {
             name: 'La Poste - Courrier',
           },
-          start_date: 'juillet 2017',
+          staffing_needed_since: 'juillet 2017',
           duration: '10 mois',
           location: 'OCTO',
           business_contact: {
