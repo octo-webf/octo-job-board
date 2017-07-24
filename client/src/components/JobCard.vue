@@ -3,7 +3,7 @@
     <article class="job">
       <header class="job__header">
         <h2 class="job__title">{{ job.activity.title }}</h2>
-        <span :class="['job__status job__status--'+job.project.status]"></span>
+        <span :class="statusClass">{{ status }}</span>
       </header>
       <a class="job__content" :href="octopodUrl">
         <p><span class="job__mission">{{ mission }}</span></p>
@@ -15,7 +15,8 @@
       <footer class="job__footer">
         <button class="job__apply-button" :disabled="isClicked" @click.prevent.once="submitInterest"
                 title="Si vous cliquez sur ce bouton, un mail sera envoyé à l'équipe Job Board (uniquement !) avec les informations utiles pour aider au staffing.">
-          Je suis intéressé·e <span class="sr-only">par cette mission {{ mission }} en tant que {{ job.activity.title }}</span>
+          Je suis intéressé·e <span class="sr-only">par cette mission {{ mission }} en tant que {{ job.activity.title
+          }}</span>
         </button>
       </footer>
     </article>
@@ -23,7 +24,6 @@
 </template>
 
 <script>
-
   import interestsApi from '@/api/interests';
   import authenticationService from '@/services/authentication';
 
@@ -40,6 +40,21 @@
     },
 
     computed: {
+
+      status() {
+        const status = this.job.project.status;
+        if (!status) {
+          return 'propale';
+        }
+        return (status.startsWith('mission')) ? 'signé' : 'propale';
+      },
+
+      statusClass() {
+        if (this.job.project.status) {
+          return `job__status job__status--${this.job.project.status}`;
+        }
+        return '';
+      },
 
       octopodUrl() {
         const octopodProjectId = this.job.project.id;
@@ -114,11 +129,9 @@
     },
 
   };
-
 </script>
 
 <style scoped>
-
   .sr-only {
     position: absolute;
     width: 1px;
@@ -126,13 +139,10 @@
     padding: 0;
     margin: -1px;
     overflow: hidden;
-    clip: rect(0,0,0,0);
+    clip: rect(0, 0, 0, 0);
     border: 0;
     display: block;
   }
-
-  /* Job
-  /* ------------------- */
 
   .job {
     min-width: 260px;
@@ -165,31 +175,49 @@
     max-width: 200px;
   }
 
+  /* used line 6*/
   .job__status {
     display: inline-block;
-    width: 17px;
-    height: 17px;
-    border-radius: 50%;
+    border-radius: 3px;
     margin-left: 5px;
+    text-transform: uppercase;
+    padding: 5px 8px;
+    color: white;
+    font-size: 11px
   }
 
+  /* not used*/
   .job__status--lead {
     background: orange;
   }
 
-  .job__status--mission-signed {
+  /* not used*/
+  .job__status--mission_signed {
     background: green;
   }
 
-  .job__status--proposal-in-progress {
+  /* not used*/
+  .job__status--proposal_in_progress {
     background: #0000FF;
   }
 
-  .job__status--proposal-sent {
+  /* not used*/
+  .job__status--proposal_sent {
     background: #6699FF;
   }
 
-  .job__status--mission-accepted {
+  /* not used*/
+  .job__status--mission_accepted {
+    background-color: #33CC00;
+  }
+
+  /* used line 6*/
+  .job__status--propale {
+    background: #6699FF;
+  }
+
+  /* used line 6*/
+  .job__status--mission {
     background-color: #33CC00;
   }
 
@@ -226,11 +254,6 @@
   .job__start-date {
     color: #07c;
     font-weight: 500;
-  }
-
-  .job__duration {
-    color: #5fba7d;
-    font-weight: 700;
   }
 
   .job__locations {
@@ -274,15 +297,4 @@
     color: #FAFAFA;
     cursor: auto;
   }
-
-  .job__alert-link {
-    text-decoration: none;
-    font-size: 12px;
-    color: #9199a1;
-  }
-
-  .job__alert-link:hover {
-    text-decoration: underline;
-  }
-
 </style>

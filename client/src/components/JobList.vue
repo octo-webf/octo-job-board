@@ -1,12 +1,9 @@
 <template>
   <div class="page page__jobs">
     <app-header/>
-
     <main class="page__body">
       <div class="page__container">
-
         <div class="job-results-panel">
-
           <section class="job-results job-results--delivery">
             <h1 class="job-results__title">Missions à staffer ({{ jobs.length }})</h1>
             <ul class="job-results__list">
@@ -22,8 +19,8 @@
 </template>
 
 <script>
-
   import authenticationService from '@/services/authentication';
+  import projectStatus from '@/utils/projectStatus';
   import jobsApi from '@/api/jobs';
   import AppHeader from '@/components/AppHeader';
   import JobCard from '@/components/JobCard';
@@ -54,18 +51,26 @@
           const accessToken = authenticationService.getAccessToken();
 
           jobsApi.fetchAll(accessToken).then((jobs) => {
-            this.jobs = jobs;
+            this.jobs = this._sortJobsByProjectStatus(jobs);
           });
         }
       },
 
+      _sortJobsByProjectStatus(jobs) {
+        return projectStatus.sort(jobs);
+      },
     },
   };
 </script>
 
 <style scoped>
-  /* Job results
-  /* ------------------- */
+  .page__body {
+    display: flex;
+    width: 100%;
+    padding: 20px 0;
+    margin-top: 60px;
+    justify-content: center;
+  }
 
   .job-results {
     margin-bottom: 60px;
@@ -95,5 +100,4 @@
       flex-wrap: wrap;
     }
   }
-
 </style>

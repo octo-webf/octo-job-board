@@ -17,7 +17,7 @@ describe.skip('Unit | Component | JobCard.vue', () => {
     },
     project: {
       id: 123456,
-      status: 'proposal-in-progress',
+      status: 'proposal_in_progress',
       name: 'Refonte du SI',
       customer: {
         name: 'La Poste - Courrier',
@@ -78,7 +78,7 @@ describe.skip('Unit | Component | JobCard.vue', () => {
 
   describe('rendering', () => {
     it('should display the appropriate project status', () => {
-      expect(component.$el.querySelector('.job__status').getAttribute('class')).to.contain('job__status--proposal-in-progress');
+      expect(component.$el.querySelector('.job__status').getAttribute('class')).to.contain('job__status--proposal_in_progress');
     });
 
     it('should display the activity title', () => {
@@ -221,6 +221,98 @@ describe.skip('Unit | Component | JobCard.vue', () => {
 
       // Then
       expect(octopodUrl).to.equal('https://octopod.octo.com/projects/12357');
+    });
+  });
+
+  describe('computed property #statusClass', () => {
+    it('should return job__status--"project status" class when api status is correct', () => {
+      // Given
+      job.project.status = 'mission_accepted';
+
+      // When
+      const statusClass = component.statusClass;
+
+      // Then
+      expect(statusClass).to.equal('job__status job__status--mission_accepted');
+    });
+
+    it('should return empty string when api status is undefined', () => {
+      // Given
+      job.project.status = null;
+
+      // When
+      const statusClass = component.statusClass;
+
+      // Then
+      expect(statusClass).to.equal('');
+    });
+  });
+
+  describe('computed property #status', () => {
+    it('should return status is propale when api status is null', () => {
+      // Given
+      job.project.status = null;
+
+      // When
+      const status = component.status;
+
+      // Then
+      expect(status).to.equal('propale');
+    });
+
+    it('should return status is signé when api status is mission_accepted', () => {
+      // Given
+      job.project.status = 'mission_accepted';
+
+      // When
+      const status = component.status;
+
+      // Then
+      expect(status).to.equal('signé');
+    });
+
+    it('should return status is signé when api status is mission_signed', () => {
+      // Given
+      job.project.status = 'mission_signed';
+
+      // When
+      const status = component.status;
+
+      // Then
+      expect(status).to.equal('signé');
+    });
+
+    it('should return status is propale when api status is proposal_in_progress', () => {
+      // Given
+      job.project.status = 'proposal_in_progress';
+
+      // When
+      const status = component.status;
+
+      // Then
+      expect(status).to.equal('propale');
+    });
+
+    it('should return status is propale when api status is proposal_sent', () => {
+      // Given
+      job.project.status = 'proposal_sent';
+
+      // When
+      const status = component.status;
+
+      // Then
+      expect(status).to.equal('propale');
+    });
+
+    it('should return status is propale when api status is lead', () => {
+      // Given
+      job.project.status = 'lead';
+
+      // When
+      const status = component.status;
+
+      // Then
+      expect(status).to.equal('propale');
     });
   });
 });

@@ -13,11 +13,9 @@
         </nav>
       </div>
     </header>
-
   </div>
 </template>
 <script>
-
   import authenticationService from '@/services/authentication';
 
   export default {
@@ -38,10 +36,8 @@
 
   };
 </script>
-<style scoped>
-  /* App header
-/* ------------------- */
 
+<style scoped>
   .page__header {
     height: 60px;
     background: #ffffff;
@@ -101,6 +97,14 @@
     margin-left: 25px;
   }
 
+  .page__container {
+    margin: 0 auto;
+  }
+
+  .navigation__link {
+    margin-left: 25px;
+  }
+
   @media only screen and (min-width: 640px) {
     .page__header--container {
       justify-content: space-between;
@@ -109,7 +113,5 @@
     .app-header__navigation {
       display: inline-block;
     }
-
   }
-
 </style>
