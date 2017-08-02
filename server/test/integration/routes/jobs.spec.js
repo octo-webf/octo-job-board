@@ -133,13 +133,14 @@ describe('Integration | Routes | jobs route', () => {
       request(app)
         .get('/api/jobs?refresh=true')
         .set('Authorization', 'Bearer access-token')
-        .expect(200, (err) => {
+        .expect(200, (err, res) => {
           // then
           if (err) {
             done(err);
           }
           expect(cache.del).to.have.been.called;
           expect(cache.set).to.have.been.called;
+          expect(res.body).to.deep.equal(stubbedJobs);
           done();
         });
     });
