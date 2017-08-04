@@ -1,16 +1,18 @@
 <template>
   <div class="job-card">
     <article class="job">
-      <header class="job__header">
-        <h2 class="job__title">{{ job.activity.title }}</h2>
-        <span :class="statusClass">{{ status }}</span>
-      </header>
-      <a class="job__content" :href="octopodUrl">
-        <p><span class="job__mission">{{ mission }}</span></p>
-        <p class="job__customer-wrapper">pour <span class="job__customer">{{ job.project.customer.name }}</span>
-        </p>
-        <p>à partir de <span class="job__start-date">{{ staffingNeededSince }}</span></p>
-        <p>à <span :class="locationsClasses">{{ locations }}</span></p>
+      <a :href="octopodUrl" target="_blank" class="job__link">
+        <header class="job__header">
+          <h2 class="job__title">{{ job.activity.title }}</h2>
+          <span :class="statusClass">{{ status }}</span>
+        </header>
+        <div class="job__content">
+          <p><span class="job__mission">{{ mission }}</span></p>
+          <p class="job__customer-wrapper">pour <span class="job__customer">{{ job.project.customer.name }}</span>
+          </p>
+          <p>à partir de <span class="job__start-date">{{ staffingNeededSince }}</span></p>
+          <p>à <span :class="locationsClasses">{{ locations }}</span></p>
+        </div>
       </a>
       <footer class="job__footer">
         <button class="job__apply-button" :disabled="isClicked" @click.prevent.once="submitInterest"
@@ -221,11 +223,14 @@
     background-color: #33CC00;
   }
 
+  .job__link{
+    text-decoration: none;
+  }
+
   .job__content {
     font-size: 15px;
     padding: 15px;
     height: 150px;
-    text-decoration: none;
     display: block;
     color: #000;
     text-align: left;
