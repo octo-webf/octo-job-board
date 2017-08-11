@@ -6,7 +6,7 @@ import authenticationService from '@/services/authentication';
 
 Vue.use(VueModal);
 
-describe('Unit | Component | FeedbackModal.vue', () => {
+describe.only('Unit | Component | FeedbackModal.vue', () => {
   let component;
 
   const feedback = 'Dis-moi petit, as-tu déjà dansé avec le diable au clair de lune ?';
@@ -25,6 +25,8 @@ describe('Unit | Component | FeedbackModal.vue', () => {
         feedback,
       },
     }).$mount();
+
+
   });
 
   it('should be named "FeedbackModal"', () => {
@@ -33,7 +35,10 @@ describe('Unit | Component | FeedbackModal.vue', () => {
 
   describe('rendering', () => {
     it('should display the modal', () => {
-      Vue.nextTick().then(() => {
+      component.$modal.show('feedback-modal');
+
+      return Vue.nextTick().then(() => {
+        console.log(component.$el);
         expect(component.$el.querySelector('.feedback-modal')).to.exist;
       });
     });
@@ -64,7 +69,7 @@ describe('Unit | Component | FeedbackModal.vue', () => {
       // Given
       component.$modal.show('feedback-panel');
 
-      Vue.nextTick().then(() => {
+      return Vue.nextTick().then(() => {
         const myButton = component.$el.querySelector('.feedback-modal__action--send');
 
         // When
