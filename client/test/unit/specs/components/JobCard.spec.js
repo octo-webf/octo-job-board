@@ -8,12 +8,13 @@ Vue.use(VueAnalytics, {
   id: `${process.env.ANALYTICS_ID}`,
 });
 
-describe.only('Unit | Component | JobCard.vue', () => {
+describe('Unit | Component | JobCard.vue', () => {
   let component;
   const job = {
     id: 2,
     activity: {
       title: 'Tech Lead',
+      staffing_needed_from: '2017-07-01',
     },
     project: {
       id: 123456,
@@ -22,7 +23,6 @@ describe.only('Unit | Component | JobCard.vue', () => {
       customer: {
         name: 'La Poste - Courrier',
       },
-      staffing_needed_from: '2017-07-01',
       duration: '10 mois',
       locations: 'OCTO',
       business_contact: {
@@ -92,8 +92,7 @@ describe.only('Unit | Component | JobCard.vue', () => {
       expect(component.$el.querySelector('.job__customer').textContent.trim()).to.equal('La Poste - Courrier');
     });
 
-    // TODO: it works on local or on browser, but fails in CircleCI :-/
-    it.skip('should display the staffing_needed_from', () => {
+    it('should display the staffing_needed_from', () => {
       expect(component.$el.querySelector('.job__start-date').textContent.trim()).to.equal('1 juillet 2017');
     });
 
@@ -197,10 +196,10 @@ describe.only('Unit | Component | JobCard.vue', () => {
   });
 
   describe('computed property #staffingNeededSince', () => {
-    // TODO: it works on local or on browser, but fails in CircleCI :-/
-    it.skip('should format the mission staffing_needed_from date (ex : "2017-07-01" => "Juillet 2017")', () => {
+
+    it('should format the mission staffing_needed_from date (ex : "2017-07-01" => "Juillet 2017")', () => {
       // Given
-      job.project.staffing_needed_from = '2017-07-01';
+      job.activity.staffing_needed_from = '2017-07-01';
 
       // When
       const staffingNeededSince = component.staffingNeededSince;
