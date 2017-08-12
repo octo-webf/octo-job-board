@@ -3,9 +3,7 @@ const slackService = require('../../../src/domain/slack-service');
 const slackClient = require('../../../src/infrastructure/slack');
 
 describe('Unit | Domain | slack-service', () => {
-
   describe('#postFeedbackMessage', () => {
-
     beforeEach(() => {
       sinon.stub(slackClient, 'postMessage');
     });
@@ -46,11 +44,10 @@ describe('Unit | Domain | slack-service', () => {
       // then
       return promise
         .then((result) => {
-          throw new Error('Promise was unexpectedly fulfilled. Result: ' + result);
+          throw new Error(`Promise was unexpectedly fulfilled. Result: ${result}`);
         }, (err) => {
           expect(err).to.exist;
-        })
+        });
     });
-
   });
 });

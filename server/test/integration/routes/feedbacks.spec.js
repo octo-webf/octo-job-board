@@ -5,7 +5,7 @@ const mailService = require('../../../src/domain/mail-service');
 const slackService = require('../../../src/domain/slack-service');
 
 describe('Integration | Routes | feedbacks route', () => {
-  const consultant = { name: 'John Doe', email: 'john@doe.com'};
+  const consultant = { name: 'John Doe', email: 'john@doe.com' };
   const feedback = 'Lorem ipsum dolor sit amet';
 
   beforeEach(() => {
@@ -24,7 +24,7 @@ describe('Integration | Routes | feedbacks route', () => {
     // when
     request(app)
       .post('/api/feedbacks')
-      .send({ consultant, feedback})
+      .send({ consultant, feedback })
       .set('Authorization', 'Bearer access-token')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(201, (err, res) => {
@@ -39,7 +39,7 @@ describe('Integration | Routes | feedbacks route', () => {
     // when
     request(app)
       .post('/api/feedbacks')
-      .send({ consultant, feedback})
+      .send({ consultant, feedback })
       .set('Authorization', 'Bearer access-token')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(201, () => {
@@ -56,7 +56,7 @@ describe('Integration | Routes | feedbacks route', () => {
     // When
     request(app)
       .post('/api/feedbacks')
-      .send({ consultant, feedback})
+      .send({ consultant, feedback })
       .set('Authorization', 'Bearer access-token')
       .expect('Content-Type', 'application/json; charset=utf-8')
       .expect(500, (err, res) => {

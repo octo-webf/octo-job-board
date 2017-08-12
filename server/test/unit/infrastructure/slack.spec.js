@@ -1,9 +1,8 @@
-const {expect, sinon} = require('../../test-helper');
+const { expect, sinon } = require('../../test-helper');
 const IncomingWebhook = require('@slack/client').IncomingWebhook;
 const slackClient = require('../../../src/infrastructure/slack');
 
 describe('Unit | Class | slack-client', () => {
-
   beforeEach(() => {
     sinon.stub(IncomingWebhook.prototype, 'send');
   });
@@ -13,7 +12,6 @@ describe('Unit | Class | slack-client', () => {
   });
 
   describe('#postMessage', () => {
-
     it('should exist', () => {
       expect(slackClient.postMessage).to.exist;
     });
@@ -42,11 +40,10 @@ describe('Unit | Class | slack-client', () => {
       // then
       return promise
         .then((result) => {
-          throw new Error('Promise was unexpectedly fulfilled. Result: ' + result);
+          throw new Error(`Promise was unexpectedly fulfilled. Result: ${result}`);
         }, (err) => {
           expect(err).to.exist;
         });
     });
-
   });
 });

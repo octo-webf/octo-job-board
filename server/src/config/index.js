@@ -30,7 +30,7 @@ function config() {
     MAIL_FROM: process.env.MAIL_FROM,
     MAIL_TO: process.env.MAIL_TO,
 
-    SLACK_WEBHOOK_URL: process.env.SLACK_WEBHOOK_URL
+    SLACK_WEBHOOK_URL: process.env.SLACK_WEBHOOK_URL,
   };
 
   if (process.env.NODE_ENV === 'test') {

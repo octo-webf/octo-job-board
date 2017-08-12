@@ -6,5 +6,5 @@ function postFeedbackMessage(author, message) {
 }
 
 module.exports = {
-  postFeedbackMessage
+  postFeedbackMessage,
 };

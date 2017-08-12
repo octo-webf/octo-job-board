@@ -13,6 +13,7 @@ router.post('/', auth, (req, res) => {
       res.status(201).json('Feedback sent');
     })
     .catch((err) => {
+      // eslint-disable-next-line no-console
       console.log(err);
       res.status(500).json({ error: err });
     });

@@ -2,10 +2,9 @@ const IncomingWebhook = require('@slack/client').IncomingWebhook;
 
 const url = process.env.SLACK_WEBHOOK_URL || '';
 
-const SlackClient =  {
+const SlackClient = {
 
   postMessage(text) {
-
     return new Promise((resolve, reject) => {
       const webhook = new IncomingWebhook(url);
 
@@ -17,7 +16,7 @@ const SlackClient =  {
         }
       });
     });
-  }
+  },
 };
 
 module.exports = SlackClient;
