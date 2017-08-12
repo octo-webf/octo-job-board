@@ -21,14 +21,12 @@ describe('Unit | Component | FeedbackModal.vue', () => {
 
     // when
     component = new Constructor({
-      data: function () {
+      data() {
         return {
           feedback,
         };
       },
     }).$mount();
-
-
   });
 
   it('should be named "FeedbackModal"', () => {

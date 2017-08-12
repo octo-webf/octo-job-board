@@ -51,8 +51,8 @@ describe('Unit | Component | JobCard.vue', () => {
     const Constructor = Vue.extend(JobCard);
     component = new Constructor({
       propsData: {
-        job
-      }
+        job,
+      },
     }).$mount();
   });
 
@@ -196,7 +196,6 @@ describe('Unit | Component | JobCard.vue', () => {
   });
 
   describe('computed property #staffingNeededSince', () => {
-
     it('should format the mission staffing_needed_from date (ex : "2017-07-01" => "Juillet 2017")', () => {
       // Given
       job.activity.staffing_needed_from = '2017-07-01';
