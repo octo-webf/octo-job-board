@@ -1,6 +1,8 @@
 const IncomingWebhook = require('@slack/client').IncomingWebhook;
+const config = require('../config/index');
 
-const url = process.env.SLACK_WEBHOOK_URL || '';
+
+const url = config.SLACK_WEBHOOK_URL || '';
 
 const SlackClient = {
 

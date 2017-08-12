@@ -48,7 +48,7 @@ function config() {
     APP_ENV.ACCESS_TOKEN_SECRET = 'access-token-password';
     APP_ENV.MAIL_FROM = 'jobboard+test@octo.com';
     APP_ENV.MAIL_TO = 'jobboard+test@octo.com';
-    APP_ENV.SLACK_WEBHOOK_URL = 'https://hooks.slack.com/services/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';
+    APP_ENV.SLACK_WEBHOOK_URL = 'https://hooks.slack.com/services/SHIG2H7JM/FOORS5FCJ/MIiadngMjKE2Iy8dqQ429JzE';
   }
 
   return APP_ENV;
