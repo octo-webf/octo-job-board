@@ -10,7 +10,7 @@
           <p><span class="job__mission">{{ mission }}</span></p>
           <p class="job__customer-wrapper">pour <span class="job__customer">{{ job.project.customer.name }}</span>
           </p>
-          <p>à partir de <span class="job__start-date">{{ staffingNeededSince }}</span></p>
+          <p>à partir du <span class="job__start-date">{{ staffingNeededSince }}</span></p>
           <p>à <span :class="locationsClasses">{{ locations }}</span></p>
         </div>
       </a>
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+  import moment from 'moment';
   import interestsApi from '@/api/interests';
   import authenticationService from '@/services/authentication';
 
@@ -69,8 +70,7 @@
       },
 
       staffingNeededSince() {
-        const staffingNeededSince = new Date(this.job.activity.staffing_needed_from);
-        return staffingNeededSince.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+        return moment(this.job.activity.staffing_needed_from).format('D MMMM YYYY');
       },
 
       locations() {

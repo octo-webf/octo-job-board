@@ -1,8 +1,11 @@
+import moment from 'moment';
 import Vue from 'vue';
 import VueAnalytics from 'vue-analytics';
 import JobCard from '@/components/JobCard';
 import interestsApi from '@/api/interests';
 import authenticationService from '@/services/authentication';
+
+moment.locale('fr');
 
 Vue.use(VueAnalytics, {
   id: `${process.env.ANALYTICS_ID}`,
