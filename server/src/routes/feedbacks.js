@@ -1,6 +1,6 @@
 const express = require('express');
 const auth = require('../infrastructure/middlewares/auth');
-const mailService = require('../infrastructure/mail-service');
+const mailService = require('../domain/mail-service');
 const slackService = require('../domain/slack-service');
 
 const router = express.Router();
