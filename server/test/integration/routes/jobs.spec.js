@@ -78,8 +78,8 @@ describe('Integration | Routes | jobs route', () => {
   });
 
   it('should return 401 response if the user is not well authenticated', () => request(app)
-      .get('/api/jobs')
-      .expect(401));
+    .get('/api/jobs')
+    .expect(401));
 
   describe('Caching', () => {
     it('should simply return the cached value without make any call or cache set', (done) => {

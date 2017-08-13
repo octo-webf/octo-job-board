@@ -67,7 +67,7 @@ describe('Integration | Routes | interests route', () => {
   });
 
   it('should return 401 response if the user is not well authenticated', () => request(app)
-      .post('/api/interests')
-      .send({ interestedJobForm })
-      .expect(401));
+    .post('/api/interests')
+    .send({ interestedJobForm })
+    .expect(401));
 });
