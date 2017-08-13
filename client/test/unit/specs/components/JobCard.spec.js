@@ -207,7 +207,7 @@ describe('Unit | Component | JobCard.vue', () => {
       const staffingNeededSince = component.staffingNeededSince;
 
       // Then
-      expect(staffingNeededSince).to.contain('juillet 2017');
+      expect(staffingNeededSince).to.equal('1 juillet 2017');
     });
   });
 

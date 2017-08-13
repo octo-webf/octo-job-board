@@ -4,8 +4,11 @@ import Vue from 'vue';
 import VueAnalytics from 'vue-analytics';
 import VueModal from 'vue-js-modal';
 import Toastr from 'vue-toastr';
+import moment from 'moment';
 import App from './App';
 import router from './router';
+
+moment.locale('fr');
 
 Vue.component('vue-toastr', Toastr);
 require('vue-toastr/dist/vue-toastr.css');
