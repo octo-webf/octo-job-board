@@ -10,7 +10,16 @@ describe('Unit | Service | job-service', () => {
   const stubbedAccessToken = 'octopod-access-token';
   const stubbedFetchedProjects = ['project_1', 'project_2', 'project_3'];
   const stubbedFetchedActivities = ['activity_1', 'activity_2', 'activity_3'];
-  const stubbedSerializedJobs = ['job_1', 'job_2', 'job_3'];
+  const stubbedSerializedJobs = [{
+    project: { id: 'A' },
+    activity: { id: 1 },
+  }, {
+    project: { id: 'B' },
+    activity: { id: 2 },
+  }, {
+    project: { id: 'C' },
+    activity: { id: 3 },
+  }];
 
   beforeEach(() => {
     sandbox = sinon.sandbox.create();
@@ -98,6 +107,77 @@ describe('Unit | Service | job-service', () => {
     it('should return the jobs', () => promise.then((jobs) => {
       expect(jobs).to.deep.equal(stubbedSerializedJobs);
     }));
+  });
+
+  describe('#synchronizeJobs', () => {
+    it('should exist', () => {
+      expect(jobService.synchronizeJobs).to.exist;
+    });
+
+    describe('when it is the first sync (i.e. cache value does not yet exist)', () => {
+      let promise;
+
+      beforeEach(() => {
+        cache.get.returns(null);
+        promise = jobService.synchronizeJobs();
+      });
+
+      it('should return a fulfilled promise with data property "isInit" set to true', () => promise.then(({ isInit }) => {
+        expect(isInit).to.be.true;
+      }));
+
+      it('should return a fulfilled promise with data properties "addedJobs" and "removedJobs" undefined', () => promise.then(({ addedJobs, removedJobs }) => {
+        expect(addedJobs).to.be.undefined;
+        expect(removedJobs).to.be.undefined;
+      }));
+
+      it('should cache the jobs freshly fetched from Octopod', () => promise.then(() => {
+        expect(cache.set).to.have.been.calledWith('get_jobs', stubbedSerializedJobs);
+      }));
+    });
+
+    describe('when it is not the first sync (i.e. cache value was previously set)', () => {
+      let promise;
+
+      beforeEach(() => {
+        cache.get.returns([{
+          // job still available
+          project: { id: 'A' },
+          activity: { id: 1 },
+        }, {
+          // job already staffed
+          project: { id: 'Z' },
+          activity: { id: 999 },
+        }]);
+        promise = jobService.synchronizeJobs();
+      });
+
+      it('should return a fulfilled promise with data property "isInit" set to false', () => promise.then(({ isInit }) => {
+        expect(isInit).to.be.false;
+      }));
+
+      it('should return a fulfilled promise with data property "jobs" containing all the current available jobs', () => promise.then(({ jobs }) => {
+        expect(jobs).to.deep.equal(stubbedSerializedJobs);
+      }));
+
+      it('should return a fulfilled promise with data properties "addedJobs" and "removedJobs" valued', () => promise.then(({ addedJobs, removedJobs }) => {
+        expect(addedJobs).to.deep.equal([{
+          project: { id: 'B' },
+          activity: { id: 2 },
+        }, {
+          project: { id: 'C' },
+          activity: { id: 3 },
+        }]);
+        expect(removedJobs).to.deep.equal([{
+          project: { id: 'Z' },
+          activity: { id: 999 },
+        }]);
+      }));
+
+      it('should update the cached jobs freshly fetched', () => promise.then(() => {
+        expect(cache.set).to.have.been.calledWith('get_jobs', stubbedSerializedJobs);
+      }));
+    });
   });
 });
 
