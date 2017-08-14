@@ -14,6 +14,7 @@
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "db": "./node_modules/.bin/sequelize",
     "db:help": "./node_modules/.bin/sequelize help",
+    "db:reset": "npm run clean:db && npm run db:migrate",
     "db:migrate": "./node_modules/.bin/sequelize db:migrate",
     "db:rollback": "./node_modules/.bin/sequelize db:migrate:undo"
   },

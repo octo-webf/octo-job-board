@@ -1,6 +1,13 @@
 module.exports = (sequelize, DataTypes) => {
   const Subscription = sequelize.define('Subscription', {
-    email: DataTypes.STRING,
+    email: {
+      type: DataTypes.STRING,
+      unique: true,
+      allowNull: false,
+      validate: {
+        isEmail: true,
+      },
+    },
   }, {
     classMethods: {
       associate(/* models */) {
