@@ -93,3 +93,8 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+/**
+ * Start cron task that synchronize automatically the jobs from Octopod
+ */
+require('../src/features/crons/jobs-synchronizer');
