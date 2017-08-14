@@ -45,5 +45,5 @@ function getJobs() {
 
 module.exports = {
   fetchAndCacheJobs,
-  getJobs
+  getJobs,
 };

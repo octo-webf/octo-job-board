@@ -1,6 +1,6 @@
-const { request, expect, sinon } = require('../../test-helper');
-const app = require('../../../app');
-const subscriptionService = require('../../../src/domain/services/subscription-service');
+const { request, expect, sinon } = require('../../../test-helper');
+const app = require('../../../../app');
+const subscriptionService = require('../../../../src/domain/services/subscription-service');
 
 describe('Integration | Routes | subscriptions route', () => {
   describe('POST /api/subscriptions', () => {

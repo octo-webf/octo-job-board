@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
-const { request, expect, sinon } = require('../../test-helper');
-const app = require('../../../app');
-const mailService = require('../../../src/infrastructure/mail-service');
+const { request, expect, sinon } = require('../../../test-helper');
+const app = require('../../../../app');
+const mailService = require('../../../../src/infrastructure/mail-service');
 
 describe('Integration | Routes | feedbacks route', () => {
   beforeEach(() => {

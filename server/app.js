@@ -5,13 +5,13 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
-const index = require('./src/routes/index');
-const jobs = require('./src/routes/jobs');
-const interests = require('./src/routes/interests');
-const auth = require('./src/routes/auth');
-const certificate = require('./src/routes/certificate');
-const feedbacks = require('./src/routes/feedbacks');
-const subscriptions = require('./src/routes/subscriptions');
+const index = require('./src/features/api/index');
+const jobs = require('./src/features/api/jobs');
+const interests = require('./src/features/api/interests');
+const auth = require('./src/features/api/auth');
+const certificate = require('./src/features/api/certificate');
+const feedbacks = require('./src/features/api/feedbacks');
+const subscriptions = require('./src/features/api/subscriptions');
 
 const app = express();
 

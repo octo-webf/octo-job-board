@@ -2,9 +2,9 @@ const jwt = require('jsonwebtoken');
 const express = require('express');
 
 const router = express.Router();
-const GoogleAuthWrapper = require('../infrastructure/google-auth');
-const AuthorizationCodeValidator = require('../infrastructure/authorization-code-validator');
-const config = require('../config');
+const GoogleAuthWrapper = require('../../infrastructure/google-auth');
+const AuthorizationCodeValidator = require('../../infrastructure/authorization-code-validator');
+const config = require('../../config');
 
 function _generateJwtAccessToken(userId) {
   return jwt.sign({ userId }, config.ACCESS_TOKEN_SECRET);

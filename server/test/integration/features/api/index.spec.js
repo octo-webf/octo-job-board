@@ -1,5 +1,5 @@
-const { request, expect } = require('../../test-helper');
-const app = require('../../../app');
+const { request, expect } = require('../../../test-helper');
+const app = require('../../../../app');
 
 describe('Integration | Routes | index route', () => {
   it('should have api informations on root', (done) => {

@@ -1,11 +1,10 @@
 const jwt = require('jsonwebtoken');
-const {request, expect, sinon} = require('../../test-helper');
-const app = require('../../../app');
-const jobService = require('../../../src/domain/services/job-service');
-const fixturesJobs = require('../fixtures/jobs');
+const { request, expect, sinon } = require('../../../test-helper');
+const app = require('../../../../app');
+const jobService = require('../../../../src/domain/services/job-service');
+const fixturesJobs = require('../../fixtures/jobs');
 
 describe('Integration | Routes | jobs route', () => {
-
   beforeEach(() => {
     sinon.stub(jwt, 'verify').returns({ userId: 'user-id' });
     sinon.stub(jobService, 'getJobs');
@@ -25,7 +24,6 @@ describe('Integration | Routes | jobs route', () => {
       .get('/api/jobs')
       .set('Authorization', 'Bearer access-token')
       .expect(200, (err, res) => {
-
         // then
         if (err) {
           done(err);
@@ -39,5 +37,4 @@ describe('Integration | Routes | jobs route', () => {
   it('should return 401 response if the user is not well authenticated', () => request(app)
     .get('/api/jobs')
     .expect(401));
-
 });

@@ -1,11 +1,10 @@
-const {sinon, expect} = require('../../../test-helper');
+const { sinon, expect } = require('../../../test-helper');
 const jobService = require('../../../../src/domain/services/job-service');
 const octopodClient = require('../../../../src/infrastructure/octopod');
 const jobsSerializer = require('../../../../src/infrastructure/serializers/jobs');
 const cache = require('../../../../src/infrastructure/cache');
 
 describe('Unit | Service | job-service', () => {
-
   let sandbox;
 
   const stubbedAccessToken = 'octopod-access-token';
@@ -28,7 +27,6 @@ describe('Unit | Service | job-service', () => {
   });
 
   describe('#getJobs', () => {
-
     it('should exist', () => {
       expect(jobService.getJobs).to.exist;
     });
@@ -63,12 +61,10 @@ describe('Unit | Service | job-service', () => {
       return promise.then((jobs) => {
         expect(jobs).to.deep.equal(stubbedSerializedJobs);
       });
-    })
-
+    });
   });
 
   describe('#fetchAndCacheJobs', () => {
-
     let promise;
 
     beforeEach(() => {
@@ -79,43 +75,29 @@ describe('Unit | Service | job-service', () => {
       expect(jobService.fetchAndCacheJobs).to.exist;
     });
 
-    it('should call Octopod to get an access_token', () => {
-      return promise.then(() => {
-        expect(octopodClient.getAccessToken).to.have.been.called;
-      });
-    });
+    it('should call Octopod to get an access_token', () => promise.then(() => {
+      expect(octopodClient.getAccessToken).to.have.been.called;
+    }));
 
-    it('should call Octopod to fetch projects to be staffed', () => {
-      return promise.then(() => {
-        expect(octopodClient.fetchProjectsToBeStaffed).to.have.been.calledWith(stubbedAccessToken);
-      });
-    });
+    it('should call Octopod to fetch projects to be staffed', () => promise.then(() => {
+      expect(octopodClient.fetchProjectsToBeStaffed).to.have.been.calledWith(stubbedAccessToken);
+    }));
 
-    it('should call Octopod to fetch activities to be staffed', () => {
-      return promise.then(() => {
-        expect(octopodClient.fetchActivitiesToBeStaffed).to.have.been.calledWith(stubbedAccessToken, stubbedFetchedProjects);
-      });
-    });
+    it('should call Octopod to fetch activities to be staffed', () => promise.then(() => {
+      expect(octopodClient.fetchActivitiesToBeStaffed).to.have.been.calledWith(stubbedAccessToken, stubbedFetchedProjects);
+    }));
 
-    it('should build jobs by merging fetched projects and activities', () => {
-      return promise.then(() => {
-        expect(jobsSerializer.serialize).to.have.been.calledWith(stubbedFetchedProjects, stubbedFetchedActivities);
-      });
-    });
+    it('should build jobs by merging fetched projects and activities', () => promise.then(() => {
+      expect(jobsSerializer.serialize).to.have.been.calledWith(stubbedFetchedProjects, stubbedFetchedActivities);
+    }));
 
-    it('should cache the jobs (without expiration age)', () => {
-      return promise.then(() => {
-        expect(cache.set).to.have.been.calledWith('get_jobs', stubbedSerializedJobs);
-      });
-    });
+    it('should cache the jobs (without expiration age)', () => promise.then(() => {
+      expect(cache.set).to.have.been.calledWith('get_jobs', stubbedSerializedJobs);
+    }));
 
-    it('should return the jobs', () => {
-      return promise.then(jobs => {
-        expect(jobs).to.deep.equal(stubbedSerializedJobs);
-      });
-    });
-
+    it('should return the jobs', () => promise.then((jobs) => {
+      expect(jobs).to.deep.equal(stubbedSerializedJobs);
+    }));
   });
-
 });
 
