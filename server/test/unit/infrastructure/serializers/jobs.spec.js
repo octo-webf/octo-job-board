@@ -40,12 +40,12 @@ describe('Unit | Serializer | jobs', () => {
     }];
 
     const octopodActivities = [
-      { title: 'Activity 1-A', project: { id: 1 }, staffing_needed_from: '2017-07-01' },
-      { title: 'Activity 2-A', project: { id: 2 }, staffing_needed_from: '2017-08-01' },
-      { title: 'Activity 2-B', project: { id: 2 }, staffing_needed_from: '2017-09-01' },
-      { title: 'Activity 3-A', project: { id: 3 }, staffing_needed_from: '2017-10-01' },
-      { title: 'Activity 3-B', project: { id: 3 }, staffing_needed_from: '2017-11-01' },
-      { title: 'Activity 3-C', project: { id: 3 }, staffing_needed_from: '2017-12-01' },
+      { id: 1, title: 'Activity 1-A', project: { id: 1 }, staffing_needed_from: '2017-07-01' },
+      { id: 2, title: 'Activity 2-A', project: { id: 2 }, staffing_needed_from: '2017-08-01' },
+      { id: 3, title: 'Activity 2-B', project: { id: 2 }, staffing_needed_from: '2017-09-01' },
+      { id: 4, title: 'Activity 3-A', project: { id: 3 }, staffing_needed_from: '2017-10-01' },
+      { id: 5, title: 'Activity 3-B', project: { id: 3 }, staffing_needed_from: '2017-11-01' },
+      { id: 6, title: 'Activity 3-C', project: { id: 3 }, staffing_needed_from: '2017-12-01' },
     ];
 
     // when
@@ -66,6 +66,7 @@ describe('Unit | Serializer | jobs', () => {
         locations: 'OCTO',
       },
       activity: {
+        id: 1,
         title: 'Activity 1-A',
         staffing_needed_from: '2017-07-01',
       },
@@ -83,6 +84,7 @@ describe('Unit | Serializer | jobs', () => {
         locations: 'La Défense',
       },
       activity: {
+        id: 2,
         title: 'Activity 2-A',
         staffing_needed_from: '2017-08-01',
       },
@@ -100,6 +102,7 @@ describe('Unit | Serializer | jobs', () => {
         locations: 'La Défense',
       },
       activity: {
+        id: 3,
         title: 'Activity 2-B',
         staffing_needed_from: '2017-09-01',
       },
@@ -117,6 +120,7 @@ describe('Unit | Serializer | jobs', () => {
         locations: 'Osny et OCTO',
       },
       activity: {
+        id: 4,
         title: 'Activity 3-A',
         staffing_needed_from: '2017-10-01',
       },
@@ -134,6 +138,7 @@ describe('Unit | Serializer | jobs', () => {
         locations: 'Osny et OCTO',
       },
       activity: {
+        id: 5,
         title: 'Activity 3-B',
         staffing_needed_from: '2017-11-01',
       },
@@ -151,6 +156,7 @@ describe('Unit | Serializer | jobs', () => {
         locations: 'Osny et OCTO',
       },
       activity: {
+        id: 6,
         title: 'Activity 3-C',
         staffing_needed_from: '2017-12-01',
       },
