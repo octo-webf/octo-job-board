@@ -71,6 +71,6 @@ describe('Integration | Routes | feedbacks route', () => {
   });
 
   it('should return 401 response if the user is not well authenticated', () => request(app)
-      .post('/api/feedbacks')
-      .expect(401));
+    .post('/api/feedbacks')
+    .expect(401));
 });
