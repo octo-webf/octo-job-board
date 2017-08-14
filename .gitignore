@@ -19,3 +19,6 @@ selenium-debug.log
 
 # NPM package-lock files
 package-lock.json
+
+# DB data files
+*.sqlite

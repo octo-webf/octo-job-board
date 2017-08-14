@@ -4,12 +4,18 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "clean": "rm -rf node_modules",
+    "clean": "npm run clean:dependencies && npm run clean:db",
+    "clean:dependencies": "rm -rf node_modules",
+    "clean:db": "rm src/db/data.development.sqlite",
     "lint": "./node_modules/.bin/eslint --ext .js src test",
     "lint:fix": "./node_modules/.bin/eslint --fix --ext .js src test",
     "test": "NODE_ENV=test nyc mocha --recursive",
     "test:watch": "NODE_ENV=test ./node_modules/mocha/bin/mocha --recursive --watch",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "db": "./node_modules/.bin/sequelize",
+    "db:help": "./node_modules/.bin/sequelize help",
+    "db:migrate": "./node_modules/.bin/sequelize db:migrate",
+    "db:rollback": "./node_modules/.bin/sequelize db:migrate:undo"
   },
   "dependencies": {
     "body-parser": "^1.17.2",
@@ -25,7 +31,10 @@
     "morgan": "^1.8.2",
     "node-mailjet": "^3.2.1",
     "request": "^2.81.0",
-    "serve-favicon": "~2.4.3"
+    "sequelize": "^4.4.4",
+    "sequelize-cli": "^2.8.0",
+    "serve-favicon": "~2.4.3",
+    "sqlite3": "^3.1.9"
   },
   "devDependencies": {
     "chai": "^4.1.1",
