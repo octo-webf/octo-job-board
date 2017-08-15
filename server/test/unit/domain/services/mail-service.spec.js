@@ -1,7 +1,7 @@
-const { sinon, expect } = require('../../test-helper');
+const { sinon, expect } = require('../../../test-helper');
 
-const mailJet = require('../../../src/infrastructure/mailjet');
-const mailService = require('../../../src/infrastructure/mail-service');
+const mailJet = require('../../../../src/infrastructure/mailjet');
+const mailService = require('../../../../src/domain/services/mail-service');
 
 describe('Unit | Service | MailService', () => {
   beforeEach(() => {

@@ -1,5 +1,5 @@
-const mailJet = require('./mailjet');
-const config = require('../config');
+const mailJet = require('../../infrastructure/mailjet');
+const config = require('../../config');
 
 function sendInterestEmail(form) {
   const { interestedConsultant } = form;
