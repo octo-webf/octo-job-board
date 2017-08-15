@@ -12,10 +12,6 @@ describe('Unit | Service | subscription-service', () => {
       Subscription.findOrCreate.restore();
     });
 
-    it('should exist', () => {
-      expect(subscriptionService.addSubscription).to.exist;
-    });
-
     it('should call Sequelize Model#findOrCreate (public static) and Bluebird Promise#spread methods', () => {
       // given
       const subscription = {
@@ -63,10 +59,6 @@ describe('Unit | Service | subscription-service', () => {
       Subscription.destroy.restore();
     });
 
-    it('should exist', () => {
-      expect(subscriptionService.removeSubscription).to.exist;
-    });
-
     it('should call Sequelize Model#destroy (public static) method', () => {
       // given
       Subscription.destroy.resolves();
@@ -77,6 +69,29 @@ describe('Unit | Service | subscription-service', () => {
       // then
       return promise.then(() => {
         expect(Subscription.destroy).to.have.been.called;
+      });
+    });
+  });
+
+  describe('#getAllSubscriptions', () => {
+    beforeEach(() => {
+      sinon.stub(Subscription, 'all');
+    });
+
+    afterEach(() => {
+      Subscription.all.restore();
+    });
+
+    it('should call Sequelize Model#all (public static) method', () => {
+      // given
+      Subscription.all.resolves();
+
+      // when
+      const promise = subscriptionService.getAllSubscriptions();
+
+      // then
+      return promise.then(() => {
+        expect(Subscription.all).to.have.been.called;
       });
     });
   });
