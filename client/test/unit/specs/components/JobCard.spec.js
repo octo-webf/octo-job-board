@@ -1,19 +1,23 @@
+import moment from 'moment';
 import Vue from 'vue';
 import VueAnalytics from 'vue-analytics';
 import JobCard from '@/components/JobCard';
 import interestsApi from '@/api/interests';
 import authenticationService from '@/services/authentication';
 
+moment.locale('fr');
+
 Vue.use(VueAnalytics, {
   id: `${process.env.ANALYTICS_ID}`,
 });
 
-describe.skip('Unit | Component | JobCard.vue', () => {
+describe('Unit | Component | JobCard.vue', () => {
   let component;
   const job = {
     id: 2,
     activity: {
       title: 'Tech Lead',
+      staffing_needed_from: '2017-07-01',
     },
     project: {
       id: 123456,
@@ -22,7 +26,6 @@ describe.skip('Unit | Component | JobCard.vue', () => {
       customer: {
         name: 'La Poste - Courrier',
       },
-      staffing_needed_from: '2017-07-01',
       duration: '10 mois',
       locations: 'OCTO',
       business_contact: {
@@ -50,9 +53,8 @@ describe.skip('Unit | Component | JobCard.vue', () => {
     // when
     const Constructor = Vue.extend(JobCard);
     component = new Constructor({
-      data: {
+      propsData: {
         job,
-        isClicked: false,
       },
     }).$mount();
   });
@@ -93,7 +95,6 @@ describe.skip('Unit | Component | JobCard.vue', () => {
       expect(component.$el.querySelector('.job__customer').textContent.trim()).to.equal('La Poste - Courrier');
     });
 
-    // TODO: it works on local or on browser, but fails in CircleCI :-/
     it('should display the staffing_needed_from', () => {
       expect(component.$el.querySelector('.job__start-date').textContent.trim()).to.equal('1 juillet 2017');
     });
@@ -113,10 +114,12 @@ describe.skip('Unit | Component | JobCard.vue', () => {
       component.$el.querySelector('button.job__apply-button').click();
 
       // then
-      Vue.nextTick().then(() => {
+      return Vue.nextTick().then(() => {
         expect(component.$el.querySelector('.job__apply-button').disabled).to.be.true;
       });
     });
+
+    it('should display toast notification');
   });
 
   describe('method #trackEvent', () => {
@@ -198,16 +201,15 @@ describe.skip('Unit | Component | JobCard.vue', () => {
   });
 
   describe('computed property #staffingNeededSince', () => {
-    // TODO: it works on local or on browser, but fails in CircleCI :-/
-    it.skip('should format the mission staffing_needed_from date (ex : "2017-07-01" => "Juillet 2017")', () => {
+    it('should format the mission staffing_needed_from date (ex : "2017-07-01" => "Juillet 2017")', () => {
       // Given
-      job.project.staffing_needed_from = '2017-07-01';
+      job.activity.staffing_needed_from = '2017-07-01';
 
       // When
       const staffingNeededSince = component.staffingNeededSince;
 
       // Then
-      expect(staffingNeededSince).to.contain('juillet 2017');
+      expect(staffingNeededSince).to.equal('1 juillet 2017');
     });
   });
 

@@ -1,4 +1,5 @@
 var path = require('path')
+var webpack = require('webpack')
 var Dotenv = require('dotenv-webpack')
 var utils = require('./utils')
 var config = require('../config')
@@ -70,6 +71,7 @@ module.exports = {
 
 		new Dotenv({
 			path: resolve('.env'), // Path to .env file (this is the default)
-		})
+		}),
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /fr|en/)
 	]
 }
