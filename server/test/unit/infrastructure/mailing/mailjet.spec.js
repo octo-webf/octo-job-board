@@ -1,5 +1,5 @@
-const {sinon} = require('../../test-helper');
-const Mailjet = require('../../../src/infrastructure/mailjet');
+const {sinon} = require('../../../test-helper');
+const Mailjet = require('../../../../src/infrastructure/mailing/mailjet');
 
 const nodeMailjet = require('node-mailjet');
 

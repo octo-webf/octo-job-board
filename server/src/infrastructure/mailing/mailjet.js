@@ -1,4 +1,4 @@
-const mailjetConfig = require('../config/index').MAILJET;
+const mailjetConfig = require('../../config/index').MAILJET;
 const nodeMailjet = require('node-mailjet');
 
 function _formatRecipients(recipients) {

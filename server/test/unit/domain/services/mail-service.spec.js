@@ -1,6 +1,6 @@
 const { sinon, expect } = require('../../../test-helper');
 
-const mailJet = require('../../../../src/infrastructure/mailjet');
+const mailJet = require('../../../../src/infrastructure/mailing/mailjet');
 const mailService = require('../../../../src/domain/services/mail-service');
 
 describe('Unit | Service | MailService', () => {
