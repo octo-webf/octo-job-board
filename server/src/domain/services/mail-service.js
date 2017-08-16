@@ -1,16 +1,11 @@
 const mailJet = require('../../infrastructure/mailing/mailjet');
 const config = require('../../config');
+const interestEmailTemplate =require('../../infrastructure/mailing/interest-email-template');
 
 function sendInterestEmail(form) {
   const { interestedConsultant } = form;
   const subject = `[JobBoard] ${interestedConsultant.name} intéressé·e par ${form.missionName} - ${form.activityName}`;
-
-  const template = `
-    <h3><a href="mailto:${interestedConsultant.email}">${interestedConsultant.name}</a> est intéressé·e par la mission <strong>${form.missionName}</strong> en tant que <strong>${form.activityName}</strong>.</h3>
-    <p>Voir la <a href="${form.octopodLink}">page mission</a></p>
-    <p>Contacter le Contact commercial : <a href="https://askbob.octo.com/users/${form.businessContactNickname.toLowerCase()}">${form.businessContactNickname}</a></p>
-    <p>Contacter le Directeur de mission : <a href="https://askbob.octo.com/users/${form.missionDirectorNickname.toLowerCase()}">${form.missionDirectorNickname}</a></p>
-    `;
+  const template = interestEmailTemplate.compile(form);
 
   const options = {
     from: config.MAIL_FROM,

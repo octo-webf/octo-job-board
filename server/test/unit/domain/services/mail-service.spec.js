@@ -2,14 +2,17 @@ const { sinon, expect } = require('../../../test-helper');
 
 const mailJet = require('../../../../src/infrastructure/mailing/mailjet');
 const mailService = require('../../../../src/domain/services/mail-service');
+const interestEmailTemplate = require('../../../../src/infrastructure/mailing/interest-email-template');
 
 describe('Unit | Service | MailService', () => {
   beforeEach(() => {
     sinon.stub(mailJet, 'sendEmail').resolves();
+    sinon.stub(interestEmailTemplate, 'compile').returns('Interest mail template');
   });
 
   afterEach(() => {
     mailJet.sendEmail.restore();
+    interestEmailTemplate.compile.restore();
   });
 
   describe('#sendInterestEmail', () => {
@@ -37,7 +40,7 @@ describe('Unit | Service | MailService', () => {
           to: 'jobboard+test@octo.com',
           fromName: 'Le Job Board - Ne pas répondre',
           subject: '[JobBoard] Samurai Jack intéressé·e par Oodrive - Liste d\'initié - Développeur Front',
-          template: '\n    <h3><a href="mailto:sjack@octo.com">Samurai Jack</a> est intéressé·e par la mission <strong>Oodrive - Liste d\'initié</strong> en tant que <strong>Développeur Front</strong>.</h3>\n    <p>Voir la <a href="https://octopod.octo.com/projects/2146904867">page mission</a></p>\n    <p>Contacter le Contact commercial : <a href="https://askbob.octo.com/users/xyz">XYZ</a></p>\n    <p>Contacter le Directeur de mission : <a href="https://askbob.octo.com/users/zyx">ZYX</a></p>\n    ',
+          template: 'Interest mail template',
         });
       });
     });
