@@ -1,9 +1,9 @@
 const { sinon, expect } = require('../../test-helper');
 
 const mailJet = require('../../../src/infrastructure/mailjet');
-const mailService = require('../../../src/infrastructure/mail-service');
+const mailService = require('../../../src/domain/mail-service');
 
-describe('Unit | Service | MailService', () => {
+describe('Unit | Domain | mail-service', () => {
   beforeEach(() => {
     sinon.stub(mailJet, 'sendEmail').resolves();
   });
