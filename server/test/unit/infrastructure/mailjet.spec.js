@@ -1,4 +1,4 @@
-const { sinon } = require('../../test-helper');
+const {sinon} = require('../../test-helper');
 const Mailjet = require('../../../src/infrastructure/mailjet');
 
 const nodeMailjet = require('node-mailjet');
@@ -45,8 +45,8 @@ describe('Unit | Class | Mailjet', () => {
 
     it('should post a send instruction', () => {
       // Given
-      const postStub = sinon.stub().returns({ request: () => Promise.resolve() });
-      mailJetConnectStub.returns({ post: postStub });
+      const postStub = sinon.stub().returns({request: () => Promise.resolve()});
+      mailJetConnectStub.returns({post: postStub});
 
       // When
       const result = Mailjet.sendEmail(options);
@@ -60,8 +60,8 @@ describe('Unit | Class | Mailjet', () => {
     it('should request with a payload', () => {
       // Given
       const requestStub = sinon.stub().returns(Promise.resolve());
-      const postStub = sinon.stub().returns({ request: requestStub });
-      mailJetConnectStub.returns({ post: postStub });
+      const postStub = sinon.stub().returns({request: requestStub});
+      mailJetConnectStub.returns({post: postStub});
 
       // When
       const result = Mailjet.sendEmail(options);
@@ -73,9 +73,93 @@ describe('Unit | Class | Mailjet', () => {
           FromName: 'Ne Pas Repondre',
           Subject: 'PTR intéressé par une activité du Dashboard',
           'Html-part': 'Corps du mail',
-          Recipients: [{ Email: 'jobboard@octo.com' }],
+          Recipients: [{Email: 'jobboard@octo.com'}],
         });
       });
     });
+
+    describe('#_formatRecipients', () => {
+
+      let requestStub;
+      let postStub;
+
+      beforeEach(() => {
+        requestStub = sinon.stub().returns(Promise.resolve());
+        postStub = sinon.stub().returns({request: requestStub});
+        mailJetConnectStub.returns({post: postStub});
+
+        options = {
+          from: 'from',
+          fromName: 'name',
+          subject: 'subject',
+          template: 'body',
+          to: null
+        };
+
+      });
+
+      it('should take into account when specified receivers is null or undefined', () => {
+        // given
+        options.to = null;
+
+        // when
+        const result = Mailjet.sendEmail(options);
+
+        // then
+        return result.then(() => {
+          sinon.assert.calledWith(requestStub, {
+            FromEmail: 'from',
+            FromName: 'name',
+            Subject: 'subject',
+            'Html-part': 'body',
+            Recipients: [],
+          });
+        });
+      });
+
+      it('should take into account when specified receivers is a string with single email', () => {
+        // given
+        options.to = 'recipient@mail.com';
+
+        // when
+        const result = Mailjet.sendEmail(options);
+
+        // then
+        return result.then(() => {
+          sinon.assert.calledWithExactly(requestStub, {
+            FromEmail: 'from',
+            FromName: 'name',
+            Subject: 'subject',
+            'Html-part': 'body',
+            Recipients: [{Email: 'recipient@mail.com'}],
+          });
+        });
+      });
+
+      it('should take into account when specified receivers is an array of receivers', () => {
+        // given
+        options.to = ['recipient_1@mail.com', 'recipient_2@mail.com', 'recipient_3@mail.com'];
+
+        // when
+        const result = Mailjet.sendEmail(options);
+
+        // then
+        return result.then(() => {
+          sinon.assert.calledWithExactly(requestStub, {
+            FromEmail: 'from',
+            FromName: 'name',
+            Subject: 'subject',
+            'Html-part': 'body',
+            Recipients: [
+              {Email: 'recipient_1@mail.com'},
+              {Email: 'recipient_2@mail.com'},
+              {Email: 'recipient_3@mail.com'}
+            ],
+          });
+        });
+      });
+
+    });
+
   });
 });
