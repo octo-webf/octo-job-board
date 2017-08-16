@@ -35,7 +35,7 @@ function sendFeedbackEmail(form) {
 }
 
 function sendJobsChangedEmail(form) {
-  const { addedJobs, removedJobs } = form;
+  const { addedJobs, removedJobs, receivers } = form;
 
   let subject = '[JobBoard] ';
   if (!isEmpty(addedJobs) && !isEmpty(removedJobs)) {
@@ -51,7 +51,7 @@ function sendJobsChangedEmail(form) {
   const options = {
     from: config.MAIL_FROM,
     fromName: 'Le Job Board - Ne pas répondre',
-    to: form.receivers,
+    to: receivers,
     subject,
     template,
   };

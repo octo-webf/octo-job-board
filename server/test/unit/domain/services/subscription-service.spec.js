@@ -73,27 +73,5 @@ describe('Unit | Service | subscription-service', () => {
     });
   });
 
-  describe('#getAllSubscriptions', () => {
-    beforeEach(() => {
-      sinon.stub(Subscription, 'all');
-    });
-
-    afterEach(() => {
-      Subscription.all.restore();
-    });
-
-    it('should call Sequelize Model#all (public static) method', () => {
-      // given
-      Subscription.all.resolves();
-
-      // when
-      const promise = subscriptionService.getAllSubscriptions();
-
-      // then
-      return promise.then(() => {
-        expect(Subscription.all).to.have.been.called;
-      });
-    });
-  });
 });
 
