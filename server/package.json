@@ -28,6 +28,7 @@
     "google-auth-library": "^0.10.0",
     "jade": "^1.11.0",
     "jsonwebtoken": "^7.4.2",
+    "lodash": "^4.17.4",
     "lru-cache": "^4.1.1",
     "morgan": "^1.8.2",
     "node-mailjet": "^3.2.1",

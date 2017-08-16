@@ -1,10 +1,8 @@
-const {expect} = require('../../../test-helper');
+const { expect } = require('../../../test-helper');
 const interestEmailTemplate = require('../../../../src/infrastructure/mailing/interest-email-template');
 
-describe('Unit | Class | interest-email-template', () => {
-
+describe('Unit | Infrastructure | Mailing | interest-email-template', () => {
   describe('#compile', () => {
-
     it('should compute the good rendering', () => {
       // given
       const model = {
@@ -16,7 +14,7 @@ describe('Unit | Class | interest-email-template', () => {
         missionDirectorNickname: 'ZYX',
         octopodLink: 'https://octopod.octo.com/projects/2146904867',
         activityName: 'Développeur Front',
-        missionName: 'Oodrive - Liste d\'initié'
+        missionName: 'Oodrive - Liste d\'initié',
       };
 
       // when

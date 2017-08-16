@@ -17,5 +17,5 @@ function getAllSubscriptions() {
 module.exports = {
   addSubscription,
   removeSubscription,
-  getAllSubscriptions
+  getAllSubscriptions,
 };

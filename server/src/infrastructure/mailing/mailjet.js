@@ -6,9 +6,9 @@ function _formatRecipients(recipients) {
     return [];
   }
   if (typeof recipients === 'string') {
-    return [{Email: recipients}];
+    return [{ Email: recipients }];
   }
-  return recipients.map(recipient => ({Email: recipient}));
+  return recipients.map(recipient => ({ Email: recipient }));
 }
 
 function _formatPayload(options) {

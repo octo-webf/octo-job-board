@@ -1,9 +1,9 @@
-const {sinon} = require('../../../test-helper');
+const { sinon } = require('../../../test-helper');
 const Mailjet = require('../../../../src/infrastructure/mailing/mailjet');
 
 const nodeMailjet = require('node-mailjet');
 
-describe('Unit | Class | Mailjet', () => {
+describe('Unit | Infrastructure | Mailing | Mailjet', () => {
   let mailJetConnectStub;
 
   beforeEach(() => {
@@ -45,8 +45,8 @@ describe('Unit | Class | Mailjet', () => {
 
     it('should post a send instruction', () => {
       // Given
-      const postStub = sinon.stub().returns({request: () => Promise.resolve()});
-      mailJetConnectStub.returns({post: postStub});
+      const postStub = sinon.stub().returns({ request: () => Promise.resolve() });
+      mailJetConnectStub.returns({ post: postStub });
 
       // When
       const result = Mailjet.sendEmail(options);
@@ -60,8 +60,8 @@ describe('Unit | Class | Mailjet', () => {
     it('should request with a payload', () => {
       // Given
       const requestStub = sinon.stub().returns(Promise.resolve());
-      const postStub = sinon.stub().returns({request: requestStub});
-      mailJetConnectStub.returns({post: postStub});
+      const postStub = sinon.stub().returns({ request: requestStub });
+      mailJetConnectStub.returns({ post: postStub });
 
       // When
       const result = Mailjet.sendEmail(options);
@@ -73,29 +73,27 @@ describe('Unit | Class | Mailjet', () => {
           FromName: 'Ne Pas Repondre',
           Subject: 'PTR intéressé par une activité du Dashboard',
           'Html-part': 'Corps du mail',
-          Recipients: [{Email: 'jobboard@octo.com'}],
+          Recipients: [{ Email: 'jobboard@octo.com' }],
         });
       });
     });
 
     describe('#_formatRecipients', () => {
-
       let requestStub;
       let postStub;
 
       beforeEach(() => {
         requestStub = sinon.stub().returns(Promise.resolve());
-        postStub = sinon.stub().returns({request: requestStub});
-        mailJetConnectStub.returns({post: postStub});
+        postStub = sinon.stub().returns({ request: requestStub });
+        mailJetConnectStub.returns({ post: postStub });
 
         options = {
           from: 'from',
           fromName: 'name',
           subject: 'subject',
           template: 'body',
-          to: null
+          to: null,
         };
-
       });
 
       it('should take into account when specified receivers is null or undefined', () => {
@@ -131,7 +129,7 @@ describe('Unit | Class | Mailjet', () => {
             FromName: 'name',
             Subject: 'subject',
             'Html-part': 'body',
-            Recipients: [{Email: 'recipient@mail.com'}],
+            Recipients: [{ Email: 'recipient@mail.com' }],
           });
         });
       });
@@ -151,15 +149,13 @@ describe('Unit | Class | Mailjet', () => {
             Subject: 'subject',
             'Html-part': 'body',
             Recipients: [
-              {Email: 'recipient_1@mail.com'},
-              {Email: 'recipient_2@mail.com'},
-              {Email: 'recipient_3@mail.com'}
+              { Email: 'recipient_1@mail.com' },
+              { Email: 'recipient_2@mail.com' },
+              { Email: 'recipient_3@mail.com' },
             ],
           });
         });
       });
-
     });
-
   });
 });

@@ -1,4 +1,4 @@
-/* eslint-disable no-console*/
+/* eslint-disable no-console */
 const scheduler = require('node-schedule');
 const jobService = require('../../domain/services/job-service');
 
@@ -11,7 +11,7 @@ scheduler.scheduleJob(EVERY_15_MN, () => {
     .then(() => {
       console.log('Synchronization successfull.');
     })
-    .catch(err => {
+    .catch((err) => {
       console.error('Synchronization failed');
       console.error(err);
     });

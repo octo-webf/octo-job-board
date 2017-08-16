@@ -6,5 +6,5 @@ module.exports = {
       <p>Contacter le Contact commercial : <a href="https://askbob.octo.com/users/${model.businessContactNickname.toLowerCase()}">${model.businessContactNickname}</a></p>
       <p>Contacter le Directeur de mission : <a href="https://askbob.octo.com/users/${model.missionDirectorNickname.toLowerCase()}">${model.missionDirectorNickname}</a></p>
     `;
-  }
+  },
 };
