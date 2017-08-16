@@ -97,8 +97,8 @@
 
       submitInterest() {
         this.sendInterest().then(() => {
-          this.displayToasterNotification();
           this.disableButton();
+          this.displayToasterNotification();
         });
         this.trackEvent();
       },

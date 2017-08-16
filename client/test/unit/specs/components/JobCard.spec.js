@@ -114,10 +114,12 @@ describe('Unit | Component | JobCard.vue', () => {
       component.$el.querySelector('button.job__apply-button').click();
 
       // then
-      Vue.nextTick().then(() => {
+      return Vue.nextTick().then(() => {
         expect(component.$el.querySelector('.job__apply-button').disabled).to.be.true;
       });
     });
+
+    it('should display toast notification');
   });
 
   describe('method #trackEvent', () => {
