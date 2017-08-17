@@ -72,6 +72,5 @@ describe('Unit | Service | subscription-service', () => {
       });
     });
   });
-
 });
 

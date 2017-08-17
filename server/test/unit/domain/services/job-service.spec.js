@@ -3,6 +3,8 @@ const jobService = require('../../../../src/domain/services/job-service');
 const octopodClient = require('../../../../src/infrastructure/octopod');
 const jobsSerializer = require('../../../../src/infrastructure/serializers/jobs');
 const cache = require('../../../../src/infrastructure/cache');
+const { Subscription } = require('../../../../src/domain/models');
+const mailService = require('../../../../src/domain/services/mail-service');
 
 describe('Unit | Service | job-service', () => {
   let sandbox;
@@ -29,6 +31,8 @@ describe('Unit | Service | job-service', () => {
     sandbox.stub(jobsSerializer, 'serialize').returns(stubbedSerializedJobs);
     sandbox.stub(cache, 'set');
     sandbox.stub(cache, 'get');
+    sandbox.stub(Subscription, 'all');
+    sandbox.stub(mailService, 'sendJobsChangedEmail').callsFake(report => report);
   });
 
   afterEach(() => {
@@ -36,10 +40,6 @@ describe('Unit | Service | job-service', () => {
   });
 
   describe('#getJobs', () => {
-    it('should exist', () => {
-      expect(jobService.getJobs).to.exist;
-    });
-
     it('should return jobs from the cache if they were previously cached (without calling Octopod)', () => {
       // given
       cache.get.returns(stubbedSerializedJobs);
@@ -73,15 +73,11 @@ describe('Unit | Service | job-service', () => {
     });
   });
 
-  describe('#fetchAndCacheJobs', () => {
+  describe('#_fetchAndCacheJobs', () => {
     let promise;
 
     beforeEach(() => {
-      promise = jobService.fetchAndCacheJobs();
-    });
-
-    it('should exist', () => {
-      expect(jobService.fetchAndCacheJobs).to.exist;
+      promise = jobService._fetchAndCacheJobs();
     });
 
     it('should call Octopod to get an access_token', () => promise.then(() => {
@@ -109,11 +105,71 @@ describe('Unit | Service | job-service', () => {
     }));
   });
 
-  describe('#synchronizeJobs', () => {
-    it('should exist', () => {
-      expect(jobService.synchronizeJobs).to.exist;
+  describe('#_compareFetchedAndCachedJobs', () => {
+    it('should return a report with "isInit" set to true when old jobs are undefined (no job was previsouly stored in cache)', () => {
+      // given
+      const freshJobs = [{ activity: { id: 1 } }, { activity: { id: 2 } }, { activity: { id: 3 } }];
+      const oldJobs = null;
+
+      // when
+      const promise = jobService._compareFetchedAndCachedJobs(freshJobs, oldJobs);
+
+      // then
+      return promise.then((report) => {
+        expect(report).to.deep.equal({ isInit: true, hasChanges: false });
+      });
     });
 
+    it('should return a report with "hasChanges" set to false when fresh jobs are undefined', () => {
+      // given
+      const freshJobs = null;
+      const oldJobs = [{ activity: { id: 1 } }, { activity: { id: 2 } }, { activity: { id: 3 } }];
+
+      // when
+      const promise = jobService._compareFetchedAndCachedJobs(freshJobs, oldJobs);
+
+      // then
+      return promise.then((report) => {
+        expect(report).to.deep.equal({ isInit: false, hasChanges: false });
+      });
+    });
+
+    it('should return a report with "hasChanges" set to false if old jobs are equal to fresh jobs', () => {
+      // given
+      const jobs = [{ activity: { id: 1 } }, { activity: { id: 2 } }, { activity: { id: 3 } }];
+
+      // when
+      const promise = jobService._compareFetchedAndCachedJobs(jobs, jobs);
+
+      // then
+      return promise.then((report) => {
+        expect(report).to.deep.equal({ isInit: false, hasChanges: false, addedJobs: [], removedJobs: [] });
+      });
+    });
+
+    it('should return a report with added and remove jobs', () => {
+      // given
+      const job1 = { activity: { id: 1 } };
+      const job2 = { activity: { id: 2 } };
+      const job3 = { activity: { id: 3 } };
+      const job4 = { activity: { id: 4 } };
+      const job5 = { activity: { id: 5 } };
+
+      const oldJobs = [job1, job2, job3];
+      const freshJobs = [job2, job3, job4, job5]; // removed job #1 & add jobs #4 and #5
+
+      // when
+      const promise = jobService._compareFetchedAndCachedJobs(freshJobs, oldJobs);
+
+      // then
+      return promise.then((report) => {
+        expect(report).to.deep.equal({ isInit: false, hasChanges: true, removedJobs: [job1], addedJobs: [job4, job5] });
+      });
+    });
+  });
+
+
+  describe('#synchronizeJobs', () => {
     describe('when it is the first sync (i.e. cache value does not yet exist)', () => {
       let promise;
 
@@ -140,6 +196,7 @@ describe('Unit | Service | job-service', () => {
       let promise;
 
       beforeEach(() => {
+        // given
         cache.get.returns([{
           // job still available
           project: { id: 'A' },
@@ -149,18 +206,16 @@ describe('Unit | Service | job-service', () => {
           project: { id: 'Z' },
           activity: { id: 999 },
         }]);
+
+        Subscription.all.resolves([{ get: () => 'recipient@octo.com' }]);
+
+        // when
         promise = jobService.synchronizeJobs();
       });
 
-      it('should return a fulfilled promise with data property "isInit" set to false', () => promise.then(({ isInit }) => {
+      it('should return a fulfilled promise with data properties "addedJobs" and "removedJobs" valued', () => promise.then(({ isInit, hasChanges, addedJobs, removedJobs }) => {
         expect(isInit).to.be.false;
-      }));
-
-      it('should return a fulfilled promise with data property "jobs" containing all the current available jobs', () => promise.then(({ jobs }) => {
-        expect(jobs).to.deep.equal(stubbedSerializedJobs);
-      }));
-
-      it('should return a fulfilled promise with data properties "addedJobs" and "removedJobs" valued', () => promise.then(({ addedJobs, removedJobs }) => {
+        expect(hasChanges).to.be.true;
         expect(addedJobs).to.deep.equal([{
           project: { id: 'B' },
           activity: { id: 2 },
