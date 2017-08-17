@@ -29,6 +29,8 @@ function config() {
 
     MAIL_FROM: process.env.MAIL_FROM,
     MAIL_TO: process.env.MAIL_TO,
+
+    SLACK_WEBHOOK_URL: process.env.SLACK_WEBHOOK_URL,
   };
 
   if (process.env.NODE_ENV === 'test') {
@@ -46,6 +48,7 @@ function config() {
     APP_ENV.ACCESS_TOKEN_SECRET = 'access-token-password';
     APP_ENV.MAIL_FROM = 'jobboard+test@octo.com';
     APP_ENV.MAIL_TO = 'jobboard+test@octo.com';
+    APP_ENV.SLACK_WEBHOOK_URL = 'https://hooks.slack.com/services/SHIG2H7JM/FOORS5FCJ/MIiadngMjKE2Iy8dqQ429JzE';
   }
 
   return APP_ENV;

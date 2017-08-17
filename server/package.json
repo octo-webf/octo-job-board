@@ -19,6 +19,7 @@
     "db:rollback": "./node_modules/.bin/sequelize db:migrate:undo"
   },
   "dependencies": {
+    "@slack/client": "^3.11.0",
     "body-parser": "^1.17.2",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
