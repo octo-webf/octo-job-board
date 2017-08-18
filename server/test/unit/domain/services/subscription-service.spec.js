@@ -52,7 +52,7 @@ describe('Unit | Service | subscription-service', () => {
 
   describe('#removeSubscription', () => {
     beforeEach(() => {
-      sinon.stub(Subscription, 'destroy');
+      sinon.stub(Subscription, 'destroy').resolves();
     });
 
     afterEach(() => {
@@ -60,9 +60,6 @@ describe('Unit | Service | subscription-service', () => {
     });
 
     it('should call Sequelize Model#destroy (public static) method', () => {
-      // given
-      Subscription.destroy.resolves();
-
       // when
       const promise = subscriptionService.removeSubscription(123);
 

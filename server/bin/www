@@ -95,6 +95,6 @@ function onListening() {
 }
 
 /**
- * Start cron task that synchronize automatically the jobs from Octopod
+ * Start cron task that synchronizes automatically the jobs from Octopod
  */
 require('../src/features/crons/jobs-synchronizer');

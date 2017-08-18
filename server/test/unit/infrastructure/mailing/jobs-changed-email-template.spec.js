@@ -13,8 +13,6 @@ describe('Unit | Infrastructure | Mailing | jobs-changed-email-template', () => 
     it('should compute the good rendering', () => {
       // given
       const model = {
-        receivers: [/* not used in the template */],
-        jobs: [/* not used in the template */],
         addedJobs: [addedJob1, addedJob2, addedJob3],
         removedJobs: [removedJobA, removedJobB],
       };
@@ -23,15 +21,13 @@ describe('Unit | Infrastructure | Mailing | jobs-changed-email-template', () => 
       const compiled = jobsChangedEmailTemplate.compile(model);
 
       // then
-      const expected = '<p>Bonjour,</p><p>Il y a du nouveau côté <a href="https://job.octo.com">Jobboard</a>.</p><p>3 nouvelle(s) mission(s) à staffer :<ul><li><bold>a1</bold> pour le projet p1</li><li><bold>a2</bold> pour le projet p2</li><li><bold>a3</bold> pour le projet p3</li></ul></p><p>2 mission(s) retirée(s) :<ul><li><bold>a4</bold> pour le projet p4</li><li><bold>a5</bold> pour le projet p5</li></ul></p>';
+      const expected = '<p>Bonjour,</p><p>Il y a du nouveau du côté du <a href="https://jobs.octo.com">Jobboard</a>.</p><p>3 nouvelle(s) mission(s) à staffer :<ul><li><bold>a1</bold> pour le projet p1</li><li><bold>a2</bold> pour le projet p2</li><li><bold>a3</bold> pour le projet p3</li></ul></p><p>2 mission(s) retirée(s) :<ul><li><bold>a4</bold> pour le projet p4</li><li><bold>a5</bold> pour le projet p5</li></ul></p>';
       expect(compiled.trim()).to.equal(expected);
     });
 
-    it('should not display added jobs section when there are not added jobs', () => {
+    it('should not display added jobs section when there is no added job', () => {
       // given
       const model = {
-        receivers: [/* not used in the template */],
-        jobs: [/* not used in the template */],
         addedJobs: null,
         removedJobs: [removedJobA, removedJobB],
       };
@@ -40,15 +36,13 @@ describe('Unit | Infrastructure | Mailing | jobs-changed-email-template', () => 
       const compiled = jobsChangedEmailTemplate.compile(model);
 
       // then
-      const expected = '<p>Bonjour,</p><p>Il y a du nouveau côté <a href="https://job.octo.com">Jobboard</a>.</p><p>2 mission(s) retirée(s) :<ul><li><bold>a4</bold> pour le projet p4</li><li><bold>a5</bold> pour le projet p5</li></ul></p>';
+      const expected = '<p>Bonjour,</p><p>Il y a du nouveau du côté du <a href="https://jobs.octo.com">Jobboard</a>.</p><p>2 mission(s) retirée(s) :<ul><li><bold>a4</bold> pour le projet p4</li><li><bold>a5</bold> pour le projet p5</li></ul></p>';
       expect(compiled.trim()).to.equal(expected);
     });
 
-    it('should not display removed jobs section when there are not removed jobs', () => {
+    it('should not display removed jobs section when there is no removed job', () => {
       // given
       const model = {
-        receivers: [/* not used in the template */],
-        jobs: [/* not used in the template */],
         addedJobs: [addedJob1, addedJob2, addedJob3],
         removedJobs: null,
       };
@@ -57,7 +51,7 @@ describe('Unit | Infrastructure | Mailing | jobs-changed-email-template', () => 
       const compiled = jobsChangedEmailTemplate.compile(model);
 
       // then
-      const expected = '<p>Bonjour,</p><p>Il y a du nouveau côté <a href="https://job.octo.com">Jobboard</a>.</p><p>3 nouvelle(s) mission(s) à staffer :<ul><li><bold>a1</bold> pour le projet p1</li><li><bold>a2</bold> pour le projet p2</li><li><bold>a3</bold> pour le projet p3</li></ul></p>';
+      const expected = '<p>Bonjour,</p><p>Il y a du nouveau du côté du <a href="https://jobs.octo.com">Jobboard</a>.</p><p>3 nouvelle(s) mission(s) à staffer :<ul><li><bold>a1</bold> pour le projet p1</li><li><bold>a2</bold> pour le projet p2</li><li><bold>a3</bold> pour le projet p3</li></ul></p>';
       expect(compiled.trim()).to.equal(expected);
     });
   });

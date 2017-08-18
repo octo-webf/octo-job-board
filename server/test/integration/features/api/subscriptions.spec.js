@@ -68,7 +68,7 @@ describe('Integration | Routes | subscriptions route', () => {
 
   describe('DELETE /api/subscriptions/:subscription_id', () => {
     beforeEach(() => {
-      sinon.stub(subscriptionService, 'removeSubscription');
+      sinon.stub(subscriptionService, 'removeSubscription').resolves();
     });
 
     afterEach(() => {
@@ -76,9 +76,6 @@ describe('Integration | Routes | subscriptions route', () => {
     });
 
     it('should call subscriptionService#removeSubscription', (done) => {
-      // given
-      subscriptionService.removeSubscription.resolves();
-
       // when
       request(app)
         .delete('/api/subscriptions/1234')

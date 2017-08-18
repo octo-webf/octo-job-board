@@ -6,6 +6,8 @@ const cache = require('../../../../src/infrastructure/cache');
 const { Subscription } = require('../../../../src/domain/models');
 const mailService = require('../../../../src/domain/services/mail-service');
 
+const CACHE_KEY = 'get_jobs';
+
 describe('Unit | Service | job-service', () => {
   let sandbox;
 
@@ -13,14 +15,14 @@ describe('Unit | Service | job-service', () => {
   const stubbedFetchedProjects = ['project_1', 'project_2', 'project_3'];
   const stubbedFetchedActivities = ['activity_1', 'activity_2', 'activity_3'];
   const stubbedSerializedJobs = [{
-    project: { id: 'A' },
-    activity: { id: 1 },
+    project: { id: 'still_available_job_project' },
+    activity: { id: 'still_available_job_activity' },
   }, {
-    project: { id: 'B' },
-    activity: { id: 2 },
+    project: { id: 'new_available_job_project_1' },
+    activity: { id: 'new_available_job_activity_1' },
   }, {
-    project: { id: 'C' },
-    activity: { id: 3 },
+    project: { id: 'new_available_job_project_2' },
+    activity: { id: 'new_available_job_activity_2' },
   }];
 
   beforeEach(() => {
@@ -50,7 +52,7 @@ describe('Unit | Service | job-service', () => {
       // then
       return promise.then((jobs) => {
         expect(jobs).to.deep.equal(stubbedSerializedJobs);
-        expect(cache.get).to.have.been.calledWith('get_jobs');
+        expect(cache.get).to.have.been.calledWith(CACHE_KEY);
         expect(octopodClient.getAccessToken).to.have.not.been.called;
         expect(octopodClient.fetchProjectsToBeStaffed).to.have.not.been.called;
         expect(octopodClient.fetchActivitiesToBeStaffed).to.have.not.been.called;
@@ -97,7 +99,7 @@ describe('Unit | Service | job-service', () => {
     }));
 
     it('should cache the jobs (without expiration age)', () => promise.then(() => {
-      expect(cache.set).to.have.been.calledWith('get_jobs', stubbedSerializedJobs);
+      expect(cache.set).to.have.been.calledWith(CACHE_KEY, stubbedSerializedJobs);
     }));
 
     it('should return the jobs', () => promise.then((jobs) => {
@@ -156,14 +158,16 @@ describe('Unit | Service | job-service', () => {
       const job5 = { activity: { id: 5 } };
 
       const oldJobs = [job1, job2, job3];
-      const freshJobs = [job2, job3, job4, job5]; // removed job #1 & add jobs #4 and #5
+      const freshJobs = [job2, job3, job4, job5];
+      const expectedRemovedJobs = [job1];
+      const expectedAddedJobs = [job4, job5];
 
       // when
       const promise = jobService._compareFetchedAndCachedJobs(freshJobs, oldJobs);
 
       // then
       return promise.then((report) => {
-        expect(report).to.deep.equal({ isInit: false, hasChanges: true, removedJobs: [job1], addedJobs: [job4, job5] });
+        expect(report).to.deep.equal({ isInit: false, hasChanges: true, removedJobs: expectedRemovedJobs, addedJobs: expectedAddedJobs });
       });
     });
   });
@@ -188,7 +192,7 @@ describe('Unit | Service | job-service', () => {
       }));
 
       it('should cache the jobs freshly fetched from Octopod', () => promise.then(() => {
-        expect(cache.set).to.have.been.calledWith('get_jobs', stubbedSerializedJobs);
+        expect(cache.set).to.have.been.calledWith(CACHE_KEY, stubbedSerializedJobs);
       }));
     });
 
@@ -199,12 +203,12 @@ describe('Unit | Service | job-service', () => {
         // given
         cache.get.returns([{
           // job still available
-          project: { id: 'A' },
-          activity: { id: 1 },
+          project: { id: 'still_available_job_project' },
+          activity: { id: 'still_available_job_activity' },
         }, {
           // job already staffed
-          project: { id: 'Z' },
-          activity: { id: 999 },
+          project: { id: 'removed_job_project' },
+          activity: { id: 'removed_job_activity' },
         }]);
 
         Subscription.all.resolves([{ get: () => 'recipient@octo.com' }]);
@@ -217,20 +221,20 @@ describe('Unit | Service | job-service', () => {
         expect(isInit).to.be.false;
         expect(hasChanges).to.be.true;
         expect(addedJobs).to.deep.equal([{
-          project: { id: 'B' },
-          activity: { id: 2 },
+          project: { id: 'new_available_job_project_1' },
+          activity: { id: 'new_available_job_activity_1' },
         }, {
-          project: { id: 'C' },
-          activity: { id: 3 },
+          project: { id: 'new_available_job_project_2' },
+          activity: { id: 'new_available_job_activity_2' },
         }]);
         expect(removedJobs).to.deep.equal([{
-          project: { id: 'Z' },
-          activity: { id: 999 },
+          project: { id: 'removed_job_project' },
+          activity: { id: 'removed_job_activity' },
         }]);
       }));
 
       it('should update the cached jobs freshly fetched', () => promise.then(() => {
-        expect(cache.set).to.have.been.calledWith('get_jobs', stubbedSerializedJobs);
+        expect(cache.set).to.have.been.calledWith(CACHE_KEY, stubbedSerializedJobs);
       }));
     });
   });

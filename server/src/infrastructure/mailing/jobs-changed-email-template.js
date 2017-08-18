@@ -5,7 +5,7 @@ module.exports = {
     const { addedJobs, removedJobs } = model;
 
     let template = '<p>Bonjour,</p>';
-    template += '<p>Il y a du nouveau côté <a href="https://job.octo.com">Jobboard</a>.</p>';
+    template += '<p>Il y a du nouveau du côté du <a href="https://jobs.octo.com">Jobboard</a>.</p>';
     if (!isEmpty(addedJobs)) {
       template += '<p>';
       template += `${addedJobs.length} nouvelle(s) mission(s) à staffer :`;

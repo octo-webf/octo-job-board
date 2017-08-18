@@ -95,7 +95,7 @@ describe('Unit | Service | MailService', () => {
           from: 'jobboard+test@octo.com',
           to: ['consultant_1@mail.com', 'consultant_2@mail.com', 'consultant_3@mail.com'],
           fromName: 'Le Job Board - Ne pas répondre',
-          subject: '[JobBoard] 2 nouvelle(s) mission(s) à staffer // 1 mission(s) retirée(s)',
+          subject: '[JobBoard] 2 nouvelle(s) mission(s) à staffer – 1 mission(s) retirée(s)',
           template: 'Jobs changed mail template',
         });
       });

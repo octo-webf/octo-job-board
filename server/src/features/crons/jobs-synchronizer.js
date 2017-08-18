@@ -2,14 +2,14 @@
 const scheduler = require('node-schedule');
 const jobService = require('../../domain/services/job-service');
 
-const EVERY_15_MN = '*/15 * * * *';
+const EVERY_15_MINUTES = '*/15 * * * *';
 
-scheduler.scheduleJob(EVERY_15_MN, () => {
+scheduler.scheduleJob(EVERY_15_MINUTES, () => {
   console.log('Synchronize jobs from Octopod...');
 
   return jobService.synchronizeJobs()
     .then(() => {
-      console.log('Synchronization successfull.');
+      console.log('Synchronization successful.');
     })
     .catch((err) => {
       console.error('Synchronization failed');

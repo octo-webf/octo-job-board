@@ -7,10 +7,6 @@ const mailService = require('./mail-service'); // A service shoud not be depende
 
 const CACHE_KEY = 'get_jobs';
 
-/*
- * PRIVATE
- */
-
 function _fetchAndCacheJobs() {
   let accessToken;
   let projects;
@@ -90,10 +86,6 @@ function _ifJobsChangedhenSendEmailToRecipients(report) {
   }
   return Promise.resolve(result);
 }
-
-/*
- * PUBLIC
- */
 
 function getJobs() {
   const jobs = cache.get(CACHE_KEY);

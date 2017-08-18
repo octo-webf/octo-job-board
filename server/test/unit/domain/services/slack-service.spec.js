@@ -12,10 +12,6 @@ describe('Unit | Domain | slack-service', () => {
       slackClient.postMessage.restore();
     });
 
-    it('should exist', () => {
-      expect(slackService.postFeedbackMessage).to.exist;
-    });
-
     it('should publish a message on Slack channel (via Slack client)', () => {
       // given
       slackClient.postMessage.resolves();

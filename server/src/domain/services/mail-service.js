@@ -39,7 +39,7 @@ function sendJobsChangedEmail(form) {
 
   let subject = '[JobBoard] ';
   if (!isEmpty(addedJobs) && !isEmpty(removedJobs)) {
-    subject += `${addedJobs.length} nouvelle(s) mission(s) à staffer // ${removedJobs.length} mission(s) retirée(s)`;
+    subject += `${addedJobs.length} nouvelle(s) mission(s) à staffer – ${removedJobs.length} mission(s) retirée(s)`;
   } else if (!isEmpty(addedJobs)) {
     subject += `${addedJobs.length} nouvelle(s) mission(s) à staffer`;
   } else {
