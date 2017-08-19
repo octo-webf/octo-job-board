@@ -72,6 +72,10 @@
     justify-content: center;
   }
 
+  .page__container {
+    max-width: 1240px;
+  }
+
   .job-results {
     margin-bottom: 60px;
   }
@@ -91,7 +95,7 @@
   .job-results__item {
     list-style-type: none;
     padding: 0;
-    margin: 5px;
+    margin: 10px;
   }
 
   @media only screen and (min-width: 640px) {

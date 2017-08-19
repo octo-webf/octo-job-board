@@ -7,6 +7,13 @@ import Toastr from 'vue-toastr';
 import moment from 'moment';
 import App from './App';
 import router from './router';
+import Icon from 'vue-awesome/components/Icon'
+
+
+import 'vue-awesome/icons/ellipsis-h'
+import 'vue-awesome/icons/heart-o'
+import 'vue-awesome/icons/star-o'
+
 
 moment.locale('fr');
 
@@ -21,6 +28,8 @@ Vue.use(VueAnalytics, {
 });
 
 Vue.use(VueModal);
+
+Vue.component('icon', Icon)
 
 /* eslint-disable no-new */
 new Vue({

@@ -4,12 +4,20 @@ import VueAnalytics from 'vue-analytics';
 import JobCard from '@/components/JobCard';
 import interestsApi from '@/api/interests';
 import authenticationService from '@/services/authentication';
+import Icon from 'vue-awesome/components/Icon'
+
+
+import 'vue-awesome/icons/ellipsis-h'
+import 'vue-awesome/icons/heart-o'
+import 'vue-awesome/icons/star-o'
 
 moment.locale('fr');
 
 Vue.use(VueAnalytics, {
   id: `${process.env.ANALYTICS_ID}`,
 });
+
+Vue.component('icon', Icon)
 
 describe('Unit | Component | JobCard.vue', () => {
   let component;
@@ -96,7 +104,7 @@ describe('Unit | Component | JobCard.vue', () => {
     });
 
     it('should display the staffing_needed_from', () => {
-      expect(component.$el.querySelector('.job__start-date').textContent.trim()).to.equal('1 juillet 2017');
+      expect(component.$el.querySelector('.job__start-date').textContent.trim()).to.equal('1 juil. 2017');
     });
 
     it('should display the locations', () => {
@@ -209,7 +217,7 @@ describe('Unit | Component | JobCard.vue', () => {
       const staffingNeededSince = component.staffingNeededSince;
 
       // Then
-      expect(staffingNeededSince).to.equal('1 juillet 2017');
+      expect(staffingNeededSince).to.equal('1 juil. 2017');
     });
   });
 
@@ -235,7 +243,7 @@ describe('Unit | Component | JobCard.vue', () => {
       const statusClass = component.statusClass;
 
       // Then
-      expect(statusClass).to.equal('job__status job__status--mission_accepted');
+      expect(statusClass).to.equal('job__status--mission_accepted');
     });
 
     it('should return empty string when api status is undefined', () => {
