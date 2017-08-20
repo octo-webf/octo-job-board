@@ -33,22 +33,22 @@
 
       <div class="job__tertiary">
         <div class="job__meta">
-          <div class="job__meta-title">Statut</div>
+          <div class="job__meta-title"><icon name="file-text-o"></icon>Statut</div>
           <div class="job__meta-value job__status" :class="statusClass">{{ status }}</div>
         </div>
         <div class="job__meta">
-          <div class="job__meta-title">Date</div>
+          <div class="job__meta-title"><icon name="calendar"></icon>Date</div>
           <div class="job__meta-value job__start-date">{{ staffingNeededSince }}</div>
         </div>
         <div class="job__meta">
-          <div class="job__meta-title">Lieu(x)</div>
-          <div class="job__meta-value job__locations">{{ locations }}</div>
+          <div class="job__meta-title"><icon name="map-marker"></icon>Lieu</div>
+          <div class="job__meta-value" :class="locationsClasses">{{ locations }}</div>
         </div>
       </div>
       <div class="job__footer">
         <button class="job__apply-button" :disabled="isClicked" @click.prevent.once="submitInterest"
                 title="Si vous cliquez sur ce bouton, un mail sera envoyé à l'équipe Job Board (uniquement !) avec les informations utiles pour aider au staffing.">
-          <icon name="star-o"></icon> Ça m'intéresse <span class="sr-only">par cette mission {{ mission }} en tant que {{ job.activity.title}}</span>
+          <icon name="heart-o"></icon> Ça m'intéresse <span class="sr-only">par cette mission {{ mission }} en tant que {{ job.activity.title}}</span>
         </button>
       </div>
 
@@ -101,13 +101,13 @@
       },
 
       staffingNeededSince() {
-        return moment(this.job.activity.staffing_needed_from).format('D MMM YYYY');
+        return moment(this.job.activity.staffing_needed_from).format('DD/MM/YY');
       },
 
       locations() {
         const locations = this.job.project.locations;
         if (!locations || locations.trim() === '') {
-          return 'non renseigné';
+          return '––';
         }
         return locations;
       },
@@ -236,7 +236,6 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    color: #2c3e50;
     color: #07c;
   }
 
@@ -260,6 +259,8 @@
     margin: 10px 0;
     font-size: 1rem;
     color: #f98c71;
+    color: orangered;
+    font-weight: 500;
   }
 
   .job__reference {
@@ -298,6 +299,7 @@
     border-right: 1px solid #e6e6e6;
     padding: 10px;
     width: 100%;
+    overflow: hidden;
   }
 
   .job__meta:last-child {
@@ -310,6 +312,11 @@
     color: #9199a1;
   }
 
+  .job__meta-title > .fa-icon {
+    margin-right: 3px;
+    height: 0.7rem;
+  }
+
   .job__meta-value {
     height: 50px;
     overflow: hidden;
@@ -318,6 +325,7 @@
     justify-content: center;
     text-align: center;
     text-overflow: ellipsis;
+    font-size: 0.9rem;
   }
 
   .job__status {
@@ -348,24 +356,32 @@
     color: #6699FF;
   }
 
+  .job__start-date {
+    font-weight: 500;
+  }
+
+  .job__locations--empty {
+      /*color: #9199a1;*/
+  }
+
   .job__nature {
   }
 
   .job__footer {
-    height: 58px;
-    max-height: 58px;
     border-top: 1px solid rgba(0, 0, 0, .05) !important;
     background: #fafafa;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
   }
 
   .job__apply-button {
     height: 40px;
     cursor: pointer;
-    border: 1px solid #0095ff;
+    border: 1px solid #07c;
     background: transparent;
     color: #07c;
     vertical-align: middle;
@@ -375,18 +391,20 @@
     transition: all .1s ease-in;
     padding: 5px 10px;
     font-size: 1rem;
-    margin: 0 15px;
+    margin: 12px;
   }
 
   .job__apply-button:hover {
-    /*text-decoration: underline;*/
-    color: #005999;
+    color: #07c;
     background-color: #e6f4ff;
     border-color: #07c;
+    border-width: 2px;
+    box-sizing: border-box;
   }
 
   .job__apply-button > .fa-icon {
     vertical-align: middle;
+    margin-right: 2px;
   }
 
 </style>

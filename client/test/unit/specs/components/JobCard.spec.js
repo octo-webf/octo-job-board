@@ -17,7 +17,7 @@ Vue.use(VueAnalytics, {
 
 Vue.component('icon', Icon)
 
-describe.only('Unit | Component | JobCard.vue', () => {
+describe('Unit | Component | JobCard.vue', () => {
   let component;
   const job = {
     id: 2,
@@ -107,7 +107,7 @@ describe.only('Unit | Component | JobCard.vue', () => {
     });
 
     it('should display the staffing_needed_from', () => {
-      expect(component.$el.querySelector('.job__start-date').textContent.trim()).to.equal('1 juil. 2017');
+      expect(component.$el.querySelector('.job__start-date').textContent.trim()).to.equal('01/07/17');
     });
 
     it('should display the locations', () => {
@@ -238,7 +238,7 @@ describe.only('Unit | Component | JobCard.vue', () => {
       const staffingNeededSince = component.staffingNeededSince;
 
       // Then
-      expect(staffingNeededSince).to.equal('1 juil. 2017');
+      expect(staffingNeededSince).to.equal('01/07/17');
     });
   });
 
