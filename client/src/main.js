@@ -10,10 +10,7 @@ import router from './router';
 import Icon from 'vue-awesome/components/Icon'
 
 
-import 'vue-awesome/icons/ellipsis-h'
-import 'vue-awesome/icons/heart-o'
-import 'vue-awesome/icons/star-o'
-
+import 'vue-awesome/icons'
 
 moment.locale('fr');
 

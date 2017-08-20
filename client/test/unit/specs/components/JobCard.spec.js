@@ -7,9 +7,7 @@ import authenticationService from '@/services/authentication';
 import Icon from 'vue-awesome/components/Icon'
 
 
-import 'vue-awesome/icons/ellipsis-h'
-import 'vue-awesome/icons/heart-o'
-import 'vue-awesome/icons/star-o'
+import 'vue-awesome/icons'
 
 moment.locale('fr');
 
@@ -19,7 +17,7 @@ Vue.use(VueAnalytics, {
 
 Vue.component('icon', Icon)
 
-describe('Unit | Component | JobCard.vue', () => {
+describe.only('Unit | Component | JobCard.vue', () => {
   let component;
   const job = {
     id: 2,
@@ -42,6 +40,7 @@ describe('Unit | Component | JobCard.vue', () => {
       mission_director: {
         nickname: 'XYZ',
       },
+      reference: 'F2017-1234',
     },
   };
 
@@ -99,6 +98,10 @@ describe('Unit | Component | JobCard.vue', () => {
       expect(component.$el.querySelector('.job__mission').textContent.trim()).to.equal('Refonte du SI');
     });
 
+    it('should display the project reference', () => {
+      expect(component.$el.querySelector('.job__reference').textContent.trim()).to.equal('#F2017-1234');
+    });
+
     it('should display the client name', () => {
       expect(component.$el.querySelector('.job__customer').textContent.trim()).to.equal('La Poste - Courrier');
     });
@@ -109,6 +112,24 @@ describe('Unit | Component | JobCard.vue', () => {
 
     it('should display the locations', () => {
       expect(component.$el.querySelector('.job__locations').textContent.trim()).to.equal('OCTO');
+    });
+
+    it('should display the business contact', () => {
+      expect(component.$el.querySelector('.job__business-contact').textContent.trim()).to.equal('ABC');
+    });
+
+    it('should display the mission director when it exists', () => {
+      expect(component.$el.querySelector('.job__mission-director').textContent.trim()).to.equal('XYZ');
+    });
+
+    it('should not display the mission director when it does not exist', () => {
+      // given
+      job.project.mission_director = null;
+
+      // when
+      return Vue.nextTick(() => {
+        expect(component.$el.querySelector('.job__mission-director')).to.not.exist;
+      });
     });
 
     it('should have enabled button', () => {

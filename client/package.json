@@ -19,7 +19,6 @@
   },
   "dependencies": {
     "vue": "^2.3.4",
-    "vue-awesome": "^2.3.1",
     "vue-router": "^2.6.0"
   },
   "devDependencies": {
@@ -85,6 +84,7 @@
     "sinon-chai": "^2.12.0",
     "url-loader": "^0.5.9",
     "vue-analytics": "^4.2.2",
+    "vue-awesome": "^2.3.1",
     "vue-google-signin-button": "^1.0.2",
     "vue-js-modal": "^1.2.8",
     "vue-loader": "^13.0.4",
