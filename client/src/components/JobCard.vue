@@ -258,9 +258,9 @@
   .job__mission {
     margin: 10px 0;
     font-size: 1rem;
-    color: #f98c71;
-    color: orangered;
-    font-weight: 500;
+    /*color: #5fba7d;*/
+    color: #2c3e50;
+    font-weight: 400;
   }
 
   .job__reference {
@@ -269,9 +269,9 @@
   .job__customer {
     margin: 10px 0;
     font-size: 1rem;
-    font-weight: 400;
-    /*color: #5fba7d;*/
-    color: #2c3e50;
+    color: #f98c71;
+    color: orangered;
+    font-weight: 500;
 
   }
 
