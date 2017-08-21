@@ -18,8 +18,8 @@
 
         <div class="job__secondary">
           <div class="job__meta-title">Mission de <span class="job__nature">{{ job.project.nature }}</span> <span class="job__reference">#{{job.project.reference}}</span></div>
-          <h3 class="job__mission">{{ mission }}</h3>
-          <h4 class="job__customer">{{ job.project.customer.name }}</h4>
+          <h3 class="job__customer">{{ job.project.customer.name }}</h3>
+          <h4 class="job__mission">{{ mission }}</h4>
         </div>
 
         <hr class="job__separator">
