@@ -4,13 +4,11 @@ import Vue from 'vue';
 import VueAnalytics from 'vue-analytics';
 import VueModal from 'vue-js-modal';
 import Toastr from 'vue-toastr';
+import Icon from 'vue-awesome/components/Icon';
 import moment from 'moment';
+import 'vue-awesome/icons';
 import App from './App';
 import router from './router';
-import Icon from 'vue-awesome/components/Icon'
-
-
-import 'vue-awesome/icons'
 
 moment.locale('fr');
 
@@ -26,7 +24,7 @@ Vue.use(VueAnalytics, {
 
 Vue.use(VueModal);
 
-Vue.component('icon', Icon)
+Vue.component('icon', Icon);
 
 /* eslint-disable no-new */
 new Vue({

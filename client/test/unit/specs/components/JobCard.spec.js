@@ -4,10 +4,10 @@ import VueAnalytics from 'vue-analytics';
 import JobCard from '@/components/JobCard';
 import interestsApi from '@/api/interests';
 import authenticationService from '@/services/authentication';
-import Icon from 'vue-awesome/components/Icon'
+import Icon from 'vue-awesome/components/Icon';
 
 
-import 'vue-awesome/icons'
+import 'vue-awesome/icons';
 
 moment.locale('fr');
 
@@ -15,7 +15,7 @@ Vue.use(VueAnalytics, {
   id: `${process.env.ANALYTICS_ID}`,
 });
 
-Vue.component('icon', Icon)
+Vue.component('icon', Icon);
 
 describe('Unit | Component | JobCard.vue', () => {
   let component;

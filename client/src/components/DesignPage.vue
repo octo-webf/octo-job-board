@@ -43,7 +43,7 @@
 
 <script>
 
-  import 'vue-awesome/icons/ellipsis-h'
+  import 'vue-awesome/icons/ellipsis-h';
 
   export default {
 
