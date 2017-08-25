@@ -4,12 +4,17 @@ import VueAnalytics from 'vue-analytics';
 import JobCard from '@/components/JobCard';
 import interestsApi from '@/api/interests';
 import authenticationService from '@/services/authentication';
+import Icon from 'vue-awesome/components/Icon';
+
+import 'vue-awesome/icons';
 
 moment.locale('fr');
 
 Vue.use(VueAnalytics, {
   id: `${process.env.ANALYTICS_ID}`,
 });
+
+Vue.component('icon', Icon);
 
 describe('Unit | Component | JobCard.vue', () => {
   let component;
@@ -34,6 +39,7 @@ describe('Unit | Component | JobCard.vue', () => {
       mission_director: {
         nickname: 'XYZ',
       },
+      reference: 'F2017-1234',
     },
   };
 
@@ -91,16 +97,38 @@ describe('Unit | Component | JobCard.vue', () => {
       expect(component.$el.querySelector('.job__mission').textContent.trim()).to.equal('Refonte du SI');
     });
 
+    it('should display the project reference', () => {
+      expect(component.$el.querySelector('.job__reference').textContent.trim()).to.equal('#F2017-1234');
+    });
+
     it('should display the client name', () => {
       expect(component.$el.querySelector('.job__customer').textContent.trim()).to.equal('La Poste - Courrier');
     });
 
     it('should display the staffing_needed_from', () => {
-      expect(component.$el.querySelector('.job__start-date').textContent.trim()).to.equal('1 juillet 2017');
+      expect(component.$el.querySelector('.job__start-date').textContent.trim()).to.equal('01/07/17');
     });
 
     it('should display the locations', () => {
       expect(component.$el.querySelector('.job__locations').textContent.trim()).to.equal('OCTO');
+    });
+
+    it('should display the business contact', () => {
+      expect(component.$el.querySelector('.job__business-contact').textContent.trim()).to.equal('ABC');
+    });
+
+    it('should display the mission director when it exists', () => {
+      expect(component.$el.querySelector('.job__mission-director').textContent.trim()).to.equal('XYZ');
+    });
+
+    it('should not display the mission director when it does not exist', () => {
+      // given
+      job.project.mission_director = null;
+
+      // when
+      return Vue.nextTick(() => {
+        expect(component.$el.querySelector('.job__mission-director')).to.not.exist;
+      });
     });
 
     it('should have enabled button', () => {
@@ -209,7 +237,7 @@ describe('Unit | Component | JobCard.vue', () => {
       const staffingNeededSince = component.staffingNeededSince;
 
       // Then
-      expect(staffingNeededSince).to.equal('1 juillet 2017');
+      expect(staffingNeededSince).to.equal('01/07/17');
     });
   });
 
@@ -235,7 +263,7 @@ describe('Unit | Component | JobCard.vue', () => {
       const statusClass = component.statusClass;
 
       // Then
-      expect(statusClass).to.equal('job__status job__status--mission_accepted');
+      expect(statusClass).to.equal('job__status--mission_accepted');
     });
 
     it('should return empty string when api status is undefined', () => {
