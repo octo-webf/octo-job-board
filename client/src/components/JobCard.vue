@@ -2,21 +2,15 @@
   <div class="job-card">
     <article class="job">
 
-<!--
-      <div class="job__menu">
-        <icon name="ellipsis-h"></icon>
-      </div>
--->
-
       <a :href="octopodUrl" target="_blank" class="job__link">
 
-        <div class="job__primary">
+        <div class="job__profile">
           <h2 class="job__title">{{ job.activity.title }}</h2>
         </div>
 
         <hr class="job__separator">
 
-        <div class="job__secondary">
+        <div class="job__project">
           <div class="job__meta-title">Mission de <span class="job__nature">{{ job.project.nature }}</span> <span class="job__reference">#{{job.project.reference}}</span></div>
           <h3 class="job__customer">{{ job.project.customer.name }}</h3>
           <h4 class="job__mission">{{ mission }}</h4>
@@ -31,7 +25,7 @@
 
       </a>
 
-      <div class="job__tertiary">
+      <div class="job__context">
         <div class="job__meta">
           <div class="job__meta-title"><icon name="file-text-o"></icon>Statut</div>
           <div class="job__meta-value job__status" :class="statusClass">{{ status }}</div>
@@ -191,38 +185,11 @@
     transition: box-shadow .1s ease, transform .1s ease, -webkit-transform .1s ease;
   }
 
-  .jpb__header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 15px 0 10px;
-  }
-
-  .job__menu {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    border-radius: 50%;
-    padding: 5px 8px;
-    cursor: pointer;
-    border: 1px solid #e6e6e6;
-    color: #9199a1;
-  }
-
-  .job__menu:hover {
-    background: #fafafa;
-    color: #2c3e50;
-  }
-
-  .job__menu > .fa-icon {
-    vertical-align: middle;
-  }
-
   .job__link {
     text-decoration: none;
   }
 
-  .job__primary {
+  .job__profile {
     padding: 15px 10px;
     display: flex;
     flex-direction: column;
@@ -250,7 +217,7 @@
     margin: 0 auto;
   }
 
-  .job__secondary {
+  .job__project {
     padding: 15px 10px;
     height: 90px;
   }
@@ -258,21 +225,15 @@
   .job__mission {
     margin: 10px 0;
     font-size: 1rem;
-    /*color: #5fba7d;*/
     color: #2c3e50;
     font-weight: 400;
-  }
-
-  .job__reference {
   }
 
   .job__customer {
     margin: 10px 0;
     font-size: 1rem;
-    color: #f98c71;
     color: orangered;
     font-weight: 500;
-
   }
 
   .job__contacts {
@@ -289,7 +250,7 @@
     font-weight: 600;
   }
 
-  .job__tertiary {
+  .job__context {
     display: flex;
     flex-direction: row;
     border-top: 1px solid #e6e6e6;
@@ -358,13 +319,6 @@
 
   .job__start-date {
     font-weight: 500;
-  }
-
-  .job__locations--empty {
-      /*color: #9199a1;*/
-  }
-
-  .job__nature {
   }
 
   .job__footer {

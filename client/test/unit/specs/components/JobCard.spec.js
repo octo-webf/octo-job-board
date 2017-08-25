@@ -6,7 +6,6 @@ import interestsApi from '@/api/interests';
 import authenticationService from '@/services/authentication';
 import Icon from 'vue-awesome/components/Icon';
 
-
 import 'vue-awesome/icons';
 
 moment.locale('fr');
