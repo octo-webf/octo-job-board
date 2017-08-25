@@ -19,7 +19,7 @@
         <hr class="job__separator">
 
         <div class="job__contacts">
-          <div class="job__contact">Resp. commercial : <span class="job__contact-nickname job__business-contact">{{ job.project.business_contact.nickname }}</span></div>
+          <div class="job__contact">Contact biz. : <span class="job__contact-nickname job__business-contact">{{ job.project.business_contact.nickname }}</span></div>
           <div class="job__contact" v-if="job.project.mission_director"> – Dir. mission : <span class="job__contact-nickname job__mission-director">{{ job.project.mission_director.nickname }}</span></div>
         </div>
 
