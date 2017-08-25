@@ -52,7 +52,8 @@ describe('Unit | Component | LoginPage.vue', () => {
 
   describe('method #onSignInError', () => {
     it('should exist', () => {
-      expect(component.onSignInError).to.exist.and.to.be.a.function;
+      expect(component.onSignInError).to.exist;
+      expect(component.onSignInError).to.be.a('function');
     });
   });
 });
