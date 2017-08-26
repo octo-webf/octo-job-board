@@ -17,12 +17,13 @@ const GoogleAuthWrapper = {
 
           const payload = login.getPayload();
           const userId = payload.sub;
+          const email = payload.email;
           const domain = payload.hd;
 
           if (domain !== 'octo.com') {
             return reject(`User ${userId} does not belong to OCTO`);
           }
-          return resolve({ userId, domain });
+          return resolve({ userId, email });
         });
     });
   },

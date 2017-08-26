@@ -12,10 +12,6 @@ describe('Unit | Class | slack-client', () => {
   });
 
   describe('#postMessage', () => {
-    it('should exist', () => {
-      expect(slackClient.postMessage).to.exist;
-    });
-
     it('call Slack SDK', () => {
       // given
       IncomingWebhook.prototype.send.callsFake((text, cb) => cb());

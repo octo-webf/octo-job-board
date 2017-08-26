@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { sinon, expect } = require('../../../test-helper');
+const {sinon, expect} = require('../../../test-helper');
 const auth = require('../../../../src/infrastructure/middlewares/auth');
 
 describe('Unit | Middlewares | auth', () => {
@@ -43,19 +43,19 @@ describe('Unit | Middlewares | auth', () => {
           authorization: 'Bearer some_acess_token',
         },
       };
-      sinon.stub(jwt, 'verify').returns({ userId: 'user-id' });
+      sinon.stub(jwt, 'verify').returns({userId: 'user-id', email: 'test@mail.com'});
     });
 
     afterEach(() => {
       jwt.verify.restore();
     });
 
-    it('should set user into the request', (done) => {
+    it('should set user into the request', () => {
       // when
-      auth(req, res, () => {
+      return auth(req, res, () => {
         // then
         expect(req.userId).to.equal('user-id');
-        done();
+        expect(req.userEmail).to.equal('test@mail.com');
       });
     });
 
@@ -101,7 +101,7 @@ describe('Unit | Middlewares | auth', () => {
 
     it('should return an error with a status code 401 when there is no "Authorization" header in the request', () => {
       // given
-      req = { headers: {} };
+      req = {headers: {}};
 
       // when
       auth(req, res, next);

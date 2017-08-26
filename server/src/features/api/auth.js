@@ -6,8 +6,8 @@ const GoogleAuthWrapper = require('../../infrastructure/google-auth');
 const AuthorizationCodeValidator = require('../../infrastructure/authorization-code-validator');
 const config = require('../../config');
 
-function _generateJwtAccessToken(userId) {
-  return jwt.sign({ userId }, config.ACCESS_TOKEN_SECRET);
+function _generateJwtAccessToken(userId, email) {
+  return jwt.sign({ userId, email }, config.ACCESS_TOKEN_SECRET);
 }
 
 function _getAccessTokenForApplicationAuth(req, res) {
@@ -31,12 +31,8 @@ function _getAccessTokenForGoogleAuth(req, res) {
   }
 
   GoogleAuthWrapper.verifyIdToken(idToken)
-    .then((userId) => {
-      res.json({ access_token: _generateJwtAccessToken(userId) });
-    })
-    .catch(() => {
-      res.status(401).json({ error: {} });
-    });
+    .then(({userId, email}) => res.json({ access_token: _generateJwtAccessToken(userId, email) }))
+    .catch(() => res.status(401).json({ error: {} }));
 }
 
 router.post('/token', (req, res) => {

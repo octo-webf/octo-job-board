@@ -6,7 +6,7 @@ const fixturesJobs = require('../../fixtures/jobs');
 
 describe('Integration | Routes | jobs route', () => {
   beforeEach(() => {
-    sinon.stub(jwt, 'verify').returns({ userId: 'user-id' });
+    sinon.stub(jwt, 'verify').returns({ userId: 'user-id', email: 'test@mail.com' });
     sinon.stub(jobService, 'getJobs');
   });
 

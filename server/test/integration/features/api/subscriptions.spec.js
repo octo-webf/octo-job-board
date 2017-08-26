@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const { request, expect, sinon } = require('../../../test-helper');
 const app = require('../../../../app');
 const subscriptionService = require('../../../../src/domain/services/subscription-service');
@@ -5,28 +6,29 @@ const subscriptionService = require('../../../../src/domain/services/subscriptio
 describe('Integration | Routes | subscriptions route', () => {
   describe('POST /api/subscriptions', () => {
     beforeEach(() => {
+      sinon.stub(jwt, 'verify').returns({ userId: 'user-id', email: 'test@mail.com' });
       sinon.stub(subscriptionService, 'addSubscription');
     });
 
     afterEach(() => {
+      jwt.verify.restore();
       subscriptionService.addSubscription.restore();
     });
 
     it('should call subscriptionService#addSubscription', (done) => {
       // given
-      const subscriberEmail = 'john.doe@mail.com';
-      const persistedSubscription = { id: 1, email: subscriberEmail };
-
+      const persistedSubscription = { id: 1, email: 'test@mail.com' };
       subscriptionService.addSubscription.resolves({ subscription: persistedSubscription, created: false });
 
       // when
       request(app)
         .post('/api/subscriptions')
-        .send({ email: subscriberEmail })
+        .set('Authorization', 'Bearer access-token')
+        .send()
         .expect('Content-Type', 'application/json; charset=utf-8')
         .expect(200, (err, res) => {
           // then
-          expect(subscriptionService.addSubscription).to.have.been.calledWith(subscriberEmail);
+          expect(subscriptionService.addSubscription).to.have.been.calledWith('test@mail.com');
           expect(res.body).to.deep.equal(persistedSubscription);
           done();
         });
@@ -39,7 +41,8 @@ describe('Integration | Routes | subscriptions route', () => {
       // when
       return request(app)
         .post('/api/subscriptions')
-        .send({ email: 'john.doe@mail.com' })
+        .set('Authorization', 'Bearer access-token')
+        .send()
         .expect(200);
     });
 
@@ -50,7 +53,8 @@ describe('Integration | Routes | subscriptions route', () => {
       // when
       return request(app)
         .post('/api/subscriptions')
-        .send({ email: 'john.doe@mail.com' })
+        .set('Authorization', 'Bearer access-token')
+        .send()
         .expect(201);
     });
 
@@ -61,7 +65,8 @@ describe('Integration | Routes | subscriptions route', () => {
       // when
       return request(app)
         .post('/api/subscriptions')
-        .send({ email: 'john.doe@mail.com' })
+        .set('Authorization', 'Bearer access-token')
+        .send()
         .expect(403);
     });
   });
@@ -88,4 +93,8 @@ describe('Integration | Routes | subscriptions route', () => {
         });
     });
   });
+
+  it('should return 401 response if the user is not well authenticated', () => request(app)
+    .post('/api/subscriptions')
+    .expect(401));
 });

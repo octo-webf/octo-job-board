@@ -1,10 +1,11 @@
 const express = require('express');
+const auth = require('../../infrastructure/middlewares/auth');
 const subscriptionService = require('../../domain/services/subscription-service');
 
 const router = express.Router();
 
-router.post('/', (req, res) => {
-  const email = req.body.email;
+router.post('/', auth, (req, res) => {
+  const email = req.userEmail;
 
   subscriptionService
     .addSubscription(email)
