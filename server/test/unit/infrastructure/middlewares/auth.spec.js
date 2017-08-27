@@ -50,14 +50,14 @@ describe('Unit | Middlewares | auth', () => {
       jwt.verify.restore();
     });
 
-    it('should set user into the request', () =>
+    it('should set user into the request', () => {
       // when
-      auth(req, res, () => {
+      return auth(req, res, () => {
         // then
         expect(req.userId).to.equal('user-id');
         expect(req.userEmail).to.equal('test@mail.com');
-      }),
-    );
+      });
+    });
 
     it('should verify Google access token (by calling Google Auth library)', (done) => {
       // when
