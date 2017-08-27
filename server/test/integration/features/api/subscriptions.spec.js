@@ -34,7 +34,7 @@ describe('Integration | Routes | subscriptions route', () => {
         });
     });
 
-    it('should return 200 when a subscription already exist', () => {
+    it('should return 200 when a subscription already exists', () => {
       // given
       subscriptionService.addSubscription.resolves({ subscription: {}, created: false });
 

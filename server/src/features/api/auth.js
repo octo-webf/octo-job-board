@@ -31,7 +31,7 @@ function _getAccessTokenForGoogleAuth(req, res) {
   }
 
   GoogleAuthWrapper.verifyIdToken(idToken)
-    .then(({userId, email}) => res.json({ access_token: _generateJwtAccessToken(userId, email) }))
+    .then(({ userId, email }) => res.json({ access_token: _generateJwtAccessToken(userId, email) }))
     .catch(() => res.status(401).json({ error: {} }));
 }
 
