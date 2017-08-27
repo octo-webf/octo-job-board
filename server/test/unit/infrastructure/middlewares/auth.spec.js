@@ -59,14 +59,13 @@ describe('Unit | Middlewares | auth', () => {
       }),
     );
 
-    it('should verify Google access token (by calling Google Auth library)', (done) => {
+    it('should verify Google access token (by calling Google Auth library)', () =>
       // when
       auth(req, res, () => {
         // then
         expect(jwt.verify).to.have.been.calledWith('some_acess_token');
-        done();
-      });
-    });
+      }),
+    );
   });
 
   describe('Error management', () => {
