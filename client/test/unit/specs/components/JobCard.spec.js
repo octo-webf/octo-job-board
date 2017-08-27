@@ -66,7 +66,7 @@ describe('Unit | Component | JobCard.vue', () => {
   });
 
   afterEach(() => {
-    authenticatauthenionService.isAuthenticated.restore();
+    authenticationService.isAuthenticated.restore();
     authenticationService.getAuthenticatedUser.restore();
     authenticationService.getAccessToken.restore();
     interestsApi.sendInterest.restore();
@@ -74,7 +74,7 @@ describe('Unit | Component | JobCard.vue', () => {
 
   describe('name', () => {
     it('should be named "JobCard"', () => {
-      expect(component.$aoptions.name).to.equal('JobCard');
+      expect(component.$options.name).to.equal('JobCard');
     });
   });
 

@@ -12,7 +12,7 @@ describe('Unit | Class | slack-client', () => {
   });
 
   describe('#postMessage', () => {
-    it('call Slack SDK', () => {
+    it('should call Slack SDK', () => {
       // given
       IncomingWebhook.prototype.send.callsFake((text, cb) => cb());
       const text = 'Bla bla bla';
