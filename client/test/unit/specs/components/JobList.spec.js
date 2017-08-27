@@ -35,6 +35,113 @@ describe('Unit | Component | JobList.vue', () => {
     expect(component.$options.name).to.equal('JobList');
   });
 
+  it('should have an interest modal', () => {
+    const interestModal = component.$el.querySelectorAll('.interest-modal-wrapper');
+    expect(interestModal.length).to.equal(1);
+  });
+
+  // TODO check that interest modal use chosenJob
+
+  describe('on interest', () => {
+    beforeEach(() => {
+      sinon.stub(component.$modal, 'show');
+      // TODO extract fixtures
+      jobs = [
+        {
+          id: 1,
+          activity: {
+            title: 'Tech Lead mission 1',
+          },
+          project: {
+            id: 123456,
+            status: 'proposal_in_progress',
+            name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
+            customer: {
+              name: 'La Poste - Courrier',
+            },
+            staffing_needed_from: '2017-07-01',
+            duration: '10 mois',
+            location: 'OCTO',
+            business_contact: {
+              nickname: 'ABC',
+            },
+            mission_director: {
+              nickname: 'XYZ',
+            },
+          },
+        },
+        {
+          id: 2,
+          activity: {
+            title: 'Tech Lead mission 2',
+          },
+          project: {
+            id: 123456,
+            status: 'mission_signed',
+            name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
+            customer: {
+              name: 'La Poste - Courrier',
+            },
+            staffing_needed_from: '2017-07-01',
+            duration: '10 mois',
+            location: 'OCTO',
+            business_contact: {
+              nickname: 'ABC',
+            },
+            mission_director: {
+              nickname: 'XYZ',
+            },
+          },
+        },
+      ];
+      sinon.stub(jobsApi, 'fetchAll').resolves(jobs);
+
+      component = new Constructor().$mount();
+    });
+
+    afterEach(() => {
+      component.$modal.show.restore();
+      jobsApi.fetchAll.restore();
+    });
+
+    it('should displayInterestModal on click on interest', () => Vue.nextTick().then(() => {
+      // when
+      component.$el.querySelector('button.job__apply-button').click();
+
+      // then
+      expect(component.$modal.show).to.have.been.calledWith('interest-modal');
+    }));
+  });
+
+  describe('method #displayInterestModal', () => {
+    beforeEach(() => {
+      sinon.stub(component.$modal, 'show');
+    });
+
+    afterEach(() => {
+      component.$modal.show.restore();
+    });
+
+    it('should add job to the chosenJob data', () => {
+      // Given
+      const job = { foo: 'bar' };
+
+      // When
+      component.displayInterestModal(job);
+
+      // Then
+      expect(component.$data.chosenJob).to.equal(job);
+    });
+
+    it('should display the interest-modal', () => {
+      // when
+      component.displayInterestModal();
+
+      // then
+      expect(component.$modal.show).to.have.been.calledWith('interest-modal');
+    });
+  });
+
   describe('method #getJobs', () => {
     it('should verify that user is authenticated', () => {
       // when

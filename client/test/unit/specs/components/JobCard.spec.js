@@ -81,12 +81,6 @@ describe('Unit | Component | JobCard.vue', () => {
     });
   });
 
-  describe('$data', () => {
-    it('should have isClicked property set to false', () => {
-      expect(component.$data.isClicked).to.be.false;
-    });
-  });
-
   describe('rendering', () => {
     it('should display the appropriate project status', () => {
       expect(component.$el.querySelector('.job__status').getAttribute('class')).to.contain('job__status--proposal_in_progress');
@@ -133,77 +127,23 @@ describe('Unit | Component | JobCard.vue', () => {
         expect(component.$el.querySelector('.job__mission-director')).to.not.exist;
       });
     });
-
-    it('should have enabled button', () => {
-      expect(component.$el.querySelector('.job__apply-button').disabled).to.be.false;
-    });
   });
 
-  describe('clicking on button "I am interested in"', () => {
-    it('should disable button', () => {
-      // when
-      component.$el.querySelector('button.job__apply-button').click();
-
-      // then
-      return Vue.nextTick().then(() => {
-        expect(component.$el.querySelector('.job__apply-button').disabled).to.be.true;
-      });
-    });
-
-    it('should display toast notification');
-  });
-
-  describe('method #trackEvent', () => {
-    const expectedCallParams = {
-      eventCategory: 'Job List',
-      eventAction: 'click',
-      eventLabel: 'I am interested',
-      eventValue: null,
-    };
-
+  describe('#displayFeedbackModal', () => {
     beforeEach(() => {
-      sinon.stub(component.$ga, 'event').returns(true);
+      sinon.stub(component, '$emit');
     });
 
     afterEach(() => {
-      component.$ga.event.restore();
+      component.$emit.restore();
     });
 
-    it('should check analytics', () => {
-      // when
-      component.trackEvent();
-
-      // then
-      expect(component.$ga.event).to.have.been.calledWith(expectedCallParams);
-    });
-
-    it('on click on button job__apply-button', () => Vue.nextTick().then(() => {
+    it('should emit interest on click on interest button', () => Vue.nextTick().then(() => {
       // when
       component.$el.querySelector('button.job__apply-button').click();
 
       // then
-      expect(component.$ga.event).to.have.been.calledWith(expectedCallParams);
-    }));
-  });
-
-  describe('method #sendInterest', () => {
-    it('should call the API with good params', () => {
-      // when
-      component.sendInterest();
-
-      // then
-      expect(interestsApi.sendInterest).to.have.been.calledWithExactly(job, consultant, accessToken);
-    });
-
-    it('should send interests on click on job__apply-button', () => Vue.nextTick().then(() => {
-      // Given
-      const myButton = component.$el.querySelector('button.job__apply-button');
-
-      // When
-      myButton.click();
-
-      // Then
-      expect(interestsApi.sendInterest).to.have.been.calledWithExactly(job, consultant, accessToken);
+      expect(component.$emit).to.have.been.calledWith('interest', job);
     }));
   });
 

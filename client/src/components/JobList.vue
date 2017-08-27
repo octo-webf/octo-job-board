@@ -17,7 +17,7 @@
               </div>
               <ul class="job-results__list">
                 <li class="job-results__item" v-for="job in displayJobs">
-                  <job-card :job="job"></job-card>
+                  <job-card v-on:interest="displayInterestModal" :job="job"></job-card>
                 </li>
               </ul>
             </section>
@@ -25,6 +25,7 @@
         </template>
       </div>
     </main>
+    <interest-modal :interestingJob="chosenJob"></interest-modal>
   </div>
 </template>
 
@@ -37,6 +38,7 @@
   import JobCard from '@/components/JobCard';
   import Circle from 'vue-loading-spinner/src/components/Circle';
   import countries from '@/utils/countries';
+  import InterestModal from '@/components/InterestModal';
 
   export default {
 
@@ -46,6 +48,7 @@
       AppHeader,
       CountryFilters,
       JobCard,
+      InterestModal,
       'circle-loader': Circle,
     },
 
@@ -54,6 +57,7 @@
         jobsFromApi: [],
         displayJobs: [],
         isLoading: false,
+        chosenJob: null,
       };
     },
 
@@ -62,6 +66,11 @@
     },
 
     methods: {
+
+      displayInterestModal(job) {
+        this.chosenJob = job;
+        this.$modal.show('interest-modal');
+      },
 
       getJobs() {
         this.isLoading = true;
