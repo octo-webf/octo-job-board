@@ -30,6 +30,9 @@ describe('Unit | Component | JobCard.vue', () => {
       name: 'Refonte du SI',
       customer: {
         name: 'La Poste - Courrier',
+        sector: {
+          name: 'FR - La Poste',
+        },
       },
       duration: '10 mois',
       locations: 'OCTO',
@@ -343,6 +346,102 @@ describe('Unit | Component | JobCard.vue', () => {
 
       // Then
       expect(status).to.equal('propale');
+    });
+  });
+
+  describe('computed property #jobSectorName', () => {
+    it('should return the sector name value', () => {
+      // Given
+      job.project.customer.sector.name = 'FR - La Poste';
+
+      // When
+      const jobSectorName = component.jobSectorName;
+
+      // Then
+      expect(jobSectorName).to.equal('FR - La Poste');
+    });
+  });
+
+  describe('computed property #showCountryLogo', () => {
+    it('should return true if the job is in Australia', () => {
+      // Given
+      job.project.customer.sector.name = 'Australia';
+
+      // When
+      const showCountryLogo = component.showCountryLogo;
+
+      // Then
+      expect(showCountryLogo).to.be.true;
+    });
+
+    it('should return true if the job is in Morocco', () => {
+      // Given
+      job.project.customer.sector.name = 'Maroc';
+
+      // When
+      const showCountryLogo = component.showCountryLogo;
+
+      // Then
+      expect(showCountryLogo).to.be.true;
+    });
+
+    it('should return true if the job is in Switzerland', () => {
+      // Given
+      job.project.customer.sector.name = 'Suisse';
+
+      // When
+      const showCountryLogo = component.showCountryLogo;
+
+      // Then
+      expect(showCountryLogo).to.be.true;
+    });
+
+    it('should return false if the job is in France', () => {
+      // Given
+      job.project.customer.sector.name = 'FR - Assurances';
+
+      // When
+      const showCountryLogo = component.showCountryLogo;
+
+      // Then
+      expect(showCountryLogo).to.be.false;
+    });
+  });
+
+  describe('computed property #addPaddingToTitle', () => {
+    it('should return false if the job is in France', () => {
+      // Given
+      job.project.customer.sector.name = 'FR - La Poste';
+
+      // When
+      const addPaddingToTitle = component.addPaddingToTitle;
+
+      // Then
+      expect(addPaddingToTitle).to.be.false;
+    });
+
+    it('should return true if the job is overseas and the title is short enough', () => {
+      // Given
+      job.project.customer.sector.name = 'Australia';
+      job.activity.title = 'Dev React'; // 9 chars
+
+      // When
+      const addPaddingToTitle = component.addPaddingToTitle;
+
+      // Then
+      expect(addPaddingToTitle).to.be.true;
+    });
+
+    it('should return false if the job is overseas but the title is too long', () => {
+      // Given
+      job.project.customer.sector.name = 'Australia';
+      job.activity.title = 'Senior Spark/Hive Architect'; // 27 chars
+
+      // When
+      const addPaddingToTitle = component.addPaddingToTitle;
+
+      // Then
+      expect(addPaddingToTitle).to.be.false;
     });
   });
 });
