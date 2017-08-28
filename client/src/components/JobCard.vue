@@ -5,9 +5,7 @@
       <a :href="octopodUrl" target="_blank" class="job__link">
 
         <div class="job__profile">
-          <h2 class="job__title" :class="{ 'padding-left-40': addPaddingToTitle }">
-            {{ job.activity.title }}
-          </h2>
+          <h2 class="job__title" :class="{ 'padding-left-40': addPaddingToTitle }">{{ job.activity.title }}</h2>
           <div class="job__country-logo" v-if="showCountryLogo">
             <img :src="'../static/flags/' + jobSectorName + '.svg'" />
           </div>
