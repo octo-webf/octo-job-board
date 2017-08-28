@@ -59,12 +59,7 @@
   import moment from 'moment';
   import interestsApi from '@/api/interests';
   import authenticationService from '@/services/authentication';
-
-  const showLogoCountries = [
-    'Australia',
-    'Maroc',
-    'Suisse',
-  ];
+  import countries from '@/utils/countries';
 
   export default {
 
@@ -132,7 +127,7 @@
       },
 
       showCountryLogo() {
-        return showLogoCountries.indexOf(this.job.project.customer.sector.name) !== -1;
+        return countries.indexOf(this.job.project.customer.sector.name) !== -1;
       },
 
       addPaddingToTitle() {
