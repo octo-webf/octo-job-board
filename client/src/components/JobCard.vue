@@ -5,7 +5,12 @@
       <a :href="octopodUrl" target="_blank" class="job__link">
 
         <div class="job__profile">
-          <h2 class="job__title">{{ job.activity.title }}</h2>
+          <h2 class="job__title" :class="{ 'padding-left-40': addPaddingToTitle() }">
+            {{ job.activity.title }}
+          </h2>
+          <div class="job__country-logo" v-if="showCountryLogo()">
+            <img :src="'../static/flags/' + jobSectorName + '.svg'" />
+          </div>
         </div>
 
         <hr class="job__separator">
@@ -54,6 +59,12 @@
   import moment from 'moment';
   import interestsApi from '@/api/interests';
   import authenticationService from '@/services/authentication';
+
+  const showLogoCountries = [
+    'Australia',
+    'Maroc',
+    'Suisse',
+  ]
 
   export default {
 
@@ -116,6 +127,10 @@
         return classes;
       },
 
+      jobSectorName() {
+        return this.job.project.customer.sector.name;
+      }
+
     },
 
     methods: {
@@ -152,6 +167,15 @@
         const message = `Votre intérêt pour la mission "${mission}" a été pris en compte.`;
         this.$root.$refs.toastr.s(message);
       },
+
+      showCountryLogo() {
+        return showLogoCountries.indexOf(this.job.project.customer.sector.name) !== -1;
+      },
+
+      addPaddingToTitle() {
+        console.log(this.job.activity.title, this.job.activity.title.length)
+        return this.showCountryLogo() && this.job.activity.title.length < 20;
+      }
 
     },
 
@@ -192,12 +216,13 @@
   .job__profile {
     padding: 15px 10px;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
+    flex-direction: row;
+    justify-content: center;
     /*border-bottom: 1px solid #e6e6e6;*/
   }
 
   .job__title {
+    flex: 1;
     font-size: 1.2rem;
     margin: 0;
     overflow: hidden;
@@ -206,8 +231,25 @@
     color: #07c;
   }
 
+  .padding-left-40 {
+    padding-left: 40px;
+  }
+
   .job__link:hover .job__title {
     text-decoration: underline;
+  }
+
+  .job__country-logo {
+    flex: 0;
+    width: 40px;
+    height: 1px;
+  }
+
+  .job__country-logo img {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    margin: 0 5px 0 10px;
   }
 
   .job__separator {
