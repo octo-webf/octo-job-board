@@ -9,7 +9,12 @@
         <template v-else>
           <div class="job-results-panel">
             <section class="job-results job-results--delivery">
-              <h1 class="job-results__title">Missions à staffer ({{ jobs.length }})</h1>
+              <div class="job-results__header">
+                <h1 class="job-results__title">
+                  Missions à staffer ({{ jobs.length }})
+                </h1>
+                <job-list-filters @selectCountryFilter="onSelectedCountryFilter"></job-list-filters>
+              </div>
               <ul class="job-results__list">
                 <li class="job-results__item" v-for="job in jobs">
                   <job-card :job="job"></job-card>
@@ -28,8 +33,10 @@
   import projectStatus from '@/utils/projectStatus';
   import jobsApi from '@/api/jobs';
   import AppHeader from '@/components/AppHeader';
+  import JobListFilters from '@/components/JobListFilters';
   import JobCard from '@/components/JobCard';
   import Circle from 'vue-loading-spinner/src/components/Circle';
+  import countries from '@/utils/countries';
 
   export default {
 
@@ -37,12 +44,14 @@
 
     components: {
       AppHeader,
+      JobListFilters,
       JobCard,
       'circle-loader': Circle,
     },
 
     data() {
       return {
+        allJobs: [],
         jobs: [],
         isLoading: false,
       };
@@ -60,6 +69,7 @@
           const accessToken = authenticationService.getAccessToken();
           jobsApi.fetchAll(accessToken)
             .then((jobs) => {
+              this.allJobs = this._sortJobsByProjectStatus(jobs);
               this.jobs = this._sortJobsByProjectStatus(jobs);
             })
             .then(() => {
@@ -70,6 +80,20 @@
 
       _sortJobsByProjectStatus(jobs) {
         return projectStatus.sort(jobs);
+      },
+
+      onSelectedCountryFilter(selectedCountryFilter) {
+        this.jobs = this._filterJobsByCountry(this.allJobs, selectedCountryFilter);
+      },
+
+      _filterJobsByCountry(allJobs, selectedCountryFilter) {
+        if (selectedCountryFilter === 'anyCountry') {
+          return allJobs;
+        }
+        if (selectedCountryFilter === 'France') {
+          return allJobs.filter(job => countries.indexOf(job.project.customer.sector.name) === -1);
+        }
+        return allJobs.filter(job => job.project.customer.sector.name === selectedCountryFilter);
       },
     },
   };
@@ -101,19 +125,14 @@
   .job-results__list {
     padding: 0;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
   .job-results__item {
     list-style-type: none;
     padding: 0;
     margin: 10px;
-  }
-
-  @media only screen and (min-width: 640px) {
-    .job-results__list {
-      flex-direction: row;
-      flex-wrap: wrap;
-    }
   }
 </style>
