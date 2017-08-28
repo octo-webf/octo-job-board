@@ -5,10 +5,10 @@
       <a :href="octopodUrl" target="_blank" class="job__link">
 
         <div class="job__profile">
-          <h2 class="job__title" :class="{ 'padding-left-40': addPaddingToTitle() }">
+          <h2 class="job__title" :class="{ 'padding-left-40': addPaddingToTitle }">
             {{ job.activity.title }}
           </h2>
-          <div class="job__country-logo" v-if="showCountryLogo()">
+          <div class="job__country-logo" v-if="showCountryLogo">
             <img :src="'../static/flags/' + jobSectorName + '.svg'" />
           </div>
         </div>
@@ -64,7 +64,7 @@
     'Australia',
     'Maroc',
     'Suisse',
-  ]
+  ];
 
   export default {
 
@@ -129,7 +129,15 @@
 
       jobSectorName() {
         return this.job.project.customer.sector.name;
-      }
+      },
+
+      showCountryLogo() {
+        return showLogoCountries.indexOf(this.job.project.customer.sector.name) !== -1;
+      },
+
+      addPaddingToTitle() {
+        return this.showCountryLogo && this.job.activity.title.length < 20;
+      },
 
     },
 
@@ -167,15 +175,6 @@
         const message = `Votre intérêt pour la mission "${mission}" a été pris en compte.`;
         this.$root.$refs.toastr.s(message);
       },
-
-      showCountryLogo() {
-        return showLogoCountries.indexOf(this.job.project.customer.sector.name) !== -1;
-      },
-
-      addPaddingToTitle() {
-        console.log(this.job.activity.title, this.job.activity.title.length)
-        return this.showCountryLogo() && this.job.activity.title.length < 20;
-      }
 
     },
 
