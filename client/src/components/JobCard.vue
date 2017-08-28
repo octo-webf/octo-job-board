@@ -127,7 +127,10 @@
       },
 
       showCountryLogo() {
-        return countries.indexOf(this.job.project.customer.sector.name) !== -1;
+        if (this.job.project.customer.sector) {
+          return countries.indexOf(this.job.project.customer.sector.name) !== -1;
+        }
+        return false;
       },
 
       addPaddingToTitle() {
