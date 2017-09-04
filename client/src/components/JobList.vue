@@ -11,12 +11,12 @@
             <section class="job-results job-results--delivery">
               <div class="job-results__header">
                 <h1 class="job-results__title">
-                  Missions à staffer ({{ jobs.length }})
+                  Missions à staffer ({{ displayJobs.length }})
                 </h1>
-                <job-list-filters @selectCountryFilter="onSelectedCountryFilter"></job-list-filters>
+                <country-filters @selectCountryFilter="onSelectedCountryFilter"></country-filters>
               </div>
               <ul class="job-results__list">
-                <li class="job-results__item" v-for="job in jobs">
+                <li class="job-results__item" v-for="job in displayJobs">
                   <job-card :job="job"></job-card>
                 </li>
               </ul>
@@ -33,7 +33,7 @@
   import projectStatus from '@/utils/projectStatus';
   import jobsApi from '@/api/jobs';
   import AppHeader from '@/components/AppHeader';
-  import JobListFilters from '@/components/JobListFilters';
+  import CountryFilters from '@/components/CountryFilters';
   import JobCard from '@/components/JobCard';
   import Circle from 'vue-loading-spinner/src/components/Circle';
   import countries from '@/utils/countries';
@@ -44,15 +44,15 @@
 
     components: {
       AppHeader,
-      JobListFilters,
+      CountryFilters,
       JobCard,
       'circle-loader': Circle,
     },
 
     data() {
       return {
-        allJobs: [],
-        jobs: [],
+        jobsFromApi: [],
+        displayJobs: [],
         isLoading: false,
       };
     },
@@ -69,8 +69,8 @@
           const accessToken = authenticationService.getAccessToken();
           jobsApi.fetchAll(accessToken)
             .then((jobs) => {
-              this.allJobs = this._sortJobsByProjectStatus(jobs);
-              this.jobs = this._sortJobsByProjectStatus(jobs);
+              this.jobsFromApi = this._sortJobsByProjectStatus(jobs);
+              this.displayJobs = this.jobsFromApi;
             })
             .then(() => {
               this.isLoading = false;
@@ -83,7 +83,7 @@
       },
 
       onSelectedCountryFilter(selectedCountryFilter) {
-        this.jobs = this._filterJobsByCountry(this.allJobs, selectedCountryFilter);
+        this.displayJobs = this._filterJobsByCountry(this.jobsFromApi, selectedCountryFilter);
       },
 
       _filterJobsByCountry(allJobs, selectedCountryFilter) {

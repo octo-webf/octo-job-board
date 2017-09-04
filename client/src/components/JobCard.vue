@@ -5,9 +5,9 @@
       <a :href="octopodUrl" target="_blank" class="job__link">
 
         <div class="job__profile">
-          <h2 class="job__title" :class="{ 'padding-left-40': addPaddingToTitle }">{{ job.activity.title }}</h2>
+          <h2 class="job__title" :class="jobFlagClass">{{ job.activity.title }}</h2>
           <div class="job__country-logo" v-if="showCountryLogo">
-            <img :src="'../static/flags/' + jobSectorName + '.svg'" />
+            <img class="job__country-image" :src="countrySrc" />
           </div>
         </div>
 
@@ -120,8 +120,8 @@
         return classes;
       },
 
-      jobSectorName() {
-        return this.job.project.customer.sector.name;
+      countrySrc() {
+        return `../static/flags/${this.job.project.customer.sector.name}.svg`;
       },
 
       showCountryLogo() {
@@ -131,10 +131,9 @@
         return false;
       },
 
-      addPaddingToTitle() {
-        return this.showCountryLogo && this.job.activity.title.length < 20;
+      jobFlagClass() {
+        return (this.showCountryLogo && this.job.activity.title.length < 20) ? 'job__title--with-flags' : '';
       },
-
     },
 
     methods: {
@@ -226,7 +225,7 @@
     color: #07c;
   }
 
-  .padding-left-40 {
+  .job__title--with-flags {
     padding-left: 40px;
   }
 
@@ -240,7 +239,7 @@
     height: 1px;
   }
 
-  .job__country-logo img {
+  .job__country-image {
     width: 25px;
     height: 25px;
     border-radius: 50%;

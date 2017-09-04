@@ -349,16 +349,16 @@ describe('Unit | Component | JobCard.vue', () => {
     });
   });
 
-  describe('computed property #jobSectorName', () => {
+  describe('computed property #countrySrc', () => {
     it('should return the sector name value', () => {
       // Given
-      job.project.customer.sector.name = 'FR - La Poste';
+      job.project.customer.sector.name = 'Suisse';
 
       // When
-      const jobSectorName = component.jobSectorName;
+      const countrySrc = component.countrySrc;
 
       // Then
-      expect(jobSectorName).to.equal('FR - La Poste');
+      expect(countrySrc).to.equal('../static/flags/Suisse.svg');
     });
   });
 
@@ -408,40 +408,40 @@ describe('Unit | Component | JobCard.vue', () => {
     });
   });
 
-  describe('computed property #addPaddingToTitle', () => {
-    it('should return false if the job is in France', () => {
+  describe('computed property #jobFlagClass', () => {
+    it('should return empty if the job is in France', () => {
       // Given
       job.project.customer.sector.name = 'FR - La Poste';
 
       // When
-      const addPaddingToTitle = component.addPaddingToTitle;
+      const jobFlagClass = component.jobFlagClass;
 
       // Then
-      expect(addPaddingToTitle).to.be.false;
+      expect(jobFlagClass).to.equal('');
     });
 
-    it('should return true if the job is overseas and the title is short enough', () => {
+    it('should return job__title--with-flags class if the job is overseas and the title is short enough', () => {
       // Given
       job.project.customer.sector.name = 'Australia';
       job.activity.title = 'Dev React'; // 9 chars
 
       // When
-      const addPaddingToTitle = component.addPaddingToTitle;
+      const jobFlagClass = component.jobFlagClass;
 
       // Then
-      expect(addPaddingToTitle).to.be.true;
+      expect(jobFlagClass).to.equal('job__title--with-flags');
     });
 
-    it('should return false if the job is overseas but the title is too long', () => {
+    it('should return empty if the job is overseas but the title is too long', () => {
       // Given
       job.project.customer.sector.name = 'Australia';
       job.activity.title = 'Senior Spark/Hive Architect'; // 27 chars
 
       // When
-      const addPaddingToTitle = component.addPaddingToTitle;
+      const jobFlagClass = component.jobFlagClass;
 
       // Then
-      expect(addPaddingToTitle).to.be.false;
+      expect(jobFlagClass).to.equal('');
     });
   });
 });
