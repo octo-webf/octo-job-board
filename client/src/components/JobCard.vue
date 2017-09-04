@@ -240,10 +240,10 @@
   }
 
   .job__country-image {
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-    margin: 0 5px 0 10px;
+    /*width: 25px;*/
+    height: 20px;
+    /*border-radius: 50%;*/
+    margin: 0 5px 0 0px;
   }
 
   .job__separator {
