@@ -139,29 +139,29 @@ describe('Unit | Component | JobList.vue', () => {
             },
           },
         },
-        {
-          id: 1,
-          activity: {
-            title: 'Tech Lead mission 1',
+          {
+            id: 1,
+            activity: {
+              title: 'Tech Lead mission 1',
+            },
+            project: {
+              id: 123456,
+              status: 'proposal_in_progress',
+              name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
+              customer: {
+                name: 'La Poste - Courrier',
+              },
+              staffing_needed_from: '2017-07-01',
+              duration: '10 mois',
+              location: 'OCTO',
+              business_contact: {
+                nickname: 'ABC',
+              },
+              mission_director: {
+                nickname: 'XYZ',
+              },
+            },
           },
-          project: {
-            id: 123456,
-            status: 'proposal_in_progress',
-            name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
-            customer: {
-              name: 'La Poste - Courrier',
-            },
-            staffing_needed_from: '2017-07-01',
-            duration: '10 mois',
-            location: 'OCTO',
-            business_contact: {
-              nickname: 'ABC',
-            },
-            mission_director: {
-              nickname: 'XYZ',
-            },
-          },
-        },
         ];
 
         sinon.stub(projectStatus, 'sort').returns(expectedJobs);
@@ -280,50 +280,60 @@ describe('Unit | Component | JobList.vue', () => {
         expect(getJobCardsCount(component)).to.equal(2);
       }));
 
-      it('When selecting jobs in France and overseas, should display the two listed jobs', () => Vue.nextTick().then(() => {
-        // When
-        component.onSelectedCountryFilter('anyCountry');
-        // Then
-        Vue.nextTick().then(() => {
-          expect(getJobCardsCount(component)).to.equal(2);
+      describe('when selecting jobs in France and overseas', () => {
+        it('should display the two listed jobs', () => {
+          // When
+          component.onSelectedCountryFilter('anyCountry');
+          // Then
+          return Vue.nextTick().then(() => {
+            expect(getJobCardsCount(component)).to.equal(2);
+          });
         });
-      }));
+      });
 
-      it('When selecting only jobs in France, should only display one job', () => Vue.nextTick().then(() => {
-        // When
-        component.onSelectedCountryFilter('France');
-        // Then
-        Vue.nextTick().then(() => {
-          expect(getJobCardsCount(component)).to.equal(1);
-        });
-      }));
+      describe('when selecting only jobs in France', () => {
+        it('should only display one job', () => Vue.nextTick().then(() => {
+          // When
+          component.onSelectedCountryFilter('France');
+          // Then
+          return Vue.nextTick().then(() => {
+            expect(getJobCardsCount(component)).to.equal(1);
+          });
+        }));
+      });
 
-      it('When selecting only jobs in Australia, should only display one job', () => Vue.nextTick().then(() => {
-        // When
-        component.onSelectedCountryFilter('Australia');
-        // Then
-        Vue.nextTick().then(() => {
-          expect(getJobCardsCount(component)).to.equal(1);
-        });
-      }));
+      describe('when selecting only jobs in Australia', () => {
+        it('should only display one job', () => Vue.nextTick().then(() => {
+          // When
+          component.onSelectedCountryFilter('Australia');
+          // Then
+          return Vue.nextTick().then(() => {
+            expect(getJobCardsCount(component)).to.equal(1);
+          });
+        }));
+      });
 
-      it('When selecting only jobs in Morocco, should not display any job', () => Vue.nextTick().then(() => {
-        // When
-        component.onSelectedCountryFilter('Maroc');
-        // Then
-        Vue.nextTick().then(() => {
-          expect(getJobCardsCount(component)).to.equal(0);
-        });
-      }));
+      describe('when selecting only jobs in Morocco', () => {
+        it('should not display any job', () => Vue.nextTick().then(() => {
+          // When
+          component.onSelectedCountryFilter('Maroc');
+          // Then
+          return Vue.nextTick().then(() => {
+            expect(getJobCardsCount(component)).to.equal(0);
+          });
+        }));
+      });
 
-      it('When selecting only jobs in Switzerland, should not display any job', () => Vue.nextTick().then(() => {
-        // When
-        component.onSelectedCountryFilter('Suisse');
-        // Then
-        Vue.nextTick().then(() => {
-          expect(getJobCardsCount(component)).to.equal(0);
-        });
-      }));
+      describe('when selecting only jobs in Switzerland', () => {
+        it('should not display any job', () => Vue.nextTick().then(() => {
+          // When
+          component.onSelectedCountryFilter('Suisse');
+          // Then
+          return Vue.nextTick().then(() => {
+            expect(getJobCardsCount(component)).to.equal(0);
+          });
+        }));
+      });
     });
   });
 });
