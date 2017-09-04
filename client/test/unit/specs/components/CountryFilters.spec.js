@@ -31,7 +31,7 @@ describe('Unit | Component | CountryFilters.vue', () => {
 
       // then
       return Vue.nextTick().then(() => {
-        expect(spy).to.have.been.calledWith('selectCountryFilter', 'France')
+        expect(spy).to.have.been.calledWith('selectCountryFilter', 'France');
       });
     });
   });
