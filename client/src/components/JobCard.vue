@@ -226,7 +226,7 @@
   }
 
   .job__title--with-flags {
-    padding-left: 40px;
+    padding-left: 20px;
   }
 
   .job__link:hover .job__title {
