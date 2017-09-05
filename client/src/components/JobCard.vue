@@ -7,7 +7,7 @@
         <div class="job__profile">
           <h2 class="job__title" :class="jobFlagClass">{{ job.activity.title }}</h2>
           <div class="job__country-logo" v-if="showCountryLogo">
-            <img class="job__country-image" :src="countrySrc" />
+            <span class="flag-icon" :class="countryFlagClass"></span>
           </div>
         </div>
 
@@ -55,6 +55,7 @@
 
 <script>
   import moment from 'moment';
+  import 'flag-icon-css/css/flag-icon.css';
   import interestsApi from '@/api/interests';
   import authenticationService from '@/services/authentication';
   import countries from '@/utils/countries';
@@ -120,8 +121,18 @@
         return classes;
       },
 
-      countrySrc() {
-        return `../static/flags/${this.job.project.customer.sector.name}.svg`;
+      countryFlagClass() {
+        const countryName = this.job.project.customer.sector.name;
+        if (countryName === 'Australia') {
+          return 'flag-icon-au';
+        }
+        if (countryName === 'Maroc') {
+          return 'flag-icon-ma';
+        }
+        if (countryName === 'Suisse') {
+          return 'flag-icon-ch';
+        }
+        return 'flag-icon-fr';
       },
 
       showCountryLogo() {
@@ -225,25 +236,16 @@
     color: #07c;
   }
 
+  .job__country-logo {
+    margin: 0 5px 0 10px;
+  }
+
   .job__title--with-flags {
-    padding-left: 20px;
+    padding-left: 26px;
   }
 
   .job__link:hover .job__title {
     text-decoration: underline;
-  }
-
-  .job__country-logo {
-    flex: 0;
-    width: 40px;
-    height: 1px;
-  }
-
-  .job__country-image {
-    /*width: 25px;*/
-    height: 20px;
-    /*border-radius: 50%;*/
-    margin: 0 5px 0 0px;
   }
 
   .job__separator {
