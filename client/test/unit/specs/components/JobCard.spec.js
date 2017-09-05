@@ -349,16 +349,49 @@ describe('Unit | Component | JobCard.vue', () => {
     });
   });
 
-  describe('computed property #countrySrc', () => {
-    it('should return the sector name value', () => {
+  describe('computed property #countryFlagClass', () => {
+    it('should return the correct Australia flag class', () => {
+      // Given
+      job.project.customer.sector.name = 'Australia';
+
+      // When
+      const countrySrc = component.countryFlagClass;
+
+      // Then
+      expect(countrySrc).to.equal('flag-icon-au');
+    });
+
+    it('should return the correct Morocco flag class', () => {
+      // Given
+      job.project.customer.sector.name = 'Maroc';
+
+      // When
+      const countrySrc = component.countryFlagClass;
+
+      // Then
+      expect(countrySrc).to.equal('flag-icon-ma');
+    });
+
+    it('should return the correct flag class', () => {
       // Given
       job.project.customer.sector.name = 'Suisse';
 
       // When
-      const countrySrc = component.countrySrc;
+      const countrySrc = component.countryFlagClass;
 
       // Then
-      expect(countrySrc).to.equal('../static/flags/Suisse.svg');
+      expect(countrySrc).to.equal('flag-icon-ch');
+    });
+
+    it('should return the default France flag class', () => {
+      // Given
+      job.project.customer.sector.name = 'FR - Distribution';
+
+      // When
+      const countrySrc = component.countryFlagClass;
+
+      // Then
+      expect(countrySrc).to.equal('flag-icon-fr');
     });
   });
 
