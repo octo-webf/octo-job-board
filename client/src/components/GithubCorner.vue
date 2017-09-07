@@ -21,6 +21,14 @@
 </script>
 
 <style>
+
+  .github-corner {
+    position: fixed;
+    top: 0;
+    z-index: 1;
+    right: 0;
+  }
+
   .github-corner__link:hover .octo-arm {
     animation: octocat-wave 560ms ease-in-out
   }

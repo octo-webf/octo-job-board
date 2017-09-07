@@ -4,12 +4,17 @@ import VueAnalytics from 'vue-analytics';
 import JobCard from '@/components/JobCard';
 import interestsApi from '@/api/interests';
 import authenticationService from '@/services/authentication';
+import Icon from 'vue-awesome/components/Icon';
+
+import 'vue-awesome/icons';
 
 moment.locale('fr');
 
 Vue.use(VueAnalytics, {
   id: `${process.env.ANALYTICS_ID}`,
 });
+
+Vue.component('icon', Icon);
 
 describe('Unit | Component | JobCard.vue', () => {
   let component;
@@ -25,6 +30,9 @@ describe('Unit | Component | JobCard.vue', () => {
       name: 'Refonte du SI',
       customer: {
         name: 'La Poste - Courrier',
+        sector: {
+          name: 'FR - La Poste',
+        },
       },
       duration: '10 mois',
       locations: 'OCTO',
@@ -34,6 +42,7 @@ describe('Unit | Component | JobCard.vue', () => {
       mission_director: {
         nickname: 'XYZ',
       },
+      reference: 'F2017-1234',
     },
   };
 
@@ -91,16 +100,38 @@ describe('Unit | Component | JobCard.vue', () => {
       expect(component.$el.querySelector('.job__mission').textContent.trim()).to.equal('Refonte du SI');
     });
 
+    it('should display the project reference', () => {
+      expect(component.$el.querySelector('.job__reference').textContent.trim()).to.equal('#F2017-1234');
+    });
+
     it('should display the client name', () => {
       expect(component.$el.querySelector('.job__customer').textContent.trim()).to.equal('La Poste - Courrier');
     });
 
     it('should display the staffing_needed_from', () => {
-      expect(component.$el.querySelector('.job__start-date').textContent.trim()).to.equal('1 juillet 2017');
+      expect(component.$el.querySelector('.job__start-date').textContent.trim()).to.equal('01/07/17');
     });
 
     it('should display the locations', () => {
       expect(component.$el.querySelector('.job__locations').textContent.trim()).to.equal('OCTO');
+    });
+
+    it('should display the business contact', () => {
+      expect(component.$el.querySelector('.job__business-contact').textContent.trim()).to.equal('ABC');
+    });
+
+    it('should display the mission director when it exists', () => {
+      expect(component.$el.querySelector('.job__mission-director').textContent.trim()).to.equal('XYZ');
+    });
+
+    it('should not display the mission director when it does not exist', () => {
+      // given
+      job.project.mission_director = null;
+
+      // when
+      return Vue.nextTick(() => {
+        expect(component.$el.querySelector('.job__mission-director')).to.not.exist;
+      });
     });
 
     it('should have enabled button', () => {
@@ -209,7 +240,7 @@ describe('Unit | Component | JobCard.vue', () => {
       const staffingNeededSince = component.staffingNeededSince;
 
       // Then
-      expect(staffingNeededSince).to.equal('1 juillet 2017');
+      expect(staffingNeededSince).to.equal('01/07/17');
     });
   });
 
@@ -235,7 +266,7 @@ describe('Unit | Component | JobCard.vue', () => {
       const statusClass = component.statusClass;
 
       // Then
-      expect(statusClass).to.equal('job__status job__status--mission_accepted');
+      expect(statusClass).to.equal('job__status--mission_accepted');
     });
 
     it('should return empty string when api status is undefined', () => {
@@ -315,6 +346,135 @@ describe('Unit | Component | JobCard.vue', () => {
 
       // Then
       expect(status).to.equal('propale');
+    });
+  });
+
+  describe('computed property #countryFlagClass', () => {
+    it('should return the correct Australia flag class', () => {
+      // Given
+      job.project.customer.sector.name = 'Australia';
+
+      // When
+      const countrySrc = component.countryFlagClass;
+
+      // Then
+      expect(countrySrc).to.equal('flag-icon-au');
+    });
+
+    it('should return the correct Morocco flag class', () => {
+      // Given
+      job.project.customer.sector.name = 'Maroc';
+
+      // When
+      const countrySrc = component.countryFlagClass;
+
+      // Then
+      expect(countrySrc).to.equal('flag-icon-ma');
+    });
+
+    it('should return the correct flag class', () => {
+      // Given
+      job.project.customer.sector.name = 'Suisse';
+
+      // When
+      const countrySrc = component.countryFlagClass;
+
+      // Then
+      expect(countrySrc).to.equal('flag-icon-ch');
+    });
+
+    it('should return the default France flag class', () => {
+      // Given
+      job.project.customer.sector.name = 'FR - Distribution';
+
+      // When
+      const countrySrc = component.countryFlagClass;
+
+      // Then
+      expect(countrySrc).to.equal('flag-icon-fr');
+    });
+  });
+
+  describe('computed property #showCountryLogo', () => {
+    it('should return true if the job is in Australia', () => {
+      // Given
+      job.project.customer.sector.name = 'Australia';
+
+      // When
+      const showCountryLogo = component.showCountryLogo;
+
+      // Then
+      expect(showCountryLogo).to.be.true;
+    });
+
+    it('should return true if the job is in Morocco', () => {
+      // Given
+      job.project.customer.sector.name = 'Maroc';
+
+      // When
+      const showCountryLogo = component.showCountryLogo;
+
+      // Then
+      expect(showCountryLogo).to.be.true;
+    });
+
+    it('should return true if the job is in Switzerland', () => {
+      // Given
+      job.project.customer.sector.name = 'Suisse';
+
+      // When
+      const showCountryLogo = component.showCountryLogo;
+
+      // Then
+      expect(showCountryLogo).to.be.true;
+    });
+
+    it('should return false if the job is in France', () => {
+      // Given
+      job.project.customer.sector.name = 'FR - Assurances';
+
+      // When
+      const showCountryLogo = component.showCountryLogo;
+
+      // Then
+      expect(showCountryLogo).to.be.false;
+    });
+  });
+
+  describe('computed property #jobFlagClass', () => {
+    it('should return empty if the job is in France', () => {
+      // Given
+      job.project.customer.sector.name = 'FR - La Poste';
+
+      // When
+      const jobFlagClass = component.jobFlagClass;
+
+      // Then
+      expect(jobFlagClass).to.equal('');
+    });
+
+    it('should return job__title--with-flags class if the job is overseas and the title is short enough', () => {
+      // Given
+      job.project.customer.sector.name = 'Australia';
+      job.activity.title = 'Dev React'; // 9 chars
+
+      // When
+      const jobFlagClass = component.jobFlagClass;
+
+      // Then
+      expect(jobFlagClass).to.equal('job__title--with-flags');
+    });
+
+    it('should return empty if the job is overseas but the title is too long', () => {
+      // Given
+      job.project.customer.sector.name = 'Australia';
+      job.activity.title = 'Senior Spark/Hive Architect'; // 27 chars
+
+      // When
+      const jobFlagClass = component.jobFlagClass;
+
+      // Then
+      expect(jobFlagClass).to.equal('');
     });
   });
 });
