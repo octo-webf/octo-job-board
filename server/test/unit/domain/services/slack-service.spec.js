@@ -1,6 +1,6 @@
-const { expect, sinon } = require('../../test-helper');
-const slackService = require('../../../src/domain/slack-service');
-const slackClient = require('../../../src/infrastructure/slack');
+const { expect, sinon } = require('../../../test-helper');
+const slackService = require('../../../../src/domain/services/slack-service');
+const slackClient = require('../../../../src/infrastructure/slack');
 
 describe('Unit | Domain | slack-service', () => {
   describe('#postFeedbackMessage', () => {
@@ -10,10 +10,6 @@ describe('Unit | Domain | slack-service', () => {
 
     afterEach(() => {
       slackClient.postMessage.restore();
-    });
-
-    it('should exist', () => {
-      expect(slackService.postFeedbackMessage).to.exist;
     });
 
     it('should publish a message on Slack channel (via Slack client)', () => {

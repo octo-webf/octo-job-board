@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken');
-const { request, sinon, expect } = require('../../test-helper');
-const app = require('../../../app');
-const GoogleAuthWrapper = require('../../../src/infrastructure/google-auth');
-const AuthorizationCodeValidator = require('../../../src/infrastructure/authorization-code-validator');
+const { request, sinon, expect } = require('../../../test-helper');
+const app = require('../../../../app');
+const GoogleAuthWrapper = require('../../../../src/infrastructure/google-auth');
+const AuthorizationCodeValidator = require('../../../../src/infrastructure/authorization-code-validator');
 
 describe('Integration | Routes | auth route', () => {
   describe('POST /auth/token', () => {

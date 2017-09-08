@@ -17,6 +17,7 @@ module.exports = (req, res, next) => {
     try {
       const decoded = jwt.verify(accessToken, config.ACCESS_TOKEN_SECRET);
       req.userId = decoded.userId;
+      req.userEmail = decoded.email;
       next();
     } catch (err) {
       res.status(401).json({

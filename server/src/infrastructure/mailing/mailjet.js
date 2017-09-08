@@ -1,5 +1,15 @@
-const mailjetConfig = require('../config/index').MAILJET;
+const mailjetConfig = require('../../config/index').MAILJET;
 const nodeMailjet = require('node-mailjet');
+
+function _formatRecipients(recipients) {
+  if (!recipients) {
+    return [];
+  }
+  if (typeof recipients === 'string') {
+    return [{ Email: recipients }];
+  }
+  return recipients.map(recipient => ({ Email: recipient }));
+}
 
 function _formatPayload(options) {
   return {
@@ -7,7 +17,7 @@ function _formatPayload(options) {
     FromName: options.fromName,
     Subject: options.subject,
     'Html-part': options.template,
-    Recipients: [{ Email: options.to }],
+    Recipients: _formatRecipients(options.to),
   };
 }
 
