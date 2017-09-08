@@ -5,10 +5,11 @@ const subscriptionService = require('../../domain/services/subscription-service'
 const router = express.Router();
 
 router.post('/', auth, (req, res) => {
-  const email = req.userEmail;
+
+  const { userEmail } = req;
 
   subscriptionService
-    .addSubscription(email)
+    .addSubscription(userEmail)
     .then(({ subscription, created }) => {
       if (created) {
         res.status(201);
