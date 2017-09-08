@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueModal from 'vue-js-modal';
 import AppHeader from '@/components/AppHeader';
 import authenticationService from '@/services/authentication';
+import subscriptionsApi from '@/api/subscriptions';
 
 Vue.use(VueModal);
 
@@ -31,6 +32,10 @@ describe('Unit | Component | AppHeader.vue', () => {
 
     it('should display a button to logout', () => {
       expect(component.$el.querySelector('.navbar-action__logout')).to.exist;
+    });
+
+    it('should display a button to subscribe to jobs news', () => {
+      expect(component.$el.querySelector('.navbar-action__subscribe')).to.exist;
     });
   });
 
@@ -70,4 +75,44 @@ describe('Unit | Component | AppHeader.vue', () => {
       expect(authenticationService.disconnect).to.have.been.called;
     });
   });
+
+  describe('#subscribe', () => {
+    beforeEach(() => {
+      sinon.stub(authenticationService, 'isAuthenticated');
+      sinon.stub(authenticationService, 'getAccessToken').returns('fake token');
+      sinon.stub(subscriptionsApi, 'subscribe').resolves();
+    });
+
+    afterEach(() => {
+      authenticationService.isAuthenticated.restore();
+      authenticationService.getAccessToken.restore();
+      subscriptionsApi.subscribe.restore();
+    });
+
+    it('should call the subscriptions API with good params when user is authenticated', () => {
+      // given
+      authenticationService.isAuthenticated.returns(true);
+
+      // when
+      component.subscribe();
+
+      // then
+      expect(subscriptionsApi.subscribe).to.have.been.calledWith('fake token');
+    });
+
+    it('should do nothing when user is not authenticated', () => {
+      // given
+      authenticationService.isAuthenticated.returns(false);
+
+      // when
+      component.subscribe();
+
+      // then
+      expect(subscriptionsApi.subscribe).to.not.have.been.called;
+    });
+
+
+  });
+
+
 });
