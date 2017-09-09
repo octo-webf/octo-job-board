@@ -26,6 +26,7 @@
 </template>
 <script>
   import authenticationService from '@/services/authentication';
+  import notificationService from '@/services/notification';
   import subscriptions from '@/api/subscriptions';
 
   export default {
@@ -45,10 +46,15 @@
       subscribe() {
         if (authenticationService.isAuthenticated()) {
           const accessToken = authenticationService.getAccessToken();
-          subscriptions.subscribe(accessToken);
+          subscriptions
+            .subscribe(accessToken)
+            .then(this.displayToasterNotification);
         }
-
-      }
+      },
+      displayToasterNotification() {
+        const message = 'Votre souscription aux alertes du Jobobard a bien été prise en compte.';
+        notificationService.success(this, message);
+      },
     },
 
   };

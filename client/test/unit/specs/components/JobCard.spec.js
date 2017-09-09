@@ -4,6 +4,7 @@ import VueAnalytics from 'vue-analytics';
 import JobCard from '@/components/JobCard';
 import interestsApi from '@/api/interests';
 import authenticationService from '@/services/authentication';
+import notificationService from '@/services/notification';
 import Icon from 'vue-awesome/components/Icon';
 
 import 'vue-awesome/icons';
@@ -58,6 +59,7 @@ describe('Unit | Component | JobCard.vue', () => {
     sinon.stub(authenticationService, 'isAuthenticated').returns(true);
     sinon.stub(authenticationService, 'getAuthenticatedUser').returns(consultant);
     sinon.stub(authenticationService, 'getAccessToken').returns(accessToken);
+    sinon.stub(notificationService, 'success');
     sinon.stub(interestsApi, 'sendInterest').resolves();
 
     // when
@@ -73,6 +75,7 @@ describe('Unit | Component | JobCard.vue', () => {
     authenticationService.isAuthenticated.restore();
     authenticationService.getAuthenticatedUser.restore();
     authenticationService.getAccessToken.restore();
+    notificationService.success.restore();
     interestsApi.sendInterest.restore();
   });
 

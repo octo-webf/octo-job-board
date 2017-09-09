@@ -15,7 +15,7 @@ describe('#subscription', () => {
     const accessToken = 'valid-access-token';
 
     const expectedUrl = 'http://localhost:3000/api/subscriptions';
-    const expectedOptions = {headers: {Authorization: `Bearer ${accessToken}`}};
+    const expectedOptions = { headers: { Authorization: `Bearer ${accessToken}` } };
 
     // when
     const promise = api.subscribe(accessToken);
