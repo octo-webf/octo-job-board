@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueModal from 'vue-js-modal';
 import AppHeader from '@/components/AppHeader';
 import authenticationService from '@/services/authentication';
+import notificationService from '@/services/notification';
 import subscriptionsApi from '@/api/subscriptions';
 
 Vue.use(VueModal);
@@ -80,12 +81,14 @@ describe('Unit | Component | AppHeader.vue', () => {
     beforeEach(() => {
       sinon.stub(authenticationService, 'isAuthenticated');
       sinon.stub(authenticationService, 'getAccessToken').returns('fake token');
+      sinon.stub(notificationService, 'success');
       sinon.stub(subscriptionsApi, 'subscribe').resolves();
     });
 
     afterEach(() => {
       authenticationService.isAuthenticated.restore();
       authenticationService.getAccessToken.restore();
+      notificationService.success.restore();
       subscriptionsApi.subscribe.restore();
     });
 
@@ -111,8 +114,19 @@ describe('Unit | Component | AppHeader.vue', () => {
       expect(subscriptionsApi.subscribe).to.not.have.been.called;
     });
 
+    it('should display toast notification', (done) => {
+      // given
+      authenticationService.isAuthenticated.returns(true);
 
+      // when
+      component.subscribe();
+
+      // then
+      setTimeout(() => {
+        const message = 'Votre souscription aux alertes du Jobobard a bien été prise en compte.';
+        expect(notificationService.success).to.have.been.calledWithExactly(component, message);
+        done();
+      }, 100);
+    });
   });
-
-
 });
