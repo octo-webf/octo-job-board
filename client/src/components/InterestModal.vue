@@ -1,10 +1,10 @@
 <template>
   <div class="interest-modal-wrapper">
-    <modal class="interest-modal" name="interest-modal" @before-open="beforeOpen" :height="400">
+    <modal class="interest-modal" name="interest-modal" @before-open="beforeOpen" :height="404">
 
       <!-- modal header-->
       <div class="interest-modal__header">
-        <h2 class="interest-modal__title">Es-tu certain de vouloir déclarer votre intérêt&nbsp;?</h2>
+        <h2 class="interest-modal__title">Vraiment intéressé·e&nbsp;?</h2>
       </div>
 
       <!-- modal body -->
@@ -25,7 +25,7 @@
           </ul>
           <p>Pense aussi à vérifier ta disponibilité au
             <strong>{{ staffingNeededSince }}</strong>
-            avec ta·ton directeur·trice de mission actuelle&nbsp;;-)</p>
+            avec ta·ton directeur·trice de mission actuel·le&nbsp;;-)</p>
         </div>
       </div>
 
@@ -129,10 +129,9 @@
         const consultant = authenticationService.getAuthenticatedUser();
         const accessToken = authenticationService.getAccessToken();
         return interestsApi.sendInterest(this.interestingJob, consultant, accessToken)
-          .then(() => {
-            this._closeModal();
-          }).catch(() => {
-            this.error = 'Une erreur est survenue durant l\'envoi de votre intérêt.';
+          .then(this._closeModal)
+          .catch(() => {
+            this.error = 'Une erreur est survenue durant l\'envoi de ton intérêt.';
           });
       },
 
@@ -142,7 +141,7 @@
 
       displayToasterNotification() {
         const mission = this.mission;
-        const message = `Votre intérêt pour la mission "${mission}" a été pris en compte.`;
+        const message = `Ton intérêt pour la mission "${mission}" a été pris en compte.`;
         this.$root.$refs.toastr.s(message);
       },
 
@@ -175,17 +174,19 @@
   .interest-modal__header {
     background-color: #eef0f4;
     padding: 10px 20px;
+    justify-content: center;
+    display: flex;
   }
 
   .interest-modal__body {
-    padding: 15px 20px 48px;
+    padding: 15px 20px;
     background: #fff;
-    height: 216px;
+    height: 240px;
   }
 
   .interest-modal__title {
     margin: 0;
-    font-size: 16px;
+    font-size: 24px;
     color: #333333;
     height: 40px;
     line-height: 40px;
@@ -201,7 +202,6 @@
 
   .interest-modal__text {
     width: 100%;
-    border: 1px solid #d8dde6;
     resize: none;
     overflow: auto;
     font-size: 16px;
