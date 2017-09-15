@@ -92,7 +92,7 @@ describe('Unit | Component | AppHeader.vue', () => {
       subscriptionsApi.subscribe.restore();
     });
 
-    it('should call the subscriptions API with good params when user is authenticated', () => {
+    it('should call the subscriptions API with access token when user is authenticated', () => {
       // given
       authenticationService.isAuthenticated.returns(true);
 
@@ -103,7 +103,7 @@ describe('Unit | Component | AppHeader.vue', () => {
       expect(subscriptionsApi.subscribe).to.have.been.calledWith('fake token');
     });
 
-    it('should do nothing when user is not authenticated', () => {
+    it('should not call subscriptions API when user is not authenticated', () => {
       // given
       authenticationService.isAuthenticated.returns(false);
 
@@ -123,7 +123,7 @@ describe('Unit | Component | AppHeader.vue', () => {
 
       // then
       setTimeout(() => {
-        const message = 'Votre souscription aux alertes du Jobobard a bien été prise en compte.';
+        const message = 'Ton abonnement aux alertes du Jobboard a été pris en compte.';
         expect(notificationService.success).to.have.been.calledWithExactly(component, message);
         done();
       }, 100);

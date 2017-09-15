@@ -1,5 +1,5 @@
 import axios from 'axios';
-import api from '@/api/subscriptions';
+import subscriptionsApi from '@/api/subscriptions';
 
 describe('#subscription', () => {
   beforeEach(() => {
@@ -18,7 +18,7 @@ describe('#subscription', () => {
     const expectedOptions = { headers: { Authorization: `Bearer ${accessToken}` } };
 
     // when
-    const promise = api.subscribe(accessToken);
+    const promise = subscriptionsApi.subscribe(accessToken);
 
     // then
     return promise.then(() => {

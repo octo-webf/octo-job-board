@@ -166,7 +166,7 @@
 
       displayToasterNotification() {
         const mission = this.mission;
-        const message = `Votre intérêt pour la mission "${mission}" a été pris en compte.`;
+        const message = `Ton intérêt pour la mission "${mission}" a été pris en compte.`;
         notificationService.success(this, message);
       },
 
