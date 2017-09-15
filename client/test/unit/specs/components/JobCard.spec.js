@@ -53,7 +53,7 @@ describe('Unit | Component | JobCard.vue', () => {
           nickname: 'XYZ',
         },
         reference: 'F2017-1234',
-      }
+      },
     };
     sinon.stub(authenticationService, 'isAuthenticated').returns(true);
     sinon.stub(authenticationService, 'getAuthenticatedUser').returns(consultant);
