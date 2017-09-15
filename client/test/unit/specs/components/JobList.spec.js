@@ -246,29 +246,29 @@ describe('Unit | Component | JobList.vue', () => {
             },
           },
         },
-        {
-          id: 1,
-          activity: {
-            title: 'Tech Lead mission 1',
+          {
+            id: 1,
+            activity: {
+              title: 'Tech Lead mission 1',
+            },
+            project: {
+              id: 123456,
+              status: 'proposal_in_progress',
+              name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
+              customer: {
+                name: 'La Poste - Courrier',
+              },
+              staffing_needed_from: '2017-07-01',
+              duration: '10 mois',
+              location: 'OCTO',
+              business_contact: {
+                nickname: 'ABC',
+              },
+              mission_director: {
+                nickname: 'XYZ',
+              },
+            },
           },
-          project: {
-            id: 123456,
-            status: 'proposal_in_progress',
-            name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
-            customer: {
-              name: 'La Poste - Courrier',
-            },
-            staffing_needed_from: '2017-07-01',
-            duration: '10 mois',
-            location: 'OCTO',
-            business_contact: {
-              nickname: 'ABC',
-            },
-            mission_director: {
-              nickname: 'XYZ',
-            },
-          },
-        },
         ];
 
         sinon.stub(projectStatus, 'sort').returns(expectedJobs);
@@ -284,18 +284,24 @@ describe('Unit | Component | JobList.vue', () => {
       });
 
       it('should render as many jobs as received from the API', () => Vue.nextTick().then(() => {
-        const jobCards = component.$el.querySelectorAll('.job-card');
-        expect(jobCards.length).to.equal(2);
+        return Vue.nextTick().then(() => {
+          const jobCards = component.$el.querySelectorAll('.job-card');
+          expect(jobCards.length).to.equal(2);
+        });
       }));
 
       it('should add number of available jobs', () => Vue.nextTick().then(() => {
-        expect(component.$el.querySelector('.job-results__title').textContent.trim()).to.equal('Missions à staffer (2)');
+        return Vue.nextTick().then(() => {
+          expect(component.$el.querySelector('.job-results__title').textContent.trim()).to.equal('Missions à staffer (2)');
+        });
       }));
 
       it('should sort the mission jobs', () => Vue.nextTick().then(() => {
-        const jobTitles = component.$el.querySelectorAll('.job__title');
-        expect(jobTitles[0].textContent).to.equal('Tech Lead mission 2');
-        expect(jobTitles[1].textContent).to.equal('Tech Lead mission 1');
+        return Vue.nextTick().then(() => {
+          const jobTitles = component.$el.querySelectorAll('.job__title');
+          expect(jobTitles[0].textContent).to.equal('Tech Lead mission 2');
+          expect(jobTitles[1].textContent).to.equal('Tech Lead mission 1');
+        });
       }));
     });
 
@@ -384,18 +390,20 @@ describe('Unit | Component | JobList.vue', () => {
       });
 
       it('should render as many jobs as received from the API', () => Vue.nextTick().then(() => {
-        expect(getJobCardsCount(component)).to.equal(2);
+        return Vue.nextTick().then(() => {
+          expect(getJobCardsCount(component)).to.equal(2);
+        });
       }));
 
       describe('when selecting jobs in France and overseas', () => {
-        it('should display the two listed jobs', () => {
+        it('should display the two listed jobs', () => Vue.nextTick().then(() => {
           // When
           component.onSelectedCountryFilter('anyCountry');
           // Then
           return Vue.nextTick().then(() => {
             expect(getJobCardsCount(component)).to.equal(2);
           });
-        });
+        }));
       });
 
       describe('when selecting only jobs in France', () => {

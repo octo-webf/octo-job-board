@@ -18,33 +18,7 @@ Vue.component('icon', Icon);
 
 describe('Unit | Component | JobCard.vue', () => {
   let component;
-  const job = {
-    id: 2,
-    activity: {
-      title: 'Tech Lead',
-      staffing_needed_from: '2017-07-01',
-    },
-    project: {
-      id: 123456,
-      status: 'proposal_in_progress',
-      name: 'Refonte du SI',
-      customer: {
-        name: 'La Poste - Courrier',
-        sector: {
-          name: 'FR - La Poste',
-        },
-      },
-      duration: '10 mois',
-      locations: 'OCTO',
-      business_contact: {
-        nickname: 'ABC',
-      },
-      mission_director: {
-        nickname: 'XYZ',
-      },
-      reference: 'F2017-1234',
-    },
-  };
+  let job;
 
   const consultant = {
     name: 'Samurai Jack',
@@ -54,6 +28,33 @@ describe('Unit | Component | JobCard.vue', () => {
 
   beforeEach(() => {
     // given
+    job = {
+      id: 2,
+      activity: {
+        title: 'Tech Lead',
+        staffing_needed_from: '2017-07-01',
+      },
+      project: {
+        id: 123456,
+        status: 'proposal_in_progress',
+        name: 'Refonte du SI',
+        customer: {
+          name: 'La Poste - Courrier',
+          sector: {
+            name: 'FR - La Poste',
+          },
+        },
+        duration: '10 mois',
+        locations: 'OCTO',
+        business_contact: {
+          nickname: 'ABC',
+        },
+        mission_director: {
+          nickname: 'XYZ',
+        },
+        reference: 'F2017-1234',
+      }
+    };
     sinon.stub(authenticationService, 'isAuthenticated').returns(true);
     sinon.stub(authenticationService, 'getAuthenticatedUser').returns(consultant);
     sinon.stub(authenticationService, 'getAccessToken').returns(accessToken);
