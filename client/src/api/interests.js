@@ -15,8 +15,7 @@ const InterestsApi = {
     const options = { headers: { Authorization: `Bearer ${accessToken}` } };
 
     return axios.post(url, body, options)
-      .then(response => response.data)
-      .catch(error => Promise.reject(error));
+      .then(response => response.data);
   },
 };
 

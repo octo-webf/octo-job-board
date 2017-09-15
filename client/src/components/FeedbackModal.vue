@@ -1,10 +1,10 @@
 <template>
   <div class="feedback-modal-wrapper">
-    <modal class="feedback-modal" name="feedback-modal" @before-open="beforeOpen" :height="400">
+    <modal class="feedback-modal" name="feedback-modal" @before-open="beforeOpen" :height="415">
 
       <!-- modal header-->
       <div class="feedback-modal__header">
-        <h2 class="feedback-modal__title">Contacter le support</h2>
+        <h2 class="feedback-modal__title">Contacte le support</h2>
       </div>
 
       <!-- modal body -->
@@ -92,7 +92,8 @@
   .feedback-modal__header {
     background-color: #eef0f4;
     padding: 10px 20px;
-  }
+    justify-content: center;
+    display: flex;  }
 
   .feedback-modal__body {
     padding: 25px 20px;
@@ -107,7 +108,7 @@
 
   .feedback-modal__title {
     margin: 0;
-    font-size: 16px;
+    font-size: 24px;
     color: #333333;
     height: 40px;
     line-height: 40px;
