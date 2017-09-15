@@ -5,8 +5,7 @@ const subscriptionService = require('../../domain/services/subscription-service'
 const router = express.Router();
 
 router.post('/', auth, (req, res) => {
-
-  const { userEmail } = req;
+  const userEmail = req.userEmail;
 
   subscriptionService
     .addSubscription(userEmail)

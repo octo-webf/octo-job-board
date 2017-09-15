@@ -43,16 +43,17 @@
           this.$router.push('/login');
         });
       },
+
       subscribe() {
         if (authenticationService.isAuthenticated()) {
           const accessToken = authenticationService.getAccessToken();
-          subscriptions
-            .subscribe(accessToken)
+          subscriptions.subscribe(accessToken)
             .then(this.displayToasterNotification);
         }
       },
+
       displayToasterNotification() {
-        const message = 'Votre souscription aux alertes du Jobobard a bien été prise en compte.';
+        const message = 'Ton abonnement aux alertes du Jobboard a été pris en compte.';
         notificationService.success(this, message);
       },
     },
