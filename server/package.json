@@ -7,6 +7,7 @@
     "clean": "npm run clean:dependencies && npm run clean:db",
     "clean:dependencies": "rm -rf node_modules",
     "clean:db": "rm src/db/data.development.sqlite",
+    "configure": "./tools/setup/setup.sh",
     "lint": "./node_modules/.bin/eslint --ext .js src test",
     "lint:fix": "./node_modules/.bin/eslint --fix --ext .js src test",
     "test": "NODE_ENV=test nyc mocha --recursive",
