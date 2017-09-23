@@ -144,32 +144,6 @@
       displayInterestModal() {
         this.$emit('interest', this.job);
       },
-
-      trackEvent() {
-        this.$ga.event({
-          eventCategory: 'Job List',
-          eventAction: 'click',
-          eventLabel: 'I am interested',
-          eventValue: null,
-        });
-      },
-
-      sendInterest() {
-        const consultant = authenticationService.getAuthenticatedUser();
-        const accessToken = authenticationService.getAccessToken();
-        return interestsApi.sendInterest(this.job, consultant, accessToken);
-      },
-
-      disableButton() {
-        this.isClicked = true;
-      },
-
-      displayToasterNotification() {
-        const mission = this.mission;
-        const message = `Ton intérêt pour la mission "${mission}" a été pris en compte.`;
-        notificationService.success(this, message);
-      },
-
     },
 
   };
