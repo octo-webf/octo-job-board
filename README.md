@@ -28,23 +28,42 @@ npm run build
 npm start
 ```
 
+## Visualise Data in Database
+
+#### IntelliJ IDEA (and other JetBrains products)
+
+In project tree, find octo-job-board/server/src/db/data.development.sqlite
+
+```bash
+- Right Click 
+- As Data Source
+- Driver should be `SQLITE`
+- OK
+- Click on `Download` missing driver files
+```
+
+Database is now configure and to access it, click on Database View
+(View > Database)
+
+## Running the different environments
+
 You can run the API server independently from the client's development one.
 
-## Server
+#### Server
 
 ```bash
 cd server
 npm start
 ```
 
-## Client
+#### Client
 
 ```bash
 cd client
 npm run dev
 ```
 
-## Release to production
+#### Release to production
 
 The release to production process is as simple as running the command (from any branch):
 
