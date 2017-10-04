@@ -1,7 +1,7 @@
 import projectStaffingNeededDate from '@/utils/projectStaffingNeededDate';
 
 describe('Unit | Utils | Project Staffing Needed Date', () => {
-  it.only('should sort two jobs according to project staffing needed date', () => {
+  it('should sort two jobs according to project staffing needed date', () => {
     // Given
     const job1 = { id: 1, activity: { staffing_needed_from: '2017-11-03' } };
     const job2 = { id: 2, activity: { staffing_needed_from: '2017-10-02' } };
