@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
+    "start:autoreload": "nodemon ./bin/www",
+    "startmon": "nodemon ./bin/www",
     "clean": "npm run clean:dependencies && npm run clean:db",
     "clean:dependencies": "rm -rf node_modules",
     "clean:db": "rm src/db/data.development.sqlite",
