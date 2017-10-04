@@ -4,6 +4,7 @@ import JobList from '@/components/JobList';
 import authentication from '@/services/authentication';
 import projectStatus from '@/utils/projectStatus';
 import jobsApi from '@/api/jobs';
+import jobFixture from './fixtures/jobs.fixture';
 
 Vue.use(VueAnalytics, {
   id: `${process.env.ANALYTICS_ID}`,
@@ -16,7 +17,6 @@ function getJobCardsCount(component) {
 
 describe('Unit | Component | JobList.vue', () => {
   let component;
-  let jobs;
   let expectedJobs;
   const Constructor = Vue.extend(JobList);
 
@@ -45,56 +45,7 @@ describe('Unit | Component | JobList.vue', () => {
   describe('on interest', () => {
     beforeEach(() => {
       // TODO extract fixtures
-      jobs = [
-        {
-          id: 1,
-          activity: {
-            title: 'Tech Lead mission 1',
-          },
-          project: {
-            id: 123456,
-            status: 'proposal_in_progress',
-            name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
-            customer: {
-              name: 'La Poste - Courrier',
-            },
-            staffing_needed_from: '2017-07-01',
-            duration: '10 mois',
-            location: 'OCTO',
-            business_contact: {
-              nickname: 'ABC',
-            },
-            mission_director: {
-              nickname: 'XYZ',
-            },
-          },
-        },
-        {
-          id: 2,
-          activity: {
-            title: 'Tech Lead mission 2',
-          },
-          project: {
-            id: 123456,
-            status: 'mission_signed',
-            name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
-            customer: {
-              name: 'La Poste - Courrier',
-            },
-            staffing_needed_from: '2017-07-01',
-            duration: '10 mois',
-            location: 'OCTO',
-            business_contact: {
-              nickname: 'ABC',
-            },
-            mission_director: {
-              nickname: 'XYZ',
-            },
-          },
-        },
-      ];
-
-      sinon.stub(jobsApi, 'fetchAll').resolves(jobs);
+      sinon.stub(jobsApi, 'fetchAll').resolves(jobFixture);
       sinon.stub(component.$modal, 'show');
       component = new Constructor().$mount();
     });
@@ -176,54 +127,6 @@ describe('Unit | Component | JobList.vue', () => {
     describe('after jobs are loaded', () => {
       beforeEach(() => {
         // given
-        jobs = [
-          {
-            id: 1,
-            activity: {
-              title: 'Tech Lead mission 1',
-            },
-            project: {
-              id: 123456,
-              status: 'proposal_in_progress',
-              name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
-              customer: {
-                name: 'La Poste - Courrier',
-              },
-              staffing_needed_from: '2017-07-01',
-              duration: '10 mois',
-              location: 'OCTO',
-              business_contact: {
-                nickname: 'ABC',
-              },
-              mission_director: {
-                nickname: 'XYZ',
-              },
-            },
-          },
-          {
-            id: 2,
-            activity: {
-              title: 'Tech Lead mission 2',
-            },
-            project: {
-              id: 123456,
-              status: 'mission_signed',
-              name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
-              customer: {
-                name: 'La Poste - Courrier',
-              },
-              staffing_needed_from: '2017-07-01',
-              duration: '10 mois',
-              location: 'OCTO',
-              business_contact: {
-                nickname: 'ABC',
-              },
-              mission_director: {
-                nickname: 'XYZ',
-              },
-            },
-          },
-        ];
         expectedJobs = [{
 
           id: 2,
@@ -274,7 +177,7 @@ describe('Unit | Component | JobList.vue', () => {
         ];
 
         sinon.stub(projectStatus, 'sort').returns(expectedJobs);
-        sinon.stub(jobsApi, 'fetchAll').resolves(jobs);
+        sinon.stub(jobsApi, 'fetchAll').resolves(jobFixture);
 
         // when
         component = new Constructor().$mount();
@@ -304,36 +207,6 @@ describe('Unit | Component | JobList.vue', () => {
     describe('after jobs are loaded, a country filter is applied', () => {
       beforeEach(() => {
         // given
-        jobs = [
-          {
-            id: 1,
-            activity: {
-              title: 'Tech Lead mission 1',
-            },
-            project: {
-              status: 'proposal_in_progress',
-              customer: {
-                sector: {
-                  name: 'FR - La Poste',
-                },
-              },
-            },
-          },
-          {
-            id: 2,
-            activity: {
-              title: 'Tech Lead mission 2',
-            },
-            project: {
-              status: 'mission_signed',
-              customer: {
-                sector: {
-                  name: 'Australia',
-                },
-              },
-            },
-          },
-        ];
         expectedJobs = [
           {
             id: 2,
@@ -374,7 +247,7 @@ describe('Unit | Component | JobList.vue', () => {
         ];
 
         sinon.stub(projectStatus, 'sort').returns(expectedJobs);
-        sinon.stub(jobsApi, 'fetchAll').resolves(jobs);
+        sinon.stub(jobsApi, 'fetchAll').resolves(jobFixture);
 
         // when
         component = new Constructor().$mount();
