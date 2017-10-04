@@ -12,13 +12,13 @@ export default {
     let today = moment();
     let counterNDays = 0;
 
-    while(jobsToBeSorted.length){
+   while(jobsToBeSorted.length){
 
       let jobsToKeepForNextIteration =[];
       let jobPlusMinusDay = today.clone().add(counterNDays, 'day');
 
       jobsToBeSorted.forEach((job) => {
-        let jobDate = moment(job.project.staffing_needed_from, 'YYYY-MM-DD');
+        let jobDate = moment(job.activity.staffing_needed_from, 'YYYY-MM-DD');
 
         if(jobDate.isSame(jobPlusMinusDay, 'day')){
           jobsSorted.push(job);
