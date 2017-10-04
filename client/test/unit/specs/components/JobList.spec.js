@@ -3,6 +3,7 @@ import VueAnalytics from 'vue-analytics';
 import JobList from '@/components/JobList';
 import authentication from '@/services/authentication';
 import projectStatus from '@/utils/projectStatus';
+import projectStaffingNeededDate from '@/utils/projectStaffingNeededDate';
 import jobsApi from '@/api/jobs';
 import jobFixture from './fixtures/jobs.fixture';
 
@@ -202,6 +203,321 @@ describe('Unit | Component | JobList.vue', () => {
         expect(jobTitles[0].textContent).to.equal('Tech Lead mission 2');
         expect(jobTitles[1].textContent).to.equal('Tech Lead mission 1');
       })));
+    });
+
+    describe('after jobs are loaded with different status and staffing needed dates', () => {
+      let expectedJobsWhenSortedByStatus;
+      let expectedJobsWhenSortedByStaffingNeededDate;
+      beforeEach(() => {
+        // given
+        jobs = [
+          {
+            id: 1,
+            activity: {
+              title: 'Tech Lead mission 1',
+            },
+            project: {
+              id: 123456,
+              status: 'proposal_in_progress',
+              name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
+              customer: {
+                name: 'La Poste - Courrier',
+              },
+              staffing_needed_from: '2017-10-01',
+              duration: '10 mois',
+              location: 'OCTO',
+              business_contact: {
+                nickname: 'ABC',
+              },
+              mission_director: {
+                nickname: 'XYZ',
+              },
+            },
+          },
+          {
+            id: 2,
+            activity: {
+              title: 'Tech Lead mission 2',
+            },
+            project: {
+              id: 123456,
+              status: 'mission_signed',
+              name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
+              customer: {
+                name: 'La Poste - Courrier',
+              },
+              staffing_needed_from: '2017-10-02',
+              duration: '10 mois',
+              location: 'OCTO',
+              business_contact: {
+                nickname: 'ABC',
+              },
+              mission_director: {
+                nickname: 'XYZ',
+              },
+            },
+          },
+          {
+            id: 3,
+            activity: {
+              title: 'Tech Lead mission 3',
+            },
+            project: {
+              id: 123456,
+              status: 'proposal_in_progress',
+              name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
+              customer: {
+                name: 'La Poste - Courrier',
+              },
+              staffing_needed_from: '2017-10-03',
+              duration: '10 mois',
+              location: 'OCTO',
+              business_contact: {
+                nickname: 'ABC',
+              },
+              mission_director: {
+                nickname: 'XYZ',
+              },
+            },
+          },
+          {
+            id: 4,
+            activity: {
+              title: 'Tech Lead mission 4',
+            },
+            project: {
+              id: 123456,
+              status: 'mission_signed',
+              name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
+              customer: {
+                name: 'La Poste - Courrier',
+              },
+              staffing_needed_from: '2017-10-04',
+              duration: '10 mois',
+              location: 'OCTO',
+              business_contact: {
+                nickname: 'ABC',
+              },
+              mission_director: {
+                nickname: 'XYZ',
+              },
+            },
+          },
+        ];
+        expectedJobsWhenSortedByStatus = [
+          {
+            id: 2,
+            activity: {
+              title: 'Tech Lead mission 2',
+            },
+            project: {
+              id: 123456,
+              status: 'mission_signed',
+              name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
+              customer: {
+                name: 'La Poste - Courrier',
+              },
+              staffing_needed_from: '2017-10-02',
+              duration: '10 mois',
+              location: 'OCTO',
+              business_contact: {
+                nickname: 'ABC',
+              },
+              mission_director: {
+                nickname: 'XYZ',
+              },
+            },
+          },
+          {
+            id: 4,
+            activity: {
+              title: 'Tech Lead mission 4',
+            },
+            project: {
+              id: 123456,
+              status: 'mission_signed',
+              name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
+              customer: {
+                name: 'La Poste - Courrier',
+              },
+              staffing_needed_from: '2017-10-04',
+              duration: '10 mois',
+              location: 'OCTO',
+              business_contact: {
+                nickname: 'ABC',
+              },
+              mission_director: {
+                nickname: 'XYZ',
+              },
+            },
+          },
+          {
+            id: 1,
+            activity: {
+              title: 'Tech Lead mission 1',
+            },
+            project: {
+              id: 123456,
+              status: 'proposal_in_progress',
+              name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
+              customer: {
+                name: 'La Poste - Courrier',
+              },
+              staffing_needed_from: '2017-10-01',
+              duration: '10 mois',
+              location: 'OCTO',
+              business_contact: {
+                nickname: 'ABC',
+              },
+              mission_director: {
+                nickname: 'XYZ',
+              },
+            },
+          },
+          {
+            id: 3,
+            activity: {
+              title: 'Tech Lead mission 3',
+            },
+            project: {
+              id: 123456,
+              status: 'proposal_in_progress',
+              name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
+              customer: {
+                name: 'La Poste - Courrier',
+              },
+              staffing_needed_from: '2017-10-03',
+              duration: '10 mois',
+              location: 'OCTO',
+              business_contact: {
+                nickname: 'ABC',
+              },
+              mission_director: {
+                nickname: 'XYZ',
+              },
+            },
+          },
+        ];
+        expectedJobsWhenSortedByStaffingNeededDate = [
+          {
+            id: 4,
+            activity: {
+              title: 'Tech Lead mission 4',
+            },
+            project: {
+              id: 123456,
+              status: 'mission_signed',
+              name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
+              customer: {
+                name: 'La Poste - Courrier',
+              },
+              staffing_needed_from: '2017-10-04',
+              duration: '10 mois',
+              location: 'OCTO',
+              business_contact: {
+                nickname: 'ABC',
+              },
+              mission_director: {
+                nickname: 'XYZ',
+              },
+            },
+          },
+          {
+            id: 2,
+            activity: {
+              title: 'Tech Lead mission 2',
+            },
+            project: {
+              id: 123456,
+              status: 'mission_signed',
+              name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
+              customer: {
+                name: 'La Poste - Courrier',
+              },
+              staffing_needed_from: '2017-10-02',
+              duration: '10 mois',
+              location: 'OCTO',
+              business_contact: {
+                nickname: 'ABC',
+              },
+              mission_director: {
+                nickname: 'XYZ',
+              },
+            },
+          },
+          {
+            id: 3,
+            activity: {
+              title: 'Tech Lead mission 3',
+            },
+            project: {
+              id: 123456,
+              status: 'proposal_in_progress',
+              name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
+              customer: {
+                name: 'La Poste - Courrier',
+              },
+              staffing_needed_from: '2017-10-03',
+              duration: '10 mois',
+              location: 'OCTO',
+              business_contact: {
+                nickname: 'ABC',
+              },
+              mission_director: {
+                nickname: 'XYZ',
+              },
+            },
+          },
+          {
+            id: 1,
+            activity: {
+              title: 'Tech Lead mission 1',
+            },
+            project: {
+              id: 123456,
+              status: 'proposal_in_progress',
+              name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
+              customer: {
+                name: 'La Poste - Courrier',
+              },
+              staffing_needed_from: '2017-10-01',
+              duration: '10 mois',
+              location: 'OCTO',
+              business_contact: {
+                nickname: 'ABC',
+              },
+              mission_director: {
+                nickname: 'XYZ',
+              },
+            },
+          },
+        ];
+
+        sinon.stub(projectStatus, 'sort').returns(expectedJobsWhenSortedByStatus);
+        let staffingSort = sinon.stub(projectStaffingNeededDate, 'sort');
+        staffingSort.onCall(0)
+          .returns(expectedJobsWhenSortedByStaffingNeededDate.slice(0,2));
+        staffingSort.onCall(1)
+          .returns(expectedJobsWhenSortedByStaffingNeededDate.slice(2));
+        sinon.stub(jobsApi, 'fetchAll').resolves(jobs);
+
+        // when
+        component = new Constructor().$mount();
+      });
+
+      afterEach(() => {
+        projectStatus.sort.restore();
+        projectStaffingNeededDate.sort.restore();
+        jobsApi.fetchAll.restore();
+      });
+
+      it('should sort the mission jobs by status and by staffing needed date', () => Vue.nextTick().then(() => {
+        const jobTitles = component.$el.querySelectorAll('.job__title');
+        expect(jobTitles[0].textContent).to.equal('Tech Lead mission 4');
+        expect(jobTitles[1].textContent).to.equal('Tech Lead mission 2');
+        expect(jobTitles[2].textContent).to.equal('Tech Lead mission 3');
+        expect(jobTitles[3].textContent).to.equal('Tech Lead mission 1');
+      }));
     });
 
     describe('after jobs are loaded, a country filter is applied', () => {
