@@ -215,6 +215,7 @@ describe('Unit | Component | JobList.vue', () => {
             id: 1,
             activity: {
               title: 'Tech Lead mission 1',
+              staffing_needed_from: '2017-10-01',
             },
             project: {
               id: 123456,
@@ -223,7 +224,6 @@ describe('Unit | Component | JobList.vue', () => {
               customer: {
                 name: 'La Poste - Courrier',
               },
-              staffing_needed_from: '2017-10-01',
               duration: '10 mois',
               location: 'OCTO',
               business_contact: {
@@ -238,6 +238,7 @@ describe('Unit | Component | JobList.vue', () => {
             id: 2,
             activity: {
               title: 'Tech Lead mission 2',
+              staffing_needed_from: '2017-10-02',
             },
             project: {
               id: 123456,
@@ -246,7 +247,6 @@ describe('Unit | Component | JobList.vue', () => {
               customer: {
                 name: 'La Poste - Courrier',
               },
-              staffing_needed_from: '2017-10-02',
               duration: '10 mois',
               location: 'OCTO',
               business_contact: {
@@ -261,6 +261,7 @@ describe('Unit | Component | JobList.vue', () => {
             id: 3,
             activity: {
               title: 'Tech Lead mission 3',
+              staffing_needed_from: '2017-10-03',
             },
             project: {
               id: 123456,
@@ -269,7 +270,6 @@ describe('Unit | Component | JobList.vue', () => {
               customer: {
                 name: 'La Poste - Courrier',
               },
-              staffing_needed_from: '2017-10-03',
               duration: '10 mois',
               location: 'OCTO',
               business_contact: {
@@ -284,6 +284,7 @@ describe('Unit | Component | JobList.vue', () => {
             id: 4,
             activity: {
               title: 'Tech Lead mission 4',
+              staffing_needed_from: '2017-10-04',
             },
             project: {
               id: 123456,
@@ -292,7 +293,6 @@ describe('Unit | Component | JobList.vue', () => {
               customer: {
                 name: 'La Poste - Courrier',
               },
-              staffing_needed_from: '2017-10-04',
               duration: '10 mois',
               location: 'OCTO',
               business_contact: {
@@ -309,6 +309,7 @@ describe('Unit | Component | JobList.vue', () => {
             id: 2,
             activity: {
               title: 'Tech Lead mission 2',
+              staffing_needed_from: '2017-10-02',
             },
             project: {
               id: 123456,
@@ -317,7 +318,6 @@ describe('Unit | Component | JobList.vue', () => {
               customer: {
                 name: 'La Poste - Courrier',
               },
-              staffing_needed_from: '2017-10-02',
               duration: '10 mois',
               location: 'OCTO',
               business_contact: {
@@ -332,6 +332,7 @@ describe('Unit | Component | JobList.vue', () => {
             id: 4,
             activity: {
               title: 'Tech Lead mission 4',
+              staffing_needed_from: '2017-10-04',
             },
             project: {
               id: 123456,
@@ -340,7 +341,6 @@ describe('Unit | Component | JobList.vue', () => {
               customer: {
                 name: 'La Poste - Courrier',
               },
-              staffing_needed_from: '2017-10-04',
               duration: '10 mois',
               location: 'OCTO',
               business_contact: {
@@ -355,6 +355,7 @@ describe('Unit | Component | JobList.vue', () => {
             id: 1,
             activity: {
               title: 'Tech Lead mission 1',
+              staffing_needed_from: '2017-10-01',
             },
             project: {
               id: 123456,
@@ -363,7 +364,6 @@ describe('Unit | Component | JobList.vue', () => {
               customer: {
                 name: 'La Poste - Courrier',
               },
-              staffing_needed_from: '2017-10-01',
               duration: '10 mois',
               location: 'OCTO',
               business_contact: {
@@ -378,6 +378,7 @@ describe('Unit | Component | JobList.vue', () => {
             id: 3,
             activity: {
               title: 'Tech Lead mission 3',
+              staffing_needed_from: '2017-10-03',
             },
             project: {
               id: 123456,
@@ -386,7 +387,6 @@ describe('Unit | Component | JobList.vue', () => {
               customer: {
                 name: 'La Poste - Courrier',
               },
-              staffing_needed_from: '2017-10-03',
               duration: '10 mois',
               location: 'OCTO',
               business_contact: {
@@ -403,6 +403,7 @@ describe('Unit | Component | JobList.vue', () => {
             id: 4,
             activity: {
               title: 'Tech Lead mission 4',
+              staffing_needed_from: '2017-10-04',
             },
             project: {
               id: 123456,
@@ -411,7 +412,6 @@ describe('Unit | Component | JobList.vue', () => {
               customer: {
                 name: 'La Poste - Courrier',
               },
-              staffing_needed_from: '2017-10-04',
               duration: '10 mois',
               location: 'OCTO',
               business_contact: {
@@ -426,6 +426,7 @@ describe('Unit | Component | JobList.vue', () => {
             id: 2,
             activity: {
               title: 'Tech Lead mission 2',
+              staffing_needed_from: '2017-10-02',
             },
             project: {
               id: 123456,
@@ -434,7 +435,6 @@ describe('Unit | Component | JobList.vue', () => {
               customer: {
                 name: 'La Poste - Courrier',
               },
-              staffing_needed_from: '2017-10-02',
               duration: '10 mois',
               location: 'OCTO',
               business_contact: {
@@ -449,6 +449,7 @@ describe('Unit | Component | JobList.vue', () => {
             id: 3,
             activity: {
               title: 'Tech Lead mission 3',
+              staffing_needed_from: '2017-10-03',
             },
             project: {
               id: 123456,
@@ -457,7 +458,6 @@ describe('Unit | Component | JobList.vue', () => {
               customer: {
                 name: 'La Poste - Courrier',
               },
-              staffing_needed_from: '2017-10-03',
               duration: '10 mois',
               location: 'OCTO',
               business_contact: {
@@ -472,6 +472,7 @@ describe('Unit | Component | JobList.vue', () => {
             id: 1,
             activity: {
               title: 'Tech Lead mission 1',
+              staffing_needed_from: '2017-10-01',
             },
             project: {
               id: 123456,
@@ -480,7 +481,6 @@ describe('Unit | Component | JobList.vue', () => {
               customer: {
                 name: 'La Poste - Courrier',
               },
-              staffing_needed_from: '2017-10-01',
               duration: '10 mois',
               location: 'OCTO',
               business_contact: {
@@ -511,13 +511,14 @@ describe('Unit | Component | JobList.vue', () => {
         jobsApi.fetchAll.restore();
       });
 
-      it('should sort the mission jobs by status and by staffing needed date', () => Vue.nextTick().then(() => {
+      it('should sort the mission jobs by status and by staffing needed date', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
         const jobTitles = component.$el.querySelectorAll('.job__title');
         expect(jobTitles[0].textContent).to.equal('Tech Lead mission 4');
         expect(jobTitles[1].textContent).to.equal('Tech Lead mission 2');
         expect(jobTitles[2].textContent).to.equal('Tech Lead mission 3');
         expect(jobTitles[3].textContent).to.equal('Tech Lead mission 1');
-      }));
+      })));
+
     });
 
     describe('after jobs are loaded, a country filter is applied', () => {
