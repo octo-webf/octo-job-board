@@ -18,6 +18,9 @@ npm install
 # run tests
 npm test
 
+# configure database
+npm run configure
+
 # build Vue.js  client for production with minification
 npm run build
 
