@@ -2,6 +2,8 @@ import Vue from 'vue';
 import VueModal from 'vue-js-modal';
 import AppHeader from '@/components/AppHeader';
 import authenticationService from '@/services/authentication';
+import notificationService from '@/services/notification';
+import subscriptionsApi from '@/api/subscriptions';
 
 Vue.use(VueModal);
 
@@ -31,6 +33,10 @@ describe('Unit | Component | AppHeader.vue', () => {
 
     it('should display a button to logout', () => {
       expect(component.$el.querySelector('.navbar-action__logout')).to.exist;
+    });
+
+    it('should display a button to subscribe to jobs news', () => {
+      expect(component.$el.querySelector('.navbar-action__subscribe')).to.exist;
     });
   });
 
@@ -68,6 +74,59 @@ describe('Unit | Component | AppHeader.vue', () => {
 
       // then
       expect(authenticationService.disconnect).to.have.been.called;
+    });
+  });
+
+  describe('#subscribe', () => {
+    beforeEach(() => {
+      sinon.stub(authenticationService, 'isAuthenticated');
+      sinon.stub(authenticationService, 'getAccessToken').returns('fake token');
+      sinon.stub(notificationService, 'success');
+      sinon.stub(subscriptionsApi, 'subscribe').resolves();
+    });
+
+    afterEach(() => {
+      authenticationService.isAuthenticated.restore();
+      authenticationService.getAccessToken.restore();
+      notificationService.success.restore();
+      subscriptionsApi.subscribe.restore();
+    });
+
+    it('should call the subscriptions API with access token when user is authenticated', () => {
+      // given
+      authenticationService.isAuthenticated.returns(true);
+
+      // when
+      component.subscribe();
+
+      // then
+      expect(subscriptionsApi.subscribe).to.have.been.calledWith('fake token');
+    });
+
+    it('should not call subscriptions API when user is not authenticated', () => {
+      // given
+      authenticationService.isAuthenticated.returns(false);
+
+      // when
+      component.subscribe();
+
+      // then
+      expect(subscriptionsApi.subscribe).to.not.have.been.called;
+    });
+
+    it('should display toast notification', (done) => {
+      // given
+      authenticationService.isAuthenticated.returns(true);
+
+      // when
+      component.subscribe();
+
+      // then
+      setTimeout(() => {
+        const message = 'Ton abonnement aux alertes du Jobboard a été pris en compte.';
+        expect(notificationService.success).to.have.been.calledWithExactly(component, message);
+        done();
+      }, 100);
     });
   });
 });

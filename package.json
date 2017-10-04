@@ -12,6 +12,7 @@
     "clean:client": "(cd client && npm run clean)",
     "clean:server": "(cd server && npm run clean)",
     "clean": "npm run clean:client && npm run clean:server",
+    "configure": "(cd server && npm run configure)",
     "start": "node server/bin/www",
     "startmon": "nodemon server/bin/www",
     "test:client": "(cd client && npm test)",

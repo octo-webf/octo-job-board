@@ -5,6 +5,7 @@ const JobsSerializer = {
 
     activities.reduce((jobs, octopodActivity) => {
       const activity = {
+        id: octopodActivity.id,
         title: octopodActivity.title,
         staffing_needed_from: octopodActivity.staffing_needed_from,
       };

@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken');
-const { request, expect, sinon } = require('../../test-helper');
-const app = require('../../../app');
-const mailService = require('../../../src/domain/mail-service');
-const slackService = require('../../../src/domain/slack-service');
+const { request, expect, sinon } = require('../../../test-helper');
+const app = require('../../../../app');
+const mailService = require('../../../../src/domain/services/mail-service');
+const slackService = require('../../../../src/domain/services/slack-service');
 
 describe('Integration | Routes | feedbacks route', () => {
   const consultant = { name: 'John Doe', email: 'john@doe.com' };

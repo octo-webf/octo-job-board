@@ -7,8 +7,17 @@
         </a>
         <nav class="app-header__navigation navigation" role="navigation" aria-label="site navigation">
           <ol class="navigation__links">
-            <li class="navigation__link"><button class="navbar-action navbar-action__suggestion" type="button" @click="displayFeedbackModal">Proposer des améliorations</button></li>
-            <li class="navigation__link"><button class="navbar-action navbar-action__logout" type="button" @click="signOut">Se déconnecter</button></li>
+            <li class="navigation__link">
+              <button class="navbar-action navbar-action__subscribe" type="button" @click="subscribe">S'abonner</button>
+            </li>
+            <li class="navigation__link">
+              <button class="navbar-action navbar-action__suggestion" type="button" @click="displayFeedbackModal">
+                Proposer des améliorations
+              </button>
+            </li>
+            <li class="navigation__link">
+              <button class="navbar-action navbar-action__logout" type="button" @click="signOut">Se déconnecter</button>
+            </li>
           </ol>
         </nav>
       </div>
@@ -17,6 +26,8 @@
 </template>
 <script>
   import authenticationService from '@/services/authentication';
+  import notificationService from '@/services/notification';
+  import subscriptions from '@/api/subscriptions';
 
   export default {
 
@@ -31,6 +42,19 @@
         authenticationService.disconnect().then(() => {
           this.$router.push('/login');
         });
+      },
+
+      subscribe() {
+        if (authenticationService.isAuthenticated()) {
+          const accessToken = authenticationService.getAccessToken();
+          subscriptions.subscribe(accessToken)
+            .then(this.displayToasterNotification);
+        }
+      },
+
+      displayToasterNotification() {
+        const message = 'Ton abonnement aux alertes du Jobboard a été pris en compte.';
+        notificationService.success(this, message);
       },
     },
 

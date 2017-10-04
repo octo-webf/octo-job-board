@@ -15,16 +15,13 @@ describe('Unit | Utils | google-auth-wrapper', () => {
       GoogleAuth.prototype.OAuth2.restore();
     });
 
-    it('should exist', () => {
-      expect(GoogleAuthWrapper.verifyIdToken).to.exist;
-    });
-
     it('should return a resolved promise when authentication (ID token) has been validated', () => {
       // given
       verifyIdTokenStub.callsFake((idToken, audience, callback) => {
         const login = {
           getPayload() {
             return {
+              email: 'test@mail.com',
               sub: 'user-id',
               hd: 'octo.com',
             };
@@ -37,7 +34,7 @@ describe('Unit | Utils | google-auth-wrapper', () => {
       const promise = GoogleAuthWrapper.verifyIdToken('valid-id-token');
 
       // then
-      return expect(promise).to.eventually.be.fulfilled;
+      return expect(promise).to.eventually.deep.equal({ userId: 'user-id', email: 'test@mail.com' });
     });
 
     it('should return a rejected promise when authentication failed', () => {

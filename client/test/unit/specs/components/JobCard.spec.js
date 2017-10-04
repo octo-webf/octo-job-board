@@ -4,6 +4,7 @@ import VueAnalytics from 'vue-analytics';
 import JobCard from '@/components/JobCard';
 import interestsApi from '@/api/interests';
 import authenticationService from '@/services/authentication';
+import notificationService from '@/services/notification';
 import Icon from 'vue-awesome/components/Icon';
 
 import 'vue-awesome/icons';
@@ -18,33 +19,7 @@ Vue.component('icon', Icon);
 
 describe('Unit | Component | JobCard.vue', () => {
   let component;
-  const job = {
-    id: 2,
-    activity: {
-      title: 'Tech Lead',
-      staffing_needed_from: '2017-07-01',
-    },
-    project: {
-      id: 123456,
-      status: 'proposal_in_progress',
-      name: 'Refonte du SI',
-      customer: {
-        name: 'La Poste - Courrier',
-        sector: {
-          name: 'FR - La Poste',
-        },
-      },
-      duration: '10 mois',
-      locations: 'OCTO',
-      business_contact: {
-        nickname: 'ABC',
-      },
-      mission_director: {
-        nickname: 'XYZ',
-      },
-      reference: 'F2017-1234',
-    },
-  };
+  let job;
 
   const consultant = {
     name: 'Samurai Jack',
@@ -54,9 +29,37 @@ describe('Unit | Component | JobCard.vue', () => {
 
   beforeEach(() => {
     // given
+    job = {
+      id: 2,
+      activity: {
+        title: 'Tech Lead',
+        staffing_needed_from: '2017-07-01',
+      },
+      project: {
+        id: 123456,
+        status: 'proposal_in_progress',
+        name: 'Refonte du SI',
+        customer: {
+          name: 'La Poste - Courrier',
+          sector: {
+            name: 'FR - La Poste',
+          },
+        },
+        duration: '10 mois',
+        locations: 'OCTO',
+        business_contact: {
+          nickname: 'ABC',
+        },
+        mission_director: {
+          nickname: 'XYZ',
+        },
+        reference: 'F2017-1234',
+      },
+    };
     sinon.stub(authenticationService, 'isAuthenticated').returns(true);
     sinon.stub(authenticationService, 'getAuthenticatedUser').returns(consultant);
     sinon.stub(authenticationService, 'getAccessToken').returns(accessToken);
+    sinon.stub(notificationService, 'success');
     sinon.stub(interestsApi, 'sendInterest').resolves();
 
     // when
@@ -72,18 +75,13 @@ describe('Unit | Component | JobCard.vue', () => {
     authenticationService.isAuthenticated.restore();
     authenticationService.getAuthenticatedUser.restore();
     authenticationService.getAccessToken.restore();
+    notificationService.success.restore();
     interestsApi.sendInterest.restore();
   });
 
   describe('name', () => {
     it('should be named "JobCard"', () => {
       expect(component.$options.name).to.equal('JobCard');
-    });
-  });
-
-  describe('$data', () => {
-    it('should have isClicked property set to false', () => {
-      expect(component.$data.isClicked).to.be.false;
     });
   });
 
@@ -133,77 +131,23 @@ describe('Unit | Component | JobCard.vue', () => {
         expect(component.$el.querySelector('.job__mission-director')).to.not.exist;
       });
     });
-
-    it('should have enabled button', () => {
-      expect(component.$el.querySelector('.job__apply-button').disabled).to.be.false;
-    });
   });
 
-  describe('clicking on button "I am interested in"', () => {
-    it('should disable button', () => {
-      // when
-      component.$el.querySelector('button.job__apply-button').click();
-
-      // then
-      return Vue.nextTick().then(() => {
-        expect(component.$el.querySelector('.job__apply-button').disabled).to.be.true;
-      });
-    });
-
-    it('should display toast notification');
-  });
-
-  describe('method #trackEvent', () => {
-    const expectedCallParams = {
-      eventCategory: 'Job List',
-      eventAction: 'click',
-      eventLabel: 'I am interested',
-      eventValue: null,
-    };
-
+  describe('#displayFeedbackModal', () => {
     beforeEach(() => {
-      sinon.stub(component.$ga, 'event').returns(true);
+      sinon.stub(component, '$emit');
     });
 
     afterEach(() => {
-      component.$ga.event.restore();
+      component.$emit.restore();
     });
 
-    it('should check analytics', () => {
-      // when
-      component.trackEvent();
-
-      // then
-      expect(component.$ga.event).to.have.been.calledWith(expectedCallParams);
-    });
-
-    it('on click on button job__apply-button', () => Vue.nextTick().then(() => {
+    it('should emit interest on click on interest button', () => Vue.nextTick().then(() => {
       // when
       component.$el.querySelector('button.job__apply-button').click();
 
       // then
-      expect(component.$ga.event).to.have.been.calledWith(expectedCallParams);
-    }));
-  });
-
-  describe('method #sendInterest', () => {
-    it('should call the API with good params', () => {
-      // when
-      component.sendInterest();
-
-      // then
-      expect(interestsApi.sendInterest).to.have.been.calledWithExactly(job, consultant, accessToken);
-    });
-
-    it('should send interests on click on job__apply-button', () => Vue.nextTick().then(() => {
-      // Given
-      const myButton = component.$el.querySelector('button.job__apply-button');
-
-      // When
-      myButton.click();
-
-      // Then
-      expect(interestsApi.sendInterest).to.have.been.calledWithExactly(job, consultant, accessToken);
+      expect(component.$emit).to.have.been.calledWith('interest', job);
     }));
   });
 

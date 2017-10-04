@@ -43,7 +43,7 @@ describe('Unit | Middlewares | auth', () => {
           authorization: 'Bearer some_acess_token',
         },
       };
-      sinon.stub(jwt, 'verify').returns({ userId: 'user-id' });
+      sinon.stub(jwt, 'verify').returns({ userId: 'user-id', email: 'test@mail.com' });
     });
 
     afterEach(() => {
@@ -55,6 +55,7 @@ describe('Unit | Middlewares | auth', () => {
       auth(req, res, () => {
         // then
         expect(req.userId).to.equal('user-id');
+        expect(req.userEmail).to.equal('test@mail.com');
         done();
       });
     });

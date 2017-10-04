@@ -43,7 +43,7 @@
         </div>
       </div>
       <div class="job__footer">
-        <button class="job__apply-button" :disabled="isClicked" @click.prevent.once="submitInterest"
+        <button class="job__apply-button" @click="displayInterestModal"
                 title="Si vous cliquez sur ce bouton, un mail sera envoyé à l'équipe Job Board (uniquement !) avec les informations utiles pour aider au staffing.">
           <icon name="heart-o"></icon> Ça m'intéresse <span class="sr-only">par cette mission {{ mission }} en tant que {{ job.activity.title}}</span>
         </button>
@@ -56,8 +56,6 @@
 <script>
   import moment from 'moment';
   import 'flag-icon-css/css/flag-icon.css';
-  import interestsApi from '@/api/interests';
-  import authenticationService from '@/services/authentication';
   import countries from '@/utils/countries';
 
   export default {
@@ -65,12 +63,6 @@
     name: 'JobCard',
 
     props: ['job'],
-
-    data() {
-      return {
-        isClicked: false,
-      };
-    },
 
     computed: {
 
@@ -149,39 +141,9 @@
 
     methods: {
 
-      submitInterest() {
-        this.sendInterest().then(() => {
-          this.disableButton();
-          this.displayToasterNotification();
-        });
-        this.trackEvent();
+      displayInterestModal() {
+        this.$emit('interest', this.job);
       },
-
-      trackEvent() {
-        this.$ga.event({
-          eventCategory: 'Job List',
-          eventAction: 'click',
-          eventLabel: 'I am interested',
-          eventValue: null,
-        });
-      },
-
-      sendInterest() {
-        const consultant = authenticationService.getAuthenticatedUser();
-        const accessToken = authenticationService.getAccessToken();
-        return interestsApi.sendInterest(this.job, consultant, accessToken);
-      },
-
-      disableButton() {
-        this.isClicked = true;
-      },
-
-      displayToasterNotification() {
-        const mission = this.mission;
-        const message = `Votre intérêt pour la mission "${mission}" a été pris en compte.`;
-        this.$root.$refs.toastr.s(message);
-      },
-
     },
 
   };
