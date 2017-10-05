@@ -5,11 +5,10 @@ export default {
     return counter > 0 ? counter * -1 : counter * -1 + 1 ;
   },
 
-  sort(jobs) {
+  sort(today, jobs) {
 
     let jobsToBeSorted  = jobs;
     let jobsSorted = [];
-    let today = moment();
     let counterNDays = 0;
 
    while(jobsToBeSorted.length){
