@@ -30,9 +30,9 @@
 </template>
 
 <script>
+  import moment from 'moment';
   import authenticationService from '@/services/authentication';
-  import projectStatus from '@/utils/projectStatus';
-  import projectStaffingNeededDate from "@/utils/projectStaffingNeededDate";
+  import jobsSorter from "@/utils/jobsSorter";
   import jobsApi from '@/api/jobs';
   import AppHeader from '@/components/AppHeader';
   import CountryFilters from '@/components/CountryFilters';
@@ -89,33 +89,7 @@
       },
 
       _sortJobsByProjectStatusAndStaffingNeededDate(jobs) {
-        const projectStatusOrder = [
-          'mission_signed',
-          'mission_accepted',
-          'proposal_sent',
-          'proposal_in_progress',
-        ];
-
-        let jobsSortedByStatus = this._sortJobsByProjectStatus(jobs);
-        let jobsArray1 = jobsSortedByStatus.filter((job) => {
-            return job.project.status === projectStatusOrder[0] || job.project.status === projectStatusOrder[1];
-        });
-        let jobsArray2 = jobsSortedByStatus.filter((job) => {
-          return job.project.status !== projectStatusOrder[0] && job.project.status !== projectStatusOrder[1];
-        });
-
-        jobsArray1 = this._sortJobsByStaffingNeededDate(jobsArray1);
-        jobsArray2 = this._sortJobsByStaffingNeededDate(jobsArray2);
-
-        return [...jobsArray1, ...jobsArray2];
-      },
-
-      _sortJobsByProjectStatus(jobs) {
-        return projectStatus.sort(jobs);
-      },
-
-      _sortJobsByStaffingNeededDate(jobs) {
-        return projectStaffingNeededDate.sort(jobs);
+        return jobsSorter.sort(moment(), jobs);
       },
 
       onSelectedCountryFilter(selectedCountryFilter) {
