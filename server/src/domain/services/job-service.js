@@ -79,7 +79,7 @@ function _ifJobsChangesThenRetrieveJobsNotificationRecipients(report) {
   return Promise.resolve(result);
 }
 
-function _ifJobsChangedhenSendEmailToRecipients(report) {
+function _ifJobsChangedThenSendEmailToRecipients(report) {
   const result = report;
   if (result.hasChanges) {
     return mailService.sendJobsChangedEmail(result);
@@ -100,7 +100,7 @@ function synchronizeJobs() {
   return _fetchAndCacheJobs()
     .then(fetchedJobs => _compareFetchedAndCachedJobs(fetchedJobs, oldJobs))
     .then(_ifJobsChangesThenRetrieveJobsNotificationRecipients)
-    .then(_ifJobsChangedhenSendEmailToRecipients);
+    .then(_ifJobsChangedThenSendEmailToRecipients);
 }
 
 module.exports = {
