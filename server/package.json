@@ -57,6 +57,7 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
     "mocha": "^3.5.0",
+    "nodemon": "^1.12.1",
     "nyc": "^11.1.0",
     "sinon": "^3.2.0",
     "sinon-chai": "^2.12.0",
