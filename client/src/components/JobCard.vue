@@ -34,7 +34,7 @@
           <div class="job__meta-value job__status" :class="statusClass">{{ status }}</div>
         </div>
         <div class="job__meta">
-          <div class="job__meta-title"><icon name="calendar"></icon>Date</div>
+          <div class="job__meta-title" title="Date de début de mission"><icon name="calendar"></icon>Date</div>
           <div class="job__meta-value job__start-date">{{ staffingNeededSince }}</div>
         </div>
         <div class="job__meta">
