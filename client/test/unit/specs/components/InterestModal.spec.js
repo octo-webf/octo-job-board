@@ -240,6 +240,17 @@ describe('Unit | Component | InterestModal.vue', () => {
         // Then
         expect(missionName).to.equal('SCLOU - Cloud computing : enjeux, architecture et');
       });
+
+
+      it.only('should get customerName', () => {
+        // Given
+
+        // When
+        const customerName = component.customer;
+
+        // Then
+        expect(customerName).to.equal('La Poste - Courrier');
+      });
     });
 
     describe('computed property #staffingNeededSince', () => {
