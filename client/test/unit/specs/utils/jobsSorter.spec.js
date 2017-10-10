@@ -1,5 +1,5 @@
 import projectStatus from '@/utils/projectStatus';
-import projectStaffingNeededDate from "@/utils/projectStaffingNeededDate";
+import projectStaffingNeededDate from '@/utils/projectStaffingNeededDate';
 import jobsSorter from '@/utils/jobsSorter';
 
 describe('Unit | Utils | Jobs Sorter', () => {
@@ -116,9 +116,9 @@ describe('Unit | Utils | Jobs Sorter', () => {
     ];
 
     sinon.stub(projectStatus, 'sort').returns(expectedJobsWhenSortedByStatus);
-    let staffingSort = sinon.stub(projectStaffingNeededDate, 'sort');
+    const staffingSort = sinon.stub(projectStaffingNeededDate, 'sort');
     staffingSort.onCall(0)
-      .returns(expectedJobsWhenSortedByStatusAndStaffingNeededDate.slice(0,2));
+      .returns(expectedJobsWhenSortedByStatusAndStaffingNeededDate.slice(0, 2));
     staffingSort.onCall(1)
       .returns(expectedJobsWhenSortedByStatusAndStaffingNeededDate.slice(2));
   });
@@ -135,5 +135,4 @@ describe('Unit | Utils | Jobs Sorter', () => {
     // Then
     expect(sortedJobs).to.deep.equal(expectedJobsWhenSortedByStatusAndStaffingNeededDate);
   });
-
 });

@@ -32,7 +32,7 @@
 <script>
   import moment from 'moment';
   import authenticationService from '@/services/authentication';
-  import jobsSorter from "@/utils/jobsSorter";
+  import jobsSorter from '@/utils/jobsSorter';
   import jobsApi from '@/api/jobs';
   import AppHeader from '@/components/AppHeader';
   import CountryFilters from '@/components/CountryFilters';

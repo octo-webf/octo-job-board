@@ -1,34 +1,32 @@
 import moment from 'moment';
+
 export default {
 
-  _toggleSignAndAddOneDay(counter){
-    return counter > 0 ? counter * -1 : counter * -1 + 1 ;
+  _toggleSignAndAddOneDay(counter) {
+    return counter > 0 ? counter * -1 : (counter * -1) + 1;
   },
 
   sort(today, jobs) {
-
-    let jobsToBeSorted  = jobs;
-    let jobsSorted = [];
+    let jobsToBeSorted = jobs;
+    const jobsSorted = [];
     let counterNDays = 0;
 
-   while(jobsToBeSorted.length){
-
-      let jobsToKeepForNextIteration =[];
-      let jobPlusMinusDay = today.clone().add(counterNDays, 'day');
+    while (jobsToBeSorted.length) {
+      const jobsToKeepForNextIteration = [];
+      const jobPlusMinusDay = today.clone().add(counterNDays, 'day');
 
       jobsToBeSorted.forEach((job) => {
-        let jobDate = moment(job.activity.staffing_needed_from, 'YYYY-MM-DD');
+        const jobDate = moment(job.activity.staffing_needed_from, 'YYYY-MM-DD');
 
-        if(jobDate.isSame(jobPlusMinusDay, 'day')){
+        if (jobDate.isSame(jobPlusMinusDay, 'day')) {
           jobsSorted.push(job);
-        }
-        else {
+        } else {
           jobsToKeepForNextIteration.push(job);
         }
       });
 
       counterNDays = this._toggleSignAndAddOneDay(counterNDays);
-      jobsToBeSorted =jobsToKeepForNextIteration;
+      jobsToBeSorted = jobsToKeepForNextIteration;
     }
 
     return jobsSorted;

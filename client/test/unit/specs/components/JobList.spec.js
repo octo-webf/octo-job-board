@@ -330,7 +330,6 @@ describe('Unit | Component | JobList.vue', () => {
         expect(jobTitles[2].textContent).to.equal('Tech Lead mission 3');
         expect(jobTitles[3].textContent).to.equal('Tech Lead mission 1');
       })));
-
     });
 
     describe('after jobs are loaded, a country filter is applied', () => {
