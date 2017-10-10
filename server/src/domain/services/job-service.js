@@ -3,7 +3,7 @@ const octopodClient = require('../../infrastructure/octopod');
 const jobsSerializer = require('../../infrastructure/serializers/jobs');
 const cache = require('../../infrastructure/cache');
 const { Subscription } = require('../models');
-const mailService = require('./mail-service'); // A service shoud not be dependent of another service but I have no idea to do better in this case... :-S
+const mailService = require('./mail-service'); // A service should not be dependent of another service but I have no idea to do better in this case... :-S
 
 const CACHE_KEY = 'get_jobs';
 
