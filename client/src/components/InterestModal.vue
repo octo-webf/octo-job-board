@@ -109,7 +109,7 @@
       submitInterest() {
         this.sendInterest().then(() => {
           this.disableButton();
-          this.displayToasterNotification();
+          this.displaySuccessNotification();
         });
         this.trackEvent();
       },
@@ -139,7 +139,7 @@
         this.isClicked = true;
       },
 
-      displayToasterNotification() {
+      displaySuccessNotification() {
         const mission = this.mission;
         const message = `Ton intérêt pour la mission "${mission}" a été pris en compte.`;
         this.$root.$refs.toastr.s(message);
