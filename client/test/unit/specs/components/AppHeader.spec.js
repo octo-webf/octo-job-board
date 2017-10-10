@@ -82,18 +82,21 @@ describe('Unit | Component | AppHeader.vue', () => {
       sinon.stub(authenticationService, 'isAuthenticated');
       sinon.stub(authenticationService, 'getAccessToken').returns('fake token');
       sinon.stub(notificationService, 'success');
-      sinon.stub(subscriptionsApi, 'subscribe').resolves();
+      sinon.stub(notificationService, 'error');
+      sinon.stub(subscriptionsApi, 'subscribe');
     });
 
     afterEach(() => {
       authenticationService.isAuthenticated.restore();
       authenticationService.getAccessToken.restore();
       notificationService.success.restore();
+      notificationService.error.restore();
       subscriptionsApi.subscribe.restore();
     });
 
     it('should call the subscriptions API with access token when user is authenticated', () => {
       // given
+      subscriptionsApi.subscribe.resolves();
       authenticationService.isAuthenticated.returns(true);
 
       // when
@@ -114,8 +117,9 @@ describe('Unit | Component | AppHeader.vue', () => {
       expect(subscriptionsApi.subscribe).to.not.have.been.called;
     });
 
-    it('should display toast notification', (done) => {
+    it('should display success toast notification when subscription succeeds', (done) => {
       // given
+      subscriptionsApi.subscribe.resolves();
       authenticationService.isAuthenticated.returns(true);
 
       // when
@@ -125,6 +129,22 @@ describe('Unit | Component | AppHeader.vue', () => {
       setTimeout(() => {
         const message = 'Ton abonnement aux alertes du Jobboard a été pris en compte.';
         expect(notificationService.success).to.have.been.calledWithExactly(component, message);
+        done();
+      }, 100);
+    });
+
+    it('should display error toast notification when subscription fails', (done) => {
+      // given
+      subscriptionsApi.subscribe.rejects();
+      authenticationService.isAuthenticated.returns(true);
+
+      // when
+      component.subscribe();
+
+      // then
+      setTimeout(() => {
+        const message = 'Erreur lors de la prise en compte de ton abonnement. Pense à te reconnecter.';
+        expect(notificationService.error).to.have.been.calledWithExactly(component, message);
         done();
       }, 100);
     });

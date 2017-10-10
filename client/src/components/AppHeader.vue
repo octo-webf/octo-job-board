@@ -48,13 +48,19 @@
         if (authenticationService.isAuthenticated()) {
           const accessToken = authenticationService.getAccessToken();
           subscriptions.subscribe(accessToken)
-            .then(this.displayToasterNotification);
+            .then(this.displaySuccessNotification)
+            .catch(this.displayErrorNotification);
         }
       },
 
-      displayToasterNotification() {
+      displaySuccessNotification() {
         const message = 'Ton abonnement aux alertes du Jobboard a été pris en compte.';
         notificationService.success(this, message);
+      },
+
+      displayErrorNotification() {
+        const message = 'Erreur lors de la prise en compte de ton abonnement. Pense à te reconnecter.';
+        notificationService.error(this, message);
       },
     },
 
