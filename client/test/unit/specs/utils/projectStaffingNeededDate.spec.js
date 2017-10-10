@@ -30,7 +30,7 @@ describe('Unit | Utils | Project Staffing Needed Date', () => {
     const job5 = { id: 5, activity: { staffing_needed_from: '2017-10-05' } };
 
     const givenJobs = [job1, job2, job3, job4, job5];
-    const expectedJobs = [job1, job5, job2, job3, job4 ];
+    const expectedJobs = [job1, job5, job2, job3, job4];
 
     // When
     const sortedJobs = projectStaffingNeededDate.sort(today, givenJobs);
