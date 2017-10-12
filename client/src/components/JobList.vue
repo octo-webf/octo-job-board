@@ -30,8 +30,9 @@
 </template>
 
 <script>
+  import moment from 'moment';
   import authenticationService from '@/services/authentication';
-  import projectStatus from '@/utils/projectStatus';
+  import jobsSorter from '@/utils/jobsSorter';
   import jobsApi from '@/api/jobs';
   import AppHeader from '@/components/AppHeader';
   import CountryFilters from '@/components/CountryFilters';
@@ -78,17 +79,13 @@
           const accessToken = authenticationService.getAccessToken();
           jobsApi.fetchAll(accessToken)
             .then((jobs) => {
-              this.jobsFromApi = this._sortJobsByProjectStatus(jobs);
+              this.jobsFromApi = jobsSorter.sort(moment(), jobs);
               this.displayJobs = this.jobsFromApi;
             })
             .then(() => {
               this.isLoading = false;
             });
         }
-      },
-
-      _sortJobsByProjectStatus(jobs) {
-        return projectStatus.sort(jobs);
       },
 
       onSelectedCountryFilter(selectedCountryFilter) {

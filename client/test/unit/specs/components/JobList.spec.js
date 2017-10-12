@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueAnalytics from 'vue-analytics';
 import JobList from '@/components/JobList';
+import jobsSorter from '@/utils/jobsSorter';
 import authentication from '@/services/authentication';
 import projectStatus from '@/utils/projectStatus';
 import jobsApi from '@/api/jobs';
@@ -203,6 +204,138 @@ describe('Unit | Component | JobList.vue', () => {
         expect(jobTitles[1].textContent).to.equal('Tech Lead mission 1');
       })));
     });
+
+    describe('after jobs are loaded with different status and staffing needed dates', () => {
+      beforeEach(() => {
+        // given
+        const jobs = [
+          {
+            id: 1,
+            activity: {
+              title: 'Very old mission',
+              staffing_needed_from: '2017-10-01',
+            },
+            project: {
+              id: 123456,
+              status: 'proposal_in_progress',
+              name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
+              customer: {
+                name: 'La Poste - Courrier',
+              },
+              duration: '10 mois',
+              location: 'OCTO',
+              business_contact: {
+                nickname: 'ABC',
+              },
+              mission_director: {
+                nickname: 'XYZ',
+              },
+            },
+          },
+          {
+            id: 2,
+            activity: {
+              title: 'Old mission',
+              staffing_needed_from: '2017-10-02',
+            },
+            project: {
+              id: 123456,
+              status: 'mission_signed',
+              name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
+              customer: {
+                name: 'La Poste - Courrier',
+              },
+              duration: '10 mois',
+              location: 'OCTO',
+              business_contact: {
+                nickname: 'ABC',
+              },
+              mission_director: {
+                nickname: 'XYZ',
+              },
+            },
+          },
+          {
+            id: 3,
+            activity: {
+              title: 'Yesterday\'s mission',
+              staffing_needed_from: '2017-10-03',
+            },
+            project: {
+              id: 123456,
+              status: 'proposal_in_progress',
+              name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
+              customer: {
+                name: 'La Poste - Courrier',
+              },
+              duration: '10 mois',
+              location: 'OCTO',
+              business_contact: {
+                nickname: 'ABC',
+              },
+              mission_director: {
+                nickname: 'XYZ',
+              },
+            },
+          },
+          {
+            id: 4,
+            activity: {
+              title: 'Today\'s mission',
+              staffing_needed_from: '2017-10-04',
+            },
+            project: {
+              id: 123456,
+              status: 'mission_signed',
+              name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
+              customer: {
+                name: 'La Poste - Courrier',
+              },
+              duration: '10 mois',
+              location: 'OCTO',
+              business_contact: {
+                nickname: 'ABC',
+              },
+              mission_director: {
+                nickname: 'XYZ',
+              },
+            },
+          },
+        ];
+
+        const todayJob = jobs[3];
+        const yesterdayJob = jobs[2];
+        const oldJob = jobs[1];
+        const veryOldJob = jobs[0];
+
+        const expectedJobsWhenSortedByStatusAndStaffingNeededDate = [
+          todayJob,
+          yesterdayJob,
+          oldJob,
+          veryOldJob,
+        ];
+
+        sinon.stub(jobsSorter, 'sort').returns(expectedJobsWhenSortedByStatusAndStaffingNeededDate);
+        sinon.stub(jobsApi, 'fetchAll').resolves(jobs);
+
+        // when
+        component = new Constructor().$mount();
+      });
+
+      afterEach(() => {
+        jobsSorter.sort.restore();
+        jobsApi.fetchAll.restore();
+      });
+
+      it('should sort the mission jobs by status and by staffing needed date', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
+        const jobTitles = component.$el.querySelectorAll('.job__title');
+        expect(jobTitles[0].textContent).to.equal('Today\'s mission');
+        expect(jobTitles[1].textContent).to.equal('Yesterday\'s mission');
+        expect(jobTitles[2].textContent).to.equal('Old mission');
+        expect(jobTitles[3].textContent).to.equal('Very old mission');
+      })));
+    });
+
 
     describe('after jobs are loaded, a country filter is applied', () => {
       beforeEach(() => {
