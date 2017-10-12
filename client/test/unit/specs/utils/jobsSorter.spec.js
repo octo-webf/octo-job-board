@@ -102,25 +102,35 @@ describe('Unit | Utils | Jobs Sorter', () => {
         },
       },
     ];
+
+    let todayJobSigned = jobs[3];
+    let yesterdayJobProposal = jobs[2];
+    let beforeYesterdayJobSigned = jobs[1];
+    let oldJobProposal = jobs[0];
+
     expectedJobsWhenSortedByStatus = [
-      jobs[1],
-      jobs[3],
-      jobs[0],
-      jobs[2],
+      beforeYesterdayJobSigned,
+      todayJobSigned,
+      oldJobProposal,
+      yesterdayJobProposal,
     ];
+
     expectedJobsWhenSortedByStatusAndStaffingNeededDate = [
-      jobs[3],
-      jobs[1],
-      jobs[2],
-      jobs[0],
+      todayJobSigned,
+      beforeYesterdayJobSigned,
+      yesterdayJobProposal,
+      oldJobProposal,
     ];
+
+    let jobsSignedSortedByStaffingNeededDate = expectedJobsWhenSortedByStatusAndStaffingNeededDate.slice(0, 2);
+    let jobsProposalSortedByStaffingNeededDate = expectedJobsWhenSortedByStatusAndStaffingNeededDate.slice(2);
 
     sinon.stub(projectStatus, 'sort').returns(expectedJobsWhenSortedByStatus);
     const staffingSort = sinon.stub(projectStaffingNeededDate, 'sort');
     staffingSort.onCall(0)
-      .returns(expectedJobsWhenSortedByStatusAndStaffingNeededDate.slice(0, 2));
+      .returns(jobsSignedSortedByStaffingNeededDate);
     staffingSort.onCall(1)
-      .returns(expectedJobsWhenSortedByStatusAndStaffingNeededDate.slice(2));
+      .returns(jobsProposalSortedByStaffingNeededDate);
   });
 
   afterEach(() => {

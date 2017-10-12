@@ -206,15 +206,13 @@ describe('Unit | Component | JobList.vue', () => {
     });
 
     describe('after jobs are loaded with different status and staffing needed dates', () => {
-      let jobs;
-      let expectedJobsWhenSortedByStatusAndStaffingNeededDate;
       beforeEach(() => {
         // given
-        jobs = [
+        let jobs = [
           {
             id: 1,
             activity: {
-              title: 'Tech Lead mission 1',
+              title: 'Very old mission',
               staffing_needed_from: '2017-10-01',
             },
             project: {
@@ -237,7 +235,7 @@ describe('Unit | Component | JobList.vue', () => {
           {
             id: 2,
             activity: {
-              title: 'Tech Lead mission 2',
+              title: 'Old mission',
               staffing_needed_from: '2017-10-02',
             },
             project: {
@@ -260,7 +258,7 @@ describe('Unit | Component | JobList.vue', () => {
           {
             id: 3,
             activity: {
-              title: 'Tech Lead mission 3',
+              title: 'Yesterday\'s mission',
               staffing_needed_from: '2017-10-03',
             },
             project: {
@@ -283,7 +281,7 @@ describe('Unit | Component | JobList.vue', () => {
           {
             id: 4,
             activity: {
-              title: 'Tech Lead mission 4',
+              title: 'Today\'s mission',
               staffing_needed_from: '2017-10-04',
             },
             project: {
@@ -304,11 +302,17 @@ describe('Unit | Component | JobList.vue', () => {
             },
           },
         ];
-        expectedJobsWhenSortedByStatusAndStaffingNeededDate = [
-          jobs[3],
-          jobs[1],
-          jobs[2],
-          jobs[0],
+
+        let todayJob = jobs[3];
+        let yesterdayJob = jobs[2];
+        let oldJob = jobs[1];
+        let veryOldJob = jobs[0];
+
+        let expectedJobsWhenSortedByStatusAndStaffingNeededDate = [
+          todayJob,
+          yesterdayJob,
+          oldJob,
+          veryOldJob,
         ];
 
         sinon.stub(jobsSorter, 'sort').returns(expectedJobsWhenSortedByStatusAndStaffingNeededDate);
@@ -325,10 +329,10 @@ describe('Unit | Component | JobList.vue', () => {
 
       it('should sort the mission jobs by status and by staffing needed date', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
         const jobTitles = component.$el.querySelectorAll('.job__title');
-        expect(jobTitles[0].textContent).to.equal('Tech Lead mission 4');
-        expect(jobTitles[1].textContent).to.equal('Tech Lead mission 2');
-        expect(jobTitles[2].textContent).to.equal('Tech Lead mission 3');
-        expect(jobTitles[3].textContent).to.equal('Tech Lead mission 1');
+        expect(jobTitles[0].textContent).to.equal('Today\'s mission');
+        expect(jobTitles[1].textContent).to.equal('Yesterday\'s mission');
+        expect(jobTitles[2].textContent).to.equal('Old mission');
+        expect(jobTitles[3].textContent).to.equal('Very old mission');
       })));
     });
 
