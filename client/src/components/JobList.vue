@@ -79,17 +79,13 @@
           const accessToken = authenticationService.getAccessToken();
           jobsApi.fetchAll(accessToken)
             .then((jobs) => {
-              this.jobsFromApi = this._sortJobsByProjectStatusAndStaffingNeededDate(jobs);
+              this.jobsFromApi = jobsSorter.sort(moment(), jobs);
               this.displayJobs = this.jobsFromApi;
             })
             .then(() => {
               this.isLoading = false;
             });
         }
-      },
-
-      _sortJobsByProjectStatusAndStaffingNeededDate(jobs) {
-        return jobsSorter.sort(moment(), jobs);
       },
 
       onSelectedCountryFilter(selectedCountryFilter) {
