@@ -18,9 +18,11 @@ export default {
   },
 
   _setDaysFromToday(today, jobs) {
-    jobs.forEach((job) => {
+    jobs.map(job => {
+      const jobWithDaysFromToday = job;
       const jobDate = moment(job.activity.staffing_needed_from, 'YYYY-MM-DD');
-      job.daysFromToday = jobDate.diff(today, 'days');
+      jobWithDaysFromToday.daysFromToday = jobDate.diff(today, 'days');
+      return jobWithDaysFromToday;
     });
   },
 

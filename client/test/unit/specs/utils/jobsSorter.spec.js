@@ -115,22 +115,26 @@ describe('Unit | Utils | Jobs Sorter', () => {
       yesterdayJobProposal,
     ];
 
-    expectedJobsWhenSortedByStatusAndStaffingNeededDate = [
+    const signedJobsSortedByStaffingNeededDate = [
       todayJobSigned,
       beforeYesterdayJobSigned,
+    ];
+
+    const proposalJobsSortedByStaffingNeededDate = [
       yesterdayJobProposal,
       oldJobProposal,
     ];
 
-    const jobsSignedSortedByStaffingNeededDate = expectedJobsWhenSortedByStatusAndStaffingNeededDate.slice(0, 2);
-    const jobsProposalSortedByStaffingNeededDate = expectedJobsWhenSortedByStatusAndStaffingNeededDate.slice(2);
+    expectedJobsWhenSortedByStatusAndStaffingNeededDate = [
+      ...signedJobsSortedByStaffingNeededDate,
+      ...proposalJobsSortedByStaffingNeededDate,
+    ];
 
     sinon.stub(projectStatus, 'sort').returns(expectedJobsWhenSortedByStatus);
+
     const staffingSort = sinon.stub(projectStaffingNeededDate, 'sort');
-    staffingSort.onCall(0)
-      .returns(jobsSignedSortedByStaffingNeededDate);
-    staffingSort.onCall(1)
-      .returns(jobsProposalSortedByStaffingNeededDate);
+    staffingSort.onCall(0).returns(signedJobsSortedByStaffingNeededDate);
+    staffingSort.onCall(1).returns(proposalJobsSortedByStaffingNeededDate);
   });
 
   afterEach(() => {
