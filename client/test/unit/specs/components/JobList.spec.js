@@ -208,7 +208,7 @@ describe('Unit | Component | JobList.vue', () => {
     describe('after jobs are loaded with different status and staffing needed dates', () => {
       beforeEach(() => {
         // given
-        let jobs = [
+        const jobs = [
           {
             id: 1,
             activity: {
@@ -303,12 +303,12 @@ describe('Unit | Component | JobList.vue', () => {
           },
         ];
 
-        let todayJob = jobs[3];
-        let yesterdayJob = jobs[2];
-        let oldJob = jobs[1];
-        let veryOldJob = jobs[0];
+        const todayJob = jobs[3];
+        const yesterdayJob = jobs[2];
+        const oldJob = jobs[1];
+        const veryOldJob = jobs[0];
 
-        let expectedJobsWhenSortedByStatusAndStaffingNeededDate = [
+        const expectedJobsWhenSortedByStatusAndStaffingNeededDate = [
           todayJob,
           yesterdayJob,
           oldJob,

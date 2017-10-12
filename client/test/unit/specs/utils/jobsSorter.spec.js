@@ -103,10 +103,10 @@ describe('Unit | Utils | Jobs Sorter', () => {
       },
     ];
 
-    let todayJobSigned = jobs[3];
-    let yesterdayJobProposal = jobs[2];
-    let beforeYesterdayJobSigned = jobs[1];
-    let oldJobProposal = jobs[0];
+    const todayJobSigned = jobs[3];
+    const yesterdayJobProposal = jobs[2];
+    const beforeYesterdayJobSigned = jobs[1];
+    const oldJobProposal = jobs[0];
 
     expectedJobsWhenSortedByStatus = [
       beforeYesterdayJobSigned,
@@ -122,8 +122,8 @@ describe('Unit | Utils | Jobs Sorter', () => {
       oldJobProposal,
     ];
 
-    let jobsSignedSortedByStaffingNeededDate = expectedJobsWhenSortedByStatusAndStaffingNeededDate.slice(0, 2);
-    let jobsProposalSortedByStaffingNeededDate = expectedJobsWhenSortedByStatusAndStaffingNeededDate.slice(2);
+    const jobsSignedSortedByStaffingNeededDate = expectedJobsWhenSortedByStatusAndStaffingNeededDate.slice(0, 2);
+    const jobsProposalSortedByStaffingNeededDate = expectedJobsWhenSortedByStatusAndStaffingNeededDate.slice(2);
 
     sinon.stub(projectStatus, 'sort').returns(expectedJobsWhenSortedByStatus);
     const staffingSort = sinon.stub(projectStaffingNeededDate, 'sort');

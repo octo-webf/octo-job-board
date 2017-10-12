@@ -4,13 +4,13 @@ export default {
 
   _sortByDaysFromToday(jobs) {
     return jobs.sort((job1, job2) => {
-      let daysFromToday1 = job1.daysFromToday >= 0 ? job1.daysFromToday : (job1.daysFromToday * -1) + 0.1;
-      let daysFromToday2 = job2.daysFromToday >= 0 ? job2.daysFromToday : (job2.daysFromToday * -1) + 0.1;
+      const daysFromToday1 = job1.daysFromToday >= 0 ? job1.daysFromToday : (job1.daysFromToday * -1) + 0.1;
+      const daysFromToday2 = job2.daysFromToday >= 0 ? job2.daysFromToday : (job2.daysFromToday * -1) + 0.1;
 
-      if(daysFromToday1 < daysFromToday2) {
+      if (daysFromToday1 < daysFromToday2) {
         return -1;
       }
-      if(daysFromToday1 > daysFromToday2) {
+      if (daysFromToday1 > daysFromToday2) {
         return 1;
       }
       return 0;
@@ -25,7 +25,7 @@ export default {
   },
 
   sort(today, jobs) {
-    let jobsToBeSorted = jobs;
+    const jobsToBeSorted = jobs;
     this._setDaysFromToday(today, jobsToBeSorted);
     return this._sortByDaysFromToday(jobsToBeSorted);
   },
