@@ -141,9 +141,9 @@
 
       displaySuccessNotification() {
         this._closeModal();
-        const message = `Merci de ton intérêt pour la mission. Ta demande a été transmise à l'équipe Job Board.`;
+        const message = 'Merci de ton intérêt pour la mission. Ta demande a été transmise à l\'équipe Job Board.';
         this.$root.$refs.centerToastr.s({
-          msg :message,
+          msg: message,
           position: 'toast-top-center',
           timeout: 3000,
           closeButton: true,
