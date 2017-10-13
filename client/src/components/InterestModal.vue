@@ -4,8 +4,8 @@
 
       <!-- modal header-->
       <div class="interest-modal__header">
-        <h2 class="interest-modal__title">Intéressé·e&nbsp; par <strong>{{ mission }}</strong> pour <strong>{{ customer }}</strong>&nbsp;?</h2>
-        <button class="interest-modal__action interest-modal__action--cancel" @click="cancelInterest"><icon name="times" scale="1.5"></icon></button>
+        <h2 class="interest-modal__title">Intéressé·e&nbsp; par <strong>{{ mission }}</strong> pour <strong>{{ customerName }}</strong>&nbsp;?</h2>
+        <button class="interest-modal__action interest-modal__action--cancel" @click="_closeModal"><icon name="times" scale="1.5"></icon></button>
       </div>
 
       <!-- modal body -->
@@ -25,7 +25,7 @@
                   @click="submitInterest">Je suis disponible
           </button>
         </div>
-        <p class="interest-modal__mentions interest-modal__text">L'équipe Job Board te mettra en relation avec <strong>{{ missionDirectorNickname }}</strong> , dir. mission et <strong>{{ businessContactNickname }}</strong>, contact biz.</p>
+        <p class="interest-modal__mentions">L'équipe Job Board te mettra en relation avec <strong>{{ missionDirectorNickname }}</strong> , dir. mission et <strong>{{ businessContactNickname }}</strong>, contact biz.</p>
       </div>
 
     </modal>
@@ -85,7 +85,7 @@
         return missionName.substring(0, 49);
       },
 
-      customer() {
+      customerName() {
         if (!this.interestingJob) return '';
         return (this.interestingJob.project.customer.name) ? this.interestingJob.project.customer.name : 'N/A';
       },
@@ -140,10 +140,6 @@
       beforeOpen() {
         this._resetInterest();
         this._removeError();
-      },
-
-      cancelInterest() {
-        this._closeModal();
       },
 
       _resetInterest() {
@@ -253,7 +249,11 @@
   }
 
   .interest-modal__mentions {
+    width: 100%;
+    resize: none;
+    overflow: auto;
     font-size: 14px;
+    box-sizing: border-box;
     font-style: italic;
     text-align: center;
   }

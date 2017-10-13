@@ -240,13 +240,14 @@ describe('Unit | Component | InterestModal.vue', () => {
         // Then
         expect(missionName).to.equal('SCLOU - Cloud computing : enjeux, architecture et');
       });
+    });
 
-
-      it.only('should get customerName', () => {
+    describe('computed property #customerName', () => {
+      it('should get customerName', () => {
         // Given
 
         // When
-        const customerName = component.customer;
+        const customerName = component.customerName;
 
         // Then
         expect(customerName).to.equal('La Poste - Courrier');
