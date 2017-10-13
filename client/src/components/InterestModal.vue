@@ -5,7 +5,11 @@
       <!-- modal header-->
       <div class="interest-modal__header">
         <h2 class="interest-modal__title">Intéressé·e&nbsp; par <strong>{{ mission }}</strong> pour <strong>{{ customerName }}</strong>&nbsp;?</h2>
+<<<<<<< HEAD
         <button class="interest-modal__action interest-modal__action--cancel" @click="closeModal"><icon name="times" scale="1.5"></icon></button>
+=======
+        <button class="interest-modal__action interest-modal__action--cancel" @click="_closeModal"><icon name="times" scale="1.5"></icon></button>
+>>>>>>> review(JOB-135): Renames computed attribute and ajusts css
       </div>
 
       <!-- modal body -->
