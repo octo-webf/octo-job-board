@@ -54,7 +54,7 @@
       },
 
       displaySuccessNotification() {
-        const message = 'Ton abonnement aux alertes du Jobboard a été pris en compte.';
+        const message = 'Ton abonnement aux alertes du Job Board a été pris en compte.';
         notificationService.success(this, message);
       },
 
