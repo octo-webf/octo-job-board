@@ -127,7 +127,7 @@ describe('Unit | Component | AppHeader.vue', () => {
 
       // then
       setTimeout(() => {
-        const message = 'Ton abonnement aux alertes du Jobboard a été pris en compte.';
+        const message = 'Ton abonnement aux alertes du Job Board a été pris en compte.';
         expect(notificationService.success).to.have.been.calledWithExactly(component, message);
         done();
       }, 100);
