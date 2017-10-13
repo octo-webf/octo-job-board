@@ -5,7 +5,7 @@
       <!-- modal header-->
       <div class="interest-modal__header">
         <h2 class="interest-modal__title">Intéressé·e&nbsp; par <strong>{{ mission }}</strong> pour <strong>{{ customerName }}</strong>&nbsp;?</h2>
-        <button class="interest-modal__action interest-modal__action--cancel" @click="_closeModal"><icon name="times" scale="1.5"></icon></button>
+        <button class="interest-modal__action interest-modal__action--cancel" @click="closeModal"><icon name="times" scale="1.5"></icon></button>
       </div>
 
       <!-- modal body -->
@@ -116,7 +116,7 @@
         const consultant = authenticationService.getAuthenticatedUser();
         const accessToken = authenticationService.getAccessToken();
         return interestsApi.sendInterest(this.interestingJob, consultant, accessToken)
-          .then(this._closeModal)
+          .then(this.closeModal)
           .catch(() => {
             this.error = 'Une erreur est survenue durant l\'envoi de ton intérêt.';
           });
@@ -150,7 +150,7 @@
         this.error = null;
       },
 
-      _closeModal() {
+      closeModal() {
         this.$modal.hide('interest-modal');
       },
     },
