@@ -70,7 +70,6 @@ describe('Unit | Utils | Project Staffing Needed Date', () => {
       const yesterdayJob = { id: 5, activity: { staffing_needed_from: '2017-10-03' } };
       const oldJob = { id: 6, activity: { staffing_needed_from: '2017-09-08' } };
 
-
       const givenJobs = [futureJob, beforeYesterdayJob, todayJob, veryOldJob, yesterdayJob, oldJob];
       const expectedSortedJobs = [todayJob, yesterdayJob, beforeYesterdayJob, veryOldJob, oldJob, futureJob];
 
