@@ -39,6 +39,18 @@
     border-radius: 5px;
   }
 
+  .center-toastr-container {
+    font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
+  }
+
+  .center-toastr-container .toast-container.toast-top-center {
+    top: 60px;
+  }
+
+  .center-toastr-container .toast-container.toast-top-center>div {
+    width: 500px;
+  }
+
   @media only screen and (min-width: 640px) {
     .page__container {
       max-width: 544px;

@@ -30,9 +30,10 @@ Vue.component('icon', Icon);
 new Vue({
   el: '#app',
   router,
-  template: '<div><App/><vue-toastr ref="toastr"></vue-toastr></div>',
+  template: '<div><div class="center-toastr-container"><vue-toastr ref="centerToastr"></vue-toastr></div><App/><vue-toastr ref="toastr"></vue-toastr></div>',
   components: { App },
   mounted() {
     this.$refs.toastr.defaultPosition = 'toast-bottom-right';
+    this.$refs.toastr.defaultTimeout = 3000;
   },
 });

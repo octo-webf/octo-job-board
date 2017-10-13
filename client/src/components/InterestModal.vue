@@ -140,9 +140,14 @@
       },
 
       displaySuccessNotification() {
-        const mission = this.mission;
-        const message = `Ton intérêt pour la mission "${mission}" a été pris en compte.`;
-        this.$root.$refs.toastr.s(message);
+        this._closeModal();
+        const message = `Merci de ton intérêt pour la mission. Ta demande a été transmise à l'équipe Job Board.`;
+        this.$root.$refs.centerToastr.s({
+          msg :message,
+          position: 'toast-top-center',
+          timeout: 3000,
+          closeButton: true,
+        });
       },
 
       beforeOpen() {
@@ -171,6 +176,9 @@
 </script>
 
 <style scoped>
+  .toast-container{
+    margin-top:60px;
+  }
   .interest-modal__header {
     background-color: #eef0f4;
     padding: 10px 20px;
