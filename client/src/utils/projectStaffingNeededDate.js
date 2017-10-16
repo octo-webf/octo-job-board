@@ -1,7 +1,8 @@
 import moment from 'moment';
 
 
-function _getArrayOfIdsWithDaysFromToday(today, jobs) {
+function _getArrayOfIdsWithDaysFromToday(jobs) {
+  const today = moment();
   return jobs.map((job) => {
     const jobDate = moment(job.activity.staffing_needed_from, 'YYYY-MM-DD');
     const daysFromToday = jobDate.diff(today, 'days');
@@ -45,8 +46,8 @@ function _sortJobs(idsSorted, jobs) {
 }
 
 export default {
-  sort(today, jobs) {
-    const idsToBeSorted = _getArrayOfIdsWithDaysFromToday(today, jobs);
+  sort(jobs) {
+    const idsToBeSorted = _getArrayOfIdsWithDaysFromToday(jobs);
     const idsSorted = _sortArrayOfIdsWithDaysFromToday(idsToBeSorted);
     return _sortJobs(idsSorted, jobs);
   },

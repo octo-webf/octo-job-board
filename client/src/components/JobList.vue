@@ -30,7 +30,6 @@
 </template>
 
 <script>
-  import moment from 'moment';
   import authenticationService from '@/services/authentication';
   import jobsSorter from '@/utils/jobsSorter';
   import jobsApi from '@/api/jobs';
@@ -79,7 +78,7 @@
           const accessToken = authenticationService.getAccessToken();
           jobsApi.fetchAll(accessToken)
             .then((jobs) => {
-              this.jobsFromApi = jobsSorter.sort(moment(), jobs);
+              this.jobsFromApi = jobsSorter.sort(jobs);
               this.displayJobs = this.jobsFromApi;
             })
             .then(() => {
