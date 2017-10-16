@@ -6,7 +6,7 @@ function _getArrayOfIdsWithDaysFromToday(jobs) {
   return jobs.map((job) => {
     const jobDate = moment(job.activity.staffing_needed_from, 'YYYY-MM-DD');
     const daysFromToday = jobDate.diff(today, 'days');
-    return { id: job.id, daysFromToday };
+    return { activityId: job.activity.id, daysFromToday };
   });
 }
 
@@ -32,7 +32,7 @@ function _sortJobs(idsSorted, jobs) {
   idsSorted.forEach((idSorted) => {
     let idWasAlreadyFound = false;
     jobsToBeSorted = jobsToBeSorted.filter((job) => {
-      if (!idWasAlreadyFound && idSorted.id === job.id) {
+      if (!idWasAlreadyFound && idSorted.activityId === job.activity.id) {
         jobsSorted.push(job);
         idWasAlreadyFound = true;
         return false;
