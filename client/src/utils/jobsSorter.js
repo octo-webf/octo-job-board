@@ -3,7 +3,7 @@ import projectStaffingNeededDate from '@/utils/projectStaffingNeededDate';
 
 export default {
 
-  sort(today, jobs) {
+  sort(jobs) {
     const jobsSortedByStatus = projectStatus.sort(jobs);
     const regexToFindOnlyMissions = /^mission_/;
 
@@ -11,10 +11,10 @@ export default {
     let jobsWithOtherStatus = jobsSortedByStatus.filter(job => !regexToFindOnlyMissions.test(job.project.status));
 
     if (jobsWithStatusMission.length > 1) {
-      jobsWithStatusMission = projectStaffingNeededDate.sort(today, jobsWithStatusMission);
+      jobsWithStatusMission = projectStaffingNeededDate.sort(jobsWithStatusMission);
     }
     if (jobsWithOtherStatus.length > 1) {
-      jobsWithOtherStatus = projectStaffingNeededDate.sort(today, jobsWithOtherStatus);
+      jobsWithOtherStatus = projectStaffingNeededDate.sort(jobsWithOtherStatus);
     }
 
     return [...jobsWithStatusMission, ...jobsWithOtherStatus];
