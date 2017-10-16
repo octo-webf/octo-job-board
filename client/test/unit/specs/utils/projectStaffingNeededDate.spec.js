@@ -1,8 +1,8 @@
 import moment from 'moment';
 import projectStaffingNeededDate from '@/utils/projectStaffingNeededDate';
 
-describe.only('Unit | Utils | Project Staffing Needed Date', () => {
-  describe.only('#sort', () => {
+describe('Unit | Utils | Project Staffing Needed Date', () => {
+  describe('#sort', () => {
     it('should sort two jobs according to project staffing needed date', () => {
       // Given
       const today = moment('2017-10-04', 'YYYY-MM-DD');
