@@ -24,12 +24,12 @@ app.use(cookieParser());
 // enable cors
 app.use(cors());
 
-// Don't redirect if the hostname is `localhost:port`
-app.use(redirectToHTTPS([/localhost:(\d{4})/]));
-
 // static resources
 // FIXME manage better environment variables
 if ('test' !== process.env.NODE_ENV) {
+  // Don't redirect if the hostname is `localhost:port`
+  app.use(redirectToHTTPS([/localhost:(\d{4})/]));
+
   app.use(express.static(path.join(__dirname, '..', 'client', 'dist')));
 }
 
