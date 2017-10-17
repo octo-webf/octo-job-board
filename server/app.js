@@ -4,6 +4,7 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const redirectToHTTPS = require('express-http-to-https').redirectToHTTPS;
 
 const index = require('./src/features/api/index');
 const jobs = require('./src/features/api/jobs');
@@ -22,6 +23,9 @@ app.use(cookieParser());
 
 // enable cors
 app.use(cors());
+
+// Don't redirect if the hostname is `localhost:port`
+app.use(redirectToHTTPS([/localhost:(\d{4})/]));
 
 // static resources
 // FIXME manage better environment variables
