@@ -80,7 +80,7 @@ describe('Unit | Component | InterestModal.vue', () => {
     });
   });
 
-  describe('method #trackEvent', () => {
+  describe('#trackEvent', () => {
     const expectedCallParams = {
       eventCategory: 'Job List',
       eventAction: 'click',
@@ -119,7 +119,7 @@ describe('Unit | Component | InterestModal.vue', () => {
     });
   });
 
-  describe('#sendInterest', () => {
+  describe('#submitInterest', () => {
     beforeEach(() => {
       sinon.stub(interestsApi, 'sendInterest').resolves();
       sinon.stub(authenticationService, 'getAccessToken').returns('some-access-token');
@@ -130,9 +130,20 @@ describe('Unit | Component | InterestModal.vue', () => {
       authenticationService.getAccessToken.restore();
     });
 
-    it('should call the API with good params', () => {
+    it('should remove error', () => {
+      // given
+      component.$data.error = 'Existing error';
+
       // when
-      component.sendInterest();
+      component.submitInterest();
+
+      // then
+      expect(component.$data.error).to.equal(null);
+    });
+
+    it('should call the API with job, consultant and access token', () => {
+      // when
+      component.submitInterest();
 
       // then
       expect(interestsApi.sendInterest).to.have.been.calledWith(job, consultant, 'some-access-token');
@@ -154,39 +165,6 @@ describe('Unit | Component | InterestModal.vue', () => {
     });
 
     it.skip('should close the modal');
-  });
-
-  describe('method #trackEvent', () => {
-    const expectedCallParams = {
-      eventCategory: 'Job List',
-      eventAction: 'click',
-      eventLabel: 'I am interested',
-      eventValue: null,
-    };
-
-    beforeEach(() => {
-      sinon.stub(component.$ga, 'event').returns(true);
-    });
-
-    afterEach(() => {
-      component.$ga.event.restore();
-    });
-
-    it('should check analytics', () => {
-      // when
-      component.trackEvent();
-
-      // then
-      expect(component.$ga.event).to.have.been.calledWith(expectedCallParams);
-    });
-
-    it.skip('on click on button job__apply-button', () => Vue.nextTick().then(() => {
-      // when
-      component.$el.querySelector('button.job__apply-button').click();
-
-      // then
-      expect(component.$ga.event).to.have.been.calledWith(expectedCallParams);
-    }));
   });
 
   describe('computed props', () => {
@@ -239,6 +217,18 @@ describe('Unit | Component | InterestModal.vue', () => {
 
         // Then
         expect(missionName).to.equal('SCLOU - Cloud computing : enjeux, architecture et');
+      });
+    });
+
+    describe('computed property #customerName', () => {
+      it('should get customerName', () => {
+        // Given
+
+        // When
+        const customerName = component.customerName;
+
+        // Then
+        expect(customerName).to.equal('La Poste - Courrier');
       });
     });
 

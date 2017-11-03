@@ -4,6 +4,7 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const redirectToHTTPS = require('express-http-to-https').redirectToHTTPS;
 
 const index = require('./src/features/api/index');
 const jobs = require('./src/features/api/jobs');
@@ -26,6 +27,9 @@ app.use(cors());
 // static resources
 // FIXME manage better environment variables
 if ('test' !== process.env.NODE_ENV) {
+  // Don't redirect if the hostname is `localhost:port`
+  app.use(redirectToHTTPS([/localhost:(\d{4})/]));
+
   app.use(express.static(path.join(__dirname, '..', 'client', 'dist')));
 }
 

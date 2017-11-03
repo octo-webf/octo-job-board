@@ -10,8 +10,8 @@ describe('Unit | Utils | Jobs Sorter', () => {
     // given
     jobs = [
       {
-        id: 1,
         activity: {
+          id: 1,
           title: 'Tech Lead mission 1',
           staffing_needed_from: '2017-10-01',
         },
@@ -33,8 +33,8 @@ describe('Unit | Utils | Jobs Sorter', () => {
         },
       },
       {
-        id: 2,
         activity: {
+          id: 2,
           title: 'Tech Lead mission 2',
           staffing_needed_from: '2017-10-02',
         },
@@ -56,8 +56,8 @@ describe('Unit | Utils | Jobs Sorter', () => {
         },
       },
       {
-        id: 3,
         activity: {
+          id: 3,
           title: 'Tech Lead mission 3',
           staffing_needed_from: '2017-10-03',
         },
@@ -79,8 +79,8 @@ describe('Unit | Utils | Jobs Sorter', () => {
         },
       },
       {
-        id: 4,
         activity: {
+          id: 4,
           title: 'Tech Lead mission 4',
           staffing_needed_from: '2017-10-04',
         },
