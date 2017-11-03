@@ -80,7 +80,7 @@ describe('Unit | Component | InterestModal.vue', () => {
     });
   });
 
-  describe('method #trackEvent', () => {
+  describe('#trackEvent', () => {
     const expectedCallParams = {
       eventCategory: 'Job List',
       eventAction: 'click',
@@ -119,7 +119,7 @@ describe('Unit | Component | InterestModal.vue', () => {
     });
   });
 
-  describe('#sendInterest', () => {
+  describe('#submitInterest', () => {
     beforeEach(() => {
       sinon.stub(interestsApi, 'sendInterest').resolves();
       sinon.stub(authenticationService, 'getAccessToken').returns('some-access-token');
@@ -130,9 +130,20 @@ describe('Unit | Component | InterestModal.vue', () => {
       authenticationService.getAccessToken.restore();
     });
 
-    it('should call the API with good params', () => {
+    it('should remove error', () => {
+      // given
+      component.$data.error = 'Existing error';
+
       // when
-      component.sendInterest();
+      component.submitInterest();
+
+      // then
+      expect(component.$data.error).to.equal(null);
+    });
+
+    it('should call the API with job, consultant and access token', () => {
+      // when
+      component.submitInterest();
 
       // then
       expect(interestsApi.sendInterest).to.have.been.calledWith(job, consultant, 'some-access-token');

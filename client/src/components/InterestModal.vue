@@ -94,7 +94,7 @@
     methods: {
 
       submitInterest() {
-        this.sendInterest().then(() => {
+        this._sendInterest().then(() => {
           this.disableButton();
           this.displaySuccessNotification();
         });
@@ -110,9 +110,8 @@
         });
       },
 
-      sendInterest() {
+      _sendInterest() {
         this._removeError();
-
         const consultant = authenticationService.getAuthenticatedUser();
         const accessToken = authenticationService.getAccessToken();
         return interestsApi.sendInterest(this.interestingJob, consultant, accessToken)
@@ -127,7 +126,7 @@
       },
 
       displaySuccessNotification() {
-        this._closeModal();
+        this.closeModal();
         const message = 'Merci de ton intérêt pour la mission. Ta demande a été transmise à l\'équipe Job Board.';
         this.$root.$refs.centerToastr.s({
           msg: message,
