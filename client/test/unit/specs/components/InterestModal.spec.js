@@ -156,39 +156,6 @@ describe('Unit | Component | InterestModal.vue', () => {
     it.skip('should close the modal');
   });
 
-  describe('method #trackEvent', () => {
-    const expectedCallParams = {
-      eventCategory: 'Job List',
-      eventAction: 'click',
-      eventLabel: 'I am interested',
-      eventValue: null,
-    };
-
-    beforeEach(() => {
-      sinon.stub(component.$ga, 'event').returns(true);
-    });
-
-    afterEach(() => {
-      component.$ga.event.restore();
-    });
-
-    it('should check analytics', () => {
-      // when
-      component.trackEvent();
-
-      // then
-      expect(component.$ga.event).to.have.been.calledWith(expectedCallParams);
-    });
-
-    it.skip('on click on button job__apply-button', () => Vue.nextTick().then(() => {
-      // when
-      component.$el.querySelector('button.job__apply-button').click();
-
-      // then
-      expect(component.$ga.event).to.have.been.calledWith(expectedCallParams);
-    }));
-  });
-
   describe('computed props', () => {
     describe('computed property #mission', () => {
       it('should get jobTitle', () => {
@@ -239,18 +206,6 @@ describe('Unit | Component | InterestModal.vue', () => {
 
         // Then
         expect(missionName).to.equal('SCLOU - Cloud computing : enjeux, architecture et');
-      });
-    });
-
-    describe('computed property #customerName', () => {
-      it('should get customerName', () => {
-        // Given
-
-        // When
-        const customerName = component.customerName;
-
-        // Then
-        expect(customerName).to.equal('La Poste - Courrier');
       });
     });
 
