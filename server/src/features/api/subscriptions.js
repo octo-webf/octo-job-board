@@ -20,10 +20,10 @@ router.post('/', auth, (req, res) => {
     });
 });
 
-router.delete('/:id', (req, res) => {
-  const subscriptionId = parseInt(req.params.id, 10);
+router.delete('/', auth, (req, res) => {
+  const userEmail = req.userEmail;
   subscriptionService
-    .removeSubscription(subscriptionId)
+    .removeSubscription(userEmail)
     .then(() => res.status(204).send());
 });
 

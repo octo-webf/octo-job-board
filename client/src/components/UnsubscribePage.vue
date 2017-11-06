@@ -18,7 +18,6 @@
 </template>
 
 <script>
-  import Vue from 'vue';
   import AppHeader from '@/components/AppHeader';
   import authenticationService from '@/services/authentication';
   import notificationService from '@/services/notification';
@@ -45,8 +44,8 @@
       displayErrorNotification() {
         const message = 'Erreur lors de la prise en compte de ton désabonnement. Pense à te reconnecter.';
         notificationService.error(this, message);
-      }
-    }
+      },
+    },
   };
 </script>
 

@@ -71,24 +71,27 @@ describe('Integration | Routes | subscriptions route', () => {
     });
   });
 
-  describe('DELETE /api/subscriptions/:subscription_id', () => {
+  describe('DELETE /api/subscriptions/', () => {
     beforeEach(() => {
+      sinon.stub(jwt, 'verify').returns({ userId: 'user-id', email: 'test@mail.com' });
       sinon.stub(subscriptionService, 'removeSubscription').resolves();
     });
 
     afterEach(() => {
+      jwt.verify.restore();
       subscriptionService.removeSubscription.restore();
     });
 
     it('should call subscriptionService#removeSubscription', (done) => {
       // when
       request(app)
-        .delete('/api/subscriptions/1234')
+        .delete('/api/subscriptions/')
         .send()
+        .set('Authorization', 'Bearer access-token')
         .expect('Content-Type', 'application/json; charset=utf-8')
         .expect(204, () => {
           // then
-          expect(subscriptionService.removeSubscription).to.have.been.calledWith(1234);
+          expect(subscriptionService.removeSubscription).to.have.been.calledWith('test@mail.com');
           done();
         });
     });
@@ -96,5 +99,9 @@ describe('Integration | Routes | subscriptions route', () => {
 
   it('should return 401 response if the user is not well authenticated', () => request(app)
     .post('/api/subscriptions')
+    .expect(401));
+
+  it('should return 401 response if the user is not well authenticated', () => request(app)
+    .delete('/api/subscriptions')
     .expect(401));
 });
