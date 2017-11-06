@@ -6,8 +6,8 @@ function addSubscription(subscriberEmail) {
     .spread((subscription, created) => ({ subscription, created }));
 }
 
-function removeSubscription(subscriptionId) {
-  return Subscription.destroy({ where: { id: subscriptionId } });
+function removeSubscription(userEmail) {
+  return Subscription.destroy({ where: { email: userEmail } });
 }
 
 module.exports = {

@@ -2,7 +2,6 @@ import axios from 'axios';
 import subscriptionsApi from '@/api/subscriptions';
 
 describe('Unit | API | subscriptions api', () => {
-
   describe('#subscription', () => {
     beforeEach(() => {
       sinon.stub(axios, 'post').resolves();
@@ -31,18 +30,18 @@ describe('Unit | API | subscriptions api', () => {
 
   describe('#unsubscribe', () => {
     beforeEach(() => {
-      sinon.stub(axios, 'post').resolves();
+      sinon.stub(axios, 'delete').resolves();
     });
 
     afterEach(() => {
-      axios.post.restore();
+      axios.delete.restore();
     });
 
-    it('should call POST /api/unsubscribe', () => {
+    it('should call DELETE /api/subscriptions', () => {
       // given
       const accessToken = 'valid-access-token';
 
-      const expectedUrl = 'http://localhost:3000/api/unsubscribe';
+      const expectedUrl = 'http://localhost:3000/api/subscriptions';
       const expectedOptions = { headers: { Authorization: `Bearer ${accessToken}` } };
 
       // when
@@ -50,7 +49,7 @@ describe('Unit | API | subscriptions api', () => {
 
       // then
       return promise.then(() => {
-        expect(axios.post).to.have.been.calledWith(expectedUrl, {}, expectedOptions);
+        expect(axios.delete).to.have.been.calledWith(expectedUrl, expectedOptions);
       });
     });
   });
