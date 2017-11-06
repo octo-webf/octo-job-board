@@ -1,5 +1,6 @@
 <template>
   <div class="unsubscribe">
+    <app-header/>
     <article class="unsubscribe__content">
       <div class="unsubscribe__text">
         <p>
@@ -18,12 +19,16 @@
 
 <script>
   import Vue from 'vue';
+  import AppHeader from '@/components/AppHeader';
   import authenticationService from '@/services/authentication';
   import notificationService from '@/services/notification';
   import unsubscribeApi from '@/api/subscriptions';
 
   export default {
     name: 'UnsubscribePage',
+    components: {
+      AppHeader,
+    },
     methods: {
       unsubscribe() {
         const accessToken = authenticationService.getAccessToken();

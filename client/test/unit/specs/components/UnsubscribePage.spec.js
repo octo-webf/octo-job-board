@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import AppHeader from '@/components/AppHeader';
 import UnsubscribePage from '@/components/UnsubscribePage';
 import authenticationService from '@/services/authentication';
 import notificationService from '@/services/notification';
@@ -17,6 +18,11 @@ describe('Unit | Component | UnsubscribePage.vue', () => {
 
   it('should be named "UnsubscribePage"', () => {
     expect(component.$options.name).to.equal('UnsubscribePage');
+  });
+
+  it('should include AppHeader', () => {
+    const appHeader = component.$options.components.AppHeader;
+    expect(appHeader).to.contain(AppHeader);
   });
 
   describe('#unsubscribe', () => {
