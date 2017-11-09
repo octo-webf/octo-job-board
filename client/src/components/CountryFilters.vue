@@ -47,7 +47,7 @@
     padding: 9px 20px 9px 10px;
     font-family: Roboto;
     height: 40px;
-    width: 290px;
+    width: 250px;
     font-size: 1.1em;
     background-color: #FFF;
   }
