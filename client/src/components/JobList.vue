@@ -9,11 +9,17 @@
         <template v-else>
           <div class="job-results-panel">
             <section class="job-results job-results--delivery">
-              <div class="job-results__header">
-                <h1 class="job-results__title">
-                  Missions à staffer ({{ displayJobs.length }})
-                </h1>
-                <country-filters @selectCountryFilter="onSelectedCountryFilter"></country-filters>
+              <div class="job-results__top">
+                <div class="job-results__filters-left">
+                </div>
+                <div class="job-results__title-container">
+                  <h1 class="job-results__title">
+                    Missions à staffer ({{ displayJobs.length }})
+                  </h1>
+                </div>
+                <div class="job-results__filters-right">
+                  <country-filters @selectCountryFilter="onSelectedCountryFilter"></country-filters>
+                </div>
               </div>
               <ul class="job-results__list">
                 <li class="job-results__item" v-for="job in displayJobs">
@@ -139,5 +145,21 @@
     list-style-type: none;
     padding: 0;
     margin: 10px;
+  }
+
+  @media only screen and (min-width: 640px) {
+    .job-results__top {
+      display: flex;
+    }
+
+    .job-results__filters-left, .job-results__filters-right {
+      width: 25%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .job-results__title-container {
+      width: 50%;
+    }
   }
 </style>
