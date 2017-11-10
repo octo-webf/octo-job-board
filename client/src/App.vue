@@ -16,7 +16,7 @@
     components: {
       'feedback-modal': FeedbackModal,
       'github-corner': GithubCorner,
-    },
+    }
   };
 </script>
 
