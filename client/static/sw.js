@@ -1,0 +1,1 @@
+self.addEventListener("install", () => { console.log("je suis installée !!")})
