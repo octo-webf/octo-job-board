@@ -18,29 +18,12 @@ async function _fetchAndCacheJobs() {
 }
 
 function _compareFetchedAndCachedJobs(freshJobs, oldJobs) {
-  if (!oldJobs) {
-    return Promise.resolve({ isInit: true, hasChanges: false });
+  if (!oldJobs || !freshJobs) {
+    return Promise.resolve({ isInit: !oldJobs, hasChanges: false });
   }
 
-  if (!freshJobs) {
-    return Promise.resolve({ isInit: false, hasChanges: false });
-  }
-
-  const addedJobs = freshJobs.reduce((accumulatedJobs, freshJob) => {
-    const matchedJobs = oldJobs.filter(oldJob => oldJob.activity.id === freshJob.activity.id);
-    if (matchedJobs.length === 0) {
-      accumulatedJobs.push(freshJob);
-    }
-    return accumulatedJobs;
-  }, []);
-
-  const removedJobs = oldJobs.reduce((accumulatedJobs, oldJob) => {
-    const matchedJobs = freshJobs.filter(freshJob => oldJob.activity.id === freshJob.activity.id);
-    if (matchedJobs.length === 0) {
-      accumulatedJobs.push(oldJob);
-    }
-    return accumulatedJobs;
-  }, []);
+  const addedJobs = differenceBy(freshJobs, oldJobs, 'activity.id');
+  const removedJobs = differenceBy(oldJobs, freshJobs, 'activity.id');
 
   const hasChanges = (!isEmpty(addedJobs) || !isEmpty(removedJobs));
 
