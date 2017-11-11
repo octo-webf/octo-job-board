@@ -70,12 +70,12 @@ const OctopodClient = {
     const activitiesByProject = projects.map((project) => {
       return this._fetchActivityToBeStaffed(accessToken, project);
     });
-    
+
     return Promise.all(activitiesByProject)
       .then((projectActivities) => {
         const concatenatedActivities = flattenDeep(projectActivities);
         const activitiesToBeStaffed = concatenatedActivities.filter(activity => !!activity.staffing_needed_from);
-        return Promise.resolve(activitiesToBeStaffed);
+        return activitiesToBeStaffed;
       });
   },
 
