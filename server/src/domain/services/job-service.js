@@ -33,7 +33,7 @@ function _compareFetchedAndCachedJobs(freshJobs, oldJobs) {
 async function _ifJobsChangesThenRetrieveJobsNotificationRecipients(report) {
   if (report.hasChanges) {
     const subscriptions = await Subscription.all();
-    return Object.assign({}, report, {receivers: subscriptions.map(s => s.get('email'))});
+    return Object.assign({}, report, { receivers: subscriptions.map(s => s.get('email')) });
   }
   return Promise.resolve(report);
 }
