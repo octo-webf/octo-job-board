@@ -1,6 +1,6 @@
 const request = require('request');
 const config = require('../config/index');
-const {flattenDeep} = require("lodash");
+const { flattenDeep } = require('lodash');
 
 const OctopodClient = {
 
@@ -67,9 +67,7 @@ const OctopodClient = {
   },
 
   fetchActivitiesToBeStaffed(accessToken, projects) {
-    const activitiesByProject = projects.map((project) => {
-      return this._fetchActivityToBeStaffed(accessToken, project);
-    });
+    const activitiesByProject = projects.map(project => this._fetchActivityToBeStaffed(accessToken, project));
 
     return Promise.all(activitiesByProject)
       .then((projectActivities) => {
