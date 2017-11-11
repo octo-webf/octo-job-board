@@ -1,5 +1,6 @@
 const request = require('request');
 const config = require('../config/index');
+const {flattenDeep} = require("lodash");
 
 const OctopodClient = {
 
@@ -65,20 +66,14 @@ const OctopodClient = {
     });
   },
 
-  // https://stackoverflow.com/a/15030117/2120773
-  _flatten(arr) {
-    return arr.reduce((flat, toFlatten) => flat.concat(Array.isArray(toFlatten) ? this._flatten(toFlatten) : toFlatten), []);
-  },
-
   fetchActivitiesToBeStaffed(accessToken, projects) {
-    const activitiesByProject = projects.reduce((promises, project) => {
-      const activity = this._fetchActivityToBeStaffed(accessToken, project);
-      promises.push(activity);
-      return promises;
-    }, []);
+    const activitiesByProject = projects.map((project) => {
+      return this._fetchActivityToBeStaffed(accessToken, project);
+    });
+    
     return Promise.all(activitiesByProject)
       .then((projectActivities) => {
-        const concatenatedActivities = this._flatten(projectActivities);
+        const concatenatedActivities = flattenDeep(projectActivities);
         const activitiesToBeStaffed = concatenatedActivities.filter(activity => !!activity.staffing_needed_from);
         return Promise.resolve(activitiesToBeStaffed);
       });
