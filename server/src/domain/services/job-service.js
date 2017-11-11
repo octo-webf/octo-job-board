@@ -1,4 +1,4 @@
-const { isEmpty } = require('lodash');
+const { isEmpty, differenceBy } = require('lodash');
 const octopodClient = require('../../infrastructure/octopod');
 const jobsSerializer = require('../../infrastructure/serializers/jobs');
 const cache = require('../../infrastructure/cache');
@@ -7,35 +7,14 @@ const mailService = require('./mail-service'); // A service should not be depend
 
 const CACHE_KEY = 'get_jobs';
 
-function _fetchAndCacheJobs() {
-  let accessToken;
-  let projects;
-  let activities;
-  let jobs;
+async function _fetchAndCacheJobs() {
+  const accessToken = await octopodClient.getAccessToken();
+  const projects = await octopodClient.fetchProjectsToBeStaffed(accessToken);
+  const activities = await octopodClient.fetchActivitiesToBeStaffed(accessToken, projects);
+  const jobs = await jobsSerializer.serialize(projects, activities);
+  cache.set(CACHE_KEY, jobs);
 
-  return octopodClient.getAccessToken()
-    .then((resultAccessToken) => {
-      accessToken = resultAccessToken;
-      return accessToken;
-    })
-    .then(() => octopodClient.fetchProjectsToBeStaffed(accessToken))
-    .then((resultProjects) => {
-      projects = resultProjects;
-      return projects;
-    })
-    .then(() => octopodClient.fetchActivitiesToBeStaffed(accessToken, projects))
-    .then((resultActivities) => {
-      activities = resultActivities;
-      return activities;
-    })
-    .then(() => {
-      jobs = jobsSerializer.serialize(projects, activities);
-      return jobs;
-    })
-    .then(() => {
-      cache.set(CACHE_KEY, jobs);
-      return jobs;
-    });
+  return jobs;
 }
 
 function _compareFetchedAndCachedJobs(freshJobs, oldJobs) {
