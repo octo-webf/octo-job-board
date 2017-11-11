@@ -30,31 +30,21 @@ function _compareFetchedAndCachedJobs(freshJobs, oldJobs) {
   return Promise.resolve({ isInit: false, addedJobs, removedJobs, hasChanges });
 }
 
-function _ifJobsChangesThenRetrieveJobsNotificationRecipients(report) {
-  const result = report;
-  if (result.hasChanges) {
-    return Subscription.all().then((subscriptions) => {
-      result.receivers = subscriptions.map(s => s.get('email'));
-      return result;
-    });
+async function _ifJobsChangesThenRetrieveJobsNotificationRecipients(report) {
+  if(report.hasChanges) {
+    const subscriptions = await Subscription.all();
+    return {...report, receivers : subscriptions.map(s => s.get('email'))}
   }
-  return Promise.resolve(result);
+  return Promise.resolve(report);
 }
 
 function _ifJobsChangedThenSendEmailToRecipients(report) {
-  const result = report;
-  if (result.hasChanges) {
-    return mailService.sendJobsChangedEmail(result);
-  }
-  return Promise.resolve(result);
+  return report.hasChanges ? mailService.sendJobsChangedEmail(report) : Promise.resolve(report);
 }
 
 function getJobs() {
   const jobs = cache.get(CACHE_KEY);
-  if (jobs) {
-    return Promise.resolve(jobs);
-  }
-  return _fetchAndCacheJobs();
+  return jobs ? Promise.resolve(jobs): _fetchAndCacheJobs();
 }
 
 function synchronizeJobs() {
