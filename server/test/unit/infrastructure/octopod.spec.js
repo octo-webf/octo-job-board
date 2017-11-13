@@ -164,56 +164,86 @@ describe('Unit | Utils | octopod-client', () => {
    */
 
   describe('#fetchActivitiesToBeStaffed', () => {
-    const accessToken = 'access-token';
-    const projects = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }];
+    describe('when get succeeds', () => {
+      const accessToken = 'access-token';
+      const projects = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }];
 
-    beforeEach(() => {
-      request.get.callsFake((options, callback) => {
-        const projectActivities = [
-          [{ id: 11, staffing_needed_from: true }],
-          [{ id: 21, staffing_needed_from: true }, { id: 22, staffing_needed_from: false }],
-          [{ id: 31, staffing_needed_from: true }, { id: 32, staffing_needed_from: false }, { id: 33, staffing_needed_from: true }],
-          [],
-          [{ id: 31, staffing_needed_from: false }, { id: 32, staffing_needed_from: false }, { id: 33, staffing_needed_from: false }],
-        ];
+      beforeEach(() => {
+        request.get.callsFake((options, callback) => {
+          const projectActivities = [
+            [{ id: 11, staffing_needed_from: true }],
+            [{ id: 21, staffing_needed_from: true },
+              { id: 22, staffing_needed_from: false }],
+            [{ id: 31, staffing_needed_from: true },
+              { id: 32, staffing_needed_from: false },
+              { id: 33, staffing_needed_from: true }],
+            [],
+            [{ id: 31, staffing_needed_from: false },
+              { id: 32, staffing_needed_from: false },
+              { id: 33, staffing_needed_from: false }],
+          ];
 
-        const url = options.url;
-        const urlParts = url.split('/');
-        const projectId = urlParts[6] - 1;
+          const url = options.url;
+          const urlParts = url.split('/');
+          const projectId = urlParts[6] - 1;
 
-        callback(null, {
-          body: JSON.stringify(projectActivities[projectId]),
+          callback(null, {
+            body: JSON.stringify(projectActivities[projectId]),
+          });
+        });
+      });
+
+      it('should return a promise resolved with activities', () => {
+        // when
+        const promise = OctopodClient.fetchActivitiesToBeStaffed(accessToken, projects);
+
+        // then
+        return promise.then((activities) => {
+          expect(activities).to.have.lengthOf(4);
+        });
+      });
+
+      it('should call Octopod API "GET /projects/{id}/activities" as many times as number of projects', () => {
+        // when
+        const promise = OctopodClient.fetchActivitiesToBeStaffed(accessToken, projects);
+
+        // then
+        return promise.then(() => {
+          expect(request.get).to.have.callCount(5);
+        });
+      });
+
+      it('should not return activities that are not flagged as "staffing needed"', () => {
+        // when
+        const promise = OctopodClient.fetchActivitiesToBeStaffed(accessToken, projects);
+
+        // then
+        return promise.then((activities) => {
+          expect(activities).to.have.lengthOf(4);
         });
       });
     });
 
-    it('should return a promise resolved with activities', () => {
-      // when
-      const promise = OctopodClient.fetchActivitiesToBeStaffed(accessToken, projects);
+    describe('when get fails', () => {
+      const accessToken = 'access-token';
+      const projects = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }];
 
-      // then
-      return promise.then((activities) => {
-        expect(activities).to.have.lengthOf(4);
+      beforeEach(() => {
+        request.get.callsFake((options, callback) => {
+          callback(new Error('this is an error'));
+        });
       });
-    });
 
-    it('should call Octopod API "GET /projects/{id}/activities" as many times as number of projects', () => {
-      // when
-      const promise = OctopodClient.fetchActivitiesToBeStaffed(accessToken, projects);
+      it('should return a rejected promise', (done) => {
+        // when
+        const promise = OctopodClient.fetchActivitiesToBeStaffed(accessToken, projects);
 
-      // then
-      return promise.then(() => {
-        expect(request.get).to.have.callCount(5);
-      });
-    });
-
-    it('should not return activities that are not flagged as "staffing needed"', () => {
-      // when
-      const promise = OctopodClient.fetchActivitiesToBeStaffed(accessToken, projects);
-
-      // then
-      return promise.then((activities) => {
-        expect(activities).to.have.lengthOf(4);
+        // then
+        promise
+          .catch((err) => {
+            expect(err.message).to.equal('this is an error');
+            done();
+          });
       });
     });
   });
