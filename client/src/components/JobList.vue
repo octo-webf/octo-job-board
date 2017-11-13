@@ -133,6 +133,11 @@
     margin: 0 0 15px;
   }
 
+  .job-results__filters-left, .job-results__filters-right {
+    display: flex;
+    justify-content: center;
+  }
+
   .job-results__list {
     padding: 0;
     display: flex;
@@ -147,19 +152,30 @@
     margin: 10px;
   }
 
+  @media only screen and (min-width: 1240px) {
+    .job-results__top {
+      min-width: 1240px;
+    }
+  }
+
+  @media only screen and (min-width: 992px) {
+    .job-results__top {
+      min-width: 920px;
+    }
+  }
+
   @media only screen and (min-width: 640px) {
     .job-results__top {
       display: flex;
+      min-width: 640px;
     }
 
     .job-results__filters-left, .job-results__filters-right {
-      width: 25%;
-      display: flex;
-      justify-content: center;
+      width: 20%;
     }
 
     .job-results__title-container {
-      width: 50%;
+      width: 60%;
     }
   }
 </style>
