@@ -64,11 +64,17 @@ describe('Unit | Component | InterestModal.vue', () => {
   });
 
   describe('rendering', () => {
-    it.skip('should display the modal', () => Vue.nextTick().then(() => {
-      expect(component.$el.querySelector('.interest-modal')).to.exist;
-    }));
+    it('should display the modal', () => {
+      component.$modal.show('interest-modal');
 
-    it.skip('should contain a lot of job informations', () => {
+      return Vue.nextTick().then(() => {
+        expect(component.$el.querySelector('.interest-modal')).to.exist;
+      });
+    });
+
+    it('should contain a lot of job informations', () => {
+      component.$modal.show('interest-modal');
+
       Vue.nextTick().then(() => {
         const modalText = component.$el.querySelector('.interest-modal__text-modal');
         expect(modalText.textContent).to.contain('Tech Lead');
@@ -104,8 +110,9 @@ describe('Unit | Component | InterestModal.vue', () => {
       expect(component.$ga.event).to.have.been.calledWith(expectedCallParams);
     });
 
+    // Because it is complicated to simulate modal click calls
     it.skip('should check analytics on click on "send" button', () => {
-      component.$modal.show('interest-panel');
+      component.$modal.show('interest-modal');
 
       return Vue.nextTick().then(() => {
         const myButton = component.$el.querySelector('.interest-modal__action--send');
@@ -114,7 +121,9 @@ describe('Unit | Component | InterestModal.vue', () => {
         myButton.click();
 
         // then
-        expect(component.$ga.event).to.have.been.calledWith(expectedCallParams);
+        return Vue.nextTick().then(() => {
+          expect(component.$ga.event).to.have.been.calledWith(expectedCallParams);
+        });
       });
     });
   });
@@ -149,6 +158,7 @@ describe('Unit | Component | InterestModal.vue', () => {
       expect(interestsApi.sendInterest).to.have.been.calledWith(job, consultant, 'some-access-token');
     });
 
+    // Because it is complicated to simulate modal click calls
     it.skip('should send interests on click on "send" button', () => {
       // Given
       component.$modal.show('interest-panel');
@@ -164,7 +174,18 @@ describe('Unit | Component | InterestModal.vue', () => {
       });
     });
 
-    it.skip('should close the modal');
+    it('should close the modal', () => {
+      // given
+      sinon.stub(component, 'closeModal');
+
+      // when
+      component.submitInterest();
+
+      // then
+      Vue.nextTick().then(() => {
+        expect(component.closeModal).to.have.been.called;
+      });
+    });
   });
 
   describe('computed props', () => {
