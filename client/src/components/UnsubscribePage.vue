@@ -5,12 +5,11 @@
       <div class="unsubscribe__text">
         <p>
           En cliquant sur le bouton "Je me désinscris",
-        </p>
-        <p>
+        <br/>
           tu ne recevras plus de notifications à chaque nouvelle alerte du Job Board.
         </p>
       </div>
-      <button class="unsubscribe__action unsubscribe__action--confirm"
+      <button class="unsubscribe__button"
               @click.prevent.once="unsubscribe">Je me désinscris
       </button>
     </article>
@@ -42,7 +41,7 @@
       },
 
       displayErrorNotification() {
-        const message = 'Erreur lors de la prise en compte de ton désabonnement. Pense à te reconnecter.';
+        const message = 'Erreur lors de la prise en compte de ton désabonnement.';
         notificationService.error(this, message);
       },
     },
@@ -58,11 +57,11 @@
     font-size: 20px;
   }
 
-  .unsubscribe__action {
+  .unsubscribe__button {
     font-size: 20px;
   }
 
-  .unsubscribe__action {
+  .unsubscribe__button {
     display: inline-block;
     padding: 4px 15px;
     font-size: 16px;
@@ -81,11 +80,11 @@
     margin: 0;
   }
 
-  .unsubscribe__action:focus {
+  .unsubscribe__button:focus {
     border: 3px #000000 solid;
   }
 
-  .unsubscribe__action:hover {
+  .unsubscribe__button:hover {
     opacity: .85;
   }
 

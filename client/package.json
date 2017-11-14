@@ -1,8 +1,8 @@
 {
   "name": "octo-job-board",
   "version": "1.0.0",
-  "description": "A Vue.js project",
-  "author": "Swann KNANI",
+  "description": "A Job Board to display the mission to be staffed at OCTO Technology",
+  "author": "Job Board Team @ OCTO Technology",
   "private": true,
   "scripts": {
     "configure": "./tools/setup/setup.sh",

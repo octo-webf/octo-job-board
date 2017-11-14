@@ -15,9 +15,9 @@ module.exports = (req, res, next) => {
     const accessToken = _extractAccessTokenFromAuthorizationHeader(req.headers.authorization);
 
     try {
-      const decoded = jwt.verify(accessToken, config.ACCESS_TOKEN_SECRET);
-      req.userId = decoded.userId;
-      req.userEmail = decoded.email;
+      const { email, userId } = jwt.verify(accessToken, config.ACCESS_TOKEN_SECRET);
+      req.userId = userId;
+      req.userEmail = email;
       next();
     } catch (err) {
       res.status(401).json({

@@ -95,6 +95,18 @@ describe('Integration | Routes | subscriptions route', () => {
           done();
         });
     });
+
+    it('should return 500 when subscription service throws an error', () => {
+      // given
+      subscriptionService.removeSubscription.rejects(new Error('Some error'));
+
+      // when
+      return request(app)
+        .delete('/api/subscriptions')
+        .set('Authorization', 'Bearer access-token')
+        .send()
+        .expect(500);
+    });
   });
 
   it('should return 401 response if the user is not well authenticated', () => request(app)
