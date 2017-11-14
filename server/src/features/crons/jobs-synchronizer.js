@@ -2,7 +2,7 @@
 const scheduler = require('node-schedule');
 const jobService = require('../../domain/services/job-service');
 
-const EVERY_15_MINUTES = '*/15 * * * *';
+const EVERY_15_MINUTES = '*/1 * * * *';
 
 scheduler.scheduleJob(EVERY_15_MINUTES, () => {
   console.log('Synchronize jobs from Octopod...');
