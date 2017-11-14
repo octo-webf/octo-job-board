@@ -21,7 +21,21 @@ describe('Unit | Infrastructure | Mailing | jobs-changed-email-template', () => 
       const compiled = jobsChangedEmailTemplate.compile(model);
 
       // then
-      const expected = '<p>Bonjour,</p><p>Il y a du nouveau du côté du <a href="https://jobs.octo.com">Jobboard</a>.</p><p>3 nouvelle(s) mission(s) à staffer :<ul><li><bold>a1</bold> pour le projet p1</li><li><bold>a2</bold> pour le projet p2</li><li><bold>a3</bold> pour le projet p3</li></ul></p><p>2 mission(s) retirée(s) :<ul><li><bold>a4</bold> pour le projet p4</li><li><bold>a5</bold> pour le projet p5</li></ul></p>';
+      const expected = '<p>Bonjour,</p>' +
+        '<p>Il y a du nouveau du côté du <a href="https://jobs.octo.com">Job Board</a>.</p>' +
+        '<p>3 nouvelle(s) mission(s) à staffer :' +
+        '<ul>' +
+        '<li><bold>a1</bold> pour le projet p1</li>' +
+        '<li><bold>a2</bold> pour le projet p2</li>' +
+        '<li><bold>a3</bold> pour le projet p3</li>' +
+        '</ul></p>' +
+        '<p>2 mission(s) retirée(s) :' +
+        '<ul>' +
+        '<li><bold>a4</bold> pour le projet p4</li>' +
+        '<li><bold>a5</bold> pour le projet p5</li>' +
+        '</ul>' +
+        '</p>' +
+        '<p>Pour ne plus recevoir de nouvelles du Job Board, il est possible de <a href="https://jobs.octo.com/#/unsubscribe">se désabonner du Job Board</a>.</p>';
       expect(compiled.trim()).to.equal(expected);
     });
 
@@ -36,7 +50,15 @@ describe('Unit | Infrastructure | Mailing | jobs-changed-email-template', () => 
       const compiled = jobsChangedEmailTemplate.compile(model);
 
       // then
-      const expected = '<p>Bonjour,</p><p>Il y a du nouveau du côté du <a href="https://jobs.octo.com">Jobboard</a>.</p><p>2 mission(s) retirée(s) :<ul><li><bold>a4</bold> pour le projet p4</li><li><bold>a5</bold> pour le projet p5</li></ul></p>';
+      const expected = '<p>Bonjour,</p>' +
+        '<p>Il y a du nouveau du côté du <a href="https://jobs.octo.com">Job Board</a>.</p>' +
+        '<p>2 mission(s) retirée(s) :' +
+        '<ul>' +
+        '<li><bold>a4</bold> pour le projet p4</li>' +
+        '<li><bold>a5</bold> pour le projet p5</li>' +
+        '</ul>' +
+        '</p>' +
+        '<p>Pour ne plus recevoir de nouvelles du Job Board, il est possible de <a href="https://jobs.octo.com/#/unsubscribe">se désabonner du Job Board</a>.</p>';
       expect(compiled.trim()).to.equal(expected);
     });
 
@@ -51,7 +73,16 @@ describe('Unit | Infrastructure | Mailing | jobs-changed-email-template', () => 
       const compiled = jobsChangedEmailTemplate.compile(model);
 
       // then
-      const expected = '<p>Bonjour,</p><p>Il y a du nouveau du côté du <a href="https://jobs.octo.com">Jobboard</a>.</p><p>3 nouvelle(s) mission(s) à staffer :<ul><li><bold>a1</bold> pour le projet p1</li><li><bold>a2</bold> pour le projet p2</li><li><bold>a3</bold> pour le projet p3</li></ul></p>';
+      const expected = '<p>Bonjour,</p>' +
+        '<p>Il y a du nouveau du côté du <a href="https://jobs.octo.com">Job Board</a>.</p>' +
+        '<p>3 nouvelle(s) mission(s) à staffer :' +
+        '<ul>' +
+        '<li><bold>a1</bold> pour le projet p1</li>' +
+        '<li><bold>a2</bold> pour le projet p2</li>' +
+        '<li><bold>a3</bold> pour le projet p3</li>' +
+        '</ul>' +
+        '</p>' +
+        '<p>Pour ne plus recevoir de nouvelles du Job Board, il est possible de <a href="https://jobs.octo.com/#/unsubscribe">se désabonner du Job Board</a>.</p>';
       expect(compiled.trim()).to.equal(expected);
     });
   });

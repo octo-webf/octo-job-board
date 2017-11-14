@@ -5,7 +5,7 @@ module.exports = {
     const { addedJobs, removedJobs } = model;
 
     let template = '<p>Bonjour,</p>';
-    template += '<p>Il y a du nouveau du côté du <a href="https://jobs.octo.com">Jobboard</a>.</p>';
+    template += '<p>Il y a du nouveau du côté du <a href="https://jobs.octo.com">Job Board</a>.</p>';
     if (!isEmpty(addedJobs)) {
       template += '<p>';
       template += `${addedJobs.length} nouvelle(s) mission(s) à staffer :`;
@@ -26,6 +26,7 @@ module.exports = {
       template += '</ul>';
       template += '</p>';
     }
+    template += '<p>Pour ne plus recevoir de nouvelles du Job Board, il est possible de <a href="https://jobs.octo.com/#/unsubscribe">se désabonner du Job Board</a>.</p>';
     return template;
   },
 };
