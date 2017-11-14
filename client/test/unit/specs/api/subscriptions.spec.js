@@ -2,7 +2,6 @@ import axios from 'axios';
 import subscriptionsApi from '@/api/subscriptions';
 
 describe('Unit | API | subscriptions api', () => {
-
   const accessToken = 'valid-access-token';
   const expectedUrl = 'http://localhost:3000/api/subscriptions';
   const expectedOptions = { headers: { Authorization: `Bearer ${accessToken}` } };
@@ -53,7 +52,7 @@ describe('Unit | API | subscriptions api', () => {
 
       // then
       return promise.catch((err) => {
-        expect(err.message).to.equal('error')
+        expect(err.message).to.equal('error');
       });
     });
   });
@@ -104,7 +103,7 @@ describe('Unit | API | subscriptions api', () => {
 
       // then
       return promise.catch((err) => {
-        expect(err.message).to.equal('error')
+        expect(err.message).to.equal('error');
       });
     });
   });

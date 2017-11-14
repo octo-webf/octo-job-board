@@ -25,7 +25,7 @@
     "lint:fix": "(cd client && npm run lint:fix) && (cd server && npm run lint:fix)",
     "release": "./tools/release/release.sh",
     "heroku-postbuild": "npm run build",
-    "prepush": "npm run lint:fix && npm test"
+    "prepush": "npm run lint && npm test"
   },
   "repository": {
     "type": "git",
