@@ -97,74 +97,108 @@ describe('Unit | Utils | octopod-client', () => {
   describe('#fetchProjectsToBeStaffed', () => {
     let projectsFromOctopod;
 
-    beforeEach(() => {
-      request.get.callsFake((options, callback) => {
-        projectsFromOctopod = [
-          projectFromOctopod('proposal_sent'),
-          projectFromOctopod('proposal_in_progress'),
-          projectFromOctopod('lead'),
-          projectFromOctopod('mission_accepted'),
-          projectFromOctopod('mission_signed'),
-          projectFromOctopod('mission_done'),
-          projectFromOctopod('proposal_lost'),
-          projectFromOctopod('proposal_canceled_by_client'),
-          projectFromOctopod('proposal_no_go'),
-        ];
-        const httpResponse = {
-          body: JSON.stringify(projectsFromOctopod),
-        };
-        callback(null, httpResponse);
-      });
-    });
-
-    it('should return projects in a promise', () => {
-      // when
-      const promise = OctopodClient.fetchProjectsToBeStaffed();
-
-      // then
-      return promise
-        .then((projects) => {
-          const expectedProjectsFromOctopod = [
+    describe('with different projects status from octopod', () => {
+      beforeEach(() => {
+        request.get.callsFake((options, callback) => {
+          projectsFromOctopod = [
             projectFromOctopod('proposal_sent'),
+            projectFromOctopod('proposal_in_progress'),
+            projectFromOctopod('lead'),
             projectFromOctopod('mission_accepted'),
             projectFromOctopod('mission_signed'),
+            projectFromOctopod('mission_done'),
+            projectFromOctopod('proposal_lost'),
+            projectFromOctopod('proposal_canceled_by_client'),
+            projectFromOctopod('proposal_no_go'),
           ];
-          expect(projects).to.deep.equal(expectedProjectsFromOctopod);
+          const httpResponse = {
+            body: JSON.stringify(projectsFromOctopod),
+          };
+          callback(null, httpResponse);
         });
-    });
+      });
 
-    it('should call Octopod API "GET /projects"', () => {
-      // given
-      const accessToken = 'access-token';
+      it('should return "mission and proposal sent" projects in a promise', () => {
+        // when
+        const promise = OctopodClient.fetchProjectsToBeStaffed();
 
-      // when
-      const promise = OctopodClient.fetchProjectsToBeStaffed(accessToken);
+        // then
+        return promise
+          .then((projects) => {
+            const expectedProjectsFromOctopod = [
+              projectFromOctopod('proposal_sent'),
+              projectFromOctopod('mission_accepted'),
+              projectFromOctopod('mission_signed'),
+            ];
+            expect(projects).to.deep.equal(expectedProjectsFromOctopod);
+          });
+      });
 
-      // then
-      return promise.then(() => {
-        const expectedOptions = {
-          url: 'http://octopod.url/api/v0/projects?staffing_needed=true&page=1&per_page=50',
-          headers: {
-            Authorization: 'Bearer access-token',
-          },
-        };
-        expect(request.get).to.have.been.calledWith(expectedOptions);
+      it('should call Octopod API "GET /projects"', () => {
+        // given
+        const accessToken = 'access-token';
+
+        // when
+        const promise = OctopodClient.fetchProjectsToBeStaffed(accessToken);
+
+        // then
+        return promise.then(() => {
+          const expectedOptions = {
+            url: 'http://octopod.url/api/v0/projects?staffing_needed=true&page=1&per_page=50',
+            headers: {
+              Authorization: 'Bearer access-token',
+            },
+          };
+          expect(request.get).to.have.been.calledWith(expectedOptions);
+        });
+      });
+
+      it('should return a rejected promise when the call to Octopod API fails', () => {
+        // given
+        request.get.callsFake((options, callback) => {
+          callback(new Error('some error'));
+        });
+
+        // when
+        const promise = OctopodClient.fetchProjectsToBeStaffed();
+
+        // then
+        return promise.catch((err) => {
+          expect(err).to.exist;
+          expect(err.message).to.equal('some error');
+        });
       });
     });
 
-    it('should return a rejected promise when the call to Octopod API fails', () => {
-      // given
-      request.get.callsFake((options, callback) => {
-        callback(new Error('some error'));
+    describe('with different kind of projects from octopod', () => {
+      beforeEach(() => {
+        request.get.callsFake((options, callback) => {
+          projectsFromOctopod = [
+            projectFromOctopod('mission_signed', 'internal'),
+            projectFromOctopod('mission_signed', 'cost_reimbursable'),
+            projectFromOctopod('mission_signed', 'fixed_price'),
+            projectFromOctopod('mission_signed', 'framework_agreement'),
+          ];
+          const httpResponse = {
+            body: JSON.stringify(projectsFromOctopod),
+          };
+          callback(null, httpResponse);
+        });
       });
 
-      // when
-      const promise = OctopodClient.fetchProjectsToBeStaffed();
+      it('should return only "Regie (cost_reimbursable) and Forfait (fixed price)" in a promise', () => {
+        // when
+        const promise = OctopodClient.fetchProjectsToBeStaffed();
 
-      // then
-      return promise.catch((err) => {
-        expect(err).to.exist;
-        expect(err.message).to.equal('some error');
+        // then
+        return promise
+          .then((projects) => {
+            const expectedProjectsFromOctopod = [
+              projectFromOctopod('mission_signed', 'cost_reimbursable'),
+              projectFromOctopod('mission_signed', 'fixed_price'),
+            ];
+            expect(projects).to.deep.equal(expectedProjectsFromOctopod);
+          });
       });
     });
   });

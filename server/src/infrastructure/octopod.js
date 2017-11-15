@@ -29,6 +29,16 @@ const OctopodClient = {
     });
   },
 
+  _filterByStatus(project) {
+    return project.status === 'mission_signed'
+      || project.status === 'mission_accepted'
+      || project.status === 'proposal_sent';
+  },
+
+  _filterByKind(project) {
+    return project.kind === 'cost_reimbursable' || project.kind === 'fixed_price';
+  },
+
   fetchProjectsToBeStaffed(accessToken) {
     return new Promise((resolve, reject) => {
       const options = {
@@ -43,9 +53,9 @@ const OctopodClient = {
           reject(err);
         }
         const projects = JSON.parse(response.body);
-        const filteredProject = projects.filter(project => project.status === 'mission_signed'
-            || project.status === 'mission_accepted'
-            || project.status === 'proposal_sent');
+        const filteredProject = projects
+          .filter(this._filterByStatus)
+          .filter(this._filterByKind);
         resolve(filteredProject);
       });
     });
