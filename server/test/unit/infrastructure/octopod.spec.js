@@ -1,5 +1,6 @@
 const request = require('request');
 const OctopodClient = require('../../../src/infrastructure/octopod');
+const projectFromOctopod = require('./fixtures/projectFromOctopod');
 const { expect, sinon } = require('../../test-helper');
 
 describe('Unit | Utils | octopod-client', () => {
@@ -94,31 +95,41 @@ describe('Unit | Utils | octopod-client', () => {
    */
 
   describe('#fetchProjectsToBeStaffed', () => {
-    const octopodProjects = [{
-      id: 1,
-      name: 'job 1',
-    }, {
-      id: 2,
-      name: 'job 2',
-    }];
+    let projectsFromOctopod;
 
     beforeEach(() => {
       request.get.callsFake((options, callback) => {
+        projectsFromOctopod = [
+          projectFromOctopod('proposal_sent'),
+          projectFromOctopod('proposal_in_progress'),
+          projectFromOctopod('lead'),
+          projectFromOctopod('mission_accepted'),
+          projectFromOctopod('mission_signed'),
+          projectFromOctopod('mission_done'),
+          projectFromOctopod('proposal_lost'),
+          projectFromOctopod('proposal_canceled_by_client'),
+          projectFromOctopod('proposal_no_go'),
+        ];
         const httpResponse = {
-          body: JSON.stringify(octopodProjects),
+          body: JSON.stringify(projectsFromOctopod),
         };
         callback(null, httpResponse);
       });
     });
 
-    it('should return projects in a a promise', () => {
+    it('should return projects in a promise', () => {
       // when
       const promise = OctopodClient.fetchProjectsToBeStaffed();
 
       // then
       return promise
         .then((projects) => {
-          expect(projects).to.deep.equal(octopodProjects);
+          const expectedProjectsFromOctopod = [
+            projectFromOctopod('proposal_sent'),
+            projectFromOctopod('mission_accepted'),
+            projectFromOctopod('mission_signed'),
+          ];
+          expect(projects).to.deep.equal(expectedProjectsFromOctopod);
         });
     });
 
