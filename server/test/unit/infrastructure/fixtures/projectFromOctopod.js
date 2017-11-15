@@ -1,9 +1,9 @@
-module.exports = (status = 'proposal_sent') => (
+module.exports = (status = 'proposal_sent', kind = 'fixed_price') => (
   {
     id: 2146905983,
     url: 'https://octopod.octo.com/api/v0/projects/2146905983',
     name: 'Audit Déploiement Segments Sol',
-    kind: 'fixed_price',
+    kind,
     reference: '2017-1447F',
     status,
     customer: {
