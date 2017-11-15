@@ -43,7 +43,10 @@ const OctopodClient = {
           reject(err);
         }
         const projects = JSON.parse(response.body);
-        resolve(projects);
+        const filteredProject = projects.filter(project => project.status === 'mission_signed'
+            || project.status === 'mission_accepted'
+            || project.status === 'proposal_sent');
+        resolve(filteredProject);
       });
     });
   },
