@@ -22,6 +22,7 @@
         <div class="interest-modal__actions">
           <!--todo prevent twice-->
           <button class="interest-modal__action interest-modal__action--send"
+                  title="Si vous cliquez sur ce bouton, un mail sera envoyé à l'équipe Job Board (uniquement !) avec les informations utiles pour aider au staffing."
                   @click="submitInterest">Je suis disponible
           </button>
         </div>

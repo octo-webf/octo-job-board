@@ -43,8 +43,7 @@
         </div>
       </div>
       <div class="job__footer">
-        <button class="job__apply-button" @click="displayInterestModal"
-                title="Si vous cliquez sur ce bouton, un mail sera envoyé à l'équipe Job Board (uniquement !) avec les informations utiles pour aider au staffing.">
+        <button class="job__apply-button" @click="displayInterestModal">
           <icon name="heart-o"></icon> Ça m'intéresse <span class="sr-only">par cette mission {{ mission }} en tant que {{ job.activity.title}}</span>
         </button>
       </div>
