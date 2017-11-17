@@ -64,17 +64,11 @@ describe('Unit | Component | InterestModal.vue', () => {
   });
 
   describe('rendering', () => {
-    it('should display the modal', () => {
+    it('should contain the informations about the job', () => {
+      // when
       component.$modal.show('interest-modal');
 
-      return Vue.nextTick().then(() => {
-        expect(component.$el.querySelector('.interest-modal')).to.exist;
-      });
-    });
-
-    it('should contain a lot of job informations', () => {
-      component.$modal.show('interest-modal');
-
+      // then
       Vue.nextTick().then(() => {
         const modalText = component.$el.querySelector('.interest-modal__text-modal');
         expect(modalText.textContent).to.contain('Tech Lead');
@@ -110,21 +104,20 @@ describe('Unit | Component | InterestModal.vue', () => {
       expect(component.$ga.event).to.have.been.calledWith(expectedCallParams);
     });
 
-    // Because it is complicated to simulate modal click calls
-    it.skip('should check analytics on click on "send" button', () => {
+    it('should check analytics on click on "send" button', (done) => {
+      // given
       component.$modal.show('interest-modal');
 
-      return Vue.nextTick().then(() => {
+      setTimeout(() => {
         const myButton = component.$el.querySelector('.interest-modal__action--send');
 
         // When
         myButton.click();
 
         // then
-        return Vue.nextTick().then(() => {
-          expect(component.$ga.event).to.have.been.calledWith(expectedCallParams);
-        });
-      });
+        expect(component.$ga.event).to.have.been.calledWith(expectedCallParams);
+        done();
+      }, 1000);
     });
   });
 
@@ -159,18 +152,23 @@ describe('Unit | Component | InterestModal.vue', () => {
     });
 
     // Because it is complicated to simulate modal click calls
-    it.skip('should send interests on click on "send" button', () => {
+    it.skip('should send interests on click on "send" button', (done) => {
       // Given
       component.$modal.show('interest-panel');
 
       Vue.nextTick().then(() => {
-        const myButton = component.$el.querySelector('.interest-modal__action--send');
+        setTimeout(() => {
+          const myButton = component.$el.querySelector('.interest-modal__action--send');
 
-        // When
-        myButton.click();
+          // When
+          myButton.click();
 
-        // Then
-        expect(interestsApi.sendInterest).to.have.been.calledWith(job, consultant, 'some-access-token');
+          // Then
+          Vue.nextTick().then(() => {
+            expect(interestsApi.sendInterest).to.have.been.calledWith(job, consultant, 'some-access-token');
+            done();
+          });
+        }, 1000);
       });
     });
 
