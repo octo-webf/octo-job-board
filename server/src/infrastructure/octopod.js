@@ -29,13 +29,13 @@ const OctopodClient = {
     });
   },
 
-  _filterByStatus(project) {
+  _isStatusWantedOnJobBoard(project) {
     return project.status === 'mission_signed'
       || project.status === 'mission_accepted'
       || project.status === 'proposal_sent';
   },
 
-  _filterByKind(project) {
+  _isKindOfProjectWantedOnJobBoard(project) {
     return project.kind === 'cost_reimbursable' || project.kind === 'fixed_price';
   },
 
@@ -54,8 +54,8 @@ const OctopodClient = {
         }
         const projects = JSON.parse(response.body);
         const filteredProject = projects
-          .filter(this._filterByStatus)
-          .filter(this._filterByKind);
+          .filter(this._isStatusWantedOnJobBoard)
+          .filter(this._isKindOfProjectWantedOnJobBoard);
         resolve(filteredProject);
       });
     });
