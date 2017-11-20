@@ -1,5 +1,5 @@
 <template>
-  <div class="job-results__filters">
+  <div class="country-picker">
 
     <select v-model="onlyOneCountry">
       <option value="anyCountry">En France et au-delà</option>
@@ -14,8 +14,7 @@
 
 <script>
   export default {
-
-    name: 'CountryFilters',
+    name: 'CountryPicker',
 
     data() {
       return {
@@ -24,8 +23,8 @@
     },
 
     watch: {
-      onlyOneCountry(newCountryFilter) {
-        this.$emit('selectCountryFilter', newCountryFilter);
+      onlyOneCountry(newChosenCountry) {
+        this.$emit('selected', newChosenCountry);
       },
     },
 
@@ -38,12 +37,12 @@
     margin: 5px;
   }
 
-  .job-results__filters {
+  .country-picker {
     display: flex;
     padding: 0px 10px;
   }
 
-  .job-results__filters select {
+  .country-picker select {
     padding: 9px 20px 9px 10px;
     font-family: Roboto;
     height: 40px;

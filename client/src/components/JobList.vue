@@ -13,7 +13,7 @@
                 <div class="job-results__filters-left">
                   <div class="job-filters-left__wrapper">
                   <span class="job-filters-left__text">Disponible à partir du </span>
-                  <date-filter @date="onNewAvailabilityDate"></date-filter>
+                  <date-picker @selected="onSelectedAvailabilityDate"></date-picker>
                   </div>
                 </div>
                 <div class="job-results__title-container">
@@ -22,7 +22,7 @@
                   </h1>
                 </div>
                 <div class="job-results__filters-right">
-                  <country-filters @selectCountryFilter="onSelectedCountryFilter"></country-filters>
+                  <country-picker @selected="onSelectedCountry"></country-picker>
                 </div>
               </div>
               <ul class="job-results__list">
@@ -44,8 +44,8 @@
   import jobsSorter from '@/utils/jobsSorter';
   import jobsApi from '@/api/jobs';
   import AppHeader from '@/components/AppHeader';
-  import CountryFilters from '@/components/CountryFilters';
-  import DateFilter from '@/components/DateFilter';
+  import CountryPicker from '@/components/CountryPicker';
+  import DatePicker from '@/components/DatePicker';
   import JobCard from '@/components/JobCard';
   import Circle from 'vue-loading-spinner/src/components/Circle';
   import countries from '@/utils/countries';
@@ -57,8 +57,8 @@
 
     components: {
       AppHeader,
-      CountryFilters,
-      DateFilter,
+      CountryPicker,
+      DatePicker,
       JobCard,
       InterestModal,
       'circle-loader': Circle,
@@ -78,11 +78,6 @@
     },
 
     methods: {
-      onNewAvailabilityDate(newChosenDate) {
-        console.log('doSomethingInParentComponentFunction');
-        console.log(newChosenDate);
-      },
-
       displayInterestModal(job) {
         this.chosenJob = job;
         this.$modal.show('interest-modal');
@@ -103,16 +98,19 @@
         }
       },
 
-      onSelectedDateFilter(selectedDateFilter) {
-        this.displayJobs = this._filterJobsByDate(this.jobsFromApi, selectedDateFilter);
+      onSelectedAvailabilityDate(newChosenDate) {
+      //        this.displayJobs = this._filterJobsByDate(this.jobsFromApi, newChosenDate);
+      //        console.log('doSomethingInParentComponentFunction');
+      //        console.log(newChosenDate);
       },
 
-      _filterJobsByDate(jobs) {
-        return jobsSorter.sort(jobs);
-      },
 
-      onSelectedCountryFilter(selectedCountryFilter) {
-        this.displayJobs = this._filterJobsByCountry(this.jobsFromApi, selectedCountryFilter);
+      //      _filterJobsByDate(jobs) {
+      //        return jobsSorter.sort(jobs);
+      //      },
+
+      onSelectedCountry(newChosenCountry) {
+        this.displayJobs = this._filterJobsByCountry(this.jobsFromApi, newChosenCountry);
       },
 
       _filterJobsByCountry(allJobs, selectedCountryFilter) {
