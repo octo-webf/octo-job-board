@@ -3,6 +3,7 @@ import VueModal from 'vue-js-modal';
 import InterestModal from '@/components/InterestModal';
 import interestsApi from '@/api/interests';
 import authenticationService from '@/services/authentication';
+import notificationService from '@/services/notification';
 
 Vue.use(VueModal);
 
@@ -80,6 +81,118 @@ describe('Unit | Component | InterestModal.vue', () => {
     });
   });
 
+  describe('#submitInterest', () => {
+    beforeEach(() => {
+      sinon.stub(interestsApi, 'sendInterest');
+      sinon.stub(authenticationService, 'getAccessToken').returns('some-access-token');
+      sinon.stub(notificationService, 'successCenterToast').returns(true);
+    });
+
+    afterEach(() => {
+      interestsApi.sendInterest.restore();
+      authenticationService.getAccessToken.restore();
+      notificationService.successCenterToast.restore();
+    });
+
+    describe('general cases', () => {
+      beforeEach(() => {
+        interestsApi.sendInterest.resolves();
+      });
+
+      it('should set isClicked to true to disable button', () => {
+        // given
+        component.$data.isClicked = 'already set isClicked';
+
+        // when
+        component.submitInterest();
+
+        // then
+        expect(component.$data.isClicked).to.equal(true);
+      });
+
+      it('should remove error', () => {
+        // given
+        component.$data.error = 'Existing error';
+
+        // when
+        component.submitInterest();
+
+        // then
+        expect(component.$data.error).to.equal(null);
+      });
+
+      it('should trackEvent', () => {
+        // given
+        sinon.stub(component, 'trackEvent');
+
+        // when
+        component.submitInterest();
+
+        // then
+        expect(component.trackEvent).to.have.been.calledWith();
+      });
+
+      it('should call the API with job, consultant and access token', () => {
+        // when
+        component.submitInterest();
+
+        // then
+        expect(interestsApi.sendInterest).to.have.been.calledWith(job, consultant, 'some-access-token');
+      });
+    });
+
+    describe('on success sending interest', () => {
+      beforeEach(() => {
+        interestsApi.sendInterest.resolves();
+      });
+
+      it('should close the modal', () => {
+        // given
+        sinon.stub(component, 'closeModal');
+
+        // when
+        component.submitInterest();
+
+        // then
+        Vue.nextTick().then(() => {
+          expect(component.closeModal).to.have.been.called;
+        });
+      });
+
+      it('should displaySuccessNotification', () => {
+        // given
+        sinon.stub(component, 'displaySuccessNotification');
+
+        // when
+        component.submitInterest();
+
+        // then
+        Vue.nextTick().then(() => {
+          expect(component.displaySuccessNotification).to.have.been.called;
+        });
+      });
+    });
+
+    describe('on error sending interest', () => {
+      beforeEach(() => {
+        interestsApi.sendInterest.rejects();
+      });
+
+      it('should display an error message', () => {
+        // given
+        component.$data.error = null;
+
+        // when
+        component.submitInterest();
+
+        // then
+        Vue.nextTick().then(() => {
+          expect(component.$data.error).to.equal('Une erreur est survenue durant l\'envoi de ton intérêt');
+        });
+      });
+    });
+  });
+
   describe('#trackEvent', () => {
     const expectedCallParams = {
       eventCategory: 'Job List',
@@ -103,86 +216,65 @@ describe('Unit | Component | InterestModal.vue', () => {
       // then
       expect(component.$ga.event).to.have.been.calledWith(expectedCallParams);
     });
+  });
 
-    it('should check analytics on click on "send" button', (done) => {
+  describe('#closeModal', () => {
+    it('should close modal', () => {
       // given
       component.$modal.show('interest-modal');
 
+      // when
+      component.closeModal();
+
+      // then
+      return Vue.nextTick().then(() => {
+        expect(component.$el.querySelector('.interest-modal')).not.to.exist;
+      });
+    });
+  });
+
+  describe('#displaySuccessNotification', () => {
+    it('should call notification service to display success center toast', () => {
+      // given
+      sinon.stub(notificationService, 'successCenterToast');
+
+      // when
+      component.displaySuccessNotification();
+
+      // then
+      const message = 'Merci de ton intérêt pour la mission. Ta demande a été transmise à l\'équipe Job Board.';
+      expect(notificationService.successCenterToast).to.have.been.calledWithExactly(component, message);
+
+      // after
+      notificationService.successCenterToast.restore();
+    });
+  });
+
+  describe('on click on "send" button', () => {
+    beforeEach(() => {
+      sinon.stub(component, 'trackEvent');
+      sinon.stub(component, '_sendInterest').resolves();
+    });
+
+    it('should send interest and track event', (done) => {
+      // Given
+      component.$modal.show('interest-modal');
+
+      // Vue.nextTick().then(() => {
       setTimeout(() => {
         const myButton = component.$el.querySelector('.interest-modal__action--send');
 
         // When
         myButton.click();
 
-        // then
-        expect(component.$ga.event).to.have.been.calledWith(expectedCallParams);
-        done();
-      }, 1000);
-    });
-  });
+        // Then
+        Vue.nextTick().then(() => {
+          expect(component.trackEvent).to.have.been.calledWith();
+          expect(component._sendInterest).to.have.been.calledWith();
+          done();
+        });
+      }, 100);
 
-  describe('#submitInterest', () => {
-    beforeEach(() => {
-      sinon.stub(interestsApi, 'sendInterest').resolves();
-      sinon.stub(authenticationService, 'getAccessToken').returns('some-access-token');
-    });
-
-    afterEach(() => {
-      interestsApi.sendInterest.restore();
-      authenticationService.getAccessToken.restore();
-    });
-
-    it('should remove error', () => {
-      // given
-      component.$data.error = 'Existing error';
-
-      // when
-      component.submitInterest();
-
-      // then
-      expect(component.$data.error).to.equal(null);
-    });
-
-    it('should call the API with job, consultant and access token', () => {
-      // when
-      component.submitInterest();
-
-      // then
-      expect(interestsApi.sendInterest).to.have.been.calledWith(job, consultant, 'some-access-token');
-    });
-
-    // Because it is complicated to simulate modal click calls
-    it.skip('should send interests on click on "send" button', (done) => {
-      // Given
-      component.$modal.show('interest-panel');
-
-      Vue.nextTick().then(() => {
-        setTimeout(() => {
-          const myButton = component.$el.querySelector('.interest-modal__action--send');
-
-          // When
-          myButton.click();
-
-          // Then
-          Vue.nextTick().then(() => {
-            expect(interestsApi.sendInterest).to.have.been.calledWith(job, consultant, 'some-access-token');
-            done();
-          });
-        }, 1000);
-      });
-    });
-
-    it('should close the modal', () => {
-      // given
-      sinon.stub(component, 'closeModal');
-
-      // when
-      component.submitInterest();
-
-      // then
-      Vue.nextTick().then(() => {
-        expect(component.closeModal).to.have.been.called;
-      });
     });
   });
 
