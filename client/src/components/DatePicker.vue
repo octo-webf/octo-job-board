@@ -35,12 +35,17 @@
 </script>
 
 <style>
+  .date-picker {
+    text-align: center;
+  }
   .date-picker__input {
+    -webkit-appearance: menulist;
     padding: 9px 20px 9px 10px;
     font-family: Roboto;
-    /*height: 40px;*/
-    /*width: 250px;*/
-    font-size: 1em;
+    height: 40px;
+    width: 220px;
+    border-radius: 5px;
+    font-size: 1.1em;
     background-color: #FFF;
   }
 </style>
