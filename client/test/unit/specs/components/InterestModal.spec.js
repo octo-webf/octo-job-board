@@ -36,13 +36,12 @@ describe('Unit | Component | InterestModal.vue', () => {
     email: 'bruce.wayne@gotham.dc',
     name: 'Bruce Wayne',
   };
+  const Constructor = Vue.extend(InterestModal);
 
   beforeEach(() => {
     // given
     sinon.stub(authenticationService, 'isAuthenticated').returns(true);
     sinon.stub(authenticationService, 'getAuthenticatedUser').returns(consultant);
-
-    const Constructor = Vue.extend(InterestModal);
 
     // when
     component = new Constructor({
@@ -274,20 +273,82 @@ describe('Unit | Component | InterestModal.vue', () => {
           done();
         });
       }, 100);
-
     });
   });
 
   describe('computed props', () => {
+    describe('computed property #businessContactNickname', () => {
+      it('should get businessContactNickname', () => {
+        // When
+        const businessContactNickname = component.businessContactNickname;
+
+        // Then
+        expect(businessContactNickname).to.equal('ABC');
+      });
+
+      it('should be empty when interestingJob is undefined', () => {
+        // Given
+        component = new Constructor({
+          propsData: {
+            interestingJob: undefined,
+          },
+        }).$mount();
+
+        // When
+        const businessContactNickname = component.businessContactNickname;
+
+        // Then
+        expect(businessContactNickname).to.equal('');
+      });
+    });
+
     describe('computed property #customerName', () => {
       it('should get customerName', () => {
-        // Given
-
         // When
         const customerName = component.customerName;
 
         // Then
         expect(customerName).to.equal('La Poste - Courrier');
+      });
+
+      it('should be empty when interestingJob is undefined', () => {
+        // Given
+        component = new Constructor({
+          propsData: {
+            interestingJob: undefined,
+          },
+        }).$mount();
+
+        // When
+        const customerName = component.customerName;
+
+        // Then
+        expect(customerName).to.equal('');
+      });
+    });
+
+    describe('computed property #jobTitle', () => {
+      it('should get jobTitle', () => {
+        // When
+        const jobTitle = component.jobTitle;
+
+        // Then
+        expect(jobTitle).to.equal('Tech Lead');
+      });
+
+      it('should be empty when interestingJob is undefined', () => {
+        // Given
+        component = new Constructor({
+          propsData: {
+            interestingJob: undefined,
+          },
+        }).$mount();
+
+        // When
+        const jobTitle = component.jobTitle;
+
+        // Then
+        expect(jobTitle).to.equal('');
       });
     });
 
@@ -301,23 +362,6 @@ describe('Unit | Component | InterestModal.vue', () => {
 
         // Then
         expect(jobTitle).to.equal('Dév. Senior');
-      });
-
-      it('should get businessContactNickname', () => {
-        // When
-        const businessContactNickname = component.businessContactNickname;
-
-        // Then
-        expect(businessContactNickname).to.equal('ABC');
-      });
-
-      it('should get missionDirectorNickname', () => {
-        // Given
-        // When
-        const missionDirectorNickname = component.missionDirectorNickname;
-
-        // Then
-        expect(missionDirectorNickname).to.equal('XYZ');
       });
 
       it('should not shorten short mission name', () => {
@@ -341,6 +385,46 @@ describe('Unit | Component | InterestModal.vue', () => {
         // Then
         expect(missionName).to.equal('SCLOU - Cloud computing : enjeux, architecture et');
       });
+
+      it('should be empty when interestingJob is undefined', () => {
+        // Given
+        component = new Constructor({
+          propsData: {
+            interestingJob: undefined,
+          },
+        }).$mount();
+
+        // When
+        const mission = component.mission;
+
+        // Then
+        expect(mission).to.equal('');
+      });
+    });
+
+    describe('computed property #missionDirectorNickname', () => {
+      it('should get missionDirectorNickname', () => {
+        // When
+        const missionDirectorNickname = component.missionDirectorNickname;
+
+        // Then
+        expect(missionDirectorNickname).to.equal('XYZ');
+      });
+
+      it('should be empty when interestingJob is undefined', () => {
+        // Given
+        component = new Constructor({
+          propsData: {
+            interestingJob: undefined,
+          },
+        }).$mount();
+
+        // When
+        const missionDirectorNickname = component.missionDirectorNickname;
+
+        // Then
+        expect(missionDirectorNickname).to.equal('');
+      });
     });
 
     describe('computed property #octopodUrl', () => {
@@ -353,6 +437,21 @@ describe('Unit | Component | InterestModal.vue', () => {
 
         // Then
         expect(octopodUrl).to.equal('https://octopod.octo.com/projects/12357');
+      });
+
+      it('should be empty when interestingJob is undefined', () => {
+        // Given
+        component = new Constructor({
+          propsData: {
+            interestingJob: undefined,
+          },
+        }).$mount();
+
+        // When
+        const octopodUrl = component.octopodUrl;
+
+        // Then
+        expect(octopodUrl).to.equal('');
       });
     });
 
@@ -367,6 +466,21 @@ describe('Unit | Component | InterestModal.vue', () => {
 
         // Then
         expect(staffingNeededSince).to.contain('juillet 2017');
+      });
+
+      it('should be empty when interestingJob is undefined', () => {
+        // Given
+        component = new Constructor({
+          propsData: {
+            interestingJob: undefined,
+          },
+        }).$mount();
+
+        // When
+        const staffingNeededSince = component.staffingNeededSince;
+
+        // Then
+        expect(staffingNeededSince).to.equal('');
       });
     });
   });
