@@ -121,13 +121,13 @@ describe('Unit | Utils | Jobs Sorter', () => {
       ...proposalJobsSortedByStaffingNeededDate,
     ];
 
-    const staffingSort = sinon.stub(projectStaffingNeededDate, 'sort');
-    staffingSort.onCall(0).returns(signedJobsSortedByStaffingNeededDate);
-    staffingSort.onCall(1).returns(proposalJobsSortedByStaffingNeededDate);
+    sinon.stub(projectStaffingNeededDate, 'sortAll').returns(signedJobsSortedByStaffingNeededDate);
+    sinon.stub(projectStaffingNeededDate, 'sortAfter').returns(proposalJobsSortedByStaffingNeededDate);
   });
 
   afterEach(() => {
-    projectStaffingNeededDate.sort.restore();
+    projectStaffingNeededDate.sortAll.restore();
+    projectStaffingNeededDate.sortAfter.restore();
   });
 
   it('should sort jobs by status and by staffing needed date', () => {

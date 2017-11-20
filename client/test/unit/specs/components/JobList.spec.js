@@ -15,7 +15,7 @@ function getJobCardsCount(component) {
   return jobCards.length;
 }
 
-function buildJobFixture(id, title, staffingNeededFrom, status) {
+function buildJobFixture(id, title, status, staffingNeededFrom) {
   const activity = {
     title,
     staffing_needed_from: staffingNeededFrom,
@@ -61,30 +61,6 @@ describe('Unit | Component | JobList.vue', () => {
       const countryPicker = component.$el.querySelectorAll('.country-picker');
       expect(countryPicker.length).to.equal(1);
     });
-  });
-
-
-  describe('on interest', () => {
-    beforeEach(() => {
-      sinon.stub(jobsApi, 'fetchAll').resolves([jobFixture(), jobFixture()]);
-      sinon.stub(component.$modal, 'show');
-      component = new Constructor().$mount();
-    });
-
-    afterEach(() => {
-      component.$modal.show.restore();
-      jobsApi.fetchAll.restore();
-    });
-
-    it('should displayInterestModal on click on interest', () => Vue.nextTick().then(() =>
-      // when
-      Vue.nextTick().then(() => {
-        component.$el.querySelector('button.job__apply-button').click();
-
-        // then
-        expect(component.$modal.show).to.have.been.calledWith('interest-modal');
-      }),
-    ));
   });
 
   describe('method #displayInterestModal', () => {
@@ -148,19 +124,10 @@ describe('Unit | Component | JobList.vue', () => {
     describe('after jobs are loaded', () => {
       beforeEach(() => {
         // given
-        const job2 = jobFixture();
-        job2.id = 2;
-        job2.activity.title = 'Tech Lead mission 2';
-        job2.project.status = 'mission_signed';
-
-        const job1 = jobFixture();
-        job1.id = 1;
-        job1.activity.title = 'Tech Lead mission 1';
-        job1.project.status = 'proposal_sent';
-
+        const job2 = buildJobFixture(2, 'Tech Lead mission 2', 'mission_signed');
+        const job1 = buildJobFixture(1, 'Tech Lead mission 1', 'proposal_sent');
         expectedJobs = [job2, job1];
         const fetchedJobs = [job1, job2];
-
         sinon.stub(jobsSorter, 'sort').returns(expectedJobs);
         sinon.stub(jobsApi, 'fetchAll').resolves(fetchedJobs);
 
@@ -192,10 +159,10 @@ describe('Unit | Component | JobList.vue', () => {
     describe('after jobs are loaded with different status and staffing needed dates', () => {
       beforeEach(() => {
         // given
-        const veryOldJob = buildJobFixture('1', 'Very old mission', '2017-10-01', 'proposal_sent');
-        const oldJob = buildJobFixture('2', 'Old mission', '2017-10-02', 'mission_signed');
-        const yesterdayJob = buildJobFixture('3', 'Yesterday\'s mission', '2017-10-03', 'proposal_sent');
-        const todayJob = buildJobFixture('4', 'Today\'s mission', '2017-10-04', 'mission_signed');
+        const veryOldJob = buildJobFixture('1', 'Very old mission', 'proposal_sent', '2017-10-01');
+        const oldJob = buildJobFixture('2', 'Old mission', 'mission_signed', '2017-10-02');
+        const yesterdayJob = buildJobFixture('3', 'Yesterday\'s mission', 'proposal_sent', '2017-10-03');
+        const todayJob = buildJobFixture('4', 'Today\'s mission', 'mission_signed', '2017-10-04');
         const jobs = [yesterdayJob, veryOldJob, oldJob, todayJob];
         const sortedJobs = [todayJob, oldJob, yesterdayJob, veryOldJob];
 
