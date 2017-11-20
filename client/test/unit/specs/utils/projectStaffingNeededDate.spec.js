@@ -1,7 +1,8 @@
 import projectStaffingNeededDate from '@/utils/projectStaffingNeededDate';
+import moment from 'moment';
 
 describe('Unit | Utils | Project Staffing Needed Date', () => {
-  describe('#sort', () => {
+  describe('#sortAll', () => {
     let clock;
     beforeEach(() => {
       clock = sinon.useFakeTimers(new Date(2017, 9, 4).getTime());
@@ -11,40 +12,41 @@ describe('Unit | Utils | Project Staffing Needed Date', () => {
       clock.restore();
     });
 
-    it('should sort two jobs according to project staffing needed date', () => {
+    it('should sort chronologically two jobs according to project staffing needed date', () => {
       // Given
       const futureJob = { activity: { id: 1, staffing_needed_from: '2017-11-03' } };
-      const beforeYesterdayJob = { activity: { id: 2, staffing_needed_from: '2017-10-02' } };
+      const todayJob = { activity: { id: 2, staffing_needed_from: '2017-10-02' } };
 
-      const givenJobs = [futureJob, beforeYesterdayJob];
-      const expectedSortedJobs = [beforeYesterdayJob, futureJob];
+      const givenJobs = [futureJob, todayJob];
+      const expectedSortedJobs = [todayJob, futureJob];
 
       // When
-      const sortedJobs = projectStaffingNeededDate.sort(givenJobs);
+      const sortedJobs = projectStaffingNeededDate.sortAll(givenJobs);
 
       // Then
       expect(sortedJobs).to.deep.equal(expectedSortedJobs);
     });
 
-    it('should sort five jobs according to project staffing needed date', () => {
+    it('should sort chronologically five jobs according to project staffing needed date', () => {
       // Given
+      const futureJob = { activity: { id: 1, staffing_needed_from: '2017-11-03' } };
       const todayJob = { activity: { id: 1, staffing_needed_from: '2017-10-04' } };
       const yesterdayJob = { activity: { id: 2, staffing_needed_from: '2017-10-03' } };
       const beforeYesterdayJob = { activity: { id: 3, staffing_needed_from: '2017-10-02' } };
       const oldJob = { activity: { id: 4, staffing_needed_from: '2017-10-01' } };
       const tomorrowJob = { activity: { id: 5, staffing_needed_from: '2017-10-05' } };
 
-      const givenJobs = [todayJob, yesterdayJob, beforeYesterdayJob, oldJob, tomorrowJob];
-      const expectedSortedJobs = [todayJob, tomorrowJob, yesterdayJob, beforeYesterdayJob, oldJob];
+      const givenJobs = [futureJob, todayJob, yesterdayJob, beforeYesterdayJob, oldJob, tomorrowJob];
+      const expectedSortedJobs = [oldJob, beforeYesterdayJob, yesterdayJob, todayJob, tomorrowJob, futureJob];
 
       // When
-      const sortedJobs = projectStaffingNeededDate.sort(givenJobs);
+      const sortedJobs = projectStaffingNeededDate.sortAll(givenJobs);
 
       // Then
       expect(sortedJobs).to.deep.equal(expectedSortedJobs);
     });
 
-    it('should sort five jobs with the same date according to project staffing needed date', () => {
+    it('should sort chronologically five jobs with the same date according to project staffing needed date', () => {
       // Given
       const todayJob1 = { activity: { id: 1, staffing_needed_from: '2017-10-04' } };
       const todayJob2 = { activity: { id: 2, staffing_needed_from: '2017-10-04' } };
@@ -56,27 +58,71 @@ describe('Unit | Utils | Project Staffing Needed Date', () => {
       const expectedSortedJobs = [todayJob1, todayJob2, todayJob3, todayJob4, todayJob5];
 
       // When
-      const sortedJobs = projectStaffingNeededDate.sort(givenJobs);
+      const sortedJobs = projectStaffingNeededDate.sortAll(givenJobs);
+      // Then
+      expect(sortedJobs).to.deep.equal(expectedSortedJobs);
+    });
+  });
+
+  describe('#sortAfter', () => {
+    let clock;
+    const availabityDate = moment(new Date(2017, 8, 9));
+
+    beforeEach(() => {
+      clock = sinon.useFakeTimers(new Date(2017, 9, 4).getTime());
+    });
+
+    afterEach(() => {
+      clock.restore();
+    });
+
+    it('should sort chronologically two jobs according to project staffing needed date', () => {
+      // Given
+      const futureJob = { activity: { id: 1, staffing_needed_from: '2017-11-03' } };
+      const todayJob = { activity: { id: 2, staffing_needed_from: '2017-10-02' } };
+
+      const givenJobs = [futureJob, todayJob];
+      const expectedSortedJobs = [todayJob, futureJob];
+
+      // When
+      const sortedJobs = projectStaffingNeededDate.sortAfter(givenJobs, availabityDate);
+
       // Then
       expect(sortedJobs).to.deep.equal(expectedSortedJobs);
     });
 
-    it('should sort jobs according to project staffing needed date', () => {
+    it('should sort chronologically five jobs according to project staffing needed date', () => {
       // Given
       const futureJob = { activity: { id: 1, staffing_needed_from: '2017-11-03' } };
-      const beforeYesterdayJob = { activity: { id: 2, staffing_needed_from: '2017-10-02' } };
-      const todayJob = { activity: { id: 3, staffing_needed_from: '2017-10-04' } };
-      const veryOldJob = { activity: { id: 4, staffing_needed_from: '2017-09-15' } };
-      const yesterdayJob = { activity: { id: 5, staffing_needed_from: '2017-10-03' } };
-      const oldJob = { activity: { id: 6, staffing_needed_from: '2017-09-08' } };
+      const todayJob = { activity: { id: 1, staffing_needed_from: '2017-10-04' } };
+      const yesterdayJob = { activity: { id: 2, staffing_needed_from: '2017-10-03' } };
+      const beforeYesterdayJob = { activity: { id: 3, staffing_needed_from: '2017-10-02' } };
+      const oldJob = { activity: { id: 4, staffing_needed_from: '2017-06-01' } };
+      const tomorrowJob = { activity: { id: 5, staffing_needed_from: '2017-10-05' } };
 
-
-      const givenJobs = [futureJob, beforeYesterdayJob, todayJob, veryOldJob, yesterdayJob, oldJob];
-      const expectedSortedJobs = [todayJob, yesterdayJob, beforeYesterdayJob, veryOldJob, oldJob, futureJob];
+      const givenJobs = [futureJob, todayJob, yesterdayJob, beforeYesterdayJob, oldJob, tomorrowJob];
+      const expectedSortedJobs = [beforeYesterdayJob, yesterdayJob, todayJob, tomorrowJob, futureJob];
 
       // When
-      const sortedJobs = projectStaffingNeededDate.sort(givenJobs);
+      const sortedJobs = projectStaffingNeededDate.sortAfter(givenJobs, availabityDate);
 
+      // Then
+      expect(sortedJobs).to.deep.equal(expectedSortedJobs);
+    });
+
+    it('should sort chronologically five jobs with the same date according to project staffing needed date', () => {
+      // Given
+      const todayJob1 = { activity: { id: 1, staffing_needed_from: '2017-10-04' } };
+      const todayJob2 = { activity: { id: 2, staffing_needed_from: '2017-10-04' } };
+      const todayJob3 = { activity: { id: 3, staffing_needed_from: '2017-10-04' } };
+      const todayJob4 = { activity: { id: 4, staffing_needed_from: '2017-10-04' } };
+      const todayJob5 = { activity: { id: 5, staffing_needed_from: '2017-10-04' } };
+
+      const givenJobs = [todayJob1, todayJob2, todayJob3, todayJob4, todayJob5];
+      const expectedSortedJobs = [todayJob1, todayJob2, todayJob3, todayJob4, todayJob5];
+
+      // When
+      const sortedJobs = projectStaffingNeededDate.sortAfter(givenJobs, availabityDate);
       // Then
       expect(sortedJobs).to.deep.equal(expectedSortedJobs);
     });

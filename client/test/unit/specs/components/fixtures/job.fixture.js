@@ -7,7 +7,7 @@ module.exports = job => Object.assign({},
     },
     project: {
       id: 123456,
-      status: 'proposal_in_progress',
+      status: 'proposal_sent',
       name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
       customer: {
         name: 'La Poste - Courrier',
