@@ -11,6 +11,10 @@
             <section class="job-results job-results--delivery">
               <div class="job-results__top">
                 <div class="job-results__filters-left">
+                  <div class="job-filters-left__wrapper">
+                  <span class="job-filters-left__text">Disponible à partir du </span>
+                  <date-filter @date="onNewAvailabilityDate"></date-filter>
+                  </div>
                 </div>
                 <div class="job-results__title-container">
                   <h1 class="job-results__title">
@@ -41,6 +45,7 @@
   import jobsApi from '@/api/jobs';
   import AppHeader from '@/components/AppHeader';
   import CountryFilters from '@/components/CountryFilters';
+  import DateFilter from '@/components/DateFilter';
   import JobCard from '@/components/JobCard';
   import Circle from 'vue-loading-spinner/src/components/Circle';
   import countries from '@/utils/countries';
@@ -53,6 +58,7 @@
     components: {
       AppHeader,
       CountryFilters,
+      DateFilter,
       JobCard,
       InterestModal,
       'circle-loader': Circle,
@@ -72,6 +78,10 @@
     },
 
     methods: {
+      onNewAvailabilityDate(newChosenDate) {
+        console.log('doSomethingInParentComponentFunction');
+        console.log(newChosenDate);
+      },
 
       displayInterestModal(job) {
         this.chosenJob = job;
@@ -91,6 +101,14 @@
               this.isLoading = false;
             });
         }
+      },
+
+      onSelectedDateFilter(selectedDateFilter) {
+        this.displayJobs = this._filterJobsByDate(this.jobsFromApi, selectedDateFilter);
+      },
+
+      _filterJobsByDate(jobs) {
+        return jobsSorter.sort(jobs);
       },
 
       onSelectedCountryFilter(selectedCountryFilter) {
@@ -136,6 +154,15 @@
   .job-results__filters-left, .job-results__filters-right {
     display: flex;
     justify-content: center;
+  }
+
+  .job-filters-left__wrapper{
+    display: block;
+   text-align: left;
+  }
+
+  .job-filters-left__text {
+    padding-left: 10px;
   }
 
   .job-results__list {
