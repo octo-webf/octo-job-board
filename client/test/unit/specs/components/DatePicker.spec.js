@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import DatePicker from '@/components/DatePicker';
+import moment from 'moment';
 
 describe('Unit | Component | DatePicker.vue', () => {
   let component;
@@ -34,11 +35,12 @@ describe('Unit | Component | DatePicker.vue', () => {
       component.$emit = spy;
 
       // when
-      component.date = 'Mon, 20 Nov 2017 12:26:58 GMT ';
+      const date = 'Mon, 20 Nov 2017 12:26:58 GMT';
+      component.date = date;
 
       // then
       return Vue.nextTick().then(() => {
-        expect(spy).to.have.been.calledWith('selected', 'Mon, 20 Nov 2017 12:26:58 GMT ');
+        expect(spy).to.have.been.calledWith('selected', moment(date));
       });
     });
   });

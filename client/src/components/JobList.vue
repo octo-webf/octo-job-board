@@ -11,22 +11,25 @@
             <section class="job-results job-results--delivery">
               <div class="job-results__top">
                 <div class="job-results__filters-left">
-                  <div class="job-filters-left__wrapper">
-                  <span class="job-filters-left__text">Disponible à partir du </span>
-                  <date-picker @selected="onSelectedAvailabilityDate"></date-picker>
+                  <div class="job-filters-left__wrapper filters_wrapper">
+                    <span class="job-filters-left__text">Disponible à partir du </span>
+                    <date-picker @selected="onSelectedAvailabilityDate"></date-picker>
                   </div>
                 </div>
                 <div class="job-results__title-container">
                   <h1 class="job-results__title">
-                    Missions à staffer ({{ displayJobs.length }})
+                    Missions à staffer ({{ displayedJobs.length }})
                   </h1>
                 </div>
                 <div class="job-results__filters-right">
-                  <country-picker @selected="onSelectedCountry"></country-picker>
+                  <div class="job-filters-right__wrapper filters_wrapper">
+                    <span class="job-filters-right__text">Provenance des missions</span>
+                    <country-picker @selected="onSelectedCountry"></country-picker>
+                  </div>
                 </div>
               </div>
               <ul class="job-results__list">
-                <li class="job-results__item" v-for="job in displayJobs">
+                <li class="job-results__item" v-for="job in displayedJobs">
                   <job-card v-on:interest="displayInterestModal" :job="job"></job-card>
                 </li>
               </ul>
@@ -41,6 +44,7 @@
 
 <script>
   import authenticationService from '@/services/authentication';
+  import countryFilter from '@/utils/countryFilter';
   import jobsSorter from '@/utils/jobsSorter';
   import jobsApi from '@/api/jobs';
   import AppHeader from '@/components/AppHeader';
@@ -48,8 +52,8 @@
   import DatePicker from '@/components/DatePicker';
   import JobCard from '@/components/JobCard';
   import Circle from 'vue-loading-spinner/src/components/Circle';
-  import countries from '@/utils/countries';
   import InterestModal from '@/components/InterestModal';
+  import moment from 'moment';
 
   export default {
 
@@ -67,10 +71,18 @@
     data() {
       return {
         jobsFromApi: [],
-        displayJobs: [],
         isLoading: false,
         chosenJob: null,
+        availabilityDate: moment(),
+        country: 'anyCountry',
       };
+    },
+
+    computed: {
+      displayedJobs() {
+        const countryJobs = countryFilter.filter(this.jobsFromApi, this.country);
+        return jobsSorter.sort(countryJobs, this.availabilityDate);
+      },
     },
 
     mounted() {
@@ -89,40 +101,18 @@
           const accessToken = authenticationService.getAccessToken();
           jobsApi.fetchAll(accessToken)
             .then((jobs) => {
-              this.jobsFromApi = jobsSorter.sort(jobs);
-              this.displayJobs = this.jobsFromApi;
-            })
-            .then(() => {
+              this.jobsFromApi = jobs;
               this.isLoading = false;
             });
         }
       },
 
       onSelectedAvailabilityDate(newChosenDate) {
-      //        this.displayJobs = this._filterJobsByDate(this.jobsFromApi, newChosenDate);
-      //        console.log('doSomethingInParentComponentFunction');
-      //        console.log(newChosenDate);
+        this.availabilityDate = newChosenDate;
       },
-
-
-      //      _filterJobsByDate(jobs) {
-      //        return jobsSorter.sort(jobs);
-      //      },
 
       onSelectedCountry(newChosenCountry) {
-        this.displayJobs = this._filterJobsByCountry(this.jobsFromApi, newChosenCountry);
-      },
-
-      _filterJobsByCountry(allJobs, selectedCountryFilter) {
-        console.log(allJobs);
-
-        if (selectedCountryFilter === 'anyCountry') {
-          return allJobs;
-        }
-        if (selectedCountryFilter === 'France') {
-          return allJobs.filter(job => countries.indexOf(job.project.customer.sector.name) === -1);
-        }
-        return allJobs.filter(job => job.project.customer.sector.name === selectedCountryFilter);
+        this.country = newChosenCountry;
       },
     },
   };
@@ -156,13 +146,17 @@
     justify-content: center;
   }
 
-  .job-filters-left__wrapper{
+  .filters_wrapper {
     display: block;
-   text-align: left;
+    text-align: left;
   }
 
   .job-filters-left__text {
     padding-left: 10px;
+  }
+
+  .job-filters-right__text {
+    padding-left: 15px;
   }
 
   .job-results__list {

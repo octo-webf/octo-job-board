@@ -15,7 +15,7 @@ function _sortChronologically(jobs) {
 function _filterOldJobs(jobs, availabilityDate) {
   return jobs.filter((job) => {
     const jobDate = moment(job.activity.staffing_needed_from, 'YYYY-MM-DD');
-    return jobDate.isAfter(availabilityDate);
+    return jobDate.isSameOrAfter(availabilityDate);
   });
 }
 
