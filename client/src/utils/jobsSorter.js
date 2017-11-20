@@ -1,14 +1,12 @@
-import projectStatus from '@/utils/projectStatus';
 import projectStaffingNeededDate from '@/utils/projectStaffingNeededDate';
 
 export default {
 
   sort(jobs) {
-    const jobsSortedByStatus = projectStatus.sort(jobs);
     const regexToFindOnlyMissions = /^mission_/;
 
-    let jobsWithStatusMission = jobsSortedByStatus.filter(job => regexToFindOnlyMissions.test(job.project.status));
-    let jobsWithOtherStatus = jobsSortedByStatus.filter(job => !regexToFindOnlyMissions.test(job.project.status));
+    let jobsWithStatusMission = jobs.filter(job => regexToFindOnlyMissions.test(job.project.status));
+    let jobsWithOtherStatus = jobs.filter(job => !regexToFindOnlyMissions.test(job.project.status));
 
     if (jobsWithStatusMission.length > 1) {
       jobsWithStatusMission = projectStaffingNeededDate.sort(jobsWithStatusMission);
