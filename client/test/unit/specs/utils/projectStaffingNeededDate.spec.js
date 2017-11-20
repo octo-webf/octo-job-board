@@ -66,7 +66,7 @@ describe('Unit | Utils | Project Staffing Needed Date', () => {
 
   describe('#sortAfter', () => {
     let clock;
-    const availabityDate = moment(new Date(2017, 8, 9));
+    const availabityDate = moment(new Date(2017, 9, 3));
 
     beforeEach(() => {
       clock = sinon.useFakeTimers(new Date(2017, 9, 4).getTime());
@@ -79,7 +79,7 @@ describe('Unit | Utils | Project Staffing Needed Date', () => {
     it('should sort chronologically two jobs according to project staffing needed date', () => {
       // Given
       const futureJob = { activity: { id: 1, staffing_needed_from: '2017-11-03' } };
-      const todayJob = { activity: { id: 2, staffing_needed_from: '2017-10-02' } };
+      const todayJob = { activity: { id: 2, staffing_needed_from: '2017-10-04' } };
 
       const givenJobs = [futureJob, todayJob];
       const expectedSortedJobs = [todayJob, futureJob];
@@ -101,7 +101,7 @@ describe('Unit | Utils | Project Staffing Needed Date', () => {
       const tomorrowJob = { activity: { id: 5, staffing_needed_from: '2017-10-05' } };
 
       const givenJobs = [futureJob, todayJob, yesterdayJob, beforeYesterdayJob, oldJob, tomorrowJob];
-      const expectedSortedJobs = [beforeYesterdayJob, yesterdayJob, todayJob, tomorrowJob, futureJob];
+      const expectedSortedJobs = [yesterdayJob, todayJob, tomorrowJob, futureJob];
 
       // When
       const sortedJobs = projectStaffingNeededDate.sortAfter(givenJobs, availabityDate);

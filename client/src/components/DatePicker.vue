@@ -27,7 +27,7 @@
 
     watch: {
       date(newChosenDate) {
-        this.$emit('selected', newChosenDate);
+        this.$emit('selected', moment(newChosenDate));
       },
     },
 
