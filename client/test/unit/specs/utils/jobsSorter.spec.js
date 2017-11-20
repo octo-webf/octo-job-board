@@ -1,10 +1,8 @@
-import projectStatus from '@/utils/projectStatus';
 import projectStaffingNeededDate from '@/utils/projectStaffingNeededDate';
 import jobsSorter from '@/utils/jobsSorter';
 
 describe('Unit | Utils | Jobs Sorter', () => {
   let jobs;
-  let expectedJobsWhenSortedByStatus;
   let expectedJobsWhenSortedByStatusAndStaffingNeededDate;
   beforeEach(() => {
     // given
@@ -108,13 +106,6 @@ describe('Unit | Utils | Jobs Sorter', () => {
     const beforeYesterdayJobSigned = jobs[1];
     const oldJobProposal = jobs[0];
 
-    expectedJobsWhenSortedByStatus = [
-      beforeYesterdayJobSigned,
-      todayJobSigned,
-      oldJobProposal,
-      yesterdayJobProposal,
-    ];
-
     const signedJobsSortedByStaffingNeededDate = [
       todayJobSigned,
       beforeYesterdayJobSigned,
@@ -130,15 +121,12 @@ describe('Unit | Utils | Jobs Sorter', () => {
       ...proposalJobsSortedByStaffingNeededDate,
     ];
 
-    sinon.stub(projectStatus, 'sort').returns(expectedJobsWhenSortedByStatus);
-
     const staffingSort = sinon.stub(projectStaffingNeededDate, 'sort');
     staffingSort.onCall(0).returns(signedJobsSortedByStaffingNeededDate);
     staffingSort.onCall(1).returns(proposalJobsSortedByStaffingNeededDate);
   });
 
   afterEach(() => {
-    projectStatus.sort.restore();
     projectStaffingNeededDate.sort.restore();
   });
 

@@ -114,6 +114,8 @@
       },
 
       _filterJobsByCountry(allJobs, selectedCountryFilter) {
+        console.log(allJobs);
+
         if (selectedCountryFilter === 'anyCountry') {
           return allJobs;
         }
