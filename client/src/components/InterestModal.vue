@@ -118,7 +118,7 @@
       _sendInterest() {
         const consultant = authenticationService.getAuthenticatedUser();
         const accessToken = authenticationService.getAccessToken();
-        return interestsApi.sendInterest(this.interestingJob, consultant, accessToken)
+        return interestsApi.sendInterest(this.interestingJob, consultant, accessToken);
       },
 
       _disableButton() {
