@@ -36,16 +36,27 @@ describe('Unit | Component | JobList.vue', () => {
     expect(component.$options.name).to.equal('JobList');
   });
 
-  it('should have an interest modal', () => {
-    const interestModal = component.$el.querySelectorAll('.interest-modal-wrapper');
-    expect(interestModal.length).to.equal(1);
+  describe('render', () => {
+    it('should have an interest modal', () => {
+      const interestModal = component.$el.querySelectorAll('.interest-modal-wrapper');
+      expect(interestModal.length).to.equal(1);
+    });
+    // TODO check that interest modal use chosenJob
+
+    it('should have a date picker', () => {
+      const datePicker = component.$el.querySelectorAll('.date-picker');
+      expect(datePicker.length).to.equal(1);
+    });
+
+    it('should have a country picker', () => {
+      const countryPicker = component.$el.querySelectorAll('.country-picker');
+      expect(countryPicker.length).to.equal(1);
+    });
   });
 
-  // TODO check that interest modal use chosenJob
 
   describe('on interest', () => {
     beforeEach(() => {
-      // TODO extract fixtures
       sinon.stub(jobsApi, 'fetchAll').resolves(jobFixture);
       sinon.stub(component.$modal, 'show');
       component = new Constructor().$mount();
@@ -398,7 +409,7 @@ describe('Unit | Component | JobList.vue', () => {
       describe('when selecting jobs in France and overseas', () => {
         it('should display the two listed jobs', () => Vue.nextTick().then(() => {
           // When
-          component.onSelectedCountryFilter('anyCountry');
+          component.onSelectedCountry('anyCountry');
           // Then
           return Vue.nextTick().then(() => {
             expect(getJobCardsCount(component)).to.equal(2);
@@ -409,7 +420,7 @@ describe('Unit | Component | JobList.vue', () => {
       describe('when selecting only jobs in France', () => {
         it('should only display one job', () => Vue.nextTick().then(() => {
           // When
-          component.onSelectedCountryFilter('France');
+          component.onSelectedCountry('France');
           // Then
           return Vue.nextTick().then(() => {
             expect(getJobCardsCount(component)).to.equal(1);
@@ -420,7 +431,7 @@ describe('Unit | Component | JobList.vue', () => {
       describe('when selecting only jobs in Australia', () => {
         it('should only display one job', () => Vue.nextTick().then(() => {
           // When
-          component.onSelectedCountryFilter('Australia');
+          component.onSelectedCountry('Australia');
           // Then
           return Vue.nextTick().then(() => {
             expect(getJobCardsCount(component)).to.equal(1);
@@ -431,7 +442,7 @@ describe('Unit | Component | JobList.vue', () => {
       describe('when selecting only jobs in Morocco', () => {
         it('should not display any job', () => Vue.nextTick().then(() => {
           // When
-          component.onSelectedCountryFilter('Maroc');
+          component.onSelectedCountry('Maroc');
           // Then
           return Vue.nextTick().then(() => {
             expect(getJobCardsCount(component)).to.equal(0);
@@ -442,7 +453,7 @@ describe('Unit | Component | JobList.vue', () => {
       describe('when selecting only jobs in Switzerland', () => {
         it('should not display any job', () => Vue.nextTick().then(() => {
           // When
-          component.onSelectedCountryFilter('Suisse');
+          component.onSelectedCountry('Suisse');
           // Then
           return Vue.nextTick().then(() => {
             expect(getJobCardsCount(component)).to.equal(0);

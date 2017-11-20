@@ -1,5 +1,5 @@
 <template>
-  <div class="date date-filter">
+  <div class="date">
     <datepicker
         :format="'d MMMM yyyy'"
         :full-month-name="true"
@@ -14,19 +14,20 @@
 
 <script>
   import Datepicker from 'vuejs-datepicker';
+  import moment from 'moment';
 
   export default {
-    name: 'DateFilters',
+    name: 'DatePicker',
     components: { Datepicker },
     data() {
       return {
-        date: new Date(),
+        date: Date(moment()),
       };
     },
 
     watch: {
       date(newChosenDate) {
-        this.$emit('date', newChosenDate);
+        this.$emit('selected', newChosenDate);
       },
     },
 

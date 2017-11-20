@@ -1,17 +1,17 @@
 import Vue from 'vue';
-import CountryFilters from '@/components/CountryFilters';
+import CountryPicker from '@/components/CountryPicker';
 
-describe('Unit | Component | CountryFilters.vue', () => {
+describe('Unit | Component | CountryPicker.vue', () => {
   let component;
-  const Constructor = Vue.extend(CountryFilters);
+  const Constructor = Vue.extend(CountryPicker);
 
   beforeEach(() => {
     component = new Constructor().$mount();
   });
 
-  it('should be named "CountryFilters"', () => {
+  it('should be named "CountryPicker"', () => {
     // when
-    expect(component.$options.name).to.equal('CountryFilters');
+    expect(component.$options.name).to.equal('CountryPicker');
   });
 
   describe('$data', () => {
@@ -21,7 +21,7 @@ describe('Unit | Component | CountryFilters.vue', () => {
   });
 
   describe('watch #onlyOneCountry', () => {
-    it('should emit selectCountryFilter event with selectedCountry name', () => {
+    it('should emit selected event with selectedCountry name', () => {
       // given
       const spy = sinon.spy();
       component.$emit = spy;
@@ -31,7 +31,7 @@ describe('Unit | Component | CountryFilters.vue', () => {
 
       // then
       return Vue.nextTick().then(() => {
-        expect(spy).to.have.been.calledWith('selectCountryFilter', 'France');
+        expect(spy).to.have.been.calledWith('selected', 'France');
       });
     });
   });
