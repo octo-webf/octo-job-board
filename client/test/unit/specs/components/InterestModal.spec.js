@@ -279,6 +279,18 @@ describe('Unit | Component | InterestModal.vue', () => {
   });
 
   describe('computed props', () => {
+    describe('computed property #customerName', () => {
+      it('should get customerName', () => {
+        // Given
+
+        // When
+        const customerName = component.customerName;
+
+        // Then
+        expect(customerName).to.equal('La Poste - Courrier');
+      });
+    });
+
     describe('computed property #mission', () => {
       it('should get jobTitle', () => {
         // Given
@@ -331,15 +343,16 @@ describe('Unit | Component | InterestModal.vue', () => {
       });
     });
 
-    describe('computed property #customerName', () => {
-      it('should get customerName', () => {
+    describe('computed property #octopodUrl', () => {
+      it('should format the link to Octopod project page', () => {
         // Given
+        job.project.id = 12357;
 
         // When
-        const customerName = component.customerName;
+        const octopodUrl = component.octopodUrl;
 
         // Then
-        expect(customerName).to.equal('La Poste - Courrier');
+        expect(octopodUrl).to.equal('https://octopod.octo.com/projects/12357');
       });
     });
 
@@ -354,19 +367,6 @@ describe('Unit | Component | InterestModal.vue', () => {
 
         // Then
         expect(staffingNeededSince).to.contain('juillet 2017');
-      });
-    });
-
-    describe('computed property #octopodUrl', () => {
-      it('should format the link to Octopod project page', () => {
-        // Given
-        job.project.id = 12357;
-
-        // When
-        const octopodUrl = component.octopodUrl;
-
-        // Then
-        expect(octopodUrl).to.equal('https://octopod.octo.com/projects/12357');
       });
     });
   });

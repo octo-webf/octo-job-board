@@ -53,15 +53,25 @@
     },
 
     computed: {
+      businessContactNickname() {
+        if (!this.interestingJob) return '';
+        return (this.interestingJob.project.business_contact) ? this.interestingJob.project.business_contact.nickname : 'N/A';
+      },
+
+      customerName() {
+        if (!this.interestingJob) return '';
+        return (this.interestingJob.project.customer.name) ? this.interestingJob.project.customer.name : 'N/A';
+      },
 
       jobTitle() {
         if (!this.interestingJob) return '';
         return this.interestingJob.activity.title;
       },
 
-      businessContactNickname() {
+      mission() {
         if (!this.interestingJob) return '';
-        return (this.interestingJob.project.business_contact) ? this.interestingJob.project.business_contact.nickname : 'N/A';
+        const missionName = this.interestingJob.project.name;
+        return missionName.substring(0, 49);
       },
 
       missionDirectorNickname() {
@@ -79,17 +89,6 @@
         if (!this.interestingJob) return '';
         const staffingNeededSince = new Date(this.interestingJob.activity.staffing_needed_from);
         return staffingNeededSince.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
-      },
-
-      mission() {
-        if (!this.interestingJob) return '';
-        const missionName = this.interestingJob.project.name;
-        return missionName.substring(0, 49);
-      },
-
-      customerName() {
-        if (!this.interestingJob) return '';
-        return (this.interestingJob.project.customer.name) ? this.interestingJob.project.customer.name : 'N/A';
       },
     },
 
