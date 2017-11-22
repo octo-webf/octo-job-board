@@ -46,7 +46,6 @@ describe('Unit | Component | JobList.vue', () => {
       const interestModal = component.$el.querySelectorAll('.interest-modal-wrapper');
       expect(interestModal.length).to.equal(1);
     });
-    // TODO check that interest modal use chosenJob
 
     it('should have a date picker', () => {
       const datePicker = component.$el.querySelectorAll('.date-picker');

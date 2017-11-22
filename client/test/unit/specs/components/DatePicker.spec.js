@@ -17,13 +17,12 @@ describe('Unit | Component | DatePicker.vue', () => {
   });
 
   it('should be named "DatePicker"', () => {
-    // when
     expect(component.$options.name).to.equal('DatePicker');
   });
 
   describe('$data', () => {
     // TODO find a better solution to write this assertion
-    it('should have date property set to today', () => {
+    it('should have date property set by default to today', () => {
       expect(component.$data.date - new Date(2017, 9, 4)).to.equal(0);
     });
   });

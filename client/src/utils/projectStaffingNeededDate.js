@@ -12,7 +12,7 @@ function _sortChronologically(jobs) {
   });
 }
 
-function _filterOldJobs(jobs, availabilityDate) {
+function _keepOnlyAvailableJobs(jobs, availabilityDate) {
   return jobs.filter((job) => {
     const jobDate = moment(job.activity.staffing_needed_from, 'YYYY-MM-DD');
     return jobDate.isSameOrAfter(availabilityDate);
@@ -24,7 +24,7 @@ export default {
     return _sortChronologically(jobs);
   },
   sortAfter(jobs, availabilityDate) {
-    const filteredJobs = _filterOldJobs(jobs, availabilityDate);
-    return _sortChronologically(filteredJobs);
+    const availableJobs = _keepOnlyAvailableJobs(jobs, availabilityDate);
+    return _sortChronologically(availableJobs);
   },
 };

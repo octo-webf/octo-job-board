@@ -10,12 +10,11 @@ describe('Unit | Component | CountryPicker.vue', () => {
   });
 
   it('should be named "CountryPicker"', () => {
-    // when
     expect(component.$options.name).to.equal('CountryPicker');
   });
 
   describe('$data', () => {
-    it('should have onlyOneCountry property set to anyCountry', () => {
+    it('should have onlyOneCountry property set by default to anyCountry', () => {
       expect(component.$data.onlyOneCountry).to.equal('anyCountry');
     });
   });
