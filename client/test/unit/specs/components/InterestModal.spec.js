@@ -277,7 +277,7 @@ describe('Unit | Component | InterestModal.vue', () => {
   });
 
   describe('computed props', () => {
-    describe('computed property #businessContactNickname', () => {
+    describe('#businessContactNickname', () => {
       it('should get businessContactNickname', () => {
         // When
         const businessContactNickname = component.businessContactNickname;
@@ -302,7 +302,7 @@ describe('Unit | Component | InterestModal.vue', () => {
       });
     });
 
-    describe('computed property #customerName', () => {
+    describe('#customerName', () => {
       it('should get customerName', () => {
         // When
         const customerName = component.customerName;
@@ -327,7 +327,7 @@ describe('Unit | Component | InterestModal.vue', () => {
       });
     });
 
-    describe('computed property #jobTitle', () => {
+    describe('#jobTitle', () => {
       it('should get jobTitle', () => {
         // When
         const jobTitle = component.jobTitle;
@@ -352,7 +352,7 @@ describe('Unit | Component | InterestModal.vue', () => {
       });
     });
 
-    describe('computed property #mission', () => {
+    describe('#mission', () => {
       it('should get jobTitle', () => {
         // Given
         job.activity.title = 'Dév. Senior';
@@ -364,7 +364,7 @@ describe('Unit | Component | InterestModal.vue', () => {
         expect(jobTitle).to.equal('Dév. Senior');
       });
 
-      it('should not shorten short mission name', () => {
+      it('should not shorten mission name when it is shorter than 50 characters', () => {
         // Given
         job.project.name = 'Name shorter than 50 characters';
 
@@ -375,7 +375,7 @@ describe('Unit | Component | InterestModal.vue', () => {
         expect(missionName).to.equal('Name shorter than 50 characters');
       });
 
-      it('should shorten long mission name to 50 characters', () => {
+      it('should shorten mission name to 50 characters when it is longer than 50 characters', () => {
         // Given
         job.project.name = 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017';
 
@@ -402,7 +402,7 @@ describe('Unit | Component | InterestModal.vue', () => {
       });
     });
 
-    describe('computed property #missionDirectorNickname', () => {
+    describe('#missionDirectorNickname', () => {
       it('should get missionDirectorNickname', () => {
         // When
         const missionDirectorNickname = component.missionDirectorNickname;
@@ -427,7 +427,7 @@ describe('Unit | Component | InterestModal.vue', () => {
       });
     });
 
-    describe('computed property #octopodUrl', () => {
+    describe('#octopodUrl', () => {
       it('should format the link to Octopod project page', () => {
         // Given
         job.project.id = 12357;
@@ -455,7 +455,7 @@ describe('Unit | Component | InterestModal.vue', () => {
       });
     });
 
-    describe('computed property #staffingNeededSince', () => {
+    describe('#staffingNeededSince', () => {
       // TODO: it works on local or on browser, but fails in CircleCI :-/
       it.skip('should format the mission staffing_needed_from date (ex : "2017-07-01" => "Juillet 2017")', () => {
         // Given
