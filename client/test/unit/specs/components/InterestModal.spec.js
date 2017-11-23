@@ -121,15 +121,15 @@ describe('Unit | Component | InterestModal.vue', () => {
         expect(component.$data.error).to.equal(null);
       });
 
-      it('should trackEvent', () => {
+      it('should trackEventInterestClick', () => {
         // given
-        sinon.stub(component, 'trackEvent');
+        sinon.stub(component, 'trackEventInterestClick');
 
         // when
         component.submitInterest();
 
         // then
-        expect(component.trackEvent).to.have.been.calledWith();
+        expect(component.trackEventInterestClick).to.have.been.calledWith();
       });
 
       it('should call the API with job, consultant and access token', () => {
@@ -193,9 +193,34 @@ describe('Unit | Component | InterestModal.vue', () => {
     });
   });
 
-  describe('#trackEvent', () => {
+  describe('#trackEventInterestClick', () => {
     const expectedCallParams = {
-      eventCategory: 'Job List',
+      eventCategory: 'Click on InterestModal send button',
+      eventAction: 'click',
+      eventLabel: 'I am really interested',
+      eventValue: null,
+    };
+
+    beforeEach(() => {
+      sinon.stub(component.$ga, 'event').returns(true);
+    });
+
+    afterEach(() => {
+      component.$ga.event.restore();
+    });
+
+    it('should check analytics', () => {
+      // when
+      component.trackEventInterestClick();
+
+      // then
+      expect(component.$ga.event).to.have.been.calledWith(expectedCallParams);
+    });
+  });
+
+  describe('#trackEventOpeningInterestModalOpen', () => {
+    const expectedCallParams = {
+      eventCategory: 'Opening InterestModal',
       eventAction: 'click',
       eventLabel: 'I am interested',
       eventValue: null,
@@ -211,7 +236,7 @@ describe('Unit | Component | InterestModal.vue', () => {
 
     it('should check analytics', () => {
       // when
-      component.trackEvent();
+      component.trackEventOpeningInterestModalOpen();
 
       // then
       expect(component.$ga.event).to.have.been.calledWith(expectedCallParams);
@@ -252,7 +277,7 @@ describe('Unit | Component | InterestModal.vue', () => {
 
   describe('on click on "send" button', () => {
     beforeEach(() => {
-      sinon.stub(component, 'trackEvent');
+      sinon.stub(component, 'trackEventInterestClick');
       sinon.stub(component, '_sendInterest').resolves();
     });
 
@@ -269,7 +294,7 @@ describe('Unit | Component | InterestModal.vue', () => {
 
         // Then
         Vue.nextTick().then(() => {
-          expect(component.trackEvent).to.have.been.calledWith();
+          expect(component.trackEventInterestClick).to.have.been.calledWith();
           expect(component._sendInterest).to.have.been.calledWith();
           done();
         });
