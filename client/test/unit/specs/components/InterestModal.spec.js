@@ -13,6 +13,7 @@ describe('Unit | Component | InterestModal.vue', () => {
     id: 2,
     activity: {
       title: 'Tech Lead',
+      staffing_needed_from: '2017-07-01',
     },
     project: {
       id: 123456,
@@ -456,11 +457,7 @@ describe('Unit | Component | InterestModal.vue', () => {
     });
 
     describe('#staffingNeededSince', () => {
-      // TODO: it works on local or on browser, but fails in CircleCI :-/
-      it.skip('should format the mission staffing_needed_from date (ex : "2017-07-01" => "Juillet 2017")', () => {
-        // Given
-        job.project.staffing_needed_from = '2017-07-01';
-
+      it('should format the mission staffing_needed_from date (ex : "2017-07-01" => "Juillet 2017")', () => {
         // When
         const staffingNeededSince = component.staffingNeededSince;
 
