@@ -4,8 +4,11 @@
 
       <!-- modal header-->
       <div class="interest-modal__header">
-        <h2 class="interest-modal__title">Intéressé·e&nbsp; par <strong>{{ mission }}</strong> pour <strong>{{ customerName }}</strong>&nbsp;?</h2>
-        <button class="interest-modal__action interest-modal__action--cancel" @click="closeModal"><icon name="times" scale="1.5"></icon></button>
+        <h2 class="interest-modal__title">Intéressé·e&nbsp; par <strong>{{ mission }}</strong>
+          pour <strong>{{ customerName }}</strong>&nbsp;?</h2>
+        <button class="interest-modal__action interest-modal__action--cancel" @click="closeModal">
+          <icon name="times" scale="1.5"></icon>
+        </button>
       </div>
 
       <!-- modal body -->
@@ -13,7 +16,8 @@
         <div class="interest-modal__text" id="interest-content">
           <p class="interest-modal__error" v-if="error" aria-live="polite">{{error}}</p>
 
-          <p>En tant que <strong>{{ jobTitle }}</strong>, es-tu disponible à partir du <strong>{{ staffingNeededSince }}</strong>&nbsp;?</p>
+          <p>En tant que <strong>{{ jobTitle }}</strong>, es-tu disponible à partir du <strong>{{ staffingNeededSince
+            }}</strong>&nbsp;?</p>
         </div>
       </div>
 
@@ -26,7 +30,9 @@
                   @click="submitInterest">Je suis disponible
           </button>
         </div>
-        <p class="interest-modal__mentions">L'équipe Job Board te mettra en relation avec <strong>{{ missionDirectorNickname }}</strong> , dir. mission et <strong>{{ businessContactNickname }}</strong>, contact biz.</p>
+        <p class="interest-modal__mentions">
+          L'équipe Job Board te mettra en relation avec <strong>{{ missionDirectorNickname }}</strong>
+          , dir. mission et <strong>{{ businessContactNickname }}</strong>, contact biz.</p>
       </div>
 
     </modal>
@@ -97,7 +103,7 @@
       submitInterest() {
         this._disableButton();
         this._removeError();
-        this.trackEvent();
+        this.trackEventInterestClick();
         this._sendInterest()
           .then(this.closeModal)
           .then(this.displaySuccessNotification)
@@ -106,14 +112,24 @@
           });
       },
 
-      trackEvent() {
+      trackEventInterestClick() {
         this.$ga.event({
-          eventCategory: 'Job List',
+          eventCategory: 'Click on InterestModal send button',
+          eventAction: 'click',
+          eventLabel: 'I am really interested',
+          eventValue: null,
+        });
+      },
+
+      trackEventOpeningInterestModalOpen() {
+        this.$ga.event({
+          eventCategory: 'Opening InterestModal',
           eventAction: 'click',
           eventLabel: 'I am interested',
           eventValue: null,
         });
       },
+
 
       _sendInterest() {
         const consultant = authenticationService.getAuthenticatedUser();
@@ -131,6 +147,7 @@
       },
 
       beforeOpen() {
+        this.trackEventOpeningInterestModalOpen();
         this._resetInterest();
         this._removeError();
       },
