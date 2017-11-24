@@ -81,6 +81,46 @@ describe('Unit | Component | InterestModal.vue', () => {
     });
   });
 
+  describe('#beforeOpen', () => {
+    beforeEach(() => {
+      sinon.stub(component, 'trackEventOpeningInterestModalOpen');
+    });
+
+    afterEach(() => {
+      component.trackEventOpeningInterestModalOpen.restore();
+    });
+
+    it('should trackEventOpeningInterestModalOpen without arguments', () => {
+      // when
+      component.beforeOpen();
+
+      // then
+      expect(component.trackEventOpeningInterestModalOpen).to.have.been.calledWith();
+    });
+
+    it('should reset interest', () => {
+      // given
+      component.$data.interest = 'my interest';
+
+      // when
+      component.beforeOpen();
+
+      // then
+      expect(component.$data.interest).to.equal(null);
+    });
+
+    it('should remove error', () => {
+      // given
+      component.$data.error = 'my error';
+
+      // when
+      component.beforeOpen();
+
+      // then
+      expect(component.$data.error).to.equal(null);
+    });
+  });
+
   describe('#submitInterest', () => {
     beforeEach(() => {
       sinon.stub(interestsApi, 'sendInterest');
@@ -121,7 +161,7 @@ describe('Unit | Component | InterestModal.vue', () => {
         expect(component.$data.error).to.equal(null);
       });
 
-      it('should trackEventInterestClick', () => {
+      it('should trackEventInterestClick without arguments', () => {
         // given
         sinon.stub(component, 'trackEventInterestClick');
 
@@ -195,10 +235,9 @@ describe('Unit | Component | InterestModal.vue', () => {
 
   describe('#trackEventInterestClick', () => {
     const expectedCallParams = {
-      eventCategory: 'Click on InterestModal send button',
+      eventCategory: 'InterestModal',
       eventAction: 'click',
-      eventLabel: 'I am really interested',
-      eventValue: null,
+      eventLabel: 'Someone sends an interest',
     };
 
     beforeEach(() => {
@@ -220,10 +259,9 @@ describe('Unit | Component | InterestModal.vue', () => {
 
   describe('#trackEventOpeningInterestModalOpen', () => {
     const expectedCallParams = {
-      eventCategory: 'Opening InterestModal',
-      eventAction: 'click',
-      eventLabel: 'I am interested',
-      eventValue: null,
+      eventCategory: 'InterestModal',
+      eventAction: 'opening',
+      eventLabel: 'Someone is interested',
     };
 
     beforeEach(() => {

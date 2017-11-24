@@ -15,9 +15,10 @@
       <div class="interest-modal__body">
         <div class="interest-modal__text" id="interest-content">
           <p class="interest-modal__error" v-if="error" aria-live="polite">{{error}}</p>
-
-          <p>En tant que <strong>{{ jobTitle }}</strong>, es-tu disponible à partir du <strong>{{ staffingNeededSince
-            }}</strong>&nbsp;?</p>
+          <p>
+            En tant que <strong>{{ jobTitle }}</strong>,
+            es-tu disponible à partir du <strong>{{ staffingNeededSince}}</strong>&nbsp;?
+          </p>
         </div>
       </div>
 
@@ -114,22 +115,19 @@
 
       trackEventInterestClick() {
         this.$ga.event({
-          eventCategory: 'Click on InterestModal send button',
+          eventCategory: 'InterestModal',
           eventAction: 'click',
-          eventLabel: 'I am really interested',
-          eventValue: null,
+          eventLabel: 'Someone sends an interest',
         });
       },
 
       trackEventOpeningInterestModalOpen() {
         this.$ga.event({
-          eventCategory: 'Opening InterestModal',
-          eventAction: 'click',
-          eventLabel: 'I am interested',
-          eventValue: null,
+          eventCategory: 'InterestModal',
+          eventAction: 'opening',
+          eventLabel: 'Someone is interested',
         });
       },
-
 
       _sendInterest() {
         const consultant = authenticationService.getAuthenticatedUser();
