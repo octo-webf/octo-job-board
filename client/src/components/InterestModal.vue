@@ -22,6 +22,7 @@
         <div class="interest-modal__actions">
           <!--todo prevent twice-->
           <button class="interest-modal__action interest-modal__action--send"
+                  title="Si vous cliquez sur ce bouton, un mail sera envoyé à l'équipe Job Board (uniquement !) avec les informations utiles pour aider au staffing."
                   @click="submitInterest">Je suis disponible
           </button>
         </div>
@@ -35,6 +36,7 @@
 <script>
   import authenticationService from '@/services/authentication';
   import interestsApi from '@/api/interests';
+  import notificationService from '@/services/notification';
 
   export default {
 
@@ -51,15 +53,25 @@
     },
 
     computed: {
+      businessContactNickname() {
+        if (!this.interestingJob) return '';
+        return (this.interestingJob.project.business_contact) ? this.interestingJob.project.business_contact.nickname : 'N/A';
+      },
+
+      customerName() {
+        if (!this.interestingJob) return '';
+        return (this.interestingJob.project.customer.name) ? this.interestingJob.project.customer.name : 'N/A';
+      },
 
       jobTitle() {
         if (!this.interestingJob) return '';
         return this.interestingJob.activity.title;
       },
 
-      businessContactNickname() {
+      mission() {
         if (!this.interestingJob) return '';
-        return (this.interestingJob.project.business_contact) ? this.interestingJob.project.business_contact.nickname : 'N/A';
+        const missionName = this.interestingJob.project.name;
+        return missionName.substring(0, 49);
       },
 
       missionDirectorNickname() {
@@ -78,27 +90,20 @@
         const staffingNeededSince = new Date(this.interestingJob.activity.staffing_needed_from);
         return staffingNeededSince.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
       },
-
-      mission() {
-        if (!this.interestingJob) return '';
-        const missionName = this.interestingJob.project.name;
-        return missionName.substring(0, 49);
-      },
-
-      customerName() {
-        if (!this.interestingJob) return '';
-        return (this.interestingJob.project.customer.name) ? this.interestingJob.project.customer.name : 'N/A';
-      },
     },
 
     methods: {
 
       submitInterest() {
-        this._sendInterest().then(() => {
-          this.disableButton();
-          this.displaySuccessNotification();
-        });
+        this._disableButton();
+        this._removeError();
         this.trackEvent();
+        this._sendInterest()
+          .then(this.closeModal)
+          .then(this.displaySuccessNotification)
+          .catch(() => {
+            this.error = 'Une erreur est survenue durant l\'envoi de ton intérêt.';
+          });
       },
 
       trackEvent() {
@@ -111,29 +116,18 @@
       },
 
       _sendInterest() {
-        this._removeError();
         const consultant = authenticationService.getAuthenticatedUser();
         const accessToken = authenticationService.getAccessToken();
-        return interestsApi.sendInterest(this.interestingJob, consultant, accessToken)
-          .then(this.closeModal)
-          .catch(() => {
-            this.error = 'Une erreur est survenue durant l\'envoi de ton intérêt.';
-          });
+        return interestsApi.sendInterest(this.interestingJob, consultant, accessToken);
       },
 
-      disableButton() {
+      _disableButton() {
         this.isClicked = true;
       },
 
       displaySuccessNotification() {
-        this.closeModal();
         const message = 'Merci de ton intérêt pour la mission. Ta demande a été transmise à l\'équipe Job Board.';
-        this.$root.$refs.centerToastr.s({
-          msg: message,
-          position: 'toast-top-center',
-          timeout: 3000,
-          closeButton: true,
-        });
+        notificationService.successCenterToast(this, message);
       },
 
       beforeOpen() {
@@ -158,9 +152,10 @@
 </script>
 
 <style scoped>
-  .toast-container{
-    margin-top:60px;
+  .toast-container {
+    margin-top: 60px;
   }
+
   .interest-modal__header {
     background-color: #eef0f4;
     padding: 15px 40px 10px 20px;

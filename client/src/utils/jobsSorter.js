@@ -1,23 +1,19 @@
-import projectStatus from '@/utils/projectStatus';
 import projectStaffingNeededDate from '@/utils/projectStaffingNeededDate';
+import moment from 'moment';
 
 export default {
-
-  sort(jobs) {
-    const jobsSortedByStatus = projectStatus.sort(jobs);
+  sort(jobs, availabityDate = moment()) {
     const regexToFindOnlyMissions = /^mission_/;
+    const jobsWithStatusMission = jobs.filter(job => regexToFindOnlyMissions.test(job.project.status));
+    const jobsWithOtherStatus = jobs.filter(job => !regexToFindOnlyMissions.test(job.project.status));
 
-    let jobsWithStatusMission = jobsSortedByStatus.filter(job => regexToFindOnlyMissions.test(job.project.status));
-    let jobsWithOtherStatus = jobsSortedByStatus.filter(job => !regexToFindOnlyMissions.test(job.project.status));
+    const sortedJobsWithStatusMission = jobsWithStatusMission.length > 1 ?
+      projectStaffingNeededDate.sortAll(jobsWithStatusMission) :
+      jobsWithStatusMission;
+    const sortedJobsWithOtherStatus = jobsWithOtherStatus.length > 1 ?
+      projectStaffingNeededDate.sortAfter(jobsWithOtherStatus, availabityDate) :
+      jobsWithOtherStatus;
 
-    if (jobsWithStatusMission.length > 1) {
-      jobsWithStatusMission = projectStaffingNeededDate.sort(jobsWithStatusMission);
-    }
-    if (jobsWithOtherStatus.length > 1) {
-      jobsWithOtherStatus = projectStaffingNeededDate.sort(jobsWithOtherStatus);
-    }
-
-    return [...jobsWithStatusMission, ...jobsWithOtherStatus];
+    return [...sortedJobsWithStatusMission, ...sortedJobsWithOtherStatus];
   },
-
 };

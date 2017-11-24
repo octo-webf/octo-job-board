@@ -24,7 +24,8 @@
     "lint": "npm run lint:client && npm run lint:server",
     "lint:fix": "(cd client && npm run lint:fix) && (cd server && npm run lint:fix)",
     "release": "./tools/release/release.sh",
-    "heroku-postbuild": "npm run build"
+    "heroku-postbuild": "npm run build",
+    "prepush": "npm run lint && npm test"
   },
   "repository": {
     "type": "git",
@@ -37,6 +38,10 @@
   },
   "homepage": "https://github.com/octo-web-front-end-tribe/octo-job-board#readme",
   "devDependencies": {
+    "husky": "^0.14.3",
     "nodemon": "^1.11.0"
+  },
+  "engines": {
+    "node": "8.9.1"
   }
 }

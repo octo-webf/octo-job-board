@@ -61,11 +61,11 @@ describe('Unit | Service | subscription-service', () => {
 
     it('should call Sequelize Model#destroy (public static) method', () => {
       // when
-      const promise = subscriptionService.removeSubscription(123);
+      const promise = subscriptionService.removeSubscription('email@example.org');
 
       // then
       return promise.then(() => {
-        expect(Subscription.destroy).to.have.been.called;
+        expect(Subscription.destroy).to.have.been.calledWith({ where: { email: 'email@example.org' } });
       });
     });
   });

@@ -22,3 +22,4 @@ package-lock.json
 
 # DB data files
 *.sqlite
+

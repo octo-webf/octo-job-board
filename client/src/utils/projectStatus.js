@@ -6,7 +6,6 @@ export default {
         'mission_signed',
         'mission_accepted',
         'proposal_sent',
-        'proposal_in_progress',
       ];
 
       const indexJob1 = projectStatusOrder.indexOf(job1.project.status);

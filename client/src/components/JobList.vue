@@ -9,14 +9,27 @@
         <template v-else>
           <div class="job-results-panel">
             <section class="job-results job-results--delivery">
-              <div class="job-results__header">
-                <h1 class="job-results__title">
-                  Missions à staffer ({{ displayJobs.length }})
-                </h1>
-                <country-filters @selectCountryFilter="onSelectedCountryFilter"></country-filters>
+              <div class="job-results__top">
+                <div class="job-results__filters-left">
+                  <div class="job-filters-left__wrapper filters_wrapper">
+                    <span class="job-filters-left__text">Disponible à partir du </span>
+                    <date-picker @selected="onSelectedAvailabilityDate"></date-picker>
+                  </div>
+                </div>
+                <div class="job-results__title-container">
+                  <h1 class="job-results__title">
+                    Missions à staffer ({{ displayedJobs.length }})
+                  </h1>
+                </div>
+                <div class="job-results__filters-right">
+                  <div class="job-filters-right__wrapper filters_wrapper">
+                    <span class="job-filters-right__text">Provenance des missions</span>
+                    <country-picker @selected="onSelectedCountry"></country-picker>
+                  </div>
+                </div>
               </div>
               <ul class="job-results__list">
-                <li class="job-results__item" v-for="job in displayJobs">
+                <li class="job-results__item" v-for="job in displayedJobs">
                   <job-card v-on:interest="displayInterestModal" :job="job"></job-card>
                 </li>
               </ul>
@@ -31,14 +44,16 @@
 
 <script>
   import authenticationService from '@/services/authentication';
+  import countryFilter from '@/utils/countryFilter';
   import jobsSorter from '@/utils/jobsSorter';
   import jobsApi from '@/api/jobs';
   import AppHeader from '@/components/AppHeader';
-  import CountryFilters from '@/components/CountryFilters';
+  import CountryPicker from '@/components/CountryPicker';
+  import DatePicker from '@/components/DatePicker';
   import JobCard from '@/components/JobCard';
   import Circle from 'vue-loading-spinner/src/components/Circle';
-  import countries from '@/utils/countries';
   import InterestModal from '@/components/InterestModal';
+  import moment from 'moment';
 
   export default {
 
@@ -46,7 +61,8 @@
 
     components: {
       AppHeader,
-      CountryFilters,
+      CountryPicker,
+      DatePicker,
       JobCard,
       InterestModal,
       'circle-loader': Circle,
@@ -55,10 +71,18 @@
     data() {
       return {
         jobsFromApi: [],
-        displayJobs: [],
         isLoading: false,
         chosenJob: null,
+        availabilityDate: moment(),
+        country: 'anyCountry',
       };
+    },
+
+    computed: {
+      displayedJobs() {
+        const countryJobs = countryFilter.filter(this.jobsFromApi, this.country);
+        return jobsSorter.sort(countryJobs, this.availabilityDate);
+      },
     },
 
     mounted() {
@@ -66,7 +90,6 @@
     },
 
     methods: {
-
       displayInterestModal(job) {
         this.chosenJob = job;
         this.$modal.show('interest-modal');
@@ -78,27 +101,18 @@
           const accessToken = authenticationService.getAccessToken();
           jobsApi.fetchAll(accessToken)
             .then((jobs) => {
-              this.jobsFromApi = jobsSorter.sort(jobs);
-              this.displayJobs = this.jobsFromApi;
-            })
-            .then(() => {
+              this.jobsFromApi = jobs;
               this.isLoading = false;
             });
         }
       },
 
-      onSelectedCountryFilter(selectedCountryFilter) {
-        this.displayJobs = this._filterJobsByCountry(this.jobsFromApi, selectedCountryFilter);
+      onSelectedAvailabilityDate(newChosenDate) {
+        this.availabilityDate = newChosenDate;
       },
 
-      _filterJobsByCountry(allJobs, selectedCountryFilter) {
-        if (selectedCountryFilter === 'anyCountry') {
-          return allJobs;
-        }
-        if (selectedCountryFilter === 'France') {
-          return allJobs.filter(job => countries.indexOf(job.project.customer.sector.name) === -1);
-        }
-        return allJobs.filter(job => job.project.customer.sector.name === selectedCountryFilter);
+      onSelectedCountry(newChosenCountry) {
+        this.country = newChosenCountry;
       },
     },
   };
@@ -127,6 +141,24 @@
     margin: 0 0 15px;
   }
 
+  .job-results__filters-left, .job-results__filters-right {
+    display: flex;
+    justify-content: center;
+  }
+
+  .filters_wrapper {
+    display: block;
+    text-align: left;
+  }
+
+  .job-filters-left__text {
+    padding-left: 10px;
+  }
+
+  .job-filters-right__text {
+    padding-left: 15px;
+  }
+
   .job-results__list {
     padding: 0;
     display: flex;
@@ -139,5 +171,32 @@
     list-style-type: none;
     padding: 0;
     margin: 10px;
+  }
+
+  @media only screen and (min-width: 1240px) {
+    .job-results__top {
+      min-width: 1240px;
+    }
+  }
+
+  @media only screen and (min-width: 992px) {
+    .job-results__top {
+      min-width: 920px;
+    }
+  }
+
+  @media only screen and (min-width: 640px) {
+    .job-results__top {
+      display: flex;
+      min-width: 640px;
+    }
+
+    .job-results__filters-left, .job-results__filters-right {
+      width: 20%;
+    }
+
+    .job-results__title-container {
+      width: 60%;
+    }
   }
 </style>

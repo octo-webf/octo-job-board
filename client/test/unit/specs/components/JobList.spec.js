@@ -1,33 +1,38 @@
 import Vue from 'vue';
 import VueAnalytics from 'vue-analytics';
+import moment from 'moment';
 import JobList from '@/components/JobList';
 import jobsSorter from '@/utils/jobsSorter';
-import authentication from '@/services/authentication';
-import projectStatus from '@/utils/projectStatus';
+import countryFilter from '@/utils/countryFilter';
+import authenticationService from '@/services/authentication';
 import jobsApi from '@/api/jobs';
-import jobFixture from './fixtures/jobs.fixture';
+import jobFixture from '../fixtures/job.fixture';
 
 Vue.use(VueAnalytics, {
   id: `${process.env.ANALYTICS_ID}`,
 });
 
-function getJobCardsCount(component) {
-  const jobCards = component.$el.querySelectorAll('.job-card');
-  return jobCards.length;
+function buildJobFixture(id, title, status, staffingNeededFrom) {
+  const activity = {
+    title,
+    staffing_needed_from: staffingNeededFrom,
+  };
+  const job = jobFixture({ id, activity });
+  job.project.status = status;
+  return job;
 }
 
 describe('Unit | Component | JobList.vue', () => {
   let component;
-  let expectedJobs;
   const Constructor = Vue.extend(JobList);
 
   beforeEach(() => {
     // given
-    sinon.stub(authentication, 'isAuthenticated').returns(true);
+    sinon.stub(authenticationService, 'isAuthenticated').returns(true);
   });
 
   afterEach(() => {
-    authentication.isAuthenticated.restore();
+    authenticationService.isAuthenticated.restore();
   });
 
   it('should be named "JobList"', () => {
@@ -36,35 +41,21 @@ describe('Unit | Component | JobList.vue', () => {
     expect(component.$options.name).to.equal('JobList');
   });
 
-  it('should have an interest modal', () => {
-    const interestModal = component.$el.querySelectorAll('.interest-modal-wrapper');
-    expect(interestModal.length).to.equal(1);
-  });
-
-  // TODO check that interest modal use chosenJob
-
-  describe('on interest', () => {
-    beforeEach(() => {
-      // TODO extract fixtures
-      sinon.stub(jobsApi, 'fetchAll').resolves(jobFixture);
-      sinon.stub(component.$modal, 'show');
-      component = new Constructor().$mount();
+  describe('render', () => {
+    it('should have an interest modal', () => {
+      const interestModal = component.$el.querySelectorAll('.interest-modal-wrapper');
+      expect(interestModal.length).to.equal(1);
     });
 
-    afterEach(() => {
-      component.$modal.show.restore();
-      jobsApi.fetchAll.restore();
+    it('should have a date picker', () => {
+      const datePicker = component.$el.querySelectorAll('.date-picker');
+      expect(datePicker.length).to.equal(1);
     });
 
-    it('should displayInterestModal on click on interest', () => Vue.nextTick().then(() =>
-      // when
-      Vue.nextTick().then(() => {
-        component.$el.querySelector('button.job__apply-button').click();
-
-        // then
-        expect(component.$modal.show).to.have.been.calledWith('interest-modal');
-      }),
-    ));
+    it('should have a country picker', () => {
+      const countryPicker = component.$el.querySelectorAll('.country-picker');
+      expect(countryPicker.length).to.equal(1);
+    });
   });
 
   describe('method #displayInterestModal', () => {
@@ -78,7 +69,7 @@ describe('Unit | Component | JobList.vue', () => {
 
     it('should add job to the chosenJob data', () => {
       // Given
-      const job = { foo: 'bar' };
+      const job = jobFixture();
 
       // When
       component.displayInterestModal(job);
@@ -100,7 +91,7 @@ describe('Unit | Component | JobList.vue', () => {
     it('should verify that user is authenticated', () => {
       // when
       component = new Constructor().$mount();
-      expect(authentication.isAuthenticated).to.have.been.called;
+      expect(authenticationService.isAuthenticated).to.have.been.called;
     });
 
     describe('before jobs are loaded', () => {
@@ -126,329 +117,76 @@ describe('Unit | Component | JobList.vue', () => {
     });
 
     describe('after jobs are loaded', () => {
+      // given
+      const veryOldJob = buildJobFixture('1', 'Very old mission', 'proposal_sent', '2017-10-01');
+      const oldJob = buildJobFixture('2', 'Old mission', 'mission_signed', '2017-10-02');
+      const yesterdayJob = buildJobFixture('3', 'Yesterday\'s mission', 'proposal_sent', '2017-10-03');
+      const todayJob = buildJobFixture('4', 'Today\'s mission', 'mission_signed', '2017-10-04');
+      const italianJob = buildJobFixture('4', 'Today\'s mission', 'mission_signed', '2017-10-04');
+
+      const fetchedJobs = [yesterdayJob, veryOldJob, oldJob, todayJob, italianJob];
+      const countryJobs = [yesterdayJob, veryOldJob, oldJob, todayJob];
+      const sortedJobs = [todayJob, oldJob, yesterdayJob, veryOldJob];
+      let clock;
+
       beforeEach(() => {
-        // given
-        expectedJobs = [{
-
-          id: 2,
-          activity: {
-            title: 'Tech Lead mission 2',
-          },
-          project: {
-            id: 123456,
-            status: 'mission_signed',
-            name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
-            customer: {
-              name: 'La Poste - Courrier',
-            },
-            staffing_needed_from: '2017-07-01',
-            duration: '10 mois',
-            location: 'OCTO',
-            business_contact: {
-              nickname: 'ABC',
-            },
-            mission_director: {
-              nickname: 'XYZ',
-            },
-          },
-        },
-        {
-          id: 1,
-          activity: {
-            title: 'Tech Lead mission 1',
-          },
-          project: {
-            id: 123456,
-            status: 'proposal_in_progress',
-            name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
-            customer: {
-              name: 'La Poste - Courrier',
-            },
-            staffing_needed_from: '2017-07-01',
-            duration: '10 mois',
-            location: 'OCTO',
-            business_contact: {
-              nickname: 'ABC',
-            },
-            mission_director: {
-              nickname: 'XYZ',
-            },
-          },
-        },
-        ];
-
-        sinon.stub(projectStatus, 'sort').returns(expectedJobs);
-        sinon.stub(jobsApi, 'fetchAll').resolves(jobFixture);
+        sinon.stub(authenticationService, 'getAccessToken').returns('accessToken');
+        sinon.stub(jobsApi, 'fetchAll').resolves(fetchedJobs);
+        sinon.stub(countryFilter, 'filter').returns(countryJobs);
+        sinon.stub(jobsSorter, 'sort').returns([]).returns(sortedJobs);
+        clock = sinon.useFakeTimers(new Date(2017, 9, 4).getTime());
 
         // when
         component = new Constructor().$mount();
       });
 
       afterEach(() => {
-        projectStatus.sort.restore();
+        clock.restore();
+        authenticationService.getAccessToken.restore();
         jobsApi.fetchAll.restore();
+        countryFilter.filter.restore();
+        jobsSorter.sort.restore();
       });
+
+      it('should call jobsApi fetchAll with accessToken', () => {
+        expect(jobsApi.fetchAll).to.have.been.calledWith('accessToken');
+      });
+
+      it('should add fetchedJobs into jobsFromApi', () => Vue.nextTick().then(() => {
+        expect(component.$data.jobsFromApi).to.equal(fetchedJobs);
+      }));
+
+      it('should put isLoading to false after all', () => Vue.nextTick().then(() => {
+        expect(component.$data.isLoading).to.equal(false);
+      }));
+
+      it('should call countryFilter filter with fetchedJobs', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
+        expect(countryFilter.filter).to.have.been.calledWith([], 'anyCountry');
+        expect(countryFilter.filter).to.have.been.calledWith(fetchedJobs, 'anyCountry');
+      })));
+
+      it('should call jobsSorter sort with countryJobs', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
+        expect(jobsSorter.sort).to.have.been.calledTwice;
+        expect(jobsSorter.sort).to.have.been.calledWith(countryJobs, moment());
+        expect(jobsSorter.sort).to.have.been.calledWith(countryJobs, moment());
+      })));
 
       it('should render as many jobs as received from the API', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
         const jobCards = component.$el.querySelectorAll('.job-card');
-        expect(jobCards.length).to.equal(2);
+        expect(jobCards.length).to.equal(4);
       })));
 
       it('should add number of available jobs', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
-        expect(component.$el.querySelector('.job-results__title').textContent.trim()).to.equal('Missions à staffer (2)');
+        expect(component.$el.querySelector('.job-results__title').textContent.trim()).to.equal('Missions à staffer (4)');
       })));
-
-      it('should sort the mission jobs', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
-        const jobTitles = component.$el.querySelectorAll('.job__title');
-        expect(jobTitles[0].textContent).to.equal('Tech Lead mission 2');
-        expect(jobTitles[1].textContent).to.equal('Tech Lead mission 1');
-      })));
-    });
-
-    describe('after jobs are loaded with different status and staffing needed dates', () => {
-      beforeEach(() => {
-        // given
-        const jobs = [
-          {
-            id: 1,
-            activity: {
-              title: 'Very old mission',
-              staffing_needed_from: '2017-10-01',
-            },
-            project: {
-              id: 123456,
-              status: 'proposal_in_progress',
-              name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
-              customer: {
-                name: 'La Poste - Courrier',
-              },
-              duration: '10 mois',
-              location: 'OCTO',
-              business_contact: {
-                nickname: 'ABC',
-              },
-              mission_director: {
-                nickname: 'XYZ',
-              },
-            },
-          },
-          {
-            id: 2,
-            activity: {
-              title: 'Old mission',
-              staffing_needed_from: '2017-10-02',
-            },
-            project: {
-              id: 123456,
-              status: 'mission_signed',
-              name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
-              customer: {
-                name: 'La Poste - Courrier',
-              },
-              duration: '10 mois',
-              location: 'OCTO',
-              business_contact: {
-                nickname: 'ABC',
-              },
-              mission_director: {
-                nickname: 'XYZ',
-              },
-            },
-          },
-          {
-            id: 3,
-            activity: {
-              title: 'Yesterday\'s mission',
-              staffing_needed_from: '2017-10-03',
-            },
-            project: {
-              id: 123456,
-              status: 'proposal_in_progress',
-              name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
-              customer: {
-                name: 'La Poste - Courrier',
-              },
-              duration: '10 mois',
-              location: 'OCTO',
-              business_contact: {
-                nickname: 'ABC',
-              },
-              mission_director: {
-                nickname: 'XYZ',
-              },
-            },
-          },
-          {
-            id: 4,
-            activity: {
-              title: 'Today\'s mission',
-              staffing_needed_from: '2017-10-04',
-            },
-            project: {
-              id: 123456,
-              status: 'mission_signed',
-              name: 'SCLOU - Cloud computing : enjeux, architecture et gouvernance du IaaS, CaaS, PaaS INTER 2017',
-              customer: {
-                name: 'La Poste - Courrier',
-              },
-              duration: '10 mois',
-              location: 'OCTO',
-              business_contact: {
-                nickname: 'ABC',
-              },
-              mission_director: {
-                nickname: 'XYZ',
-              },
-            },
-          },
-        ];
-
-        const todayJob = jobs[3];
-        const yesterdayJob = jobs[2];
-        const oldJob = jobs[1];
-        const veryOldJob = jobs[0];
-
-        const expectedJobsWhenSortedByStatusAndStaffingNeededDate = [
-          todayJob,
-          yesterdayJob,
-          oldJob,
-          veryOldJob,
-        ];
-
-        sinon.stub(jobsSorter, 'sort').returns(expectedJobsWhenSortedByStatusAndStaffingNeededDate);
-        sinon.stub(jobsApi, 'fetchAll').resolves(jobs);
-
-        // when
-        component = new Constructor().$mount();
-      });
-
-      afterEach(() => {
-        jobsSorter.sort.restore();
-        jobsApi.fetchAll.restore();
-      });
 
       it('should sort the mission jobs by status and by staffing needed date', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
         const jobTitles = component.$el.querySelectorAll('.job__title');
         expect(jobTitles[0].textContent).to.equal('Today\'s mission');
-        expect(jobTitles[1].textContent).to.equal('Yesterday\'s mission');
-        expect(jobTitles[2].textContent).to.equal('Old mission');
+        expect(jobTitles[1].textContent).to.equal('Old mission');
+        expect(jobTitles[2].textContent).to.equal('Yesterday\'s mission');
         expect(jobTitles[3].textContent).to.equal('Very old mission');
       })));
-    });
-
-
-    describe('after jobs are loaded, a country filter is applied', () => {
-      beforeEach(() => {
-        // given
-        expectedJobs = [
-          {
-            id: 2,
-            activity: {
-              title: 'Tech Lead mission 2',
-            },
-            project: {
-              name: 'Spark/Hive Archi for eCRM',
-              status: 'mission_signed',
-              customer: {
-                sector: {
-                  name: 'Australia',
-                },
-              },
-              business_contact: {
-                nickname: 'ABC',
-              },
-            },
-          },
-          {
-            id: 1,
-            activity: {
-              title: 'Tech Lead mission 1',
-            },
-            project: {
-              name: 'Système d\'excellence',
-              status: 'proposal_in_progress',
-              customer: {
-                sector: {
-                  name: 'FR - La Poste',
-                },
-              },
-              business_contact: {
-                nickname: 'ABC',
-              },
-            },
-          },
-        ];
-
-        sinon.stub(projectStatus, 'sort').returns(expectedJobs);
-        sinon.stub(jobsApi, 'fetchAll').resolves(jobFixture);
-
-        // when
-        component = new Constructor().$mount();
-      });
-
-      afterEach(() => {
-        projectStatus.sort.restore();
-        jobsApi.fetchAll.restore();
-      });
-
-      it('should render as many jobs as received from the API', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
-        expect(getJobCardsCount(component)).to.equal(2);
-      })));
-
-      describe('when selecting jobs in France and overseas', () => {
-        it('should display the two listed jobs', () => Vue.nextTick().then(() => {
-          // When
-          component.onSelectedCountryFilter('anyCountry');
-          // Then
-          return Vue.nextTick().then(() => {
-            expect(getJobCardsCount(component)).to.equal(2);
-          });
-        }));
-      });
-
-      describe('when selecting only jobs in France', () => {
-        it('should only display one job', () => Vue.nextTick().then(() => {
-          // When
-          component.onSelectedCountryFilter('France');
-          // Then
-          return Vue.nextTick().then(() => {
-            expect(getJobCardsCount(component)).to.equal(1);
-          });
-        }));
-      });
-
-      describe('when selecting only jobs in Australia', () => {
-        it('should only display one job', () => Vue.nextTick().then(() => {
-          // When
-          component.onSelectedCountryFilter('Australia');
-          // Then
-          return Vue.nextTick().then(() => {
-            expect(getJobCardsCount(component)).to.equal(1);
-          });
-        }));
-      });
-
-      describe('when selecting only jobs in Morocco', () => {
-        it('should not display any job', () => Vue.nextTick().then(() => {
-          // When
-          component.onSelectedCountryFilter('Maroc');
-          // Then
-          return Vue.nextTick().then(() => {
-            expect(getJobCardsCount(component)).to.equal(0);
-          });
-        }));
-      });
-
-      describe('when selecting only jobs in Switzerland', () => {
-        it('should not display any job', () => Vue.nextTick().then(() => {
-          // When
-          component.onSelectedCountryFilter('Suisse');
-          // Then
-          return Vue.nextTick().then(() => {
-            expect(getJobCardsCount(component)).to.equal(0);
-          });
-        }));
-      });
     });
   });
 });

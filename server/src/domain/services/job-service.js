@@ -1,4 +1,4 @@
-const { isEmpty } = require('lodash');
+const { isEmpty, differenceBy } = require('lodash');
 const octopodClient = require('../../infrastructure/octopod');
 const jobsSerializer = require('../../infrastructure/serializers/jobs');
 const cache = require('../../infrastructure/cache');
@@ -7,92 +7,44 @@ const mailService = require('./mail-service'); // A service should not be depend
 
 const CACHE_KEY = 'get_jobs';
 
-function _fetchAndCacheJobs() {
-  let accessToken;
-  let projects;
-  let activities;
-  let jobs;
+async function _fetchAndCacheJobs() {
+  const accessToken = await octopodClient.getAccessToken();
+  const projects = await octopodClient.fetchProjectsToBeStaffed(accessToken);
+  const activities = await octopodClient.fetchActivitiesToBeStaffed(accessToken, projects);
+  const jobs = await jobsSerializer.serialize(projects, activities);
+  cache.set(CACHE_KEY, jobs);
 
-  return octopodClient.getAccessToken()
-    .then((resultAccessToken) => {
-      accessToken = resultAccessToken;
-      return accessToken;
-    })
-    .then(() => octopodClient.fetchProjectsToBeStaffed(accessToken))
-    .then((resultProjects) => {
-      projects = resultProjects;
-      return projects;
-    })
-    .then(() => octopodClient.fetchActivitiesToBeStaffed(accessToken, projects))
-    .then((resultActivities) => {
-      activities = resultActivities;
-      return activities;
-    })
-    .then(() => {
-      jobs = jobsSerializer.serialize(projects, activities);
-      return jobs;
-    })
-    .then(() => {
-      cache.set(CACHE_KEY, jobs);
-      return jobs;
-    });
+  return jobs;
 }
 
 function _compareFetchedAndCachedJobs(freshJobs, oldJobs) {
-  if (!oldJobs) {
-    return Promise.resolve({ isInit: true, hasChanges: false });
+  if (!oldJobs || !freshJobs) {
+    return Promise.resolve({ isInit: !oldJobs, hasChanges: false });
   }
 
-  if (!freshJobs) {
-    return Promise.resolve({ isInit: false, hasChanges: false });
-  }
-
-  const addedJobs = freshJobs.reduce((accumulatedJobs, freshJob) => {
-    const matchedJobs = oldJobs.filter(oldJob => oldJob.activity.id === freshJob.activity.id);
-    if (matchedJobs.length === 0) {
-      accumulatedJobs.push(freshJob);
-    }
-    return accumulatedJobs;
-  }, []);
-
-  const removedJobs = oldJobs.reduce((accumulatedJobs, oldJob) => {
-    const matchedJobs = freshJobs.filter(freshJob => oldJob.activity.id === freshJob.activity.id);
-    if (matchedJobs.length === 0) {
-      accumulatedJobs.push(oldJob);
-    }
-    return accumulatedJobs;
-  }, []);
+  const addedJobs = differenceBy(freshJobs, oldJobs, 'activity.id');
+  const removedJobs = differenceBy(oldJobs, freshJobs, 'activity.id');
 
   const hasChanges = (!isEmpty(addedJobs) || !isEmpty(removedJobs));
 
   return Promise.resolve({ isInit: false, addedJobs, removedJobs, hasChanges });
 }
 
-function _ifJobsChangesThenRetrieveJobsNotificationRecipients(report) {
-  const result = report;
-  if (result.hasChanges) {
-    return Subscription.all().then((subscriptions) => {
-      result.receivers = subscriptions.map(s => s.get('email'));
-      return result;
-    });
+async function _ifJobsChangesThenRetrieveJobsNotificationRecipients(report) {
+  if (report.hasChanges) {
+    const subscriptions = await Subscription.all();
+    return { ...report, receivers: subscriptions.map(s => s.get('email')) };
   }
-  return Promise.resolve(result);
+  return Promise.resolve(report);
 }
 
 function _ifJobsChangedThenSendEmailToRecipients(report) {
-  const result = report;
-  if (result.hasChanges) {
-    return mailService.sendJobsChangedEmail(result);
-  }
-  return Promise.resolve(result);
+  return report.hasChanges ? mailService.sendJobsChangedEmail(report) : Promise.resolve(report);
 }
 
 function getJobs() {
   const jobs = cache.get(CACHE_KEY);
-  if (jobs) {
-    return Promise.resolve(jobs);
-  }
-  return _fetchAndCacheJobs();
+  return jobs ? Promise.resolve(jobs) : _fetchAndCacheJobs();
 }
 
 function synchronizeJobs() {

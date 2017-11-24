@@ -7,24 +7,21 @@ const router = express.Router();
 router.post('/', auth, (req, res) => {
   const userEmail = req.userEmail;
 
-  subscriptionService
-    .addSubscription(userEmail)
+  subscriptionService.addSubscription(userEmail)
     .then(({ subscription, created }) => {
       if (created) {
         res.status(201);
       }
       res.json(subscription);
     })
-    .catch(() => {
-      res.status(403).send();
-    });
+    .catch(() => res.status(403).send());
 });
 
-router.delete('/:id', (req, res) => {
-  const subscriptionId = parseInt(req.params.id, 10);
-  subscriptionService
-    .removeSubscription(subscriptionId)
-    .then(() => res.status(204).send());
+router.delete('/', auth, (req, res) => {
+  const userEmail = req.userEmail;
+  subscriptionService.removeSubscription(userEmail)
+    .then(() => res.status(204).send())
+    .catch(() => res.status(500).send());
 });
 
 module.exports = router;

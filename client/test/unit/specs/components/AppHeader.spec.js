@@ -117,7 +117,7 @@ describe('Unit | Component | AppHeader.vue', () => {
       expect(subscriptionsApi.subscribe).to.not.have.been.called;
     });
 
-    it('should display success toast notification when subscription succeeds', (done) => {
+    it('should display success toast notification when subscription succeeds', () => {
       // given
       subscriptionsApi.subscribe.resolves();
       authenticationService.isAuthenticated.returns(true);
@@ -126,14 +126,13 @@ describe('Unit | Component | AppHeader.vue', () => {
       component.subscribe();
 
       // then
-      setTimeout(() => {
+      return Vue.nextTick().then(() => {
         const message = 'Ton abonnement aux alertes du Job Board a été pris en compte.';
         expect(notificationService.success).to.have.been.calledWithExactly(component, message);
-        done();
-      }, 100);
+      });
     });
 
-    it('should display error toast notification when subscription fails', (done) => {
+    it('should display error toast notification when subscription fails', () => {
       // given
       subscriptionsApi.subscribe.rejects();
       authenticationService.isAuthenticated.returns(true);
@@ -142,11 +141,10 @@ describe('Unit | Component | AppHeader.vue', () => {
       component.subscribe();
 
       // then
-      setTimeout(() => {
+      return Vue.nextTick().then(() => {
         const message = 'Erreur lors de la prise en compte de ton abonnement. Pense à te reconnecter.';
         expect(notificationService.error).to.have.been.calledWithExactly(component, message);
-        done();
-      }, 100);
+      });
     });
   });
 });

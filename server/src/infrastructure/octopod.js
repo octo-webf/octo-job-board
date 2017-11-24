@@ -1,5 +1,6 @@
 const request = require('request');
 const config = require('../config/index');
+const { flattenDeep } = require('lodash');
 
 const OctopodClient = {
 
@@ -28,6 +29,16 @@ const OctopodClient = {
     });
   },
 
+  _isStatusWantedOnJobBoard(project) {
+    return project.status === 'mission_signed'
+      || project.status === 'mission_accepted'
+      || project.status === 'proposal_sent';
+  },
+
+  _isKindOfProjectWantedOnJobBoard(project) {
+    return project.kind === 'cost_reimbursable' || project.kind === 'fixed_price';
+  },
+
   fetchProjectsToBeStaffed(accessToken) {
     return new Promise((resolve, reject) => {
       const options = {
@@ -42,7 +53,10 @@ const OctopodClient = {
           reject(err);
         }
         const projects = JSON.parse(response.body);
-        resolve(projects);
+        const filteredProject = projects
+          .filter(this._isStatusWantedOnJobBoard)
+          .filter(this._isKindOfProjectWantedOnJobBoard);
+        resolve(filteredProject);
       });
     });
   },
@@ -65,22 +79,13 @@ const OctopodClient = {
     });
   },
 
-  // https://stackoverflow.com/a/15030117/2120773
-  _flatten(arr) {
-    return arr.reduce((flat, toFlatten) => flat.concat(Array.isArray(toFlatten) ? this._flatten(toFlatten) : toFlatten), []);
-  },
-
   fetchActivitiesToBeStaffed(accessToken, projects) {
-    const activitiesByProject = projects.reduce((promises, project) => {
-      const activity = this._fetchActivityToBeStaffed(accessToken, project);
-      promises.push(activity);
-      return promises;
-    }, []);
+    const activitiesByProject = projects.map(project => this._fetchActivityToBeStaffed(accessToken, project));
+
     return Promise.all(activitiesByProject)
       .then((projectActivities) => {
-        const concatenatedActivities = this._flatten(projectActivities);
-        const activitiesToBeStaffed = concatenatedActivities.filter(activity => !!activity.staffing_needed_from);
-        return Promise.resolve(activitiesToBeStaffed);
+        const concatenatedActivities = flattenDeep(projectActivities);
+        return concatenatedActivities.filter(activity => !!activity.staffing_needed_from);
       });
   },
 
