@@ -1,4 +1,5 @@
 const { isEmpty } = require('lodash');
+const moment = require('moment');
 
 module.exports = {
   compile(model) {
@@ -11,7 +12,8 @@ module.exports = {
       template += `${addedJobs.length} nouvelle(s) mission(s) à staffer :`;
       template += '<ul>';
       addedJobs.forEach((job) => {
-        template += `<li><bold>${job.activity.title}</bold> pour le projet ${job.project.name}</li>`;
+        const formatedDate = moment(job.activity.staffing_needed_from).format('DD/MM/YYYY');
+        template += `<li><bold>${job.activity.title}</bold> pour le projet ${job.project.name} pour le client ${job.project.customer.name} à partir du ${formatedDate}</li>`;
       });
       template += '</ul>';
       template += '</p>';
