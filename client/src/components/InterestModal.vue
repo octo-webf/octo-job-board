@@ -44,6 +44,7 @@
   import authenticationService from '@/services/authentication';
   import interestsApi from '@/api/interests';
   import notificationService from '@/services/notification';
+  import analyticsService from '@/services/analytics';
 
   export default {
 
@@ -104,7 +105,7 @@
       submitInterest() {
         this._disableButton();
         this._removeError();
-        this.trackEventInterestClick();
+        this._trackEventInterestClick();
         this._sendInterest()
           .then(this.closeModal)
           .then(this.displaySuccessNotification)
@@ -113,20 +114,12 @@
           });
       },
 
-      trackEventInterestClick() {
-        this.$ga.event({
-          eventCategory: 'InterestModal',
-          eventAction: 'click',
-          eventLabel: 'Someone sends an interest',
-        });
+      _trackEventInterestClick() {
+        analyticsService.trackEvent(this, 'InterestModal', 'click', 'Someone sends an interest');
       },
 
-      trackEventOpeningInterestModalOpen() {
-        this.$ga.event({
-          eventCategory: 'InterestModal',
-          eventAction: 'opening',
-          eventLabel: 'Someone is interested',
-        });
+      _trackEventOpeningInterestModalOpen() {
+        analyticsService.trackEvent(this, 'InterestModal', 'opening', 'Someone is interested');
       },
 
       _sendInterest() {
@@ -145,7 +138,7 @@
       },
 
       beforeOpen() {
-        this.trackEventOpeningInterestModalOpen();
+        this._trackEventOpeningInterestModalOpen();
         this._resetInterest();
         this._removeError();
       },
