@@ -30,7 +30,7 @@ describe('Unit | Component | JobHeader.vue', () => {
 
   describe('onSelectedAvailabilityDate', () => {
     afterEach(() => {
-       component.$emit.restore();
+      component.$emit.restore();
     });
 
     it('should emit selected event with selectedDate name', () => {
@@ -85,5 +85,4 @@ describe('Unit | Component | JobHeader.vue', () => {
       });
     });
   });
-
 });
