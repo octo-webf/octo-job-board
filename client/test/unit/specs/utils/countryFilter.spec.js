@@ -2,9 +2,9 @@ import countryFilter from '@/utils/countryFilter';
 import jobFixture from '../fixtures/job.fixture';
 
 const buildJobWithSectorName = (name) => {
-  const frenchJob = jobFixture();
-  frenchJob.project.customer.sector.name = name;
-  return frenchJob;
+  const jobFromCountry = jobFixture();
+  jobFromCountry.project.customer.sector.name = name;
+  return jobFromCountry;
 };
 
 describe('Unit | Utils | Country Filter', () => {

@@ -9,22 +9,27 @@
         </div>
       </div>
       <div class="job-header__filter-date">
-        <div class="job-results__filters-left">
-          <div class="job-filters-left__wrapper filters_wrapper">
+        <div class="job-results__filters">
+          <div class="filters_wrapper">
             <span class="job-filters-left__text">Disponible à partir du </span>
             <date-picker @selected="onSelectedAvailabilityDate"></date-picker>
           </div>
         </div>
       </div>
       <div class="job-header__filter-status">
-
+        <div class="job-results__filters">
+          <div class="filters_wrapper">
+            <span class="job-filters-right__text">Statut des missions</span>
+            <status-picker @selected="onSelectedStatus"></status-picker>
+          </div>
+        </div>
       </div>
       <div class="job-header__filter-mission-duration">
 
       </div>
       <div class="job-header__filter-country">
-        <div class="job-results__filters-right">
-          <div class="job-filters-right__wrapper filters_wrapper">
+        <div class="job-results__filters">
+          <div class="filters_wrapper">
             <span class="job-filters-right__text">Provenance des missions</span>
             <country-picker @selected="onSelectedCountry"></country-picker>
           </div>
@@ -37,6 +42,7 @@
 <script>
   import CountryPicker from '@/components/CountryPicker';
   import DatePicker from '@/components/DatePicker';
+  import StatusPicker from '@/components/StatusPicker';
 
   export default {
 
@@ -47,6 +53,7 @@
     components: {
       CountryPicker,
       DatePicker,
+      StatusPicker,
     },
 
     methods: {
@@ -56,6 +63,10 @@
 
       onSelectedCountry(newChosenCountry) {
         this.$emit('selectedCountry', newChosenCountry);
+      },
+
+      onSelectedStatus(newChosenStatus) {
+        this.$emit('selectedStatus', newChosenStatus);
       },
     },
   };
@@ -88,7 +99,7 @@
     margin: 0 0 15px;
   }
 
-  .job-results__filters-left, .job-results__filters-right {
+  .job-results__filters {
     display: flex;
     justify-content: center;
   }

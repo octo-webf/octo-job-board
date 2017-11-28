@@ -20,7 +20,7 @@ describe('Unit | Component | CountryPicker.vue', () => {
   });
 
   describe('watch #onlyOneCountry', () => {
-    it('should emit selected event with selectedCountry name', () => {
+    it('should emit selected event with selected name', () => {
       // given
       const spy = sinon.spy();
       component.$emit = spy;
