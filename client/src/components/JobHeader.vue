@@ -119,7 +119,7 @@
 
   @media only screen and (min-width: 640px) {
     .job-header__container {
-      height: 120px;
+      height: 150px;
       display: grid;
       width: 100%;
       grid-template-columns: 50% 50%;
@@ -132,7 +132,7 @@
 
   @media only screen and (min-width: 992px) {
     .job-header__container {
-      height: 80px;
+      height: 100px;
       display: grid;
       width: 100%;
       grid-template-columns: 33% 34% 33%;
