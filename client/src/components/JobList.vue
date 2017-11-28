@@ -9,7 +9,9 @@
         <template v-else>
           <job-header :jobsNumber="displayedJobs.length"
                       @selectedCountry="onSelectedCountry"
-                      @selectedDate="onSelectedAvailabilityDate">
+                      @selectedDate="onSelectedAvailabilityDate"
+                      @selectedStatus="onSelectedStatus"
+          >
           </job-header>
           <div class="job-results-panel">
             <section class="job-results job-results--delivery">
@@ -30,6 +32,7 @@
 <script>
   import authenticationService from '@/services/authentication';
   import countryFilter from '@/utils/countryFilter';
+  import statusFilter from '@/utils/statusFilter';
   import jobsSorter from '@/utils/jobsSorter';
   import jobsApi from '@/api/jobs';
   import AppHeader from '@/components/AppHeader';
@@ -58,13 +61,15 @@
         chosenJob: null,
         availabilityDate: moment(),
         country: 'anyCountry',
+        status: 'anyStatus',
       };
     },
 
     computed: {
       displayedJobs() {
         const countryJobs = countryFilter.filter(this.jobsFromApi, this.country);
-        return jobsSorter.sort(countryJobs, this.availabilityDate);
+        const statusJobs = statusFilter.filter(countryJobs, this.status);
+        return jobsSorter.sort(statusJobs, this.availabilityDate);
       },
     },
 
@@ -96,6 +101,10 @@
 
       onSelectedCountry(newChosenCountry) {
         this.country = newChosenCountry;
+      },
+
+      onSelectedStatus(newChosenStatus) {
+        this.status = newChosenStatus;
       },
     },
   };

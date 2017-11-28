@@ -4,6 +4,7 @@ import moment from 'moment';
 import JobList from '@/components/JobList';
 import jobsSorter from '@/utils/jobsSorter';
 import countryFilter from '@/utils/countryFilter';
+import statusFilter from '@/utils/statusFilter';
 import authenticationService from '@/services/authentication';
 import jobsApi from '@/api/jobs';
 import jobFixture from '../fixtures/job.fixture';
@@ -47,14 +48,13 @@ describe('Unit | Component | JobList.vue', () => {
       expect(interestModal.length).to.equal(1);
     });
 
-    it('should have a date picker', () => {
-      const datePicker = component.$el.querySelectorAll('.date-picker');
-      expect(datePicker.length).to.equal(1);
-    });
+    it('should have a job header', () => {
+      // when
+      component = new Constructor().$mount();
 
-    it('should have a country picker', () => {
-      const countryPicker = component.$el.querySelectorAll('.country-picker');
-      expect(countryPicker.length).to.equal(1);
+      // then
+      const jobHeader = component.$el.querySelectorAll('.job-header');
+      expect(jobHeader.length).to.equal(1);
     });
   });
 
@@ -123,17 +123,27 @@ describe('Unit | Component | JobList.vue', () => {
       const yesterdayJob = buildJobFixture('3', 'Yesterday\'s mission', 'proposal_sent', '2017-10-03');
       const todayJob = buildJobFixture('4', 'Today\'s mission', 'mission_signed', '2017-10-04');
       const italianJob = buildJobFixture('4', 'Today\'s mission', 'mission_signed', '2017-10-04');
+      const proposalJob = buildJobFixture('4', 'Today\'s mission', 'mission_signed', '2017-10-04');
 
-      const fetchedJobs = [yesterdayJob, veryOldJob, oldJob, todayJob, italianJob];
-      const countryJobs = [yesterdayJob, veryOldJob, oldJob, todayJob];
+      const fetchedJobs = [yesterdayJob, veryOldJob, oldJob, todayJob, italianJob, proposalJob];
+      const countryJobs = [yesterdayJob, veryOldJob, oldJob, todayJob, proposalJob];
+      const statusJobs = [yesterdayJob, veryOldJob, oldJob, todayJob];
       const sortedJobs = [todayJob, oldJob, yesterdayJob, veryOldJob];
       let clock;
 
       beforeEach(() => {
         sinon.stub(authenticationService, 'getAccessToken').returns('accessToken');
         sinon.stub(jobsApi, 'fetchAll').resolves(fetchedJobs);
-        sinon.stub(countryFilter, 'filter').returns(countryJobs);
-        sinon.stub(jobsSorter, 'sort').returns([]).returns(sortedJobs);
+
+        const countryStub = sinon.stub(countryFilter, 'filter');
+        countryStub.onFirstCall().returns([]);
+        countryStub.onSecondCall().returns(countryJobs);
+
+        const statusStub = sinon.stub(statusFilter, 'filter');
+        statusStub.onFirstCall().returns([]);
+        statusStub.onSecondCall().returns(statusJobs);
+
+        sinon.stub(jobsSorter, 'sort').returns(sortedJobs);
         clock = sinon.useFakeTimers(new Date(2017, 9, 4).getTime());
 
         // when
@@ -145,6 +155,7 @@ describe('Unit | Component | JobList.vue', () => {
         authenticationService.getAccessToken.restore();
         jobsApi.fetchAll.restore();
         countryFilter.filter.restore();
+        statusFilter.filter.restore();
         jobsSorter.sort.restore();
       });
 
@@ -165,10 +176,15 @@ describe('Unit | Component | JobList.vue', () => {
         expect(countryFilter.filter).to.have.been.calledWith(fetchedJobs, 'anyCountry');
       })));
 
-      it('should call jobsSorter sort with countryJobs', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
+      it('should call statusFilter filter with statusJobs', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
+        expect(statusFilter.filter).to.have.been.calledWith([], 'anyStatus');
+        expect(statusFilter.filter).to.have.been.calledWith(countryJobs, 'anyStatus');
+      })));
+
+      it('should call jobsSorter sort with statusJobs', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
         expect(jobsSorter.sort).to.have.been.calledTwice;
-        expect(jobsSorter.sort).to.have.been.calledWith(countryJobs, moment());
-        expect(jobsSorter.sort).to.have.been.calledWith(countryJobs, moment());
+        expect(jobsSorter.sort).to.have.been.calledWith([], moment());
+        expect(jobsSorter.sort).to.have.been.calledWith(statusJobs, moment());
       })));
 
       it('should render as many jobs as received from the API', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
@@ -187,6 +203,43 @@ describe('Unit | Component | JobList.vue', () => {
         expect(jobTitles[2].textContent).to.equal('Yesterday\'s mission');
         expect(jobTitles[3].textContent).to.equal('Very old mission');
       })));
+    });
+  });
+
+  describe('onSelectedAvailabilityDate', () => {
+    it('should set data Date with selectedDate', () => {
+      // given
+      const date = new Date();
+
+      // when
+      component.onSelectedAvailabilityDate(date);
+
+      // then
+      expect(component.$data.availabilityDate).to.equal(date);
+    });
+  });
+
+  describe('onSelectedCountry', () => {
+    it('should set data Country with selectedCountry', () => {
+      // given
+
+      // when
+      component.onSelectedCountry('France');
+
+      // then
+      expect(component.$data.country).to.equal('France');
+    });
+  });
+
+  describe('onSelectedStatus', () => {
+    it('should set data Status with selectedStatus', () => {
+      // given
+
+      // when
+      component.onSelectedStatus('proposals');
+
+      // then
+      expect(component.$data.status).to.equal('proposals');
     });
   });
 });
