@@ -1,20 +1,34 @@
 <template>
   <div class="job-header">
-    <div class="job-results__filters-left">
-      <div class="job-filters-left__wrapper filters_wrapper">
-        <span class="job-filters-left__text">Disponible à partir du </span>
-        <date-picker @selected="onSelectedAvailabilityDate"></date-picker>
+    <div class="job-header__container">
+      <div class="job-header__title">
+        <div class="job-results__title-container">
+          <h1 class="job-results__title">
+            Missions à staffer ({{ jobsNumber }})
+          </h1>
+        </div>
       </div>
-    </div>
-    <div class="job-results__title-container">
-      <h1 class="job-results__title">
-        Missions à staffer ({{ jobsNumber }})
-      </h1>
-    </div>
-    <div class="job-results__filters-right">
-      <div class="job-filters-right__wrapper filters_wrapper">
-        <span class="job-filters-right__text">Provenance des missions</span>
-        <country-picker @selected="onSelectedCountry"></country-picker>
+      <div class="job-header__filter-date">
+        <div class="job-results__filters-left">
+          <div class="job-filters-left__wrapper filters_wrapper">
+            <span class="job-filters-left__text">Disponible à partir du </span>
+            <date-picker @selected="onSelectedAvailabilityDate"></date-picker>
+          </div>
+        </div>
+      </div>
+      <div class="job-header__filter-status">
+
+      </div>
+      <div class="job-header__filter-mission-duration">
+
+      </div>
+      <div class="job-header__filter-country">
+        <div class="job-results__filters-right">
+          <div class="job-filters-right__wrapper filters_wrapper">
+            <span class="job-filters-right__text">Provenance des missions</span>
+            <country-picker @selected="onSelectedCountry"></country-picker>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -48,6 +62,26 @@
 </script>
 
 <style scoped>
+  .job-header__title {
+    grid-area: title;
+  }
+
+  .job-header__filter-date {
+    grid-area: date;
+  }
+
+  .job-header__filter-status {
+    grid-area: status;
+  }
+
+  .job-header__filter-mission-duration {
+    grid-area: duration;
+  }
+
+  .job-header__filter-country {
+    grid-area: country;
+  }
+
   .job-results__title {
     font-weight: 300;
     font-size: 24px;
@@ -72,30 +106,39 @@
     padding-left: 15px;
   }
 
-  @media only screen and (min-width: 1240px) {
-    .job-header {
-      min-width: 1240px;
+  @media only screen and (min-width: 640px) {
+    .job-header__container {
+      height: 120px;
+      display: grid;
+      width: 100%;
+      grid-template-columns: 50% 50%;
+      grid-template-areas:
+          "title title"
+          "date country"
+          "status duration"
     }
   }
 
   @media only screen and (min-width: 992px) {
-    .job-header {
-      min-width: 920px;
+    .job-header__container {
+      height: 80px;
+      display: grid;
+      width: 100%;
+      grid-template-columns: 33% 34% 33%;
+      grid-template-areas:
+          "date title country"
+          "status . duration"
     }
   }
 
-  @media only screen and (min-width: 640px) {
-    .job-header {
-      display: flex;
-      min-width: 640px;
-    }
-
-    .job-results__filters-left, .job-results__filters-right {
-      width: 20%;
-    }
-
-    .job-results__title-container {
-      width: 60%;
+  @media only screen and (min-width: 1240px) {
+    .job-header__container {
+      height: 50px;
+      display: grid;
+      width: 100%;
+      grid-template-columns: 20% 20% 20% 20% 20%;
+      grid-template-areas: "date status title duration country"
     }
   }
+
 </style>

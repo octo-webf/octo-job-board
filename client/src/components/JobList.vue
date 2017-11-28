@@ -7,12 +7,12 @@
           <circle-loader class="loading-spinner"></circle-loader>
         </template>
         <template v-else>
+          <job-header :jobsNumber="displayedJobs.length"
+                      @selectedCountry="onSelectedCountry"
+                      @selectedDate="onSelectedAvailabilityDate">
+          </job-header>
           <div class="job-results-panel">
             <section class="job-results job-results--delivery">
-              <job-header :jobsNumber="displayedJobs.length"
-                          @selectedCountry="onSelectedCountry"
-                          @selectedDate="onSelectedAvailabilityDate">
-              </job-header>
               <ul class="job-results__list">
                 <li class="job-results__item" v-for="job in displayedJobs">
                   <job-card v-on:interest="displayInterestModal" :job="job"></job-card>
