@@ -118,11 +118,11 @@ describe('Unit | Service | job-service', () => {
 
       // then
       return promise.then((report) => {
-        expect(report).to.deep.equal({ isInit: true, hasChanges: false });
+        expect(report).to.deep.equal({ isInit: true, hasNewJobs: false });
       });
     });
 
-    it('should return a report with "hasChanges" set to false when fresh jobs are undefined', () => {
+    it('should return a report with "hasNewJobs" set to false when fresh jobs are undefined', () => {
       // given
       const freshJobs = null;
       const oldJobs = [{ activity: { id: 1 } }, { activity: { id: 2 } }, { activity: { id: 3 } }];
@@ -132,11 +132,11 @@ describe('Unit | Service | job-service', () => {
 
       // then
       return promise.then((report) => {
-        expect(report).to.deep.equal({ isInit: false, hasChanges: false });
+        expect(report).to.deep.equal({ isInit: false, hasNewJobs: false });
       });
     });
 
-    it('should return a report with "hasChanges" set to false if old jobs are equal to fresh jobs', () => {
+    it('should return a report with "hasNewJobs" set to false if old jobs are equal to fresh jobs', () => {
       // given
       const jobs = [{ activity: { id: 1 } }, { activity: { id: 2 } }, { activity: { id: 3 } }];
 
@@ -145,11 +145,11 @@ describe('Unit | Service | job-service', () => {
 
       // then
       return promise.then((report) => {
-        expect(report).to.deep.equal({ isInit: false, hasChanges: false, addedJobs: [], removedJobs: [] });
+        expect(report).to.deep.equal({ isInit: false, hasNewJobs: false, addedJobs: [] });
       });
     });
 
-    it('should return a report with added and remove jobs', () => {
+    it('should return a report with added jobs', () => {
       // given
       const job1 = { activity: { id: 1 } };
       const job2 = { activity: { id: 2 } };
@@ -159,7 +159,6 @@ describe('Unit | Service | job-service', () => {
 
       const oldJobs = [job1, job2, job3];
       const freshJobs = [job2, job3, job4, job5];
-      const expectedRemovedJobs = [job1];
       const expectedAddedJobs = [job4, job5];
 
       // when
@@ -167,7 +166,7 @@ describe('Unit | Service | job-service', () => {
 
       // then
       return promise.then((report) => {
-        expect(report).to.deep.equal({ isInit: false, hasChanges: true, removedJobs: expectedRemovedJobs, addedJobs: expectedAddedJobs });
+        expect(report).to.deep.equal({ isInit: false, hasNewJobs: true, addedJobs: expectedAddedJobs });
       });
     });
   });
@@ -186,9 +185,8 @@ describe('Unit | Service | job-service', () => {
         expect(isInit).to.be.true;
       }));
 
-      it('should return a fulfilled promise with data properties "addedJobs" and "removedJobs" undefined', () => promise.then(({ addedJobs, removedJobs }) => {
+      it('should return a fulfilled promise with data properties "addedJobs" undefined', () => promise.then(({ addedJobs }) => {
         expect(addedJobs).to.be.undefined;
-        expect(removedJobs).to.be.undefined;
       }));
 
       it('should cache the jobs freshly fetched from Octopod', () => promise.then(() => {
@@ -217,19 +215,15 @@ describe('Unit | Service | job-service', () => {
         promise = jobService.synchronizeJobs();
       });
 
-      it('should return a fulfilled promise with data properties "addedJobs" and "removedJobs" valued', () => promise.then(({ isInit, hasChanges, addedJobs, removedJobs }) => {
+      it('should return a fulfilled promise with data properties "addedJobs" valued', () => promise.then(({ isInit, hasNewJobs, addedJobs }) => {
         expect(isInit).to.be.false;
-        expect(hasChanges).to.be.true;
+        expect(hasNewJobs).to.be.true;
         expect(addedJobs).to.deep.equal([{
           project: { id: 'new_available_job_project_1' },
           activity: { id: 'new_available_job_activity_1' },
         }, {
           project: { id: 'new_available_job_project_2' },
           activity: { id: 'new_available_job_activity_2' },
-        }]);
-        expect(removedJobs).to.deep.equal([{
-          project: { id: 'removed_job_project' },
-          activity: { id: 'removed_job_activity' },
         }]);
       }));
 
