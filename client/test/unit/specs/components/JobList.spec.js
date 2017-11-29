@@ -183,7 +183,7 @@ describe('Unit | Component | JobList.vue', () => {
       })));
 
       it('should add number of available jobs', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
-        expect(component.$el.querySelector('.job-results__title').textContent.trim()).to.equal('Missions à staffer (4)');
+        expect(component.$el.querySelector('.job-results__title').textContent.trim()).to.equal('Jobs à staffer (4)');
       })));
 
       it('should sort the mission jobs by status and by staffing needed date', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
