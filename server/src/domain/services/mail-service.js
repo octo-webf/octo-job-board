@@ -2,7 +2,7 @@ const { isEmpty } = require('lodash');
 const mailJet = require('../../infrastructure/mailing/mailjet');
 const config = require('../../config');
 const interestEmailTemplate = require('../../infrastructure/mailing/interest-email-template');
-const jobsChangedEmailTemplate = require('../../infrastructure/mailing/jobs-changed-email-template');
+const jobsChangedEmailTemplate = require('../../infrastructure/mailing/jobs-added-email-template');
 
 function sendInterestEmail(form) {
   const subject = `[JobBoard] ${form.interestedConsultant.name} intéressé·e par ${form.missionName} - ${form.activityName}`;

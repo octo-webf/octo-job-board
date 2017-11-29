@@ -3,7 +3,7 @@ const { sinon, expect } = require('../../../test-helper');
 const mailJet = require('../../../../src/infrastructure/mailing/mailjet');
 const mailService = require('../../../../src/domain/services/mail-service');
 const interestEmailTemplate = require('../../../../src/infrastructure/mailing/interest-email-template');
-const jobsChangedEmailTemplate = require('../../../../src/infrastructure/mailing/jobs-changed-email-template');
+const jobsChangedEmailTemplate = require('../../../../src/infrastructure/mailing/jobs-added-email-template');
 
 describe('Unit | Service | MailService', () => {
   beforeEach(() => {
