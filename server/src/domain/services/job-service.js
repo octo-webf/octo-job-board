@@ -39,7 +39,7 @@ async function _ifJobsChangesThenRetrieveJobsNotificationRecipients(report) {
 }
 
 function _ifJobsChangedThenSendEmailToRecipients(report) {
-  return report.hasChanges ? mailService.sendJobsChangedEmail(report) : Promise.resolve(report);
+  return report.hasChanges ? mailService.sendJobsAddedEmail(report) : Promise.resolve(report);
 }
 
 function getJobs() {

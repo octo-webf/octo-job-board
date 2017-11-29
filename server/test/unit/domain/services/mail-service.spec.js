@@ -3,19 +3,19 @@ const { sinon, expect } = require('../../../test-helper');
 const mailJet = require('../../../../src/infrastructure/mailing/mailjet');
 const mailService = require('../../../../src/domain/services/mail-service');
 const interestEmailTemplate = require('../../../../src/infrastructure/mailing/interest-email-template');
-const jobsChangedEmailTemplate = require('../../../../src/infrastructure/mailing/jobs-added-email-template');
+const jobsAddedEmailTemplate = require('../../../../src/infrastructure/mailing/jobs-added-email-template');
 
 describe('Unit | Service | MailService', () => {
   beforeEach(() => {
     sinon.stub(mailJet, 'sendEmail').resolves();
     sinon.stub(interestEmailTemplate, 'compile').returns('Interest mail template');
-    sinon.stub(jobsChangedEmailTemplate, 'compile').returns('Jobs changed mail template');
+    sinon.stub(jobsAddedEmailTemplate, 'compile').returns('Jobs changed mail template');
   });
 
   afterEach(() => {
     mailJet.sendEmail.restore();
     interestEmailTemplate.compile.restore();
-    jobsChangedEmailTemplate.compile.restore();
+    jobsAddedEmailTemplate.compile.restore();
   });
 
   describe('#sendInterestEmail', () => {
@@ -76,42 +76,17 @@ describe('Unit | Service | MailService', () => {
     });
   });
 
-  describe('#sendJobsChangedEmail', () => {
+  describe('#sendJobsAddedEmail', () => {
     it('should send an email with correct options', () => {
-      // given
-      const form = {
-        receivers: ['consultant_1@mail.com', 'consultant_2@mail.com', 'consultant_3@mail.com'],
-        jobs: [{ activity: { id: 2 } }, { activity: { id: 3 } }, { activity: { id: 4 } }],
-        addedJobs: [{ activity: { id: 3 } }, { activity: { id: 4 } }],
-        removedJobs: [{ activity: { id: 1 } }],
-      };
-
-      // when
-      const promise = mailService.sendJobsChangedEmail(form);
-
-      // then
-      return promise.then(() => {
-        expect(mailJet.sendEmail).to.have.been.calledWithExactly({
-          from: 'jobboard+test@octo.com',
-          to: ['consultant_1@mail.com', 'consultant_2@mail.com', 'consultant_3@mail.com'],
-          fromName: 'Le Job Board - Ne pas répondre',
-          subject: '[JobBoard] 2 nouvelle(s) mission(s) à staffer – 1 mission(s) retirée(s)',
-          template: 'Jobs changed mail template',
-        });
-      });
-    });
-
-    it('should format subject with only added jobs if there is no removed jobs', () => {
       // given
       const form = {
         receivers: ['recipient@mail.com'],
         jobs: [{ activity: { id: 1 } }, { activity: { id: 2 } }, { activity: { id: 3 } }],
         addedJobs: [{ activity: { id: 1 } }, { activity: { id: 2 } }, { activity: { id: 3 } }],
-        removedJobs: null,
       };
 
       // when
-      const promise = mailService.sendJobsChangedEmail(form);
+      const promise = mailService.sendJobsAddedEmail(form);
 
       // then
       return promise.then(() => {
@@ -120,30 +95,6 @@ describe('Unit | Service | MailService', () => {
           to: ['recipient@mail.com'],
           fromName: 'Le Job Board - Ne pas répondre',
           subject: '[JobBoard] 3 nouvelle(s) mission(s) à staffer',
-          template: 'Jobs changed mail template',
-        });
-      });
-    });
-
-    it('should format subject with only removed jobs if there is no added jobs', () => {
-      // given
-      const form = {
-        receivers: ['recipient@mail.com'],
-        jobs: [{ activity: { id: 1 } }, { activity: { id: 2 } }, { activity: { id: 3 } }],
-        addedJobs: null,
-        removedJobs: [{ activity: { id: 1 } }, { activity: { id: 2 } }, { activity: { id: 3 } }],
-      };
-
-      // when
-      const promise = mailService.sendJobsChangedEmail(form);
-
-      // then
-      return promise.then(() => {
-        expect(mailJet.sendEmail).to.have.been.calledWithExactly({
-          from: 'jobboard+test@octo.com',
-          to: ['recipient@mail.com'],
-          fromName: 'Le Job Board - Ne pas répondre',
-          subject: '[JobBoard] 3 mission(s) retirée(s)',
           template: 'Jobs changed mail template',
         });
       });
