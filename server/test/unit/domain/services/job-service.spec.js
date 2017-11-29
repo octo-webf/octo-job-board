@@ -34,7 +34,7 @@ describe('Unit | Service | job-service', () => {
     sandbox.stub(cache, 'set');
     sandbox.stub(cache, 'get');
     sandbox.stub(Subscription, 'all');
-    sandbox.stub(mailService, 'sendJobsChangedEmail').callsFake(report => report);
+    sandbox.stub(mailService, 'sendJobsAddedEmail').callsFake(report => report);
   });
 
   afterEach(() => {
