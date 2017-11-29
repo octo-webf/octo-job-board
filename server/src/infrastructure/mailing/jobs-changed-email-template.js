@@ -13,7 +13,7 @@ module.exports = {
       template += '<ul>';
       addedJobs.forEach((job) => {
         const formatedDate = moment(job.activity.staffing_needed_from).format('DD/MM/YYYY');
-        template += `<li><bold>${job.activity.title}</bold> pour le projet ${job.project.name} pour le client ${job.project.customer.name} à partir du ${formatedDate}</li>`;
+        template += `<li>${job.activity.title} pour le projet ${job.project.name} pour le client ${job.project.customer.name} à partir du ${formatedDate}</li>`;
       });
       template += '</ul>';
       template += '</p>';
@@ -23,7 +23,7 @@ module.exports = {
       template += `${removedJobs.length} mission(s) retirée(s) :`;
       template += '<ul>';
       removedJobs.forEach((job) => {
-        template += `<li><bold>${job.activity.title}</bold> pour le projet ${job.project.name}</li>`;
+        template += `<li>${job.activity.title} pour le projet ${job.project.name}</li>`;
       });
       template += '</ul>';
       template += '</p>';

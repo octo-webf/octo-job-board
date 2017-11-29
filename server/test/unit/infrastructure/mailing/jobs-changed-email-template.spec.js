@@ -34,14 +34,14 @@ describe('Unit | Infrastructure | Mailing | jobs-changed-email-template', () => 
         '<p>Il y a du nouveau du côté du <a href="https://jobs.octo.com">Job Board</a>.</p>' +
         '<p>3 nouvelle(s) mission(s) à staffer :' +
         '<ul>' +
-        '<li><bold>job_title_1</bold> pour le projet project_name_1 pour le client customer_name_1 à partir du 10/01/2018</li>' +
-        '<li><bold>job_title_2</bold> pour le projet project_name_2 pour le client customer_name_2 à partir du 20/02/2018</li>' +
-        '<li><bold>job_title_3</bold> pour le projet project_name_3 pour le client customer_name_3 à partir du 30/03/2018</li>' +
+        '<li>job_title_1 pour le projet project_name_1 pour le client customer_name_1 à partir du 10/01/2018</li>' +
+        '<li>job_title_2 pour le projet project_name_2 pour le client customer_name_2 à partir du 20/02/2018</li>' +
+        '<li>job_title_3 pour le projet project_name_3 pour le client customer_name_3 à partir du 30/03/2018</li>' +
         '</ul></p>' +
         '<p>2 mission(s) retirée(s) :' +
         '<ul>' +
-        '<li><bold>job_title_4</bold> pour le projet project_name_4</li>' +
-        '<li><bold>job_title_5</bold> pour le projet project_name_5</li>' +
+        '<li>job_title_4 pour le projet project_name_4</li>' +
+        '<li>job_title_5 pour le projet project_name_5</li>' +
         '</ul>' +
         '</p>' +
         '<p>Pour ne plus recevoir de nouvelles du Job Board, il est possible de <a href="https://jobs.octo.com/#/unsubscribe">se désabonner du Job Board</a>.</p>';
@@ -63,8 +63,8 @@ describe('Unit | Infrastructure | Mailing | jobs-changed-email-template', () => 
         '<p>Il y a du nouveau du côté du <a href="https://jobs.octo.com">Job Board</a>.</p>' +
         '<p>2 mission(s) retirée(s) :' +
         '<ul>' +
-        '<li><bold>job_title_4</bold> pour le projet project_name_4</li>' +
-        '<li><bold>job_title_5</bold> pour le projet project_name_5</li>' +
+        '<li>job_title_4 pour le projet project_name_4</li>' +
+        '<li>job_title_5 pour le projet project_name_5</li>' +
         '</ul>' +
         '</p>' +
         '<p>Pour ne plus recevoir de nouvelles du Job Board, il est possible de <a href="https://jobs.octo.com/#/unsubscribe">se désabonner du Job Board</a>.</p>';
@@ -86,9 +86,9 @@ describe('Unit | Infrastructure | Mailing | jobs-changed-email-template', () => 
         '<p>Il y a du nouveau du côté du <a href="https://jobs.octo.com">Job Board</a>.</p>' +
         '<p>3 nouvelle(s) mission(s) à staffer :' +
         '<ul>' +
-        '<li><bold>job_title_1</bold> pour le projet project_name_1 pour le client customer_name_1 à partir du 10/01/2018</li>' +
-        '<li><bold>job_title_2</bold> pour le projet project_name_2 pour le client customer_name_2 à partir du 20/02/2018</li>' +
-        '<li><bold>job_title_3</bold> pour le projet project_name_3 pour le client customer_name_3 à partir du 30/03/2018</li>' +
+        '<li>job_title_1 pour le projet project_name_1 pour le client customer_name_1 à partir du 10/01/2018</li>' +
+        '<li>job_title_2 pour le projet project_name_2 pour le client customer_name_2 à partir du 20/02/2018</li>' +
+        '<li>job_title_3 pour le projet project_name_3 pour le client customer_name_3 à partir du 30/03/2018</li>' +
         '</ul>' +
         '</p>' +
         '<p>Pour ne plus recevoir de nouvelles du Job Board, il est possible de <a href="https://jobs.octo.com/#/unsubscribe">se désabonner du Job Board</a>.</p>';
