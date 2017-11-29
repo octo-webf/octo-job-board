@@ -3,7 +3,7 @@
     <div class="job-header__container">
       <div class="job-header__title">
         <h1 class="job-results__title">
-          Missions à staffer ({{ jobsNumber }})
+          Jobs à staffer ({{ jobsNumber }})
         </h1>
       </div>
       <div class="job-header__filter-date">
