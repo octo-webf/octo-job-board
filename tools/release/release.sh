@@ -23,5 +23,6 @@ git push origin master
 
 echo "Go back to branch dev"
 git checkout dev
+git pull
 
 exit 0
