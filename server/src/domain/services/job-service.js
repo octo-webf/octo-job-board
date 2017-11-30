@@ -7,10 +7,27 @@ const mailService = require('./mail-service'); // A service should not be depend
 
 const CACHE_KEY = 'get_jobs';
 
+function _isStatusWantedOnJobBoard(project) {
+  return project.status === 'mission_signed'
+    || project.status === 'mission_accepted'
+    || project.status === 'proposal_sent';
+}
+
+function _isKindOfProjectWantedOnJobBoard(project) {
+  return project.kind === 'cost_reimbursable' || project.kind === 'fixed_price';
+}
+
+function filterProjectByStatusAndKind(projects) {
+  return projects
+    .filter(project => _isStatusWantedOnJobBoard(project))
+    .filter(project => _isKindOfProjectWantedOnJobBoard(project));
+}
+
 async function _fetchAndCacheJobs() {
   const accessToken = await octopodClient.getAccessToken();
   const projects = await octopodClient.fetchProjectsToBeStaffed(accessToken);
-  const activities = await octopodClient.fetchActivitiesToBeStaffed(accessToken, projects);
+  const filterProjects = filterProjectByStatusAndKind(projects);
+  const activities = await octopodClient.fetchActivitiesToBeStaffed(accessToken, filterProjects);
   const jobs = await jobsSerializer.serialize(projects, activities);
   cache.set(CACHE_KEY, jobs);
 
