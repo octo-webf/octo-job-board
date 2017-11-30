@@ -215,7 +215,7 @@ describe('Unit | Service | job-service', () => {
 
       // then
       return promise.then((report) => {
-        expect(report).to.deep.equal({ isInit: false, hasNewJobs: true,  addedJobs: expectedAddedJobs, });
+        expect(report).to.deep.equal({ isInit: false, hasNewJobs: true, addedJobs: expectedAddedJobs });
       });
     });
   });
