@@ -7,27 +7,14 @@
           <circle-loader class="loading-spinner"></circle-loader>
         </template>
         <template v-else>
+          <job-header :jobsNumber="displayedJobs.length"
+                      @selectedCountry="onSelectedCountry"
+                      @selectedDate="onSelectedAvailabilityDate"
+                      @selectedMissionType="onSelectedMissionType"
+                      @selectedStatus="onSelectedStatus">
+          </job-header>
           <div class="job-results-panel">
             <section class="job-results job-results--delivery">
-              <div class="job-results__top">
-                <div class="job-results__filters-left">
-                  <div class="job-filters-left__wrapper filters_wrapper">
-                    <span class="job-filters-left__text">Disponible à partir du </span>
-                    <date-picker @selected="onSelectedAvailabilityDate"></date-picker>
-                  </div>
-                </div>
-                <div class="job-results__title-container">
-                  <h1 class="job-results__title">
-                    Missions à staffer ({{ displayedJobs.length }})
-                  </h1>
-                </div>
-                <div class="job-results__filters-right">
-                  <div class="job-filters-right__wrapper filters_wrapper">
-                    <span class="job-filters-right__text">Provenance des missions</span>
-                    <country-picker @selected="onSelectedCountry"></country-picker>
-                  </div>
-                </div>
-              </div>
               <ul class="job-results__list">
                 <li class="job-results__item" v-for="job in displayedJobs">
                   <job-card v-on:interest="displayInterestModal" :job="job"></job-card>
@@ -45,11 +32,12 @@
 <script>
   import authenticationService from '@/services/authentication';
   import countryFilter from '@/utils/countryFilter';
+  import missionTypeFilter from '@/utils/missionTypeFilter';
+  import statusFilter from '@/utils/statusFilter';
   import jobsSorter from '@/utils/jobsSorter';
   import jobsApi from '@/api/jobs';
   import AppHeader from '@/components/AppHeader';
-  import CountryPicker from '@/components/CountryPicker';
-  import DatePicker from '@/components/DatePicker';
+  import JobHeader from '@/components/JobHeader';
   import JobCard from '@/components/JobCard';
   import Circle from 'vue-loading-spinner/src/components/Circle';
   import InterestModal from '@/components/InterestModal';
@@ -61,9 +49,8 @@
 
     components: {
       AppHeader,
-      CountryPicker,
-      DatePicker,
       JobCard,
+      JobHeader,
       InterestModal,
       'circle-loader': Circle,
     },
@@ -75,13 +62,17 @@
         chosenJob: null,
         availabilityDate: moment(),
         country: 'anyCountry',
+        missionType: ['Delivery', 'Consulting'],
+        status: 'anyStatus',
       };
     },
 
     computed: {
       displayedJobs() {
-        const countryJobs = countryFilter.filter(this.jobsFromApi, this.country);
-        return jobsSorter.sort(countryJobs, this.availabilityDate);
+        let filteredJobs = countryFilter.filter(this.jobsFromApi, this.country);
+        filteredJobs = statusFilter.filter(filteredJobs, this.status);
+        filteredJobs = missionTypeFilter.filter(filteredJobs, this.missionType);
+        return jobsSorter.sort(filteredJobs, this.availabilityDate);
       },
     },
 
@@ -114,6 +105,14 @@
       onSelectedCountry(newChosenCountry) {
         this.country = newChosenCountry;
       },
+
+      onSelectedMissionType(newChosenMissionType) {
+        this.missionType = newChosenMissionType;
+      },
+
+      onSelectedStatus(newChosenStatus) {
+        this.status = newChosenStatus;
+      },
     },
   };
 </script>
@@ -135,30 +134,6 @@
     margin-bottom: 60px;
   }
 
-  .job-results__title {
-    font-weight: 300;
-    font-size: 24px;
-    margin: 0 0 15px;
-  }
-
-  .job-results__filters-left, .job-results__filters-right {
-    display: flex;
-    justify-content: center;
-  }
-
-  .filters_wrapper {
-    display: block;
-    text-align: left;
-  }
-
-  .job-filters-left__text {
-    padding-left: 10px;
-  }
-
-  .job-filters-right__text {
-    padding-left: 15px;
-  }
-
   .job-results__list {
     padding: 0;
     display: flex;
@@ -171,32 +146,5 @@
     list-style-type: none;
     padding: 0;
     margin: 10px;
-  }
-
-  @media only screen and (min-width: 1240px) {
-    .job-results__top {
-      min-width: 1240px;
-    }
-  }
-
-  @media only screen and (min-width: 992px) {
-    .job-results__top {
-      min-width: 920px;
-    }
-  }
-
-  @media only screen and (min-width: 640px) {
-    .job-results__top {
-      display: flex;
-      min-width: 640px;
-    }
-
-    .job-results__filters-left, .job-results__filters-right {
-      width: 20%;
-    }
-
-    .job-results__title-container {
-      width: 60%;
-    }
   }
 </style>

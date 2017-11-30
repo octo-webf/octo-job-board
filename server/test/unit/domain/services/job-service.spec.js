@@ -1,10 +1,11 @@
 const { sinon, expect } = require('../../../test-helper');
 const jobService = require('../../../../src/domain/services/job-service');
-const octopodClient = require('../../../../src/infrastructure/octopod');
+const octopodClient = require('../../../../src/infrastructure/octopod-client');
 const jobsSerializer = require('../../../../src/infrastructure/serializers/jobs');
 const cache = require('../../../../src/infrastructure/cache');
 const { Subscription } = require('../../../../src/domain/models');
 const mailService = require('../../../../src/domain/services/mail-service');
+const projectFromOctopod = require('../../fixtures/projectFromOctopod');
 
 const CACHE_KEY = 'get_jobs';
 
@@ -34,7 +35,7 @@ describe('Unit | Service | job-service', () => {
     sandbox.stub(cache, 'set');
     sandbox.stub(cache, 'get');
     sandbox.stub(Subscription, 'all');
-    sandbox.stub(mailService, 'sendJobsChangedEmail').callsFake(report => report);
+    sandbox.stub(mailService, 'sendJobsAddedEmail').callsFake(report => report);
   });
 
   afterEach(() => {
@@ -90,9 +91,57 @@ describe('Unit | Service | job-service', () => {
       expect(octopodClient.fetchProjectsToBeStaffed).to.have.been.calledWith(stubbedAccessToken);
     }));
 
-    it('should call Octopod to fetch activities to be staffed', () => promise.then(() => {
-      expect(octopodClient.fetchActivitiesToBeStaffed).to.have.been.calledWith(stubbedAccessToken, stubbedFetchedProjects);
-    }));
+    it('should call Octopod to fetch activities to be staffed with filtered projects - only proposal sent and mission accepted and signed', () => {
+      // given
+      octopodClient.fetchProjectsToBeStaffed.restore();
+
+      const projectsFromOctopod = [
+        projectFromOctopod('proposal_sent'),
+        projectFromOctopod('proposal_in_progress'),
+        projectFromOctopod('lead'),
+        projectFromOctopod('mission_accepted'),
+        projectFromOctopod('mission_signed'),
+        projectFromOctopod('mission_done'),
+        projectFromOctopod('proposal_lost'),
+        projectFromOctopod('proposal_canceled_by_client'),
+        projectFromOctopod('proposal_no_go'),
+      ];
+      const expectedProjectsFromOctopod = [
+        projectFromOctopod('proposal_sent'),
+        projectFromOctopod('mission_accepted'),
+        projectFromOctopod('mission_signed'),
+      ];
+      sinon.stub(octopodClient, 'fetchProjectsToBeStaffed').resolves(projectsFromOctopod);
+
+      // when
+      promise.then(() => {
+        // then
+        expect(octopodClient.fetchActivitiesToBeStaffed).to.have.been.calledWith(stubbedAccessToken, expectedProjectsFromOctopod);
+      });
+    });
+
+    it('should call Octopod to fetch activities to be staffed with filtered project - only "Regie (cost_reimbursable) and Forfait (fixed price)"', () => {
+      // given
+      octopodClient.fetchProjectsToBeStaffed.restore();
+      const projectsFromOctopod = [
+        projectFromOctopod('mission_signed', 'internal'),
+        projectFromOctopod('mission_signed', 'cost_reimbursable'),
+        projectFromOctopod('mission_signed', 'fixed_price'),
+        projectFromOctopod('mission_signed', 'framework_agreement'),
+      ];
+
+      const expectedProjectsFromOctopod = [
+        projectFromOctopod('mission_signed', 'cost_reimbursable'),
+        projectFromOctopod('mission_signed', 'fixed_price'),
+      ];
+      sinon.stub(octopodClient, 'fetchProjectsToBeStaffed').resolves(projectsFromOctopod);
+
+      // when
+      promise.then(() => {
+        // then
+        expect(octopodClient.fetchActivitiesToBeStaffed).to.have.been.calledWith(stubbedAccessToken, expectedProjectsFromOctopod);
+      });
+    });
 
     it('should build jobs by merging fetched projects and activities', () => promise.then(() => {
       expect(jobsSerializer.serialize).to.have.been.calledWith(stubbedFetchedProjects, stubbedFetchedActivities);
@@ -118,11 +167,11 @@ describe('Unit | Service | job-service', () => {
 
       // then
       return promise.then((report) => {
-        expect(report).to.deep.equal({ isInit: true, hasChanges: false });
+        expect(report).to.deep.equal({ isInit: true, hasNewJobs: false });
       });
     });
 
-    it('should return a report with "hasChanges" set to false when fresh jobs are undefined', () => {
+    it('should return a report with "hasNewJobs" set to false when fresh jobs are undefined', () => {
       // given
       const freshJobs = null;
       const oldJobs = [{ activity: { id: 1 } }, { activity: { id: 2 } }, { activity: { id: 3 } }];
@@ -132,11 +181,11 @@ describe('Unit | Service | job-service', () => {
 
       // then
       return promise.then((report) => {
-        expect(report).to.deep.equal({ isInit: false, hasChanges: false });
+        expect(report).to.deep.equal({ isInit: false, hasNewJobs: false });
       });
     });
 
-    it('should return a report with "hasChanges" set to false if old jobs are equal to fresh jobs', () => {
+    it('should return a report with "hasNewJobs" set to false if old jobs are equal to fresh jobs', () => {
       // given
       const jobs = [{ activity: { id: 1 } }, { activity: { id: 2 } }, { activity: { id: 3 } }];
 
@@ -145,11 +194,11 @@ describe('Unit | Service | job-service', () => {
 
       // then
       return promise.then((report) => {
-        expect(report).to.deep.equal({ isInit: false, hasChanges: false, addedJobs: [], removedJobs: [] });
+        expect(report).to.deep.equal({ isInit: false, hasNewJobs: false, addedJobs: [] });
       });
     });
 
-    it('should return a report with added and remove jobs', () => {
+    it('should return a report with added jobs', () => {
       // given
       const job1 = { activity: { id: 1 } };
       const job2 = { activity: { id: 2 } };
@@ -159,7 +208,6 @@ describe('Unit | Service | job-service', () => {
 
       const oldJobs = [job1, job2, job3];
       const freshJobs = [job2, job3, job4, job5];
-      const expectedRemovedJobs = [job1];
       const expectedAddedJobs = [job4, job5];
 
       // when
@@ -167,11 +215,10 @@ describe('Unit | Service | job-service', () => {
 
       // then
       return promise.then((report) => {
-        expect(report).to.deep.equal({ isInit: false, hasChanges: true, removedJobs: expectedRemovedJobs, addedJobs: expectedAddedJobs });
+        expect(report).to.deep.equal({ isInit: false, hasNewJobs: true, addedJobs: expectedAddedJobs });
       });
     });
   });
-
 
   describe('#synchronizeJobs', () => {
     describe('when it is the first sync (i.e. cache value does not yet exist)', () => {
@@ -186,9 +233,8 @@ describe('Unit | Service | job-service', () => {
         expect(isInit).to.be.true;
       }));
 
-      it('should return a fulfilled promise with data properties "addedJobs" and "removedJobs" undefined', () => promise.then(({ addedJobs, removedJobs }) => {
+      it('should return a fulfilled promise with data properties "addedJobs" undefined', () => promise.then(({ addedJobs }) => {
         expect(addedJobs).to.be.undefined;
-        expect(removedJobs).to.be.undefined;
       }));
 
       it('should cache the jobs freshly fetched from Octopod', () => promise.then(() => {
@@ -217,19 +263,15 @@ describe('Unit | Service | job-service', () => {
         promise = jobService.synchronizeJobs();
       });
 
-      it('should return a fulfilled promise with data properties "addedJobs" and "removedJobs" valued', () => promise.then(({ isInit, hasChanges, addedJobs, removedJobs }) => {
+      it('should return a fulfilled promise with data properties "addedJobs" valued', () => promise.then(({ isInit, hasNewJobs, addedJobs }) => {
         expect(isInit).to.be.false;
-        expect(hasChanges).to.be.true;
+        expect(hasNewJobs).to.be.true;
         expect(addedJobs).to.deep.equal([{
           project: { id: 'new_available_job_project_1' },
           activity: { id: 'new_available_job_activity_1' },
         }, {
           project: { id: 'new_available_job_project_2' },
           activity: { id: 'new_available_job_activity_2' },
-        }]);
-        expect(removedJobs).to.deep.equal([{
-          project: { id: 'removed_job_project' },
-          activity: { id: 'removed_job_activity' },
         }]);
       }));
 

@@ -1,5 +1,5 @@
 const { isEmpty, differenceBy } = require('lodash');
-const octopodClient = require('../../infrastructure/octopod');
+const octopodClient = require('../../infrastructure/octopod-client');
 const jobsSerializer = require('../../infrastructure/serializers/jobs');
 const cache = require('../../infrastructure/cache');
 const { Subscription } = require('../models');
@@ -7,10 +7,27 @@ const mailService = require('./mail-service'); // A service should not be depend
 
 const CACHE_KEY = 'get_jobs';
 
+function _isStatusWantedOnJobBoard(project) {
+  return project.status === 'mission_signed'
+    || project.status === 'mission_accepted'
+    || project.status === 'proposal_sent';
+}
+
+function _isKindOfProjectWantedOnJobBoard(project) {
+  return project.kind === 'cost_reimbursable' || project.kind === 'fixed_price';
+}
+
+function _filterProjectByStatusAndKind(projects) {
+  return projects
+    .filter(project => _isStatusWantedOnJobBoard(project))
+    .filter(project => _isKindOfProjectWantedOnJobBoard(project));
+}
+
 async function _fetchAndCacheJobs() {
   const accessToken = await octopodClient.getAccessToken();
   const projects = await octopodClient.fetchProjectsToBeStaffed(accessToken);
-  const activities = await octopodClient.fetchActivitiesToBeStaffed(accessToken, projects);
+  const filterProjects = _filterProjectByStatusAndKind(projects);
+  const activities = await octopodClient.fetchActivitiesToBeStaffed(accessToken, filterProjects);
   const jobs = await jobsSerializer.serialize(projects, activities);
   cache.set(CACHE_KEY, jobs);
 
@@ -19,27 +36,25 @@ async function _fetchAndCacheJobs() {
 
 function _compareFetchedAndCachedJobs(freshJobs, oldJobs) {
   if (!oldJobs || !freshJobs) {
-    return Promise.resolve({ isInit: !oldJobs, hasChanges: false });
+    return Promise.resolve({ isInit: !oldJobs, hasNewJobs: false });
   }
 
   const addedJobs = differenceBy(freshJobs, oldJobs, 'activity.id');
-  const removedJobs = differenceBy(oldJobs, freshJobs, 'activity.id');
+  const hasNewJobs = !isEmpty(addedJobs);
 
-  const hasChanges = (!isEmpty(addedJobs) || !isEmpty(removedJobs));
-
-  return Promise.resolve({ isInit: false, addedJobs, removedJobs, hasChanges });
+  return Promise.resolve({ isInit: false, addedJobs, hasNewJobs });
 }
 
-async function _ifJobsChangesThenRetrieveJobsNotificationRecipients(report) {
-  if (report.hasChanges) {
+async function _ifJobsAddedThenRetrieveJobsNotificationRecipients(report) {
+  if (report.hasNewJobs) {
     const subscriptions = await Subscription.all();
     return { ...report, receivers: subscriptions.map(s => s.get('email')) };
   }
-  return Promise.resolve(report);
+  return report;
 }
 
-function _ifJobsChangedThenSendEmailToRecipients(report) {
-  return report.hasChanges ? mailService.sendJobsChangedEmail(report) : Promise.resolve(report);
+function _ifJobsAddedThenSendEmailToRecipients(report) {
+  return report.hasNewJobs ? mailService.sendJobsAddedEmail(report) : report;
 }
 
 function getJobs() {
@@ -51,8 +66,8 @@ function synchronizeJobs() {
   const oldJobs = cache.get(CACHE_KEY);
   return _fetchAndCacheJobs()
     .then(fetchedJobs => _compareFetchedAndCachedJobs(fetchedJobs, oldJobs))
-    .then(_ifJobsChangesThenRetrieveJobsNotificationRecipients)
-    .then(_ifJobsChangedThenSendEmailToRecipients);
+    .then(_ifJobsAddedThenRetrieveJobsNotificationRecipients)
+    .then(_ifJobsAddedThenSendEmailToRecipients);
 }
 
 module.exports = {

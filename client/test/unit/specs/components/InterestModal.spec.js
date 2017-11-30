@@ -4,6 +4,7 @@ import InterestModal from '@/components/InterestModal';
 import interestsApi from '@/api/interests';
 import authenticationService from '@/services/authentication';
 import notificationService from '@/services/notification';
+import analyticsService from '@/services/analytics';
 
 Vue.use(VueModal);
 
@@ -81,6 +82,46 @@ describe('Unit | Component | InterestModal.vue', () => {
     });
   });
 
+  describe('#beforeOpen', () => {
+    beforeEach(() => {
+      sinon.stub(analyticsService, 'trackEvent');
+    });
+
+    afterEach(() => {
+      analyticsService.trackEvent.restore();
+    });
+
+    it('should trackEvent OpeningInterestModalOpen', () => {
+      // when
+      component.beforeOpen();
+
+      // then
+      expect(analyticsService.trackEvent).to.have.been.calledWith(component, 'InterestModal', 'opening', 'Someone is interested');
+    });
+
+    it('should reset interest', () => {
+      // given
+      component.$data.interest = 'my interest';
+
+      // when
+      component.beforeOpen();
+
+      // then
+      expect(component.$data.interest).to.equal(null);
+    });
+
+    it('should remove error', () => {
+      // given
+      component.$data.error = 'my error';
+
+      // when
+      component.beforeOpen();
+
+      // then
+      expect(component.$data.error).to.equal(null);
+    });
+  });
+
   describe('#submitInterest', () => {
     beforeEach(() => {
       sinon.stub(interestsApi, 'sendInterest');
@@ -97,6 +138,11 @@ describe('Unit | Component | InterestModal.vue', () => {
     describe('general cases', () => {
       beforeEach(() => {
         interestsApi.sendInterest.resolves();
+        sinon.stub(analyticsService, 'trackEvent');
+      });
+
+      afterEach(() => {
+        analyticsService.trackEvent.restore();
       });
 
       it('should set isClicked to true to disable button', () => {
@@ -121,15 +167,12 @@ describe('Unit | Component | InterestModal.vue', () => {
         expect(component.$data.error).to.equal(null);
       });
 
-      it('should trackEvent', () => {
-        // given
-        sinon.stub(component, 'trackEvent');
-
+      it('should trackEvent with matching arguments', () => {
         // when
         component.submitInterest();
 
         // then
-        expect(component.trackEvent).to.have.been.calledWith();
+        expect(analyticsService.trackEvent).to.have.been.calledWith(component, 'InterestModal', 'click', 'Someone sends an interest');
       });
 
       it('should call the API with job, consultant and access token', () => {
@@ -193,31 +236,6 @@ describe('Unit | Component | InterestModal.vue', () => {
     });
   });
 
-  describe('#trackEvent', () => {
-    const expectedCallParams = {
-      eventCategory: 'Job List',
-      eventAction: 'click',
-      eventLabel: 'I am interested',
-      eventValue: null,
-    };
-
-    beforeEach(() => {
-      sinon.stub(component.$ga, 'event').returns(true);
-    });
-
-    afterEach(() => {
-      component.$ga.event.restore();
-    });
-
-    it('should check analytics', () => {
-      // when
-      component.trackEvent();
-
-      // then
-      expect(component.$ga.event).to.have.been.calledWith(expectedCallParams);
-    });
-  });
-
   describe('#closeModal', () => {
     it('should close modal', () => {
       // given
@@ -252,15 +270,18 @@ describe('Unit | Component | InterestModal.vue', () => {
 
   describe('on click on "send" button', () => {
     beforeEach(() => {
-      sinon.stub(component, 'trackEvent');
+      sinon.stub(analyticsService, 'trackEvent');
       sinon.stub(component, '_sendInterest').resolves();
+    });
+
+    afterEach(() => {
+      analyticsService.trackEvent.restore();
     });
 
     it('should send interest and track event', (done) => {
       // Given
       component.$modal.show('interest-modal');
 
-      // Vue.nextTick().then(() => {
       setTimeout(() => {
         const myButton = component.$el.querySelector('.interest-modal__action--send');
 
@@ -269,7 +290,7 @@ describe('Unit | Component | InterestModal.vue', () => {
 
         // Then
         Vue.nextTick().then(() => {
-          expect(component.trackEvent).to.have.been.calledWith();
+          expect(analyticsService.trackEvent).to.have.been.calledWith(component, 'InterestModal', 'click', 'Someone sends an interest');
           expect(component._sendInterest).to.have.been.calledWith();
           done();
         });

@@ -4,16 +4,21 @@
 
       <!-- modal header-->
       <div class="interest-modal__header">
-        <h2 class="interest-modal__title">Intéressé·e&nbsp; par <strong>{{ mission }}</strong> pour <strong>{{ customerName }}</strong>&nbsp;?</h2>
-        <button class="interest-modal__action interest-modal__action--cancel" @click="closeModal"><icon name="times" scale="1.5"></icon></button>
+        <h2 class="interest-modal__title">Intéressé·e&nbsp; par <strong>{{ mission }}</strong>
+          pour <strong>{{ customerName }}</strong>&nbsp;?</h2>
+        <button class="interest-modal__action interest-modal__action--cancel" @click="closeModal">
+          <icon name="times" scale="1.5"></icon>
+        </button>
       </div>
 
       <!-- modal body -->
       <div class="interest-modal__body">
         <div class="interest-modal__text" id="interest-content">
           <p class="interest-modal__error" v-if="error" aria-live="polite">{{error}}</p>
-
-          <p>En tant que <strong>{{ jobTitle }}</strong>, es-tu disponible à partir du <strong>{{ staffingNeededSince }}</strong>&nbsp;?</p>
+          <p>
+            En tant que <strong>{{ jobTitle }}</strong>,
+            es-tu disponible à partir du <strong>{{ staffingNeededSince}}</strong>&nbsp;?
+          </p>
         </div>
       </div>
 
@@ -26,7 +31,9 @@
                   @click="submitInterest">Je suis disponible
           </button>
         </div>
-        <p class="interest-modal__mentions">L'équipe Job Board te mettra en relation avec <strong>{{ missionDirectorNickname }}</strong> , dir. mission et <strong>{{ businessContactNickname }}</strong>, contact biz.</p>
+        <p class="interest-modal__mentions">
+          L'équipe Job Board te mettra en relation avec <strong>{{ missionDirectorNickname }}</strong>
+          , dir. mission et <strong>{{ businessContactNickname }}</strong>, contact biz.</p>
       </div>
 
     </modal>
@@ -37,6 +44,7 @@
   import authenticationService from '@/services/authentication';
   import interestsApi from '@/api/interests';
   import notificationService from '@/services/notification';
+  import analyticsService from '@/services/analytics';
 
   export default {
 
@@ -97,7 +105,7 @@
       submitInterest() {
         this._disableButton();
         this._removeError();
-        this.trackEvent();
+        this._trackEventInterestClick();
         this._sendInterest()
           .then(this.closeModal)
           .then(this.displaySuccessNotification)
@@ -106,13 +114,12 @@
           });
       },
 
-      trackEvent() {
-        this.$ga.event({
-          eventCategory: 'Job List',
-          eventAction: 'click',
-          eventLabel: 'I am interested',
-          eventValue: null,
-        });
+      _trackEventInterestClick() {
+        analyticsService.trackEvent(this, 'InterestModal', 'click', 'Someone sends an interest');
+      },
+
+      _trackEventOpeningInterestModalOpen() {
+        analyticsService.trackEvent(this, 'InterestModal', 'opening', 'Someone is interested');
       },
 
       _sendInterest() {
@@ -131,6 +138,7 @@
       },
 
       beforeOpen() {
+        this._trackEventOpeningInterestModalOpen();
         this._resetInterest();
         this._removeError();
       },

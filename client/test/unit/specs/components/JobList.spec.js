@@ -4,6 +4,8 @@ import moment from 'moment';
 import JobList from '@/components/JobList';
 import jobsSorter from '@/utils/jobsSorter';
 import countryFilter from '@/utils/countryFilter';
+import statusFilter from '@/utils/statusFilter';
+import missionTypeFilter from '@/utils/missionTypeFilter';
 import authenticationService from '@/services/authentication';
 import jobsApi from '@/api/jobs';
 import jobFixture from '../fixtures/job.fixture';
@@ -12,12 +14,13 @@ Vue.use(VueAnalytics, {
   id: `${process.env.ANALYTICS_ID}`,
 });
 
-function buildJobFixture(id, title, status, staffingNeededFrom) {
+function buildJobFixture(id, title, status, staffingNeededFrom, country) {
   const activity = {
     title,
     staffing_needed_from: staffingNeededFrom,
   };
   const job = jobFixture({ id, activity });
+  job.project.customer.sector.name = country;
   job.project.status = status;
   return job;
 }
@@ -47,14 +50,13 @@ describe('Unit | Component | JobList.vue', () => {
       expect(interestModal.length).to.equal(1);
     });
 
-    it('should have a date picker', () => {
-      const datePicker = component.$el.querySelectorAll('.date-picker');
-      expect(datePicker.length).to.equal(1);
-    });
+    it('should have a job header', () => {
+      // when
+      component = new Constructor().$mount();
 
-    it('should have a country picker', () => {
-      const countryPicker = component.$el.querySelectorAll('.country-picker');
-      expect(countryPicker.length).to.equal(1);
+      // then
+      const jobHeader = component.$el.querySelectorAll('.job-header');
+      expect(jobHeader.length).to.equal(1);
     });
   });
 
@@ -118,22 +120,28 @@ describe('Unit | Component | JobList.vue', () => {
 
     describe('after jobs are loaded', () => {
       // given
-      const veryOldJob = buildJobFixture('1', 'Very old mission', 'proposal_sent', '2017-10-01');
-      const oldJob = buildJobFixture('2', 'Old mission', 'mission_signed', '2017-10-02');
-      const yesterdayJob = buildJobFixture('3', 'Yesterday\'s mission', 'proposal_sent', '2017-10-03');
-      const todayJob = buildJobFixture('4', 'Today\'s mission', 'mission_signed', '2017-10-04');
-      const italianJob = buildJobFixture('4', 'Today\'s mission', 'mission_signed', '2017-10-04');
+      const veryYoungProposal = buildJobFixture('1', 'Very young proposal', 'proposal_sent', '2037-10-01', 'Australia', 'Delivery');
+      const oldMission = buildJobFixture('2', 'Old mission', 'mission_signed', '2017-10-02', 'Australia', 'Consulting');
+      const youngProposal = buildJobFixture('3', 'Young proposal', 'proposal_sent', '2027-10-03', 'Australia', 'Delivery');
+      const todayMission = buildJobFixture('4', 'Today\'s mission', 'mission_signed', '2017-10-04', 'Australia', 'Delivery');
+      const italianJob = buildJobFixture('4', 'Today\'s mission', 'mission_signed', '2017-10-04', 'Italy', 'Delivery');
+      const proposalJob = buildJobFixture('4', 'Today\'s mission', 'proposal_in_progress', '2017-10-04', 'Australia', 'Delivery');
+      const trainingJob = buildJobFixture('1', 'Very old mission', 'proposal_sent', '2017-10-01', 'Australia', 'Training');
 
-      const fetchedJobs = [yesterdayJob, veryOldJob, oldJob, todayJob, italianJob];
-      const countryJobs = [yesterdayJob, veryOldJob, oldJob, todayJob];
-      const sortedJobs = [todayJob, oldJob, yesterdayJob, veryOldJob];
+      const fetchedJobs = [youngProposal, veryYoungProposal, trainingJob, oldMission, todayMission, italianJob, proposalJob];
+      const countryJobs = [youngProposal, veryYoungProposal, trainingJob, oldMission, todayMission, proposalJob];
+      const statusJobs = [youngProposal, veryYoungProposal, trainingJob, oldMission, todayMission];
+      const missionTypeJobs = [youngProposal, veryYoungProposal, oldMission, todayMission];
+      const sortedJobs = [oldMission, todayMission, youngProposal, veryYoungProposal];
       let clock;
 
       beforeEach(() => {
         sinon.stub(authenticationService, 'getAccessToken').returns('accessToken');
         sinon.stub(jobsApi, 'fetchAll').resolves(fetchedJobs);
         sinon.stub(countryFilter, 'filter').returns(countryJobs);
-        sinon.stub(jobsSorter, 'sort').returns([]).returns(sortedJobs);
+        sinon.stub(statusFilter, 'filter').returns(statusJobs);
+        sinon.stub(missionTypeFilter, 'filter').returns(missionTypeJobs);
+        sinon.stub(jobsSorter, 'sort').returns(sortedJobs);
         clock = sinon.useFakeTimers(new Date(2017, 9, 4).getTime());
 
         // when
@@ -145,6 +153,8 @@ describe('Unit | Component | JobList.vue', () => {
         authenticationService.getAccessToken.restore();
         jobsApi.fetchAll.restore();
         countryFilter.filter.restore();
+        statusFilter.filter.restore();
+        missionTypeFilter.filter.restore();
         jobsSorter.sort.restore();
       });
 
@@ -161,14 +171,19 @@ describe('Unit | Component | JobList.vue', () => {
       }));
 
       it('should call countryFilter filter with fetchedJobs', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
-        expect(countryFilter.filter).to.have.been.calledWith([], 'anyCountry');
         expect(countryFilter.filter).to.have.been.calledWith(fetchedJobs, 'anyCountry');
       })));
 
-      it('should call jobsSorter sort with countryJobs', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
-        expect(jobsSorter.sort).to.have.been.calledTwice;
-        expect(jobsSorter.sort).to.have.been.calledWith(countryJobs, moment());
-        expect(jobsSorter.sort).to.have.been.calledWith(countryJobs, moment());
+      it('should call statusFilter filter with countryJobs', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
+        expect(statusFilter.filter).to.have.been.calledWith(countryJobs, 'anyStatus');
+      })));
+
+      it('should call jobsSorter sort with statusJobs', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
+        expect(missionTypeFilter.filter).to.have.been.calledWith(statusJobs, ['Delivery', 'Consulting']);
+      })));
+
+      it('should call jobsSorter sort with missionTypeJobs', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
+        expect(jobsSorter.sort).to.have.been.calledWith(missionTypeJobs, moment());
       })));
 
       it('should render as many jobs as received from the API', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
@@ -177,16 +192,59 @@ describe('Unit | Component | JobList.vue', () => {
       })));
 
       it('should add number of available jobs', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
-        expect(component.$el.querySelector('.job-results__title').textContent.trim()).to.equal('Missions à staffer (4)');
+        expect(component.$el.querySelector('.job-results__title').textContent.trim()).to.equal('Jobs à staffer (4)');
       })));
 
       it('should sort the mission jobs by status and by staffing needed date', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
         const jobTitles = component.$el.querySelectorAll('.job__title');
-        expect(jobTitles[0].textContent).to.equal('Today\'s mission');
-        expect(jobTitles[1].textContent).to.equal('Old mission');
-        expect(jobTitles[2].textContent).to.equal('Yesterday\'s mission');
-        expect(jobTitles[3].textContent).to.equal('Very old mission');
+        expect(jobTitles[0].textContent).to.equal('Old mission');
+        expect(jobTitles[1].textContent).to.equal('Today\'s mission');
+        expect(jobTitles[2].textContent).to.equal('Young proposal');
+        expect(jobTitles[3].textContent).to.equal('Very young proposal');
       })));
+    });
+  });
+
+  describe('onSelectedAvailabilityDate', () => {
+    it('should set data Date with selectedDate', () => {
+      // given
+      const date = new Date();
+
+      // when
+      component.onSelectedAvailabilityDate(date);
+
+      // then
+      expect(component.$data.availabilityDate).to.equal(date);
+    });
+  });
+
+  describe('onSelectedCountry', () => {
+    it('should set data Country with selectedCountry', () => {
+      // when
+      component.onSelectedCountry('France');
+
+      // then
+      expect(component.$data.country).to.equal('France');
+    });
+  });
+
+  describe('onSelectedMissionType', () => {
+    it('should set data MissionType with selectedMissionType', () => {
+      // when
+      component.onSelectedMissionType(['Delivery', 'Training']);
+
+      // then
+      expect(component.$data.missionType).to.deep.equal(['Delivery', 'Training']);
+    });
+  });
+
+  describe('onSelectedStatus', () => {
+    it('should set data Status with selectedStatus', () => {
+      // when
+      component.onSelectedStatus('proposals');
+
+      // then
+      expect(component.$data.status).to.equal('proposals');
     });
   });
 });

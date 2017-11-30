@@ -1,8 +1,7 @@
-const { isEmpty } = require('lodash');
 const mailJet = require('../../infrastructure/mailing/mailjet');
 const config = require('../../config');
 const interestEmailTemplate = require('../../infrastructure/mailing/interest-email-template');
-const jobsChangedEmailTemplate = require('../../infrastructure/mailing/jobs-changed-email-template');
+const jobsAddedEmailTemplate = require('../../infrastructure/mailing/jobs-added-email-template');
 
 function sendInterestEmail(form) {
   const subject = `[JobBoard] ${form.interestedConsultant.name} intéressé·e par ${form.missionName} - ${form.activityName}`;
@@ -34,19 +33,10 @@ function sendFeedbackEmail(form) {
   return mailJet.sendEmail(options);
 }
 
-function sendJobsChangedEmail(form) {
-  const { addedJobs, removedJobs, receivers } = form;
-
-  let subject = '[JobBoard] ';
-  if (!isEmpty(addedJobs) && !isEmpty(removedJobs)) {
-    subject += `${addedJobs.length} nouvelle(s) mission(s) à staffer – ${removedJobs.length} mission(s) retirée(s)`;
-  } else if (!isEmpty(addedJobs)) {
-    subject += `${addedJobs.length} nouvelle(s) mission(s) à staffer`;
-  } else {
-    subject += `${removedJobs.length} mission(s) retirée(s)`;
-  }
-
-  const template = jobsChangedEmailTemplate.compile(form);
+function sendJobsAddedEmail(form) {
+  const { addedJobs, receivers } = form;
+  const subject = `[JobBoard] ${addedJobs.length} nouvelle(s) mission(s) à staffer`;
+  const template = jobsAddedEmailTemplate.compile(form);
 
   const options = {
     from: config.MAIL_FROM,
@@ -62,5 +52,5 @@ function sendJobsChangedEmail(form) {
 module.exports = {
   sendInterestEmail,
   sendFeedbackEmail,
-  sendJobsChangedEmail,
+  sendJobsAddedEmail,
 };
