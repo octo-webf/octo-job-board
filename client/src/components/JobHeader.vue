@@ -2,11 +2,9 @@
   <div class="job-header">
     <div class="job-header__container">
       <div class="job-header__title">
-        <div class="job-results__title-container">
-          <h1 class="job-results__title">
-            Missions à staffer ({{ jobsNumber }})
-          </h1>
-        </div>
+        <h1 class="job-results__title">
+          Missions à staffer ({{ jobsNumber }})
+        </h1>
       </div>
       <div class="job-header__filter-date">
         <div class="job-results__filters">
@@ -123,10 +121,7 @@
       display: grid;
       width: 100%;
       grid-template-columns: 50% 50%;
-      grid-template-areas:
-          "title title"
-          "date country"
-          "status duration"
+      grid-template-areas: "title title" "date country" "status duration"
     }
   }
 
@@ -136,9 +131,7 @@
       display: grid;
       width: 100%;
       grid-template-columns: 33% 34% 33%;
-      grid-template-areas:
-          "date title country"
-          "status . duration"
+      grid-template-areas: "date title country" "status . duration"
     }
   }
 
@@ -151,5 +144,4 @@
       grid-template-areas: "date status title duration country"
     }
   }
-
 </style>
