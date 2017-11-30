@@ -26,6 +26,11 @@ describe('Unit | Component | JobHeader.vue', () => {
       const statusPicker = component.$el.querySelectorAll('.status-picker');
       expect(statusPicker.length).to.equal(1);
     });
+
+    it('should have a missionType picker', () => {
+      const missionTypePicker = component.$el.querySelectorAll('.mission-type-picker');
+      expect(missionTypePicker.length).to.equal(1);
+    });
   });
 
   describe('onSelectedAvailabilityDate', () => {
@@ -82,6 +87,25 @@ describe('Unit | Component | JobHeader.vue', () => {
       // then
       return Vue.nextTick().then(() => {
         expect(component.$emit).to.have.been.calledWith('selectedStatus', 'proposals');
+      });
+    });
+  });
+
+  describe('onSelectedMissionType', () => {
+    afterEach(() => {
+      component.$emit.restore();
+    });
+
+    it('should emit selected event with selectedMissionType name', () => {
+      // given
+      sinon.stub(component, '$emit');
+
+      // when
+      component.onSelectedMissionType(['Delivery']);
+
+      // then
+      return Vue.nextTick().then(() => {
+        expect(component.$emit).to.have.been.calledWith('selectedMissionType', ['Delivery']);
       });
     });
   });
