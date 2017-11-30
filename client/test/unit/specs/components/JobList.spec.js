@@ -13,12 +13,13 @@ Vue.use(VueAnalytics, {
   id: `${process.env.ANALYTICS_ID}`,
 });
 
-function buildJobFixture(id, title, status, staffingNeededFrom) {
+function buildJobFixture(id, title, status, staffingNeededFrom, country) {
   const activity = {
     title,
     staffing_needed_from: staffingNeededFrom,
   };
   const job = jobFixture({ id, activity });
+  job.project.customer.sector.name = country;
   job.project.status = status;
   return job;
 }
@@ -118,12 +119,12 @@ describe('Unit | Component | JobList.vue', () => {
 
     describe('after jobs are loaded', () => {
       // given
-      const veryOldJob = buildJobFixture('1', 'Very old mission', 'proposal_sent', '2017-10-01');
-      const oldJob = buildJobFixture('2', 'Old mission', 'mission_signed', '2017-10-02');
-      const yesterdayJob = buildJobFixture('3', 'Yesterday\'s mission', 'proposal_sent', '2017-10-03');
-      const todayJob = buildJobFixture('4', 'Today\'s mission', 'mission_signed', '2017-10-04');
-      const italianJob = buildJobFixture('4', 'Today\'s mission', 'mission_signed', '2017-10-04');
-      const proposalJob = buildJobFixture('4', 'Today\'s mission', 'mission_signed', '2017-10-04');
+      const veryOldJob = buildJobFixture('1', 'Very old mission', 'proposal_sent', '2017-10-01', 'Australia');
+      const oldJob = buildJobFixture('2', 'Old mission', 'mission_signed', '2017-10-02', 'Australia');
+      const yesterdayJob = buildJobFixture('3', 'Yesterday\'s mission', 'proposal_sent', '2017-10-03', 'Australia');
+      const todayJob = buildJobFixture('4', 'Today\'s mission', 'mission_signed', '2017-10-04', 'Australia');
+      const italianJob = buildJobFixture('4', 'Today\'s mission', 'mission_signed', '2017-10-04', 'Italy');
+      const proposalJob = buildJobFixture('4', 'Today\'s mission', 'proposal_in_progress', '2017-10-04', 'Australia');
 
       const fetchedJobs = [yesterdayJob, veryOldJob, oldJob, todayJob, italianJob, proposalJob];
       const countryJobs = [yesterdayJob, veryOldJob, oldJob, todayJob, proposalJob];
@@ -134,15 +135,8 @@ describe('Unit | Component | JobList.vue', () => {
       beforeEach(() => {
         sinon.stub(authenticationService, 'getAccessToken').returns('accessToken');
         sinon.stub(jobsApi, 'fetchAll').resolves(fetchedJobs);
-
-        const countryStub = sinon.stub(countryFilter, 'filter');
-        countryStub.onFirstCall().returns([]);
-        countryStub.onSecondCall().returns(countryJobs);
-
-        const statusStub = sinon.stub(statusFilter, 'filter');
-        statusStub.onFirstCall().returns([]);
-        statusStub.onSecondCall().returns(statusJobs);
-
+        sinon.stub(countryFilter, 'filter').returns(countryJobs);
+        sinon.stub(statusFilter, 'filter').returns(statusJobs);
         sinon.stub(jobsSorter, 'sort').returns(sortedJobs);
         clock = sinon.useFakeTimers(new Date(2017, 9, 4).getTime());
 
@@ -172,18 +166,14 @@ describe('Unit | Component | JobList.vue', () => {
       }));
 
       it('should call countryFilter filter with fetchedJobs', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
-        expect(countryFilter.filter).to.have.been.calledWith([], 'anyCountry');
         expect(countryFilter.filter).to.have.been.calledWith(fetchedJobs, 'anyCountry');
       })));
 
       it('should call statusFilter filter with statusJobs', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
-        expect(statusFilter.filter).to.have.been.calledWith([], 'anyStatus');
         expect(statusFilter.filter).to.have.been.calledWith(countryJobs, 'anyStatus');
       })));
 
       it('should call jobsSorter sort with statusJobs', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
-        expect(jobsSorter.sort).to.have.been.calledTwice;
-        expect(jobsSorter.sort).to.have.been.calledWith([], moment());
         expect(jobsSorter.sort).to.have.been.calledWith(statusJobs, moment());
       })));
 
@@ -221,8 +211,6 @@ describe('Unit | Component | JobList.vue', () => {
 
   describe('onSelectedCountry', () => {
     it('should set data Country with selectedCountry', () => {
-      // given
-
       // when
       component.onSelectedCountry('France');
 
@@ -233,8 +221,6 @@ describe('Unit | Component | JobList.vue', () => {
 
   describe('onSelectedStatus', () => {
     it('should set data Status with selectedStatus', () => {
-      // given
-
       // when
       component.onSelectedStatus('proposals');
 
