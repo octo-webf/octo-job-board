@@ -33,11 +33,11 @@ async function _ifJobsAddedThenRetrieveJobsNotificationRecipients(report) {
     const subscriptions = await Subscription.all();
     return { ...report, receivers: subscriptions.map(s => s.get('email')) };
   }
-  return Promise.resolve(report);
+  return report;
 }
 
 function _ifJobsAddedThenSendEmailToRecipients(report) {
-  return report.hasNewJobs ? mailService.sendJobsAddedEmail(report) : Promise.resolve(report);
+  return report.hasNewJobs ? mailService.sendJobsAddedEmail(report) : report;
 }
 
 function getJobs() {
