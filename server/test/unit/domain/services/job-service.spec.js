@@ -1,6 +1,6 @@
 const { sinon, expect } = require('../../../test-helper');
 const jobService = require('../../../../src/domain/services/job-service');
-const octopodClient = require('../../../../src/infrastructure/octopod');
+const octopodClient = require('../../../../src/infrastructure/octopod-client');
 const jobsSerializer = require('../../../../src/infrastructure/serializers/jobs');
 const cache = require('../../../../src/infrastructure/cache');
 const { Subscription } = require('../../../../src/domain/models');
@@ -219,7 +219,6 @@ describe('Unit | Service | job-service', () => {
       });
     });
   });
-
 
   describe('#synchronizeJobs', () => {
     describe('when it is the first sync (i.e. cache value does not yet exist)', () => {

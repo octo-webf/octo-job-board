@@ -2,6 +2,8 @@ const request = require('request');
 const config = require('../config/index');
 const { flattenDeep } = require('lodash');
 
+const MAX_NUMBER_OF_PROJECTS_BY_OCTOPOD_PAGE = 100;
+
 const OctopodClient = {
 
   getAccessToken() {
@@ -30,7 +32,8 @@ const OctopodClient = {
   },
 
   async fetchProjectsToBeStaffed(accessToken, projects = [], page = 1) {
-    if (projects.length === 100 * (page - 1)) {
+    const hasMoreProjectsOnOctopodApi = projects.length === MAX_NUMBER_OF_PROJECTS_BY_OCTOPOD_PAGE * (page - 1);
+    if (hasMoreProjectsOnOctopodApi) {
       const moreProjects = await this.fetchProjectsToBeStaffedPerPage(accessToken, page);
       const allProjects = projects.concat(moreProjects);
       return this.fetchProjectsToBeStaffed(accessToken, allProjects, page + 1);
@@ -41,7 +44,7 @@ const OctopodClient = {
   fetchProjectsToBeStaffedPerPage(accessToken, page) {
     return new Promise((resolve, reject) => {
       const options = {
-        url: `${config.OCTOPOD_API_URL}/v0/projects?staffing_needed=true&page=${page}&per_page=100`,
+        url: `${config.OCTOPOD_API_URL}/v0/projects?staffing_needed=true&page=${page}&per_page=${MAX_NUMBER_OF_PROJECTS_BY_OCTOPOD_PAGE}`,
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

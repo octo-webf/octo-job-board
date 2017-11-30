@@ -1,5 +1,5 @@
 const { isEmpty, differenceBy } = require('lodash');
-const octopodClient = require('../../infrastructure/octopod');
+const octopodClient = require('../../infrastructure/octopod-client');
 const jobsSerializer = require('../../infrastructure/serializers/jobs');
 const cache = require('../../infrastructure/cache');
 const { Subscription } = require('../models');
@@ -17,7 +17,7 @@ function _isKindOfProjectWantedOnJobBoard(project) {
   return project.kind === 'cost_reimbursable' || project.kind === 'fixed_price';
 }
 
-function filterProjectByStatusAndKind(projects) {
+function _filterProjectByStatusAndKind(projects) {
   return projects
     .filter(project => _isStatusWantedOnJobBoard(project))
     .filter(project => _isKindOfProjectWantedOnJobBoard(project));
@@ -26,7 +26,7 @@ function filterProjectByStatusAndKind(projects) {
 async function _fetchAndCacheJobs() {
   const accessToken = await octopodClient.getAccessToken();
   const projects = await octopodClient.fetchProjectsToBeStaffed(accessToken);
-  const filterProjects = filterProjectByStatusAndKind(projects);
+  const filterProjects = _filterProjectByStatusAndKind(projects);
   const activities = await octopodClient.fetchActivitiesToBeStaffed(accessToken, filterProjects);
   const jobs = await jobsSerializer.serialize(projects, activities);
   cache.set(CACHE_KEY, jobs);
