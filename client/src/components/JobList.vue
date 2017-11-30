@@ -10,6 +10,7 @@
           <job-header :jobsNumber="displayedJobs.length"
                       @selectedCountry="onSelectedCountry"
                       @selectedDate="onSelectedAvailabilityDate"
+                      @selectedMissionType="onSelectedMissionType"
                       @selectedStatus="onSelectedStatus">
           </job-header>
           <div class="job-results-panel">
@@ -31,6 +32,7 @@
 <script>
   import authenticationService from '@/services/authentication';
   import countryFilter from '@/utils/countryFilter';
+  import missionTypeFilter from '@/utils/missionTypeFilter';
   import statusFilter from '@/utils/statusFilter';
   import jobsSorter from '@/utils/jobsSorter';
   import jobsApi from '@/api/jobs';
@@ -60,6 +62,7 @@
         chosenJob: null,
         availabilityDate: moment(),
         country: 'anyCountry',
+        missionType: ['Delivery', 'Consulting'],
         status: 'anyStatus',
       };
     },
@@ -68,6 +71,7 @@
       displayedJobs() {
         let filteredJobs = countryFilter.filter(this.jobsFromApi, this.country);
         filteredJobs = statusFilter.filter(filteredJobs, this.status);
+        filteredJobs = missionTypeFilter.filter(filteredJobs, this.missionType);
         return jobsSorter.sort(filteredJobs, this.availabilityDate);
       },
     },
@@ -100,6 +104,10 @@
 
       onSelectedCountry(newChosenCountry) {
         this.country = newChosenCountry;
+      },
+
+      onSelectedMissionType(newChosenMissionType) {
+        this.missionType = newChosenMissionType;
       },
 
       onSelectedStatus(newChosenStatus) {
