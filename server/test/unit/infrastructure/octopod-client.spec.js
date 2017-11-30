@@ -1,5 +1,5 @@
 const request = require('request');
-const OctopodClient = require('../../../src/infrastructure/octopod');
+const OctopodClient = require('../../../src/infrastructure/octopod-client');
 const projectFromOctopod = require('../fixtures/projectFromOctopod');
 const { expect, sinon } = require('../../test-helper');
 
@@ -84,7 +84,7 @@ describe('Unit | Utils | octopod-client', () => {
     });
   });
 
-  describe('#fetchProjectsToBeStaffedPerPage', () => {
+  describe('#fetchProjectsToBeStaffed', () => {
     beforeEach(() => {
       sinon.stub(OctopodClient, 'fetchProjectsToBeStaffedPerPage');
     });
@@ -126,7 +126,6 @@ describe('Unit | Utils | octopod-client', () => {
       });
     });
   });
-
 
   describe('#fetchProjectsToBeStaffedPerPage', () => {
     let projectsFromOctopod;
