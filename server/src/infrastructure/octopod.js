@@ -29,20 +29,19 @@ const OctopodClient = {
     });
   },
 
-  _isStatusWantedOnJobBoard(project) {
-    return project.status === 'mission_signed'
-      || project.status === 'mission_accepted'
-      || project.status === 'proposal_sent';
+  async fetchProjectsToBeStaffed(accessToken, projects = [], page = 1) {
+    if (projects.length === 100 * (page - 1)) {
+      const moreProjects = await this.fetchProjectsToBeStaffedPerPage(accessToken, page);
+      const allProjects = projects.concat(moreProjects);
+      return this.fetchProjectsToBeStaffed(accessToken, allProjects, page + 1);
+    }
+    return projects;
   },
 
-  _isKindOfProjectWantedOnJobBoard(project) {
-    return project.kind === 'cost_reimbursable' || project.kind === 'fixed_price';
-  },
-
-  fetchProjectsToBeStaffed(accessToken) {
+  fetchProjectsToBeStaffedPerPage(accessToken, page) {
     return new Promise((resolve, reject) => {
       const options = {
-        url: `${config.OCTOPOD_API_URL}/v0/projects?staffing_needed=true&page=1&per_page=50`,
+        url: `${config.OCTOPOD_API_URL}/v0/projects?staffing_needed=true&page=${page}&per_page=100`,
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -53,10 +52,7 @@ const OctopodClient = {
           reject(err);
         }
         const projects = JSON.parse(response.body);
-        const filteredProject = projects
-          .filter(this._isStatusWantedOnJobBoard)
-          .filter(this._isKindOfProjectWantedOnJobBoard);
-        resolve(filteredProject);
+        resolve(projects);
       });
     });
   },

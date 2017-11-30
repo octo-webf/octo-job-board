@@ -1,6 +1,6 @@
 const request = require('request');
 const OctopodClient = require('../../../src/infrastructure/octopod');
-const projectFromOctopod = require('./fixtures/projectFromOctopod');
+const projectFromOctopod = require('../fixtures/projectFromOctopod');
 const { expect, sinon } = require('../../test-helper');
 
 describe('Unit | Utils | octopod-client', () => {
@@ -13,11 +13,6 @@ describe('Unit | Utils | octopod-client', () => {
     request.post.restore();
     request.get.restore();
   });
-
-  /**
-   * #getAccessToken
-   * ---------------
-   */
 
   describe('#getAccessToken', () => {
     describe('with a successful request', () => {
@@ -89,12 +84,51 @@ describe('Unit | Utils | octopod-client', () => {
     });
   });
 
-  /**
-   * #fetchProjectsToBeStaffed
-   * -------------------------
-   */
+  describe('#fetchProjectsToBeStaffedPerPage', () => {
+    beforeEach(() => {
+      sinon.stub(OctopodClient, 'fetchProjectsToBeStaffedPerPage');
+    });
+    afterEach(() => {
+      OctopodClient.fetchProjectsToBeStaffedPerPage.restore();
+    });
 
-  describe('#fetchProjectsToBeStaffed', () => {
+    describe('when there are more than 100 projects', () => {
+      it('should call fetchProjectsToBeStaffedPerPage several times', () => {
+        // given
+        const accessToken = 'access-token';
+        const hundredOfProjects = new Array(100).fill(projectFromOctopod('proposal_sent'));
+        const someProjects = new Array(33).fill(projectFromOctopod('proposal_sent'));
+        OctopodClient.fetchProjectsToBeStaffedPerPage.onFirstCall().resolves(hundredOfProjects);
+        OctopodClient.fetchProjectsToBeStaffedPerPage.onSecondCall().resolves(someProjects);
+
+        // when
+        const promise = OctopodClient.fetchProjectsToBeStaffed(accessToken);
+
+        // then
+        return promise.then((returnedProjects) => {
+          expect(OctopodClient.fetchProjectsToBeStaffedPerPage).to.have.been.calledTwice;
+          expect(returnedProjects.length).to.equal(133);
+        });
+      });
+
+      it('should return a rejected promise when the call to fetchProjectsToBeStaffedPerPage fails', () => {
+        // given
+        OctopodClient.fetchProjectsToBeStaffedPerPage.rejects(new Error('some error'));
+
+        // when
+        const promise = OctopodClient.fetchProjectsToBeStaffed();
+
+        // then
+        return promise.catch((err) => {
+          expect(err).to.exist;
+          expect(err.message).to.equal('some error');
+        });
+      });
+    });
+  });
+
+
+  describe('#fetchProjectsToBeStaffedPerPage', () => {
     let projectsFromOctopod;
 
     describe('in any cases', () => {
@@ -123,17 +157,17 @@ describe('Unit | Utils | octopod-client', () => {
         const accessToken = 'access-token';
 
         // when
-        const promise = OctopodClient.fetchProjectsToBeStaffed(accessToken);
+        const promise = OctopodClient.fetchProjectsToBeStaffedPerPage(accessToken, 8);
 
         // then
         return promise.then(() => {
-          const expectedOptions = {
-            url: 'http://octopod.url/api/v0/projects?staffing_needed=true&page=1&per_page=50',
+          const expectedOptions = page => ({
+            url: `http://octopod.url/api/v0/projects?staffing_needed=true&page=${page}&per_page=100`,
             headers: {
               Authorization: 'Bearer access-token',
             },
-          };
-          expect(request.get).to.have.been.calledWith(expectedOptions);
+          });
+          expect(request.get).to.have.been.calledWith(expectedOptions(8));
         });
       });
 
@@ -144,7 +178,7 @@ describe('Unit | Utils | octopod-client', () => {
         });
 
         // when
-        const promise = OctopodClient.fetchProjectsToBeStaffed();
+        const promise = OctopodClient.fetchProjectsToBeStaffedPerPage();
 
         // then
         return promise.catch((err) => {
@@ -153,82 +187,7 @@ describe('Unit | Utils | octopod-client', () => {
         });
       });
     });
-
-    describe('with different projects status from octopod', () => {
-      beforeEach(() => {
-        request.get.callsFake((options, callback) => {
-          projectsFromOctopod = [
-            projectFromOctopod('proposal_sent'),
-            projectFromOctopod('proposal_in_progress'),
-            projectFromOctopod('lead'),
-            projectFromOctopod('mission_accepted'),
-            projectFromOctopod('mission_signed'),
-            projectFromOctopod('mission_done'),
-            projectFromOctopod('proposal_lost'),
-            projectFromOctopod('proposal_canceled_by_client'),
-            projectFromOctopod('proposal_no_go'),
-          ];
-          const httpResponse = {
-            body: JSON.stringify(projectsFromOctopod),
-          };
-          callback(null, httpResponse);
-        });
-      });
-
-      it('should return "mission and proposal sent" projects in a promise', () => {
-        // when
-        const promise = OctopodClient.fetchProjectsToBeStaffed();
-
-        // then
-        return promise
-          .then((projects) => {
-            const expectedProjectsFromOctopod = [
-              projectFromOctopod('proposal_sent'),
-              projectFromOctopod('mission_accepted'),
-              projectFromOctopod('mission_signed'),
-            ];
-            expect(projects).to.deep.equal(expectedProjectsFromOctopod);
-          });
-      });
-    });
-
-    describe('with different kind of projects from octopod', () => {
-      beforeEach(() => {
-        request.get.callsFake((options, callback) => {
-          projectsFromOctopod = [
-            projectFromOctopod('mission_signed', 'internal'),
-            projectFromOctopod('mission_signed', 'cost_reimbursable'),
-            projectFromOctopod('mission_signed', 'fixed_price'),
-            projectFromOctopod('mission_signed', 'framework_agreement'),
-          ];
-          const httpResponse = {
-            body: JSON.stringify(projectsFromOctopod),
-          };
-          callback(null, httpResponse);
-        });
-      });
-
-      it('should return only "Regie (cost_reimbursable) and Forfait (fixed price)" in a promise', () => {
-        // when
-        const promise = OctopodClient.fetchProjectsToBeStaffed();
-
-        // then
-        return promise
-          .then((projects) => {
-            const expectedProjectsFromOctopod = [
-              projectFromOctopod('mission_signed', 'cost_reimbursable'),
-              projectFromOctopod('mission_signed', 'fixed_price'),
-            ];
-            expect(projects).to.deep.equal(expectedProjectsFromOctopod);
-          });
-      });
-    });
   });
-
-  /**
-   * #fetchActivitiesToBeStaffed
-   * ---------------------------
-   */
 
   describe('#fetchActivitiesToBeStaffed', () => {
     describe('when get succeeds', () => {

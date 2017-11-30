@@ -5,6 +5,7 @@ const jobsSerializer = require('../../../../src/infrastructure/serializers/jobs'
 const cache = require('../../../../src/infrastructure/cache');
 const { Subscription } = require('../../../../src/domain/models');
 const mailService = require('../../../../src/domain/services/mail-service');
+const projectFromOctopod = require('../../fixtures/projectFromOctopod');
 
 const CACHE_KEY = 'get_jobs';
 
@@ -90,9 +91,57 @@ describe('Unit | Service | job-service', () => {
       expect(octopodClient.fetchProjectsToBeStaffed).to.have.been.calledWith(stubbedAccessToken);
     }));
 
-    it('should call Octopod to fetch activities to be staffed', () => promise.then(() => {
-      expect(octopodClient.fetchActivitiesToBeStaffed).to.have.been.calledWith(stubbedAccessToken, stubbedFetchedProjects);
-    }));
+    it('should call Octopod to fetch activities to be staffed with filtered projects - only proposal sent and mission accepted and signed', () => {
+      // given
+      octopodClient.fetchProjectsToBeStaffed.restore();
+
+      const projectsFromOctopod = [
+        projectFromOctopod('proposal_sent'),
+        projectFromOctopod('proposal_in_progress'),
+        projectFromOctopod('lead'),
+        projectFromOctopod('mission_accepted'),
+        projectFromOctopod('mission_signed'),
+        projectFromOctopod('mission_done'),
+        projectFromOctopod('proposal_lost'),
+        projectFromOctopod('proposal_canceled_by_client'),
+        projectFromOctopod('proposal_no_go'),
+      ];
+      const expectedProjectsFromOctopod = [
+        projectFromOctopod('proposal_sent'),
+        projectFromOctopod('mission_accepted'),
+        projectFromOctopod('mission_signed'),
+      ];
+      sinon.stub(octopodClient, 'fetchProjectsToBeStaffed').resolves(projectsFromOctopod);
+
+      // when
+      promise.then(() => {
+        // then
+        expect(octopodClient.fetchActivitiesToBeStaffed).to.have.been.calledWith(stubbedAccessToken, expectedProjectsFromOctopod);
+      });
+    });
+
+    it('should call Octopod to fetch activities to be staffed with filtered project - only "Regie (cost_reimbursable) and Forfait (fixed price)"', () => {
+      // given
+      octopodClient.fetchProjectsToBeStaffed.restore();
+      const projectsFromOctopod = [
+        projectFromOctopod('mission_signed', 'internal'),
+        projectFromOctopod('mission_signed', 'cost_reimbursable'),
+        projectFromOctopod('mission_signed', 'fixed_price'),
+        projectFromOctopod('mission_signed', 'framework_agreement'),
+      ];
+
+      const expectedProjectsFromOctopod = [
+        projectFromOctopod('mission_signed', 'cost_reimbursable'),
+        projectFromOctopod('mission_signed', 'fixed_price'),
+      ];
+      sinon.stub(octopodClient, 'fetchProjectsToBeStaffed').resolves(projectsFromOctopod);
+
+      // when
+      promise.then(() => {
+        // then
+        expect(octopodClient.fetchActivitiesToBeStaffed).to.have.been.calledWith(stubbedAccessToken, expectedProjectsFromOctopod);
+      });
+    });
 
     it('should build jobs by merging fetched projects and activities', () => promise.then(() => {
       expect(jobsSerializer.serialize).to.have.been.calledWith(stubbedFetchedProjects, stubbedFetchedActivities);
@@ -166,7 +215,7 @@ describe('Unit | Service | job-service', () => {
 
       // then
       return promise.then((report) => {
-        expect(report).to.deep.equal({ isInit: false, hasNewJobs: true, addedJobs: expectedAddedJobs });
+        expect(report).to.deep.equal({ isInit: false, hasNewJobs: true,  addedJobs: expectedAddedJobs, });
       });
     });
   });
