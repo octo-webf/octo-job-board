@@ -5,6 +5,7 @@ import JobList from '@/components/JobList';
 import jobsSorter from '@/utils/jobsSorter';
 import countryFilter from '@/utils/countryFilter';
 import statusFilter from '@/utils/statusFilter';
+import missionTypeFilter from '@/utils/missionTypeFilter';
 import authenticationService from '@/services/authentication';
 import jobsApi from '@/api/jobs';
 import jobFixture from '../fixtures/job.fixture';
@@ -119,17 +120,19 @@ describe('Unit | Component | JobList.vue', () => {
 
     describe('after jobs are loaded', () => {
       // given
-      const veryOldJob = buildJobFixture('1', 'Very old mission', 'proposal_sent', '2017-10-01', 'Australia');
-      const oldJob = buildJobFixture('2', 'Old mission', 'mission_signed', '2017-10-02', 'Australia');
-      const yesterdayJob = buildJobFixture('3', 'Yesterday\'s mission', 'proposal_sent', '2017-10-03', 'Australia');
-      const todayJob = buildJobFixture('4', 'Today\'s mission', 'mission_signed', '2017-10-04', 'Australia');
-      const italianJob = buildJobFixture('4', 'Today\'s mission', 'mission_signed', '2017-10-04', 'Italy');
-      const proposalJob = buildJobFixture('4', 'Today\'s mission', 'proposal_in_progress', '2017-10-04', 'Australia');
+      const veryYoungProposal = buildJobFixture('1', 'Very young proposal', 'proposal_sent', '2037-10-01', 'Australia', 'Delivery');
+      const oldMission = buildJobFixture('2', 'Old mission', 'mission_signed', '2017-10-02', 'Australia', 'Consulting');
+      const youngProposal = buildJobFixture('3', 'Young proposal', 'proposal_sent', '2027-10-03', 'Australia', 'Delivery');
+      const todayMission = buildJobFixture('4', 'Today\'s mission', 'mission_signed', '2017-10-04', 'Australia', 'Delivery');
+      const italianJob = buildJobFixture('4', 'Today\'s mission', 'mission_signed', '2017-10-04', 'Italy', 'Delivery');
+      const proposalJob = buildJobFixture('4', 'Today\'s mission', 'proposal_in_progress', '2017-10-04', 'Australia', 'Delivery');
+      const trainingJob = buildJobFixture('1', 'Very old mission', 'proposal_sent', '2017-10-01', 'Australia', 'Training');
 
-      const fetchedJobs = [yesterdayJob, veryOldJob, oldJob, todayJob, italianJob, proposalJob];
-      const countryJobs = [yesterdayJob, veryOldJob, oldJob, todayJob, proposalJob];
-      const statusJobs = [yesterdayJob, veryOldJob, oldJob, todayJob];
-      const sortedJobs = [todayJob, oldJob, yesterdayJob, veryOldJob];
+      const fetchedJobs = [youngProposal, veryYoungProposal, trainingJob, oldMission, todayMission, italianJob, proposalJob];
+      const countryJobs = [youngProposal, veryYoungProposal, trainingJob, oldMission, todayMission, proposalJob];
+      const statusJobs = [youngProposal, veryYoungProposal, trainingJob, oldMission, todayMission];
+      const missionTypeJobs = [youngProposal, veryYoungProposal, oldMission, todayMission];
+      const sortedJobs = [oldMission, todayMission, youngProposal, veryYoungProposal];
       let clock;
 
       beforeEach(() => {
@@ -137,6 +140,7 @@ describe('Unit | Component | JobList.vue', () => {
         sinon.stub(jobsApi, 'fetchAll').resolves(fetchedJobs);
         sinon.stub(countryFilter, 'filter').returns(countryJobs);
         sinon.stub(statusFilter, 'filter').returns(statusJobs);
+        sinon.stub(missionTypeFilter, 'filter').returns(missionTypeJobs);
         sinon.stub(jobsSorter, 'sort').returns(sortedJobs);
         clock = sinon.useFakeTimers(new Date(2017, 9, 4).getTime());
 
@@ -150,6 +154,7 @@ describe('Unit | Component | JobList.vue', () => {
         jobsApi.fetchAll.restore();
         countryFilter.filter.restore();
         statusFilter.filter.restore();
+        missionTypeFilter.filter.restore();
         jobsSorter.sort.restore();
       });
 
@@ -169,12 +174,16 @@ describe('Unit | Component | JobList.vue', () => {
         expect(countryFilter.filter).to.have.been.calledWith(fetchedJobs, 'anyCountry');
       })));
 
-      it('should call statusFilter filter with statusJobs', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
+      it('should call statusFilter filter with countryJobs', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
         expect(statusFilter.filter).to.have.been.calledWith(countryJobs, 'anyStatus');
       })));
 
       it('should call jobsSorter sort with statusJobs', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
-        expect(jobsSorter.sort).to.have.been.calledWith(statusJobs, moment());
+        expect(missionTypeFilter.filter).to.have.been.calledWith(statusJobs, ['Delivery', 'Consulting']);
+      })));
+
+      it('should call jobsSorter sort with missionTypeJobs', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
+        expect(jobsSorter.sort).to.have.been.calledWith(missionTypeJobs, moment());
       })));
 
       it('should render as many jobs as received from the API', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
@@ -188,10 +197,10 @@ describe('Unit | Component | JobList.vue', () => {
 
       it('should sort the mission jobs by status and by staffing needed date', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
         const jobTitles = component.$el.querySelectorAll('.job__title');
-        expect(jobTitles[0].textContent).to.equal('Today\'s mission');
-        expect(jobTitles[1].textContent).to.equal('Old mission');
-        expect(jobTitles[2].textContent).to.equal('Yesterday\'s mission');
-        expect(jobTitles[3].textContent).to.equal('Very old mission');
+        expect(jobTitles[0].textContent).to.equal('Old mission');
+        expect(jobTitles[1].textContent).to.equal('Today\'s mission');
+        expect(jobTitles[2].textContent).to.equal('Young proposal');
+        expect(jobTitles[3].textContent).to.equal('Very young proposal');
       })));
     });
   });
@@ -216,6 +225,16 @@ describe('Unit | Component | JobList.vue', () => {
 
       // then
       expect(component.$data.country).to.equal('France');
+    });
+  });
+
+  describe('onSelectedMissionType', () => {
+    it('should set data MissionType with selectedMissionType', () => {
+      // when
+      component.onSelectedMissionType(['Delivery', 'Training']);
+
+      // then
+      expect(component.$data.missionType).to.deep.equal(['Delivery', 'Training']);
     });
   });
 

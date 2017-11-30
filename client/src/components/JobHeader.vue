@@ -9,7 +9,7 @@
       <div class="job-header__filter-date">
         <div class="job-results__filters">
           <div class="filters_wrapper">
-            <span class="job-filters-left__text">Disponible à partir du </span>
+            <span class="job-filters-date__text">Disponible à partir du </span>
             <date-picker @selected="onSelectedAvailabilityDate"></date-picker>
           </div>
         </div>
@@ -17,18 +17,23 @@
       <div class="job-header__filter-status">
         <div class="job-results__filters">
           <div class="filters_wrapper">
-            <span class="job-filters-right__text">Statut des missions</span>
+            <span class="job-filters-selector__text">Statut des missions</span>
             <status-picker @selected="onSelectedStatus"></status-picker>
           </div>
         </div>
       </div>
-      <div class="job-header__filter-mission-duration">
-
+      <div class="job-header__filter-type">
+        <div class="job-results__filters">
+          <div class="filters_wrapper">
+            <!--<span class="job-filters-selector__text">Type de missions</span>-->
+            <mission-type-picker @selected="onSelectedMissionType"></mission-type-picker>
+          </div>
+        </div>
       </div>
       <div class="job-header__filter-country">
         <div class="job-results__filters">
           <div class="filters_wrapper">
-            <span class="job-filters-right__text">Provenance des missions</span>
+            <span class="job-filters-selector__text">Provenance des missions</span>
             <country-picker @selected="onSelectedCountry"></country-picker>
           </div>
         </div>
@@ -40,20 +45,18 @@
 <script>
   import CountryPicker from '@/components/CountryPicker';
   import DatePicker from '@/components/DatePicker';
+  import MissionTypePicker from '@/components/MissionTypePicker';
   import StatusPicker from '@/components/StatusPicker';
 
   export default {
-
     name: 'JobHeader',
-
     props: ['jobsNumber'],
-
     components: {
       CountryPicker,
       DatePicker,
+      MissionTypePicker,
       StatusPicker,
     },
-
     methods: {
       onSelectedAvailabilityDate(newChosenDate) {
         this.$emit('selectedDate', newChosenDate);
@@ -61,6 +64,10 @@
 
       onSelectedCountry(newChosenCountry) {
         this.$emit('selectedCountry', newChosenCountry);
+      },
+
+      onSelectedMissionType(newChosenMissionType) {
+        this.$emit('selectedMissionType', newChosenMissionType);
       },
 
       onSelectedStatus(newChosenStatus) {
@@ -83,8 +90,8 @@
     grid-area: status;
   }
 
-  .job-header__filter-mission-duration {
-    grid-area: duration;
+  .job-header__filter-type {
+    grid-area: type;
   }
 
   .job-header__filter-country {
@@ -107,11 +114,11 @@
     text-align: left;
   }
 
-  .job-filters-left__text {
+  .job-filters-date__text {
     padding-left: 10px;
   }
 
-  .job-filters-right__text {
+  .job-filters-selector__text {
     padding-left: 15px;
   }
 
@@ -121,7 +128,7 @@
       display: grid;
       width: 100%;
       grid-template-columns: 50% 50%;
-      grid-template-areas: "title title" "date country" "status duration"
+      grid-template-areas: "title title" "date country" "status type"
     }
   }
 
@@ -131,17 +138,17 @@
       display: grid;
       width: 100%;
       grid-template-columns: 33% 34% 33%;
-      grid-template-areas: "date title country" "status . duration"
+      grid-template-areas: "date title country" "status . type"
     }
   }
 
   @media only screen and (min-width: 1240px) {
     .job-header__container {
-      height: 50px;
+      height: 80px;
       display: grid;
       width: 100%;
       grid-template-columns: 20% 20% 20% 20% 20%;
-      grid-template-areas: "date status title duration country"
+      grid-template-areas: "date status title type country"
     }
   }
 </style>
