@@ -10,8 +10,7 @@
           <job-header :jobsNumber="displayedJobs.length"
                       @selectedCountry="onSelectedCountry"
                       @selectedDate="onSelectedAvailabilityDate"
-                      @selectedStatus="onSelectedStatus"
-          >
+                      @selectedStatus="onSelectedStatus">
           </job-header>
           <div class="job-results-panel">
             <section class="job-results job-results--delivery">
@@ -67,9 +66,9 @@
 
     computed: {
       displayedJobs() {
-        const countryJobs = countryFilter.filter(this.jobsFromApi, this.country);
-        const statusJobs = statusFilter.filter(countryJobs, this.status);
-        return jobsSorter.sort(statusJobs, this.availabilityDate);
+        let filteredJobs = countryFilter.filter(this.jobsFromApi, this.country);
+        filteredJobs = statusFilter.filter(filteredJobs, this.status);
+        return jobsSorter.sort(filteredJobs, this.availabilityDate);
       },
     },
 
@@ -140,5 +139,4 @@
     padding: 0;
     margin: 10px;
   }
-
 </style>
