@@ -20,7 +20,7 @@ describe('Unit | Component | MissionTypePicker.vue', () => {
   });
 
   describe('watch #displayedMissionType', () => {
-    it('should emit selected event with selected name', () => {
+    it('should emit selected event with "selected" name and selected mission types', () => {
       // given
       const spy = sinon.spy();
       component.$emit = spy;
