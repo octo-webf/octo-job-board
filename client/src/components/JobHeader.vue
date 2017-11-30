@@ -25,7 +25,7 @@
       <div class="job-header__filter-type">
         <div class="job-results__filters">
           <div class="filters_wrapper">
-            <!--<span class="job-filters-selector__text">Type de missions</span>-->
+            <span class="job-filters-selector__text">Type de missions</span>
             <mission-type-picker @selected="onSelectedMissionType"></mission-type-picker>
           </div>
         </div>
@@ -124,7 +124,7 @@
 
   @media only screen and (min-width: 640px) {
     .job-header__container {
-      height: 150px;
+      height: 170px;
       display: grid;
       width: 100%;
       grid-template-columns: 50% 50%;
@@ -134,7 +134,7 @@
 
   @media only screen and (min-width: 992px) {
     .job-header__container {
-      height: 100px;
+      height: 130px;
       display: grid;
       width: 100%;
       grid-template-columns: 33% 34% 33%;

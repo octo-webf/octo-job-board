@@ -30,6 +30,13 @@
 <style>
   .dropdown-toggle.clearfix {
     background-color: white;
+    max-height: 67px;
+    min-height: 52px;
+    width: 220px;
+  }
+
+  .open-indicator {
+    top: 10px;
   }
 
   .mission-type-picker {
