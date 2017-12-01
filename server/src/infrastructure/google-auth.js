@@ -17,6 +17,9 @@ const GoogleAuthWrapper = {
 
           const { sub: userId, email, hd: domain } = login.getPayload();
 
+          // eslint-disable-next-line no-console
+          console.log(domain);
+
           if (domain !== 'octo.com') {
             return reject(`User ${userId} does not belong to OCTO`);
           }
