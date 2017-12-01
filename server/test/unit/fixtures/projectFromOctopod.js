@@ -1,4 +1,6 @@
-module.exports = (status = 'proposal_sent', kind = 'fixed_price') => (
+module.exports = (status = 'proposal_sent',
+  kind = 'fixed_price',
+  customerName = 'Airbus Defense') => (
   {
     id: 2146905983,
     url: 'https://octopod.octo.com/api/v0/projects/2146905983',
@@ -8,7 +10,7 @@ module.exports = (status = 'proposal_sent', kind = 'fixed_price') => (
     status,
     customer: {
       id: 2504,
-      name: 'Airbus Defense & Space (via Accenture)',
+      name: customerName,
       customer_group: null,
     },
     customer_contract_reference: null,

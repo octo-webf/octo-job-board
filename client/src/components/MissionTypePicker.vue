@@ -13,7 +13,7 @@
 
     data() {
       return {
-        displayedMissionType: ['Delivery', 'Consulting'],
+        displayedMissionType: ['Delivery', 'Consulting', 'Training'],
         options: ['Delivery', 'Consulting', 'Training'],
       };
     },
