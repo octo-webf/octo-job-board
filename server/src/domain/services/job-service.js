@@ -17,16 +17,21 @@ function _isKindOfProjectWantedOnJobBoard(project) {
   return project.kind === 'cost_reimbursable' || project.kind === 'fixed_price';
 }
 
-function _filterProjectByStatusAndKind(projects) {
+function _doesProjectNotBelongToOcac(project) {
+  return project.customer.name !== 'OCTO Academy';
+}
+
+function _filterProjectsWantedOnJobBoard(projects) {
   return projects
     .filter(project => _isStatusWantedOnJobBoard(project))
-    .filter(project => _isKindOfProjectWantedOnJobBoard(project));
+    .filter(project => _isKindOfProjectWantedOnJobBoard(project))
+    .filter(project => _doesProjectNotBelongToOcac(project));
 }
 
 async function _fetchAndCacheJobs() {
   const accessToken = await octopodClient.getAccessToken();
   const projects = await octopodClient.fetchProjectsToBeStaffed(accessToken);
-  const filterProjects = _filterProjectByStatusAndKind(projects);
+  const filterProjects = _filterProjectsWantedOnJobBoard(projects);
   const activities = await octopodClient.fetchActivitiesToBeStaffed(accessToken, filterProjects);
   const jobs = await jobsSerializer.serialize(projects, activities);
   cache.set(CACHE_KEY, jobs);
