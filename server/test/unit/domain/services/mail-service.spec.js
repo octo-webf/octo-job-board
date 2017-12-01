@@ -26,7 +26,7 @@ describe('Unit | Service | MailService', () => {
           name: 'Samurai Jack',
           email: 'sjack@octo.com',
         },
-        businessContactNickname: 'XYZ',
+        businessContactNickname: 'BusinessContactNickname',
         missionDirectorNickname: 'ZYX',
         octopodLink: 'https://octopod.octo.com/projects/2146904867',
         activityName: 'Développeur Front',
@@ -40,7 +40,36 @@ describe('Unit | Service | MailService', () => {
       return promise.then(() => {
         expect(mailJet.sendEmail).to.have.been.calledWithExactly({
           from: 'jobboard+test@octo.com',
-          to: 'jobboard+test@octo.com',
+          to: ['jobboard+test@octo.com', 'BusinessContactNickname@octo.com'],
+          fromName: 'Le Job Board - Ne pas répondre',
+          subject: '[JobBoard] Samurai Jack intéressé·e par Oodrive - Liste d\'initié - Développeur Front',
+          template: 'Interest mail template',
+        });
+      });
+    });
+
+    it('should not send an email to business contact if unknown', () => {
+      // given
+      const form = {
+        interestedConsultant: {
+          name: 'Samurai Jack',
+          email: 'sjack@octo.com',
+        },
+        businessContactNickname: 'N/A',
+        missionDirectorNickname: 'ZYX',
+        octopodLink: 'https://octopod.octo.com/projects/2146904867',
+        activityName: 'Développeur Front',
+        missionName: 'Oodrive - Liste d\'initié',
+      };
+
+      // when
+      const promise = mailService.sendInterestEmail(form);
+
+      // then
+      return promise.then(() => {
+        expect(mailJet.sendEmail).to.have.been.calledWithExactly({
+          from: 'jobboard+test@octo.com',
+          to: ['jobboard+test@octo.com'],
           fromName: 'Le Job Board - Ne pas répondre',
           subject: '[JobBoard] Samurai Jack intéressé·e par Oodrive - Liste d\'initié - Développeur Front',
           template: 'Interest mail template',
