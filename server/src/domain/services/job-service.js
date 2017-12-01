@@ -17,15 +17,15 @@ function _isKindOfProjectWantedOnJobBoard(project) {
   return project.kind === 'cost_reimbursable' || project.kind === 'fixed_price';
 }
 
-function _doesProjectNotBelongToOcac(project) {
-  return project.customer.name !== 'OCTO Academy';
+function _isOcacProject(project) {
+  return project.customer.name === 'OCTO Academy';
 }
 
 function _filterProjectsWantedOnJobBoard(projects) {
   return projects
     .filter(project => _isStatusWantedOnJobBoard(project))
     .filter(project => _isKindOfProjectWantedOnJobBoard(project))
-    .filter(project => _doesProjectNotBelongToOcac(project));
+    .filter(project => !_isOcacProject(project));
 }
 
 async function _fetchAndCacheJobs() {
