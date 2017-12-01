@@ -91,7 +91,7 @@ describe('Unit | Service | job-service', () => {
       expect(octopodClient.fetchProjectsToBeStaffed).to.have.been.calledWith(stubbedAccessToken);
     }));
 
-    it('should call Octopod to fetch activities to be staffed with filtered projects - only proposal sent and mission accepted and signed', () => {
+    it('should call Octopod to fetch activities to be staffed with filtered projects - only proposal sent and mission accepted and signed', (done) => {
       // given
       octopodClient.fetchProjectsToBeStaffed.restore();
 
@@ -117,10 +117,11 @@ describe('Unit | Service | job-service', () => {
       promise.then(() => {
         // then
         expect(octopodClient.fetchActivitiesToBeStaffed).to.have.been.calledWith(stubbedAccessToken, expectedProjectsFromOctopod);
+        done();
       });
     });
 
-    it('should call Octopod to fetch activities to be staffed with filtered project - only "Regie (cost_reimbursable) and Forfait (fixed price)"', () => {
+    it('should call Octopod to fetch activities to be staffed with filtered project - only "Regie (cost_reimbursable) and Forfait (fixed price)"', (done) => {
       // given
       octopodClient.fetchProjectsToBeStaffed.restore();
       const projectsFromOctopod = [
@@ -139,7 +140,29 @@ describe('Unit | Service | job-service', () => {
       // when
       promise.then(() => {
         // then
+        expect(octopodClient.fetchActivitiesToBeStaffed).to.have.been.calledWithExactly(stubbedAccessToken, expectedProjectsFromOctopod);
+        done();
+      });
+    });
+
+    it('should call Octopod to fetch activities to be staffed with filtered project - without mission from customer : "OCTO Academy"', (done) => {
+      // given
+      octopodClient.fetchProjectsToBeStaffed.restore();
+      const projectsFromOctopod = [
+        projectFromOctopod('mission_signed', 'fixed_price', 'OCTO Academy'),
+        projectFromOctopod('mission_signed', 'fixed_price', 'Airbus Défense'),
+      ];
+
+      const expectedProjectsFromOctopod = [
+        projectFromOctopod('mission_signed', 'fixed_price', 'Airbus Défense'),
+      ];
+      sinon.stub(octopodClient, 'fetchProjectsToBeStaffed').resolves(projectsFromOctopod);
+
+      // when
+      promise.then(() => {
+        // then
         expect(octopodClient.fetchActivitiesToBeStaffed).to.have.been.calledWith(stubbedAccessToken, expectedProjectsFromOctopod);
+        done();
       });
     });
 
