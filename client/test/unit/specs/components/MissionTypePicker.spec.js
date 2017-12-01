@@ -15,7 +15,7 @@ describe('Unit | Component | MissionTypePicker.vue', () => {
 
   describe('$data', () => {
     it('should have displayedMissionType property set by default to delivery and consulting', () => {
-      expect(component.$data.displayedMissionType).to.deep.equal(['Delivery', 'Consulting']);
+      expect(component.$data.displayedMissionType).to.deep.equal(['Delivery', 'Consulting', 'Training']);
     });
   });
 
