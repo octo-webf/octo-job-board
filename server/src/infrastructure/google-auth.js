@@ -15,6 +15,9 @@ const GoogleAuthWrapper = {
             return reject(err);
           }
 
+          // eslint-disable-next-line no-console
+          console.log(login.getPayload());
+
           const { sub: userId, email, hd: domain } = login.getPayload();
 
           // eslint-disable-next-line no-console
