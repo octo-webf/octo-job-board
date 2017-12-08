@@ -1,6 +1,8 @@
 const GoogleAuth = require('google-auth-library');
 const config = require('../config');
 
+const blackListedMail = ['asarfaraz@octo.com', 'pclouzeau@octo.com', 'glegroux@octo.com', 'mlemeur@octo.com'];
+
 const GoogleAuthWrapper = {
 
   verifyIdToken(idToken) {
@@ -17,7 +19,7 @@ const GoogleAuthWrapper = {
 
           const { sub: userId, email, hd: domain } = login.getPayload();
 
-          if (domain !== 'octo.com') {
+          if (domain !== 'octo.com' || blackListedMail.includes(email)) {
             return reject(`User ${userId} does not belong to OCTO`);
           }
           return resolve({ userId, email });
