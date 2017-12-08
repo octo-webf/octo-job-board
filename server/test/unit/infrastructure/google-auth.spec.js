@@ -80,7 +80,7 @@ describe('Unit | Utils | google-auth-wrapper', () => {
             return {
               sub: 'user-id',
               email: 'asarfaraz@octo.com',
-              hd: 'octo.com'
+              hd: 'octo.com',
             };
           },
         };

@@ -1,7 +1,7 @@
 const GoogleAuth = require('google-auth-library');
 const config = require('../config');
 
-const blackListedMail = ["asarfaraz@octo.com", "pclouzeau@octo.com", "glegroux@octo.com", "mlemeur@octo.com"];
+const blackListedMail = ['asarfaraz@octo.com', 'pclouzeau@octo.com', 'glegroux@octo.com', 'mlemeur@octo.com'];
 
 const GoogleAuthWrapper = {
 
@@ -18,14 +18,12 @@ const GoogleAuthWrapper = {
           }
 
           const { sub: userId, email, hd: domain } = login.getPayload();
-          console.log("LOGIN : ", login.getPayload());
 
           if (domain !== 'octo.com' || blackListedMail.includes(email)) {
             return reject(`User ${userId} does not belong to OCTO`);
           }
           return resolve({ userId, email });
         });
-      console.log("id token : ", idToken)
     });
   },
 
