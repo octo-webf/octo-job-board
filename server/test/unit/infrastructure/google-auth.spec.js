@@ -71,5 +71,27 @@ describe('Unit | Utils | google-auth-wrapper', () => {
       // then
       return expect(promise).to.eventually.be.rejectedWith('User user-id does not belong to OCTO');
     });
+
+    it('should return a rejected promise when the user is in the blacklist', () => {
+      // given
+      verifyIdTokenStub.callsFake((idToken, audience, callback) => {
+        const login = {
+          getPayload() {
+            return {
+              sub: 'user-id',
+              email: 'asarfaraz@octo.com',
+              hd: 'octo.com'
+            };
+          },
+        };
+        callback(null, login);
+      });
+
+      // when
+      const promise = GoogleAuthWrapper.verifyIdToken('valid-id-token');
+
+      // then
+      return expect(promise).to.eventually.be.rejectedWith('User user-id does not belong to OCTO');
+    });
   });
 });
