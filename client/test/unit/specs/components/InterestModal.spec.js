@@ -260,7 +260,7 @@ describe('Unit | Component | InterestModal.vue', () => {
       component.displaySuccessNotification();
 
       // then
-      const message = 'Merci de ton intérêt pour la mission. Ta demande a été transmise à l\'équipe Job Board.';
+      const message = 'Merci de ton intérêt pour la mission. Ta demande a été transmise par l\'équipe Job Board.';
       expect(notificationService.successCenterToast).to.have.been.calledWithExactly(component, message);
 
       // after
