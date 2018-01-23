@@ -6,11 +6,16 @@ const jobsAddedEmailTemplate = require('../../infrastructure/mailing/jobs-added-
 function sendInterestEmail(form) {
   const subject = `[JobBoard] ${form.interestedConsultant.name} intéressé·e par ${form.missionName} - ${form.activityName}`;
   const template = interestEmailTemplate.compile(form);
+  const mailTo = [config.MAIL_TO];
+  if (form.businessContactNickname !== 'N/A') {
+    const businessContactEmail = `${form.businessContactNickname}@octo.com`;
+    mailTo.push(businessContactEmail);
+  }
 
   const options = {
     from: config.MAIL_FROM,
     fromName: 'Le Job Board - Ne pas répondre',
-    to: config.MAIL_TO,
+    to: mailTo,
     subject,
     template,
   };
