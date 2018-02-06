@@ -38,6 +38,14 @@
           </div>
         </div>
       </div>
+      <div class="job-header__filter-kind">
+        <div class="job-results__filters">
+          <div class="filters_wrapper">
+            <span class="job-filters-selector__text">Mode de facturation</span>
+            <kind-picker @selected="onSelectedKind"></kind-picker>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -47,11 +55,13 @@
   import DatePicker from '@/components/DatePicker';
   import MissionTypePicker from '@/components/MissionTypePicker';
   import StatusPicker from '@/components/StatusPicker';
+  import KindPicker from './KindPicker';
 
   export default {
     name: 'JobHeader',
     props: ['jobsNumber'],
     components: {
+      KindPicker,
       CountryPicker,
       DatePicker,
       MissionTypePicker,
@@ -72,6 +82,10 @@
 
       onSelectedStatus(newChosenStatus) {
         this.$emit('selectedStatus', newChosenStatus);
+      },
+
+      onSelectedKind(newChosenKind) {
+        this.$emit('selectedKind', newChosenKind);
       },
     },
   };
@@ -96,6 +110,10 @@
 
   .job-header__filter-country {
     grid-area: country;
+  }
+
+  .job-header__filter-kind {
+    grid-area: kind;
   }
 
   .job-results__title {
@@ -128,7 +146,7 @@
       display: grid;
       width: 100%;
       grid-template-columns: 50% 50%;
-      grid-template-areas: "title title" "date country" "status type"
+      grid-template-areas: "title kind" "date country" "status type"
     }
   }
 
@@ -138,7 +156,7 @@
       display: grid;
       width: 100%;
       grid-template-columns: 33% 34% 33%;
-      grid-template-areas: "date title country" "status . type"
+      grid-template-areas: "date title country" "status kind type"
     }
   }
 
@@ -147,8 +165,8 @@
       height: 80px;
       display: grid;
       width: 100%;
-      grid-template-columns: 20% 20% 20% 20% 20%;
-      grid-template-areas: "date status title type country"
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-areas: "date status kind title type country";
     }
   }
 </style>
