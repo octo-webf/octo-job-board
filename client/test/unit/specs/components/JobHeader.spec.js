@@ -27,6 +27,11 @@ describe('Unit | Component | JobHeader.vue', () => {
       expect(statusPicker.length).to.equal(1);
     });
 
+    it('should have a duration picker', () => {
+      const durationPicker = component.$el.querySelectorAll('.duration-picker');
+      expect(durationPicker.length).to.equal(1);
+    });
+
     it('should have a missionType picker', () => {
       const missionTypePicker = component.$el.querySelectorAll('.mission-type-picker');
       expect(missionTypePicker.length).to.equal(1);
@@ -87,6 +92,25 @@ describe('Unit | Component | JobHeader.vue', () => {
       // then
       return Vue.nextTick().then(() => {
         expect(component.$emit).to.have.been.calledWith('selectedStatus', 'proposals');
+      });
+    });
+  });
+
+  describe('onSelectedDuration', () => {
+    afterEach(() => {
+      component.$emit.restore();
+    });
+
+    it('should emit selected event with selectedDuration name', () => {
+      // given
+      sinon.stub(component, '$emit');
+
+      // when
+      component.onSelectedDuration('shortDuration');
+
+      // then
+      return Vue.nextTick().then(() => {
+        expect(component.$emit).to.have.been.calledWith('selectedDuration', 'shortDuration');
       });
     });
   });

@@ -11,7 +11,8 @@
                       @selectedCountry="onSelectedCountry"
                       @selectedDate="onSelectedAvailabilityDate"
                       @selectedMissionType="onSelectedMissionType"
-                      @selectedStatus="onSelectedStatus">
+                      @selectedStatus="onSelectedStatus"
+                      @selectedDuration="onSelectedDuration">
           </job-header>
           <div class="job-results-panel">
             <section class="job-results job-results--delivery">
@@ -64,6 +65,7 @@
         country: 'anyCountry',
         missionType: ['Delivery', 'Consulting'],
         status: 'anyStatus',
+        duration: 'anyDuration',
       };
     },
 
@@ -112,6 +114,10 @@
 
       onSelectedStatus(newChosenStatus) {
         this.status = newChosenStatus;
+      },
+
+      onSelectedDuration(newChosenDuration) {
+        this.duration = newChosenDuration;
       },
     },
   };

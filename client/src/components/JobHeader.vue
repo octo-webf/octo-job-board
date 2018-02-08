@@ -22,6 +22,14 @@
           </div>
         </div>
       </div>
+      <div class="job-header__filter-duration">
+        <div class="job-results__filters">
+          <div class="filters_wrapper">
+            <span class="job-filters-selector__text">Statut des missions</span>
+            <duration-picker @selected="onSelectedDuration"></duration-picker>
+          </div>
+        </div>
+      </div>
       <div class="job-header__filter-type">
         <div class="job-results__filters">
           <div class="filters_wrapper">
@@ -47,11 +55,13 @@
   import DatePicker from '@/components/DatePicker';
   import MissionTypePicker from '@/components/MissionTypePicker';
   import StatusPicker from '@/components/StatusPicker';
+  import DurationPicker from "./DurationPicker";
 
   export default {
     name: 'JobHeader',
     props: ['jobsNumber'],
     components: {
+      DurationPicker,
       CountryPicker,
       DatePicker,
       MissionTypePicker,
@@ -73,6 +83,10 @@
       onSelectedStatus(newChosenStatus) {
         this.$emit('selectedStatus', newChosenStatus);
       },
+
+      onSelectedDuration(newChosenStatus) {
+        this.$emit('selectedDuration', newChosenStatus);
+      },
     },
   };
 </script>
@@ -88,6 +102,10 @@
 
   .job-header__filter-status {
     grid-area: status;
+  }
+
+  .job-header__filter-duration {
+    grid-area: duration;
   }
 
   .job-header__filter-type {
