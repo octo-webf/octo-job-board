@@ -25,7 +25,7 @@
       <div class="job-header__filter-duration">
         <div class="job-results__filters">
           <div class="filters_wrapper">
-            <span class="job-filters-selector__text">Statut des missions</span>
+            <span class="job-filters-selector__text">Durée des missions</span>
             <duration-picker @selected="onSelectedDuration"></duration-picker>
           </div>
         </div>
@@ -55,7 +55,7 @@
   import DatePicker from '@/components/DatePicker';
   import MissionTypePicker from '@/components/MissionTypePicker';
   import StatusPicker from '@/components/StatusPicker';
-  import DurationPicker from "./DurationPicker";
+  import DurationPicker from './DurationPicker';
 
   export default {
     name: 'JobHeader',
@@ -146,7 +146,7 @@
       display: grid;
       width: 100%;
       grid-template-columns: 50% 50%;
-      grid-template-areas: "title title" "date country" "status type"
+      grid-template-areas: "title duration" "date country" "status type"
     }
   }
 
@@ -156,7 +156,7 @@
       display: grid;
       width: 100%;
       grid-template-columns: 33% 34% 33%;
-      grid-template-areas: "date title country" "status . type"
+      grid-template-areas: "date title country" "status duration type"
     }
   }
 
@@ -165,8 +165,8 @@
       height: 80px;
       display: grid;
       width: 100%;
-      grid-template-columns: 20% 20% 20% 20% 20%;
-      grid-template-areas: "date status title type country"
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-areas: "date status title type country duration"
     }
   }
 </style>

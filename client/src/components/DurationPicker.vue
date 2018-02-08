@@ -2,21 +2,21 @@
   <div class="duration-picker">
     <select v-model="displayedDuration">
       <option value="anyDuration">Toutes les durées</option>
-      <option value="shortDuration">< 10j</option>
-      <option value="mediumDuration">Moyenne</option>
-      <option value="longDuration">> 100j</option>
+      <option value="shortDuration">Courte < 10 jours</option>
+      <option value="mediumDuration">Moyenne 11-99 jours</option>
+      <option value="longDuration">Longue > 100 jours</option>
     </select>
   </div>
 </template>
 
 <script>
   export default {
-    name: "DurationPicker",
+    name: 'DurationPicker',
 
     data() {
       return {
-        displayedDuration: 'anyDuration'
-      }
+        displayedDuration: 'anyDuration',
+      };
     },
 
     watch: {

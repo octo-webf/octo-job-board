@@ -15,7 +15,7 @@ module.exports = job => Object.assign({},
           name: 'FR - La Poste',
         },
       },
-      duration: '10 mois',
+      mission_duration: '180',
       location: 'OCTO',
       business_contact: {
         nickname: 'ABC',

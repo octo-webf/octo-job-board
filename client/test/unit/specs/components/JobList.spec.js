@@ -5,6 +5,7 @@ import JobList from '@/components/JobList';
 import jobsSorter from '@/utils/jobsSorter';
 import countryFilter from '@/utils/countryFilter';
 import statusFilter from '@/utils/statusFilter';
+import durationFilter from '@/utils/durationFilter';
 import missionTypeFilter from '@/utils/missionTypeFilter';
 import authenticationService from '@/services/authentication';
 import jobsApi from '@/api/jobs';
@@ -14,7 +15,7 @@ Vue.use(VueAnalytics, {
   id: `${process.env.ANALYTICS_ID}`,
 });
 
-function buildJobFixture(id, title, status, staffingNeededFrom, country) {
+function buildJobFixture(id, title, status, staffingNeededFrom, country, duration) {
   const activity = {
     title,
     staffing_needed_from: staffingNeededFrom,
@@ -22,6 +23,7 @@ function buildJobFixture(id, title, status, staffingNeededFrom, country) {
   const job = jobFixture({ id, activity });
   job.project.customer.sector.name = country;
   job.project.status = status;
+  job.project.duration = duration;
   return job;
 }
 
@@ -120,18 +122,20 @@ describe('Unit | Component | JobList.vue', () => {
 
     describe('after jobs are loaded', () => {
       // given
-      const veryYoungProposal = buildJobFixture('1', 'Very young proposal', 'proposal_sent', '2037-10-01', 'Australia', 'Delivery');
-      const oldMission = buildJobFixture('2', 'Old mission', 'mission_signed', '2017-10-02', 'Australia', 'Consulting');
-      const youngProposal = buildJobFixture('3', 'Young proposal', 'proposal_sent', '2027-10-03', 'Australia', 'Delivery');
-      const todayMission = buildJobFixture('4', 'Today\'s mission', 'mission_signed', '2017-10-04', 'Australia', 'Delivery');
-      const italianJob = buildJobFixture('4', 'Today\'s mission', 'mission_signed', '2017-10-04', 'Italy', 'Delivery');
-      const proposalJob = buildJobFixture('4', 'Today\'s mission', 'proposal_in_progress', '2017-10-04', 'Australia', 'Delivery');
-      const trainingJob = buildJobFixture('1', 'Very old mission', 'proposal_sent', '2017-10-01', 'Australia', 'Training');
+      const veryYoungProposal = buildJobFixture('1', 'Very young proposal', 'proposal_sent', '2037-10-01', 'Australia', 'Delivery', '180');
+      const oldMission = buildJobFixture('2', 'Old mission', 'mission_signed', '2017-10-02', 'Australia', 'Consulting', '180');
+      const youngProposal = buildJobFixture('3', 'Young proposal', 'proposal_sent', '2027-10-03', 'Australia', 'Delivery', '180');
+      const todayMission = buildJobFixture('4', 'Today\'s mission', 'mission_signed', '2017-10-04', 'Australia', 'Delivery', '180');
+      const italianJob = buildJobFixture('4', 'Today\'s mission', 'mission_signed', '2017-10-04', 'Italy', 'Delivery', '180');
+      const proposalJob = buildJobFixture('4', 'Today\'s mission', 'proposal_in_progress', '2017-10-04', 'Australia', 'Delivery', '180');
+      const trainingJob = buildJobFixture('1', 'Very old mission', 'proposal_sent', '2017-10-01', 'Australia', 'Training', '180');
+      const shortDurationMission = buildJobFixture('4', 'Today\'s mission', 'mission_signed', '2017-10-04', 'Australia', 'Delivery', '9');
 
-      const fetchedJobs = [youngProposal, veryYoungProposal, trainingJob, oldMission, todayMission, italianJob, proposalJob];
-      const countryJobs = [youngProposal, veryYoungProposal, trainingJob, oldMission, todayMission, proposalJob];
-      const statusJobs = [youngProposal, veryYoungProposal, trainingJob, oldMission, todayMission];
-      const missionTypeJobs = [youngProposal, veryYoungProposal, oldMission, todayMission];
+      const fetchedJobs = [youngProposal, veryYoungProposal, trainingJob, oldMission, todayMission, italianJob, proposalJob, shortDurationMission];
+      const countryJobs = [youngProposal, veryYoungProposal, trainingJob, oldMission, todayMission, proposalJob, shortDurationMission];
+      const statusJobs = [youngProposal, veryYoungProposal, trainingJob, oldMission, todayMission, shortDurationMission];
+      const missionTypeJobs = [youngProposal, veryYoungProposal, oldMission, todayMission, shortDurationMission];
+      const durationJobs = [youngProposal, veryYoungProposal, oldMission, todayMission];
       const sortedJobs = [oldMission, todayMission, youngProposal, veryYoungProposal];
       let clock;
 
@@ -141,6 +145,7 @@ describe('Unit | Component | JobList.vue', () => {
         sinon.stub(countryFilter, 'filter').returns(countryJobs);
         sinon.stub(statusFilter, 'filter').returns(statusJobs);
         sinon.stub(missionTypeFilter, 'filter').returns(missionTypeJobs);
+        sinon.stub(durationFilter, 'filter').returns(durationJobs);
         sinon.stub(jobsSorter, 'sort').returns(sortedJobs);
         clock = sinon.useFakeTimers(new Date(2017, 9, 4).getTime());
 
@@ -155,6 +160,7 @@ describe('Unit | Component | JobList.vue', () => {
         countryFilter.filter.restore();
         statusFilter.filter.restore();
         missionTypeFilter.filter.restore();
+        durationFilter.filter.restore();
         jobsSorter.sort.restore();
       });
 
@@ -178,12 +184,16 @@ describe('Unit | Component | JobList.vue', () => {
         expect(statusFilter.filter).to.have.been.calledWith(countryJobs, 'anyStatus');
       })));
 
-      it('should call jobsSorter sort with statusJobs', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
+      it('should call missionTypeFilter sort with statusJobs', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
         expect(missionTypeFilter.filter).to.have.been.calledWith(statusJobs, ['Delivery', 'Consulting']);
       })));
 
-      it('should call jobsSorter sort with missionTypeJobs', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
-        expect(jobsSorter.sort).to.have.been.calledWith(missionTypeJobs, moment());
+      it('should call durationFilter sort with missionTypeJobs', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
+        expect(durationFilter.filter).to.have.been.calledWith(missionTypeJobs, 'anyDuration');
+      })));
+
+      it('should call jobsSorter sort with durationJobs', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
+        expect(jobsSorter.sort).to.have.been.calledWith(durationJobs, moment());
       })));
 
       it('should render as many jobs as received from the API', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
@@ -245,6 +255,16 @@ describe('Unit | Component | JobList.vue', () => {
 
       // then
       expect(component.$data.status).to.equal('proposals');
+    });
+  });
+
+  describe('onSelectedDuration', () => {
+    it('should set data Duration with selectedDuration', () => {
+      // when
+      component.onSelectedDuration('shortDuration');
+
+      // then
+      expect(component.$data.duration).to.equal('shortDuration');
     });
   });
 });
