@@ -36,6 +36,7 @@
   import statusFilter from '@/utils/statusFilter';
   import jobsSorter from '@/utils/jobsSorter';
   import jobsApi from '@/api/jobs';
+  import startHotjar from '@/services/hotjar';
   import AppHeader from '@/components/AppHeader';
   import JobHeader from '@/components/JobHeader';
   import JobCard from '@/components/JobCard';
@@ -78,6 +79,7 @@
 
     mounted() {
       this.getJobs();
+      startHotjar();
     },
 
     methods: {
