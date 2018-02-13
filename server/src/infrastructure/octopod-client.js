@@ -74,7 +74,7 @@ const OctopodClient = {
         }
         const activities = JSON.parse(response.body);
         activities.map((activity) => {
-          const activityWithPeopleStaffedOnProject = activity.slice();
+          const activityWithPeopleStaffedOnProject = activity;
           activityWithPeopleStaffedOnProject.people = uniqBy(flattenDeep(activities.map(item => item.people)), 'id');
           return activityWithPeopleStaffedOnProject;
         });

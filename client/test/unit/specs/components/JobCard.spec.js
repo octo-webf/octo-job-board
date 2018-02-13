@@ -34,6 +34,7 @@ describe('Unit | Component | JobCard.vue', () => {
       activity: {
         title: 'Tech Lead',
         staffing_needed_from: '2017-07-01',
+        people_staffed_on_project: ['NIMA', 'SMI'],
       },
       project: {
         id: 123456,
