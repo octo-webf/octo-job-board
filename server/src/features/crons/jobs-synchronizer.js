@@ -2,7 +2,6 @@
 const scheduler = require('node-schedule');
 const jobService = require('../../domain/services/job-service');
 
-const EVERY_15_MINUTES = '*/15 * * * *';
 const EVERY_24_HOURS = '* */23 * * *';
 
 scheduler.scheduleJob(EVERY_24_HOURS, () => {
