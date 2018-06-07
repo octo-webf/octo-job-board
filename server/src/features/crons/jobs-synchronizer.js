@@ -2,9 +2,9 @@
 const scheduler = require('node-schedule');
 const jobService = require('../../domain/services/job-service');
 
-const EVERY_24_HOURS = '* */23 * * *';
+const EVERY_DAY_AT_EIGHT = '0 8 * * *';
 
-scheduler.scheduleJob(EVERY_24_HOURS, () => {
+scheduler.scheduleJob(EVERY_DAY_AT_EIGHT, () => {
   console.log('Synchronize jobs from Octopod...');
 
   return jobService.synchronizeJobs()
