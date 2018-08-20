@@ -11,7 +11,8 @@
                       @selectedCountry="onSelectedCountry"
                       @selectedDate="onSelectedAvailabilityDate"
                       @selectedMissionType="onSelectedMissionType"
-                      @selectedStatus="onSelectedStatus">
+                      @selectedStatus="onSelectedStatus"
+                      @selectedDuration="onSelectedDuration">
           </job-header>
           <div class="job-results-panel">
             <section class="job-results job-results--delivery">
@@ -34,6 +35,7 @@
   import countryFilter from '@/utils/countryFilter';
   import missionTypeFilter from '@/utils/missionTypeFilter';
   import statusFilter from '@/utils/statusFilter';
+  import durationFilter from '@/utils/durationFilter';
   import jobsSorter from '@/utils/jobsSorter';
   import jobsApi from '@/api/jobs';
   import AppHeader from '@/components/AppHeader';
@@ -64,6 +66,7 @@
         country: 'anyCountry',
         missionType: ['Delivery', 'Consulting'],
         status: 'anyStatus',
+        duration: 'anyDuration',
       };
     },
 
@@ -72,6 +75,7 @@
         let filteredJobs = countryFilter.filter(this.jobsFromApi, this.country);
         filteredJobs = statusFilter.filter(filteredJobs, this.status);
         filteredJobs = missionTypeFilter.filter(filteredJobs, this.missionType);
+        filteredJobs = durationFilter.filter(filteredJobs, this.duration);
         return jobsSorter.sort(filteredJobs, this.availabilityDate);
       },
     },
@@ -112,6 +116,10 @@
 
       onSelectedStatus(newChosenStatus) {
         this.status = newChosenStatus;
+      },
+
+      onSelectedDuration(newChosenDuration) {
+        this.duration = newChosenDuration;
       },
     },
   };

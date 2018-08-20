@@ -22,6 +22,14 @@
           </div>
         </div>
       </div>
+      <div class="job-header__filter-duration">
+        <div class="job-results__filters">
+          <div class="filters_wrapper">
+            <span class="job-filters-selector__text">Durée des missions</span>
+            <duration-picker @selected="onSelectedDuration"></duration-picker>
+          </div>
+        </div>
+      </div>
       <div class="job-header__filter-type">
         <div class="job-results__filters">
           <div class="filters_wrapper">
@@ -47,11 +55,13 @@
   import DatePicker from '@/components/DatePicker';
   import MissionTypePicker from '@/components/MissionTypePicker';
   import StatusPicker from '@/components/StatusPicker';
+  import DurationPicker from './DurationPicker';
 
   export default {
     name: 'JobHeader',
     props: ['jobsNumber'],
     components: {
+      DurationPicker,
       CountryPicker,
       DatePicker,
       MissionTypePicker,
@@ -73,6 +83,10 @@
       onSelectedStatus(newChosenStatus) {
         this.$emit('selectedStatus', newChosenStatus);
       },
+
+      onSelectedDuration(newChosenStatus) {
+        this.$emit('selectedDuration', newChosenStatus);
+      },
     },
   };
 </script>
@@ -88,6 +102,10 @@
 
   .job-header__filter-status {
     grid-area: status;
+  }
+
+  .job-header__filter-duration {
+    grid-area: duration;
   }
 
   .job-header__filter-type {
@@ -128,7 +146,7 @@
       display: grid;
       width: 100%;
       grid-template-columns: 50% 50%;
-      grid-template-areas: "title title" "date country" "status type"
+      grid-template-areas: "title duration" "date country" "status type"
     }
   }
 
@@ -138,7 +156,7 @@
       display: grid;
       width: 100%;
       grid-template-columns: 33% 34% 33%;
-      grid-template-areas: "date title country" "status . type"
+      grid-template-areas: "date title country" "status duration type"
     }
   }
 
@@ -147,8 +165,8 @@
       height: 80px;
       display: grid;
       width: 100%;
-      grid-template-columns: 20% 20% 20% 20% 20%;
-      grid-template-areas: "date status title type country"
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-areas: "date status title type country duration"
     }
   }
 </style>
