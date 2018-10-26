@@ -20,6 +20,7 @@ function config() {
     OCTOPOD_API_URL: process.env.OCTOPOD_API_URL,
     OCTOPOD_CLIENT_ID: process.env.OCTOPOD_CLIENT_ID,
     OCTOPOD_CLIENT_SECRET: process.env.OCTOPOD_CLIENT_SECRET,
+    OCTOPOD_CALL_FREQUENCY_CRON: process.env.OCTOPOD_CALL_FREQUENCY_CRON,
 
     AUTHORIZATION_ALGORITHM: process.env.AUTHORIZATION_ALGORITHM,
     AUTHORIZATION_PASSWORD: process.env.AUTHORIZATION_PASSWORD,
@@ -42,6 +43,8 @@ function config() {
     APP_ENV.OCTOPOD_API_URL = 'http://octopod.url/api';
     APP_ENV.OCTOPOD_CLIENT_ID = 'octopod-client-id';
     APP_ENV.OCTOPOD_CLIENT_SECRET = 'octopod-client-secret';
+    const everySixHours = '0 0 2,8,14,20 * * *';
+    APP_ENV.OCTOPOD_CALL_FREQUENCY_CRON = everySixHours;
     APP_ENV.AUTHORIZATION_ALGORITHM = 'aes-128-ecb';
     APP_ENV.AUTHORIZATION_PASSWORD = 'authorization-password';
     APP_ENV.AUTHORIZATION_CODES = 'test/test_authorization_codes';
