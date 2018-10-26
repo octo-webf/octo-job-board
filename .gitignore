@@ -18,7 +18,7 @@ selenium-debug.log
 **/.nyc_output
 
 # NPM package-lock files
-package-lock.json
+# package-lock.json
 
 # DB data files
 *.sqlite
