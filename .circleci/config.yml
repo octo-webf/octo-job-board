@@ -1,0 +1,165 @@
+common_properties: &common_properties
+  docker:
+    - image: circleci/node:9-browsers
+  working_directory: ~/octo-web-front-end-tribe/octo-job-board
+
+version: 2
+jobs:
+  checkout_code:
+    <<: *common_properties
+    steps:
+      - checkout
+      - run: echo "${CIRCLE_BRANCH}_${CIRCLE_SHA1}" > .circle-cache-key
+      - save_cache:
+          key: v1-code-{{ checksum ".circle-cache-key" }}
+          paths:
+            - ~/octo-web-front-end-tribe/octo-job-board
+
+  install_front:
+    <<: *common_properties
+    steps:
+      - run: echo "${CIRCLE_BRANCH}_${CIRCLE_SHA1}" > .circle-cache-key
+      - restore_cache:
+          keys:
+            - v1-code-{{ checksum ".circle-cache-key" }}
+      - restore_cache:
+          keys:
+            - v1-front-dependencies-{{ checksum "client/package-lock.json" }}
+      - run:
+          name: Install front
+          command: npm run install:client
+      - save_cache:
+          key: v1-front-dependencies-{{ checksum "client/package-lock.json" }}
+          paths:
+            - ./client/node_modules
+
+  install_back:
+    <<: *common_properties
+    steps:
+      - run: echo "${CIRCLE_BRANCH}_${CIRCLE_SHA1}" > .circle-cache-key
+      - restore_cache:
+          keys:
+            - v1-code-{{ checksum ".circle-cache-key" }}
+      - restore_cache:
+          keys:
+            - v1-back-dependencies-{{ checksum "server/package-lock.json" }}
+      - run:
+          name: Install back
+          command: npm run install:server
+      - save_cache:
+          key: v1-back-dependencies-{{ checksum "server/package-lock.json" }}
+          paths:
+            - ./server/node_modules
+
+  test_front:
+    <<: *common_properties
+    steps:
+      - run: echo "${CIRCLE_BRANCH}_${CIRCLE_SHA1}" > .circle-cache-key
+      - restore_cache:
+          keys:
+            - v1-code-{{ checksum ".circle-cache-key" }}
+      - restore_cache:
+          keys:
+            - v1-front-dependencies-{{ checksum "client/package-lock.json" }}
+      - run:
+          name: Lint front
+          command: npm run lint:client
+      - run:
+          name: Test front
+          command: npm test:client
+      - store_test_results:
+          path: /tmp/circleci-test-results/front
+
+  test_back:
+    <<: *common_properties
+    steps:
+      - run: echo "${CIRCLE_BRANCH}_${CIRCLE_SHA1}" > .circle-cache-key
+      - restore_cache:
+          keys:
+            - v1-code-{{ checksum ".circle-cache-key" }}
+      - restore_cache:
+          keys:
+            - v1-back-dependencies-{{ checksum "server/package-lock.json" }}
+      - run:
+          name: Lint back
+          command: npm run lint:server
+      - run:
+          name: Test back
+          command: npm test:server
+      - store_test_results:
+          path: /tmp/circleci-test-results/back
+
+  build_front:
+    <<: *common_properties
+    steps:
+      - run: echo "${CIRCLE_BRANCH}_${CIRCLE_SHA1}" > .circle-cache-key
+      - restore_cache:
+          keys:
+            - v1-code-{{ checksum ".circle-cache-key" }}
+      - restore_cache:
+          keys:
+            - v1-front-dependencies-{{ checksum "client/package-lock.json" }}
+      - run: npm run build
+
+  deploy_staging:
+    <<: *common_properties
+    shell: /bin/bash --login
+    steps:
+      - run: echo "${CIRCLE_BRANCH}_${CIRCLE_SHA1}" > .circle-cache-key
+      - restore_cache:
+          keys:
+            - v1-code-{{ checksum ".circle-cache-key" }}
+      - run:
+          name: Deploy dev to Heroku staging
+          command: |
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/jobs-octo-test.git dev:master
+
+  deploy_master:
+    <<: *common_properties
+    shell: /bin/bash --login
+    steps:
+      - run: echo "${CIRCLE_BRANCH}_${CIRCLE_SHA1}" > .circle-cache-key
+      - restore_cache:
+          keys:
+            - v1-code-{{ checksum ".circle-cache-key" }}
+      - run:
+          name: Deploy master to Heroku
+          command: |
+            git push https://heroku:$HEROKU_API_KEY@git.heroku.com/jobs-octo.git master
+
+workflows:
+  version: 2
+  jobs-octo-workflow:
+    jobs:
+      - checkout_code
+      - install_front:
+          requires:
+            - checkout_code
+      - install_back:
+          requires:
+            - checkout_code
+      - test_front:
+          requires:
+            - install_front
+      - test_back:
+          requires:
+            - install_back
+      - build_front:
+          requires:
+            - install_front
+      - deploy_staging:
+          requires:
+            - test_front
+            - test_back
+            - build_front
+          filters:
+            branches:
+              only: dev
+      - deploy_master:
+          requires:
+            - test_front
+            - test_back
+            - build_front
+          filters:
+            branches:
+              only: master
