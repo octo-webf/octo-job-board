@@ -4,28 +4,28 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "install:client": "(cd client && npm install)",
-    "install:server": "(cd server && npm install)",
-    "install": "npm run install:client && npm run install:server",
-    "build:client": "(cd client && npm run build)",
-    "build": "npm run build:client",
-    "clean:client": "(cd client && npm run clean)",
-    "clean:server": "(cd server && npm run clean)",
-    "clean": "npm run clean:client && npm run clean:server",
-    "configure": "(cd server && npm run configure)",
+    "install:client": "(cd client && yarn)",
+    "install:server": "(cd server && yarn)",
+    "install": "yarn install:client && yarn install:server",
+    "build:client": "(cd client && yarn build)",
+    "build": "yarn build:client",
+    "clean:client": "(cd client && yarn clean)",
+    "clean:server": "(cd server && yarn clean)",
+    "clean": "yarn clean:client && yarn clean:server",
+    "configure": "(cd server && yarn configure)",
     "start": "(cd server && node ./bin/www)",
-    "startmon": "(cd server && npm run startmon)",
-    "start:autoreload": "(cd server && npm run start:autoreload)",
-    "test:client": "(cd client && npm test)",
-    "test:server": "(cd server && npm test)",
-    "test": "npm run test:client && npm run test:server",
-    "lint:client": "(cd client && npm run lint)",
-    "lint:server": "(cd server && npm run lint)",
-    "lint": "npm run lint:client && npm run lint:server",
-    "lint:fix": "(cd client && npm run lint:fix) && (cd server && npm run lint:fix)",
+    "startmon": "(cd server && yarn startmon)",
+    "start:autoreload": "(cd server && yarn start:autoreload)",
+    "test:client": "(cd client && yarn test)",
+    "test:server": "(cd server && yarn test)",
+    "test": "yarn test:client && yarn test:server",
+    "lint:client": "(cd client && yarn lint)",
+    "lint:server": "(cd server && yarn lint)",
+    "lint": "yarn lint:client && yarn lint:server",
+    "lint:fix": "(cd client && yarn lint:fix) && (cd server && yarn lint:fix)",
     "release": "./tools/release/release.sh",
-    "heroku-postbuild": "npm run build",
-    "prepush": "npm run lint && npm test"
+    "heroku-postbuild": "yarn build",
+    "prepush": "yarn lint && yarn test"
   },
   "repository": {
     "type": "git",
@@ -40,8 +40,5 @@
   "devDependencies": {
     "husky": "^0.14.3",
     "nodemon": "^1.11.0"
-  },
-  "engines": {
-    "node": "8.9.1"
   }
 }

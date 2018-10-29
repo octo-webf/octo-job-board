@@ -6,7 +6,7 @@
     "start": "node ./bin/www",
     "start:autoreload": "nodemon ./bin/www",
     "startmon": "nodemon ./bin/www",
-    "clean": "npm run clean:dependencies && npm run clean:db",
+    "clean": "yarn clean:dependencies && yarn clean:db",
     "clean:dependencies": "rm -rf node_modules",
     "clean:db": "rm src/db/data.development.sqlite",
     "configure": "./tools/setup/setup.sh",
@@ -17,7 +17,7 @@
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "db": "./node_modules/.bin/sequelize",
     "db:help": "./node_modules/.bin/sequelize help",
-    "db:reset": "npm run clean:db && npm run db:migrate",
+    "db:reset": "yarn clean:db && yarn db:migrate",
     "db:migrate": "./node_modules/.bin/sequelize db:migrate",
     "db:rollback": "./node_modules/.bin/sequelize db:migrate:undo"
   },
