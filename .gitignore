@@ -4,7 +4,7 @@ dist/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-yarn.lock
+# yarn.lock
 coverage
 client/test/unit/coverage
 test/e2e/reports
@@ -18,7 +18,7 @@ selenium-debug.log
 **/.nyc_output
 
 # NPM package-lock files
-# package-lock.json
+package-lock.json
 
 # DB data files
 *.sqlite
