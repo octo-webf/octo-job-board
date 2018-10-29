@@ -40,12 +40,12 @@ describe('Unit | Serializer | jobs', () => {
     }];
 
     const octopodActivities = [
-      { id: 1, title: 'Activity 1-A', project: { id: 1 }, staffing_needed_from: '2017-07-01' },
-      { id: 2, title: 'Activity 2-A', project: { id: 2 }, staffing_needed_from: '2017-08-01' },
-      { id: 3, title: 'Activity 2-B', project: { id: 2 }, staffing_needed_from: '2017-09-01' },
-      { id: 4, title: 'Activity 3-A', project: { id: 3 }, staffing_needed_from: '2017-10-01' },
-      { id: 5, title: 'Activity 3-B', project: { id: 3 }, staffing_needed_from: '2017-11-01' },
-      { id: 6, title: 'Activity 3-C', project: { id: 3 }, staffing_needed_from: '2017-12-01' },
+      { id: 1, title: 'Activity 1-A', project: { id: 1 }, staffing_needed_from: '2017-07-01', people: ['NIMA', 'SMI'] },
+      { id: 2, title: 'Activity 2-A', project: { id: 2 }, staffing_needed_from: '2017-08-01', people: ['LAMA', 'ABC'] },
+      { id: 3, title: 'Activity 2-B', project: { id: 2 }, staffing_needed_from: '2017-09-01', people: ['LAMA', 'ABC'] },
+      { id: 4, title: 'Activity 3-A', project: { id: 3 }, staffing_needed_from: '2017-10-01', people: ['DEF', 'XYZ'] },
+      { id: 5, title: 'Activity 3-B', project: { id: 3 }, staffing_needed_from: '2017-11-01', people: ['DEF', 'XYZ'] },
+      { id: 6, title: 'Activity 3-C', project: { id: 3 }, staffing_needed_from: '2017-12-01', people: ['DEF', 'XYZ'] },
     ];
 
     // when
@@ -69,6 +69,7 @@ describe('Unit | Serializer | jobs', () => {
         id: 1,
         title: 'Activity 1-A',
         staffing_needed_from: '2017-07-01',
+        people_staffed_on_project: ['NIMA', 'SMI'],
       },
     }, {
       project: {
@@ -87,6 +88,7 @@ describe('Unit | Serializer | jobs', () => {
         id: 2,
         title: 'Activity 2-A',
         staffing_needed_from: '2017-08-01',
+        people_staffed_on_project: ['LAMA', 'ABC'],
       },
     }, {
       project: {
@@ -105,6 +107,7 @@ describe('Unit | Serializer | jobs', () => {
         id: 3,
         title: 'Activity 2-B',
         staffing_needed_from: '2017-09-01',
+        people_staffed_on_project: ['LAMA', 'ABC'],
       },
     }, {
       project: {
@@ -123,6 +126,7 @@ describe('Unit | Serializer | jobs', () => {
         id: 4,
         title: 'Activity 3-A',
         staffing_needed_from: '2017-10-01',
+        people_staffed_on_project: ['DEF', 'XYZ'],
       },
     }, {
       project: {
@@ -141,6 +145,7 @@ describe('Unit | Serializer | jobs', () => {
         id: 5,
         title: 'Activity 3-B',
         staffing_needed_from: '2017-11-01',
+        people_staffed_on_project: ['DEF', 'XYZ'],
       },
     }, {
       project: {
@@ -159,6 +164,7 @@ describe('Unit | Serializer | jobs', () => {
         id: 6,
         title: 'Activity 3-C',
         staffing_needed_from: '2017-12-01',
+        people_staffed_on_project: ['DEF', 'XYZ'],
       },
     }];
 

@@ -26,6 +26,15 @@
           <div class="job__contact" v-if="job.project.mission_director"> – Dir. mission : <span class="job__contact-nickname job__mission-director">{{ job.project.mission_director.nickname }}</span></div>
         </div>
 
+        <hr class="job__separator">
+
+        <div class="job__staffed">
+          <div class="job__staffed-title">Octos déjà staffé⋅e⋅s :</div>
+          <span class="job__octo" v-for="octo in job.activity.people_staffed_on_project">
+            <a class="job__octo-link job__contact-nickname" :href="'https://askbob.octo.com/users/' + octo.nickname">{{ octo.nickname }}</a>
+          </span>
+        </div>
+
       </a>
 
       <div class="job__context">
@@ -44,7 +53,7 @@
       </div>
       <div class="job__footer">
         <button class="job__apply-button" @click="displayInterestModal">
-          <icon name="heart-o"></icon> Ça m'intéresse <span class="sr-only">par cette mission {{ mission }} en tant que {{ job.activity.title}}</span>
+          <icon name="heart-o"></icon> Ça m'intéresse <span class="sr-only">par cette mission {{ mission }} en tant que {{ job.activity.title }}</span>
         </button>
       </div>
 
@@ -93,6 +102,17 @@
       staffingNeededSince() {
         return moment(this.job.activity.staffing_needed_from).format('DD/MM/YY');
       },
+
+      // FIXME : this computed is intended to be in the .job__staffed-title div at line 32 but it break the test and I have no clue why it does
+      // octoStaffed() {
+      //   if (this.job.activity.people_staffed_on_project.length > 1) {
+      //     return 'Octos déjà staffé⋅e⋅s :';
+      //   } else if (this.job.activity.people_staffed_on_project.length === 1) {
+      //     return 'Octo déjà staffé⋅e :';
+      //   } else {
+      //     return 'Aucun Octo staffé';
+      //   }
+      // },
 
       locations() {
         const locations = this.job.project.locations;
@@ -247,6 +267,28 @@
 
   .job__contact-nickname {
     font-weight: 600;
+  }
+
+  .job__staffed {
+    font-size: 0.8rem;
+    padding: 15px;
+    color: #2c3e50;
+  }
+
+  .job__staffed-title {
+    padding-bottom: 7px;
+  }
+
+  .job__octo-link {
+    text-decoration: none;
+    color: #2c3e50;
+  }
+
+  .job__octo:after {
+    content : " - ";
+  }
+  .job__octo:last-child:after {
+    content : "";
   }
 
   .job__context {

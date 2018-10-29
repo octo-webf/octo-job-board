@@ -1,6 +1,6 @@
 const request = require('request');
 const config = require('../config/index');
-const { flattenDeep } = require('lodash');
+const { flattenDeep, uniqBy } = require('lodash');
 
 const MAX_NUMBER_OF_PROJECTS_BY_OCTOPOD_PAGE = 100;
 
@@ -73,6 +73,11 @@ const OctopodClient = {
           reject(err);
         }
         const activities = JSON.parse(response.body);
+        activities.map((activity) => {
+          const activityWithPeopleStaffedOnProject = activity;
+          activityWithPeopleStaffedOnProject.people = uniqBy(flattenDeep(activities.map(item => item.people)), 'id');
+          return activityWithPeopleStaffedOnProject;
+        });
         resolve(activities);
       });
     });

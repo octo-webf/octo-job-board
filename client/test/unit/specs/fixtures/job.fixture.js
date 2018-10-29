@@ -4,6 +4,7 @@ module.exports = job => Object.assign({},
     activity: {
       title: 'Tech Lead mission 1',
       staffing_needed_from: '2017-07-01',
+      people_staffed_on_project: [{ nickname: 'NIMA' }, { nickname: 'SMI' }],
     },
     project: {
       id: 123456,
