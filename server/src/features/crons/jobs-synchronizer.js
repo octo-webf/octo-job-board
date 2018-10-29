@@ -1,10 +1,10 @@
 /* eslint-disable no-console */
 const scheduler = require('node-schedule');
 const jobService = require('../../domain/services/job-service');
+const config = require('../../config/index');
 
-const EVERY_15_MINUTES = '*/15 * * * *';
-
-scheduler.scheduleJob(EVERY_15_MINUTES, () => {
+// Configure cron with https://github.com/node-schedule/node-schedule
+scheduler.scheduleJob(config.OCTOPOD_CALL_FREQUENCY_CRON, () => {
   console.log('Synchronize jobs from Octopod...');
 
   return jobService.synchronizeJobs()

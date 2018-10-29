@@ -4,6 +4,13 @@
 
 [![Coverage Status](https://coveralls.io/repos/github/octo-web-front-end-tribe/octo-job-board/badge.svg)](https://coveralls.io/github/octo-web-front-end-tribe/octo-job-board)
 
+## Cron information 
+
+Take care of cron configure in jobs-synchronizer.js. 
+Node Schedule uses a strange format of cron: https://github.com/node-schedule/node-schedule
+
+Production mode: call at 2am, 8am, 2pm, 8pm every day
+Development mode: call at 8am every day
 
 ## Getting started
 
