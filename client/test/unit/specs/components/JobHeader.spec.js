@@ -31,6 +31,11 @@ describe('Unit | Component | JobHeader.vue', () => {
       const missionTypePicker = component.$el.querySelectorAll('.mission-type-picker');
       expect(missionTypePicker.length).to.equal(1);
     });
+
+    it('should have a kind picker', () => {
+      const kindPicker = component.$el.querySelectorAll('.kind-picker');
+      expect(kindPicker.length).to.equal(1);
+    });
   });
 
   describe('onSelectedAvailabilityDate', () => {
@@ -106,6 +111,23 @@ describe('Unit | Component | JobHeader.vue', () => {
       // then
       return Vue.nextTick().then(() => {
         expect(component.$emit).to.have.been.calledWith('selectedMissionType', ['Delivery']);
+      });
+    });
+  });
+
+  describe('onSelectedKind', () => {
+    afterEach(() => {
+      component.$emit.restore();
+    });
+
+    it('should emit selected event with selectedKind name', () => {
+      // Given
+      sinon.stub(component, '$emit');
+      // When
+      component.onSelectedKind('fixedPrice');
+      // Then
+      return Vue.nextTick().then(() => {
+        expect(component.$emit).to.have.been.calledWith('selectedKind', 'fixedPrice');
       });
     });
   });

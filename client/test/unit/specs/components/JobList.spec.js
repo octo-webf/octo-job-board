@@ -5,6 +5,7 @@ import JobList from '@/components/JobList';
 import jobsSorter from '@/utils/jobsSorter';
 import countryFilter from '@/utils/countryFilter';
 import statusFilter from '@/utils/statusFilter';
+import kindFilter from '@/utils/kindFilter';
 import missionTypeFilter from '@/utils/missionTypeFilter';
 import authenticationService from '@/services/authentication';
 import jobsApi from '@/api/jobs';
@@ -14,7 +15,7 @@ Vue.use(VueAnalytics, {
   id: `${process.env.ANALYTICS_ID}`,
 });
 
-function buildJobFixture(id, title, status, staffingNeededFrom, country) {
+function buildJobFixture(id, title, status, staffingNeededFrom, country, kind) {
   const activity = {
     title,
     staffing_needed_from: staffingNeededFrom,
@@ -22,6 +23,7 @@ function buildJobFixture(id, title, status, staffingNeededFrom, country) {
   const job = jobFixture({ id, activity });
   job.project.customer.sector.name = country;
   job.project.status = status;
+  job.project.kind = kind;
   return job;
 }
 
@@ -120,17 +122,18 @@ describe('Unit | Component | JobList.vue', () => {
 
     describe('after jobs are loaded', () => {
       // given
-      const veryYoungProposal = buildJobFixture('1', 'Very young proposal', 'proposal_sent', '2037-10-01', 'Australia', 'Delivery');
-      const oldMission = buildJobFixture('2', 'Old mission', 'mission_signed', '2017-10-02', 'Australia', 'Consulting');
-      const youngProposal = buildJobFixture('3', 'Young proposal', 'proposal_sent', '2027-10-03', 'Australia', 'Delivery');
-      const todayMission = buildJobFixture('4', 'Today\'s mission', 'mission_signed', '2017-10-04', 'Australia', 'Delivery');
-      const italianJob = buildJobFixture('4', 'Today\'s mission', 'mission_signed', '2017-10-04', 'Italy', 'Delivery');
-      const proposalJob = buildJobFixture('4', 'Today\'s mission', 'proposal_in_progress', '2017-10-04', 'Australia', 'Delivery');
-      const trainingJob = buildJobFixture('1', 'Very old mission', 'proposal_sent', '2017-10-01', 'Australia', 'Training');
+      const veryYoungProposal = buildJobFixture('1', 'Very young proposal', 'proposal_sent', '2037-10-01', 'Australia', 'Delivery', 'fixed_price');
+      const oldMission = buildJobFixture('2', 'Old mission', 'mission_signed', '2017-10-02', 'Australia', 'Consulting', 'fixed_price');
+      const youngProposal = buildJobFixture('3', 'Young proposal', 'proposal_sent', '2027-10-03', 'Australia', 'Delivery', 'fixed_price');
+      const todayMission = buildJobFixture('4', 'Today\'s mission', 'mission_signed', '2017-10-04', 'Australia', 'Delivery', 'cost_reimbursable');
+      const italianJob = buildJobFixture('4', 'Today\'s mission', 'mission_signed', '2017-10-04', 'Italy', 'Delivery', 'cost_reimbursable');
+      const proposalJob = buildJobFixture('4', 'Today\'s mission', 'proposal_in_progress', '2017-10-04', 'Australia', 'Delivery', 'fixed_price');
+      const trainingJob = buildJobFixture('1', 'Very old mission', 'proposal_sent', '2017-10-01', 'Australia', 'Training', 'cost_reimbursable');
 
       const fetchedJobs = [youngProposal, veryYoungProposal, trainingJob, oldMission, todayMission, italianJob, proposalJob];
       const countryJobs = [youngProposal, veryYoungProposal, trainingJob, oldMission, todayMission, proposalJob];
       const statusJobs = [youngProposal, veryYoungProposal, trainingJob, oldMission, todayMission];
+      const kindJobs = [youngProposal, veryYoungProposal, trainingJob, oldMission, todayMission];
       const missionTypeJobs = [youngProposal, veryYoungProposal, oldMission, todayMission];
       const sortedJobs = [oldMission, todayMission, youngProposal, veryYoungProposal];
       let clock;
@@ -140,6 +143,7 @@ describe('Unit | Component | JobList.vue', () => {
         sinon.stub(jobsApi, 'fetchAll').resolves(fetchedJobs);
         sinon.stub(countryFilter, 'filter').returns(countryJobs);
         sinon.stub(statusFilter, 'filter').returns(statusJobs);
+        sinon.stub(kindFilter, 'filter').returns(kindJobs);
         sinon.stub(missionTypeFilter, 'filter').returns(missionTypeJobs);
         sinon.stub(jobsSorter, 'sort').returns(sortedJobs);
         clock = sinon.useFakeTimers(new Date(2017, 9, 4).getTime());
@@ -154,6 +158,7 @@ describe('Unit | Component | JobList.vue', () => {
         jobsApi.fetchAll.restore();
         countryFilter.filter.restore();
         statusFilter.filter.restore();
+        kindFilter.filter.restore();
         missionTypeFilter.filter.restore();
         jobsSorter.sort.restore();
       });
@@ -178,8 +183,12 @@ describe('Unit | Component | JobList.vue', () => {
         expect(statusFilter.filter).to.have.been.calledWith(countryJobs, 'anyStatus');
       })));
 
-      it('should call jobsSorter sort with statusJobs', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
-        expect(missionTypeFilter.filter).to.have.been.calledWith(statusJobs, ['Delivery', 'Consulting']);
+      it('should call kindFilter filter with statusJobs', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
+        expect(kindFilter.filter).to.have.been.calledWith(statusJobs, 'anyKind');
+      })));
+
+      it('should call jobsSorter sort with kindJobs', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
+        expect(missionTypeFilter.filter).to.have.been.calledWith(kindJobs, ['Delivery', 'Consulting']);
       })));
 
       it('should call jobsSorter sort with missionTypeJobs', () => Vue.nextTick().then(() => Vue.nextTick().then(() => {
@@ -245,6 +254,15 @@ describe('Unit | Component | JobList.vue', () => {
 
       // then
       expect(component.$data.status).to.equal('proposals');
+    });
+  });
+
+  describe('onSelectedKind', () => {
+    it('should set data Kind with selectedKind', () => {
+      // When
+      component.onSelectedKind('fixedPrice');
+      // Then
+      expect(component.$data.kind).to.equal('fixedPrice');
     });
   });
 });
