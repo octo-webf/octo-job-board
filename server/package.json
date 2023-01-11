@@ -26,7 +26,7 @@
     "body-parser": "^1.17.2",
     "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
-    "debug": "~3.0.0",
+    "debug": "~3.1.0",
     "dotenv": "^4.0.0",
     "express": "^4.15.4",
     "express-http-to-https": "^1.1.3",
